@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22.1" height="22.1" viewBox="0 0 22.1 22.1">
+    <g id="Icon_feather-headphones" data-name="Icon feather-headphones" transform="translate(-3 -3)">
+        <path id="Path_6" data-name="Path 6" d="M4.5,20.417V14.05a9.55,9.55,0,1,1,19.1,0v6.367" fill="none"
+              stroke="#b3c0c8" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+        <path id="Path_7" data-name="Path 7"
+              d="M23.6,26.306a2.122,2.122,0,0,1-2.122,2.122H20.417a2.122,2.122,0,0,1-2.122-2.122V23.122A2.122,2.122,0,0,1,20.417,21H23.6Zm-19.1,0a2.122,2.122,0,0,0,2.122,2.122H7.683a2.122,2.122,0,0,0,2.122-2.122V23.122A2.122,2.122,0,0,0,7.683,21H4.5Z"
+              transform="translate(0 -4.828)" fill="none" stroke="#b3c0c8" stroke-linecap="round"
+              stroke-linejoin="round" stroke-width="3"/>
+    </g>
+</svg>
