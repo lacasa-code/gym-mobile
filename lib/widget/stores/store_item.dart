@@ -30,10 +30,10 @@ class Stores_item extends StatelessWidget {
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(15), topRight: Radius.circular(15)),
               child: Image.network(
-                "https://media4.s-nbcnews.com/i/newscms/2017_26/2053956/170627-better-grocery-store-main-se-539p_80a9ba9c8d466788799ca27568ee0d43.jpg",
+                "https://freepikpsd.com/wp-content/uploads/2019/10/shop-building-icon-png-4-Transparent-Images.png",
                 height: ScreenUtil.getHeight(context) / 4,
                 width: ScreenUtil.getWidth(context),
-                fit: BoxFit.cover,
+                fit: BoxFit.contain,
               ),
             ),
             Row(

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/store_model.dart';
+import 'package:trkar_vendor/screens/add_store.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
@@ -92,8 +93,8 @@ class _StoresState extends State<Stores> {
   }
 
   _navigate_add_hell(BuildContext context) async {
-    // await Navigator.push(
-    //     context, MaterialPageRoute(builder: (context) => add_hell()));
+    await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => add_Store()));
     Timer(Duration(seconds: 3), () => getAllStore());
   }
 
