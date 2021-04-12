@@ -78,8 +78,8 @@ class _MyAppState extends State<MyApp> {
         return supportedLocales.first;
       },
       supportedLocales: [
-        Locale("ar", ""),
         Locale("en", ""),
+        Locale("ar", ""),
       ],
       theme: ThemeData(
         pageTransitionsTheme: PageTransitionsTheme(builders: {
