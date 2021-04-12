@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trkar_vendor/main.dart';
 import 'package:trkar_vendor/screens/login.dart';
+import 'package:trkar_vendor/screens/stores.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/navigator.dart';
@@ -96,6 +97,24 @@ class _HiddenMenuState extends State<HiddenMenu> {
                         color: Colors.white.withOpacity(0.8),
                       ),
                       name: getTransrlate(context, 'ProfileSettings'),
+                      baseStyle: TextStyle(
+                          color: Colors.white.withOpacity(0.6),
+                          fontSize: 19.0,
+                          fontWeight: FontWeight.w800),
+                      colorLineSelected: Colors.orange,
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Nav.route(context, Stores());
+                    },
+                    child: ItemHiddenMenu(
+                      icon: Icon(
+                        Icons.store,
+                        size: 25,
+                        color: Colors.white.withOpacity(0.8),
+                      ),
+                      name: "Stores",
                       baseStyle: TextStyle(
                           color: Colors.white.withOpacity(0.6),
                           fontSize: 19.0,

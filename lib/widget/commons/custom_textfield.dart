@@ -15,31 +15,33 @@ class MyTextFormField extends StatelessWidget {
   final Widget prefix;
   final TextInputType Keyboard_Type;
   final String intialLabel;
+  final GestureTapCallback press;
 
-  MyTextFormField({
-    this.hintText,
-    this.validator,
-    this.enabled,
-    this.onSaved,
-    this.isPassword = false,
-    this.isEmail = false,
-    this.isPhone = false,
-    this.labelText,
-    this.suffixIcon,
-    this.textDirection,
-    this.prefix,
-    this.Keyboard_Type,
-    this.intialLabel
-  });
+  MyTextFormField(
+      {this.hintText,
+      this.validator,
+      this.enabled,
+      this.onSaved,
+      this.isPassword = false,
+      this.isEmail = false,
+      this.isPhone = false,
+      this.labelText,
+      this.suffixIcon,
+      this.textDirection,
+      this.prefix,
+      this.Keyboard_Type,
+      this.intialLabel,
+      this.press});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: 16),
       child: TextFormField(
-        initialValue: intialLabel==null?'':intialLabel,
+        onTap: press,
+        initialValue: intialLabel == null ? '' : intialLabel,
         decoration: InputDecoration(
-          prefixIcon:prefix,
+          prefixIcon: prefix,
           hintText: hintText,
           contentPadding: EdgeInsets.all(15.0),
           border: OutlineInputBorder(
@@ -50,17 +52,16 @@ class MyTextFormField extends StatelessWidget {
             ),
           ),
           fillColor: Color(0xFFEEEEF3),
-
           labelText: labelText,
           filled: true,
           suffixIcon: this.suffixIcon,
         ),
         obscureText: isPassword ? true : false,
         validator: validator,
-        textDirection:textDirection ,
+        textDirection: textDirection,
         onSaved: onSaved,
         enabled: enabled,
-        keyboardType:Keyboard_Type,
+        keyboardType: Keyboard_Type,
       ),
     );
   }

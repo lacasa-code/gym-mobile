@@ -36,28 +36,24 @@ class _LoginFormState extends State<LoginForm> {
         key: _formKey,
         child: Column(
           children: <Widget>[
-            Container(
-              alignment: Alignment.topCenter,
-              child: MyTextFormField(
-                intialLabel: '',
-                Keyboard_Type: TextInputType.emailAddress,
-                textDirection: TextDirection.ltr,
-                labelText: getTransrlate(context, 'Email'),
-                hintText: getTransrlate(context, 'Email'),
-                isPhone: true,
-                validator: (String value) {
-                  if (value.isEmpty) {
-                    return getTransrlate(context, 'Email');
-                  } else if (value.length < 9) {
-                    return getTransrlate(context, 'invalidemail');
-                  }
-                  _formKey.currentState.save();
-                  return null;
-                },
-                onSaved: (String value) {
-                  model.email = value;
-                },
-              ),
+            MyTextFormField(
+              intialLabel: '',
+              Keyboard_Type: TextInputType.emailAddress,
+              labelText: getTransrlate(context, 'Email'),
+              hintText: getTransrlate(context, 'Email'),
+              isPhone: true,
+              validator: (String value) {
+                if (value.isEmpty) {
+                  return getTransrlate(context, 'Email');
+                } else if (value.length < 9) {
+                  return getTransrlate(context, 'invalidemail');
+                }
+                _formKey.currentState.save();
+                return null;
+              },
+              onSaved: (String value) {
+                model.email = value;
+              },
             ),
             MyTextFormField(
               intialLabel: '',
