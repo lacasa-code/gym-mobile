@@ -5,9 +5,12 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trkar_vendor/main.dart';
+import 'package:trkar_vendor/screens/login.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
+import 'package:trkar_vendor/utils/navigator.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
+import 'package:trkar_vendor/utils/service/API.dart';
 import 'package:trkar_vendor/widget/item_hidden_menu.dart';
 
 // ignore: must_be_immutable
@@ -134,13 +137,16 @@ class _HiddenMenuState extends State<HiddenMenu> {
                   ),
                   InkWell(
                     onTap: () async {
-                      // themeColor.setLogin(false);
-                      // final SharedPreferences prefs =
-                      //     await SharedPreferences.getInstance();
-                      // prefs.clear();
-                      // themeColor.isLogin
-                      //     ? Nav.routeReplacement(context, Home())
-                      //     : Nav.route(context, LoginPage());
+                      if (themeColor.isLogin) {
+                        themeColor.setLogin(false);
+                        final SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        API(context).post('logout', {});
+                        prefs.clear();
+                        Nav.routeReplacement(context, LoginPage());
+                      } else {
+                        Nav.route(context, LoginPage());
+                      }
                     },
                     child: ItemHiddenMenu(
                       icon: Icon(

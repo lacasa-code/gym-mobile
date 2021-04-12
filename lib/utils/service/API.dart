@@ -9,12 +9,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trkar_vendor/screens/Maintenance.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/navigator.dart';
+import 'package:trkar_vendor/widget/ResultOverlay.dart';
 
 class API {
   BuildContext context;
-  String deviceName;
-  String deviceVersion;
-  String identifier;
+
+  API(this.context);
 
   get(String url) async {
     final String full_url =
@@ -26,8 +26,8 @@ class API {
       http.Response response = await http.get(full_url, headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Authorization': 'Bearer ${prefs.getString('token') ?? identifier}',
-        'locale': Provider.of<Provider_control>(context).getlocal(),
+        'Authorization': 'Bearer ${prefs.getString('token')}',
+        //  'locale': Provider.of<Provider_control>(context).getlocal(),
       });
       print(response.body);
       if (response.statusCode == 500) {
@@ -42,6 +42,12 @@ class API {
             Maintenance(
               erorr: full_url + '\n' + response.body,
             ));
+      } else if (response.statusCode == 401) {
+        showDialog(
+          context: context,
+          builder: (_) =>
+              ResultOverlay('${jsonDecode(response.body)['errors']}'),
+        );
       } else {
         return jsonDecode(response.body);
       }
@@ -65,7 +71,7 @@ class API {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
             'Authorization': 'Bearer ${prefs.getString('token')}',
-            'locale': Provider.of<Provider_control>(context).getlocal(),
+            //  'locale': Provider.of<Provider_control>(context).getlocal(),
           },
           body: json.encode(body));
       print("body =${jsonDecode(response.body)}");
@@ -82,6 +88,12 @@ class API {
             Maintenance(
               erorr: jsonDecode(response.body),
             ));
+      } else if (response.statusCode == 401) {
+        showDialog(
+          context: context,
+          builder: (_) => ResultOverlay(
+              '${jsonDecode(response.body)['errors'] ?? jsonDecode(response.body)}'),
+        );
       } else {
         return jsonDecode(response.body);
       }
@@ -89,7 +101,7 @@ class API {
       Nav.route(
           context,
           Maintenance(
-            erorr: e,
+            erorr: e.toString(),
           ));
       print(e);
     } finally {}
@@ -106,7 +118,7 @@ class API {
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'Authorization': 'Bearer ${prefs.getString('token') ?? identifier}',
+            'Authorization': 'Bearer ${prefs.getString('token')}',
             'locale': Provider.of<Provider_control>(context).getlocal(),
           },
           body: json.encode(body));
@@ -133,7 +145,7 @@ class API {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          'Authorization': 'Bearer ${prefs.getString('token') ?? identifier}',
+          'Authorization': 'Bearer ${prefs.getString('token')}',
           'locale': Provider.of<Provider_control>(context).getlocal(),
         },
       );

@@ -1,4 +1,4 @@
 {
-  "base_url": "https://demo.7lcart.com/",
-  "api_base_url": "https://store.cardnet.sa/api/"
+  "base_url": "https://development.lacasacode.dev/",
+  "api_base_url": "https://development.lacasacode.dev/api/v1/"
 }

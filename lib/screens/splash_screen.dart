@@ -4,10 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trkar_vendor/screens/homepage.dart';
+import 'package:trkar_vendor/screens/login.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/navigator.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
+import 'package:trkar_vendor/utils/service/API.dart';
 
 class SplashScreen extends StatefulWidget {
   SplashScreen();
@@ -63,19 +66,20 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   void _auth() async {
-    // API(context).get('profile').then((value) {
-    //   if(value!=null){
-    //     if(value['status']!='error'){
-    //       themeColor.setLogin(true);
-    //     }
-    //     else{
-    //       themeColor.setLogin(false);
-    //       SharedPreferences.getInstance().then((prefs) {
-    //         prefs.clear();
-    //       });
-    //     }
-    //   }
-    // });
-    Nav.routeReplacement(context, Home());
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    print(prefs.getString('token'));
+    API(context).post('token/data', {}).then((value) {
+      if (value != null) {
+        var user = value['data']['user'];
+        prefs.setString("user_email", user['email']);
+        prefs.setString("user_name", user['name']);
+        prefs.setInt("user_id", user['id']);
+        themeColor.setLogin(true);
+        Nav.routeReplacement(context, Home());
+      } else {
+        themeColor.setLogin(false);
+        Nav.routeReplacement(context, LoginPage());
+      }
+    });
   }
 }

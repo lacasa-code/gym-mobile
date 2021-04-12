@@ -36,6 +36,7 @@ dependencies:
   url_launcher: ^5.7.10
   auto_size_text: ^2.1.0
   path_provider: ^1.6.28
+  chart_components: ^1.0.1
 
 
 dev_dependencies:

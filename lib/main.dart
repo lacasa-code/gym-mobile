@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:global_configuration/global_configuration.dart';
 import 'package:provider/provider.dart';
 import 'package:trkar_vendor/screens/splash_screen.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
@@ -7,6 +8,8 @@ import 'package:trkar_vendor/utils/local/AppLocalizations.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await GlobalConfiguration().loadFromAsset("configurations");
+  print("base_url: ${GlobalConfiguration().getString('base_url')}");
   runApp(
     ChangeNotifierProvider<Provider_control>(
       create: (_) => Provider_control(),
