@@ -2,7 +2,9 @@ import 'package:chart_components/bar_chart_component.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/basic_report.dart';
+import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/data_repostory.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
@@ -18,6 +20,7 @@ class _HomeState extends State<Home> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   List<double> data = [];
   List<String> labels = [];
+  List<Color> colors = [];
   bool loaded = false;
   Basic_report basic_report;
   DateTime date = DateTime.now();
@@ -58,6 +61,8 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    final themeColor = Provider.of<Provider_control>(context);
+
     return Scaffold(
       key: _scaffoldKey,
       drawer: HiddenMenu(),
@@ -76,13 +81,14 @@ class _HomeState extends State<Home> {
                     Icons.menu,
                     size: 30,
                   ),
-                  color: Colors.blue,
+                  color: themeColor.getColor(),
                 ),
                 Center(
                   child: Padding(
                     padding: const EdgeInsets.only(top: 35, bottom: 35),
                     child: Image.asset(
                       'assets/images/logo.png',
+                      color: themeColor.getColor(),
                       height: ScreenUtil.getHeight(context) / 10,
                       width: ScreenUtil.getWidth(context) / 2,
                       fit: BoxFit.contain,
@@ -282,6 +288,7 @@ class _HomeState extends State<Home> {
       data =
           basic_report.periodDetails.map((e) => e.reports.totalSale).toList();
       labels = basic_report.periodDetails.map((e) => e.day).toList();
+      colors = basic_report.periodDetails.map((e) => Provider.of<Provider_control>(context).getColor()).toList();
     });
   }
 

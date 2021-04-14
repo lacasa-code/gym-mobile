@@ -94,6 +94,7 @@ class API {
           builder: (_) => ResultOverlay(
               '${jsonDecode(response.body)['errors'] ?? jsonDecode(response.body)}'),
         );
+        return null;
       } else {
         return jsonDecode(response.body);
       }

@@ -33,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen>
     themeColor = Provider.of<Provider_control>(context);
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-          statusBarColor: Colors.blue,
+          statusBarColor: themeColor.getColor(),
           systemNavigationBarIconBrightness: Brightness.dark,
           statusBarBrightness: Brightness.dark,
           statusBarIconBrightness: Brightness.dark),
@@ -50,7 +50,9 @@ class _SplashScreenState extends State<SplashScreen>
                 width: ScreenUtil.getWidth(context) / 1.5,
                 child: Image.asset(
                   'assets/images/logo.png',
-                  fit: BoxFit.fill,
+                  fit: BoxFit.contain,
+                  color: themeColor.getColor(),
+
                 ),
               ),
               Text(

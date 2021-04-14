@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trkar_vendor/screens/login.dart';
+import 'package:trkar_vendor/screens/product.dart';
 import 'package:trkar_vendor/screens/stores.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
@@ -27,7 +28,7 @@ class _HiddenMenuState extends State<HiddenMenu> {
 
   @override
   void initState() {
-    am_pm = new DateFormat('a').format(new DateTime.now());
+    am_pm =  DateFormat('a').format(new DateTime.now());
     SharedPreferences.getInstance().then((prefs) {
       setState(() {
         id = prefs.getInt('user_id');
@@ -42,7 +43,7 @@ class _HiddenMenuState extends State<HiddenMenu> {
     final themeColor = Provider.of<Provider_control>(context);
     return Drawer(
       child: Container(
-        color: Colors.blueAccent,
+        color: themeColor.getColor(),
         child: SingleChildScrollView(
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,7 +60,7 @@ class _HiddenMenuState extends State<HiddenMenu> {
                     children: [
                       AutoSizeText(
                         //  getTransrlate(context, 'welcome'),
-                        am_pm == 'am'
+                        am_pm == 'AM'
                             ? getTransrlate(context, 'good_morning')
                             : getTransrlate(context, 'good_night'),
                         style: TextStyle(
@@ -106,6 +107,31 @@ class _HiddenMenuState extends State<HiddenMenu> {
                         ),
                       ),
                       InkWell(
+                        onTap: () {
+                          Nav.route(context, Products());
+                        },
+                        child: ItemHiddenMenu(
+                          icon: Icon(
+                            Icons.shopping_bag,
+                            size: 25,
+                            color: Colors.white.withOpacity(0.8),
+                          ),
+                          name: "Products",
+                          baseStyle: TextStyle(
+                              color: Colors.white.withOpacity(0.6),
+                              fontSize: 19.0,
+                              fontWeight: FontWeight.w800),
+                          colorLineSelected: Colors.orange,
+                        ),
+                      ),
+                      Container(
+                          height: 28,
+                          margin: EdgeInsets.only(left: 24, right: 48),
+                          child: Divider(
+                            color: Colors.white.withOpacity(0.5),
+                          )),
+
+                      InkWell(
                         onTap: () {},
                         child: ItemHiddenMenu(
                           icon: Icon(
@@ -121,7 +147,6 @@ class _HiddenMenuState extends State<HiddenMenu> {
                           colorLineSelected: Colors.orange,
                         ),
                       ),
-
                       InkWell(
                         onTap: () {},
                         child: ItemHiddenMenu(
@@ -183,12 +208,6 @@ class _HiddenMenuState extends State<HiddenMenu> {
                           colorLineSelected: Colors.orange,
                         ),
                       ),
-                      Container(
-                          height: 28,
-                          margin: EdgeInsets.only(left: 24, right: 48),
-                          child: Divider(
-                            color: Colors.white.withOpacity(0.5),
-                          )),
                       Container(
                         child: NotificationListener<
                             OverscrollIndicatorNotification>(

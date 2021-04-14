@@ -28,7 +28,7 @@ dependencies:
   provider: ^4.0.5+1
   cached_network_image: ^2.3.2+1
   flutter_offline: ^1.0.0
-  intl: ^0.17.0
+  intl: ^0.16.1
   onesignal_flutter: ^2.6.2
   flutter_webview_plugin: ^0.3.11
   shared_preferences: ^0.5.12+4
@@ -36,7 +36,7 @@ dependencies:
   url_launcher: ^5.7.10
   auto_size_text: ^2.1.0
   path_provider: ^1.6.28
-  chart_components: ^1.0.1
+  chart_components: ^0.1.6
 
 
 dev_dependencies:
