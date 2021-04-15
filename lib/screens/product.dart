@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/products_model.dart';
 import 'package:trkar_vendor/screens/add_product.dart';
-import 'package:trkar_vendor/screens/add_store.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';

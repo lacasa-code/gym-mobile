@@ -37,6 +37,7 @@ dependencies:
   auto_size_text: ^2.1.0
   path_provider: ^1.6.28
   chart_components: ^0.1.6
+  image_picker: ^0.6.7+17
 
 
 dev_dependencies:

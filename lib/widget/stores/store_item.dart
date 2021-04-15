@@ -11,7 +11,7 @@ class Stores_item extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: Container(
-        width: ScreenUtil.getWidth(context) - 20,
+        width: ScreenUtil.getWidth(context) /1.7,
         decoration: BoxDecoration(
           color: Color(0xffeeeeee),
           borderRadius: BorderRadius.circular(15),
@@ -22,150 +22,62 @@ class Stores_item extends StatelessWidget {
                 blurRadius: 3)
           ],
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            ClipRRect(
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(15), topRight: Radius.circular(15)),
-              child: Image.network(
-                "https://freepikpsd.com/wp-content/uploads/2019/10/shop-building-icon-png-4-Transparent-Images.png",
-                height: ScreenUtil.getHeight(context) / 4,
-                width: ScreenUtil.getWidth(context),
-                fit: BoxFit.contain,
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(5),
-                  child: Container(
-                    width: ScreenUtil.getWidth(context) / 2.2,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: 10,
-                        ),
-                        AutoSizeText(
-                          hall_model.name,
-                          minFontSize: 10,
-                          style: TextStyle(
-                            color: Color(0xFF5D6A78),
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          maxLines: 1,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        AutoSizeText(
-                          'Moderator Name : ${hall_model.moderatorName}',
-                          minFontSize: 10,
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: Color(0xFF5D6A78),
-                            fontWeight: FontWeight.w300,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        hall_model.address == null
-                            ? Container()
-                            : AutoSizeText(
-                                'address :' + hall_model.address.toString(),
-                                minFontSize: 8,
-                                maxFontSize: 14,
-                                style: TextStyle(
-                                  color: Color(0xFF5D6A78),
-                                  fontWeight: FontWeight.w300,
-                                ),
-                                maxLines: 1,
-                              ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(5),
+              child: Container(
+                width: ScreenUtil.getWidth(context) / 2.2,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    InkWell(
-                      onTap: () {},
-                      child: Container(
-                        padding: EdgeInsets.all(6),
-                        margin: EdgeInsets.all(6),
-                        decoration: BoxDecoration(
-                            color: Colors.green,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(.2),
-                                blurRadius: 6.0, // soften the shadow
-                                spreadRadius: 0.0, //extend the shadow
-                                offset: Offset(
-                                  0.0, // Move to right 10  horizontally
-                                  1.0, // Move to bottom 10 Vertically
-                                ),
-                              )
-                            ]),
-                        width: ScreenUtil.getWidth(context) / 4,
-                        child: Center(
-                          child: AutoSizeText(
-                            'Edit',
-                            minFontSize: 10,
-                            maxFontSize: 20,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            maxLines: 1,
-                          ),
-                        ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    AutoSizeText(
+                      hall_model.name,
+                      minFontSize: 10,
+                      style: TextStyle(
+                        color: Color(0xFF5D6A78),
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      maxLines: 1,
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    AutoSizeText(
+                      'Moderator Name : ${hall_model.moderatorName}',
+                      minFontSize: 10,
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Color(0xFF5D6A78),
+                        fontWeight: FontWeight.w300,
                       ),
                     ),
-                    InkWell(
-                      onTap: () {},
-                      child: Container(
-                        padding: EdgeInsets.all(6),
-                        margin: EdgeInsets.all(6),
-                        decoration: BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(.2),
-                                blurRadius: 6.0, // soften the shadow
-                                spreadRadius: 0.0, //extend the shadow
-                                offset: Offset(
-                                  0.0, // Move to right 10  horizontally
-                                  1.0, // Move to bottom 10 Vertically
-                                ),
-                              )
-                            ]),
-                        width: ScreenUtil.getWidth(context) / 4,
-                        child: Center(
-                          child: AutoSizeText(
-                            'Delete',
-                            minFontSize: 10,
-                            maxFontSize: 20,
+                    SizedBox(
+                      height: 5,
+                    ),
+                    hall_model.address == null
+                        ? Container()
+                        : AutoSizeText(
+                            'address :' + hall_model.address.toString(),
+                            minFontSize: 8,
+                            maxFontSize: 14,
                             style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF5D6A78),
+                              fontWeight: FontWeight.w300,
                             ),
                             maxLines: 1,
                           ),
-                        ),
-                      ),
+                    SizedBox(
+                      height: 10,
                     ),
                   ],
                 ),
-              ],
+              ),
             ),
           ],
         ),

@@ -3,18 +3,23 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:trkar_vendor/model/store_model.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
 import 'package:trkar_vendor/widget/ResultOverlay.dart';
 
-class add_Store extends StatefulWidget {
+class edit_Store extends StatefulWidget {
+  Store store;
+
+  edit_Store(this.store);
+
   @override
-  _add_StoreState createState() => _add_StoreState();
+  _edit_StoreState createState() => _edit_StoreState();
 }
 
-class _add_StoreState extends State<add_Store> {
+class _edit_StoreState extends State<edit_Store> {
   bool loading = false;
   final _formKey = GlobalKey<FormState>();
 
@@ -23,11 +28,11 @@ class _add_StoreState extends State<add_Store> {
 
   @override
   void initState() {
-    moderatorNameController = TextEditingController();
-    namecontroler = TextEditingController();
-    moderatorPhoneAltController = TextEditingController();
-    moderatorPhoneController = TextEditingController();
-    AddressController = TextEditingController();
+    moderatorNameController = TextEditingController(text: widget.store.moderatorName);
+    namecontroler = TextEditingController(text: widget.store.name);
+    moderatorPhoneAltController = TextEditingController(text: widget.store.moderatorAltPhone);
+    moderatorPhoneController = TextEditingController(text: widget.store.moderatorPhone);
+    AddressController = TextEditingController(text: widget.store.address);
     super.initState();
   }
 
@@ -209,7 +214,7 @@ class _add_StoreState extends State<add_Store> {
                                 if (_formKey.currentState.validate()) {
                                   _formKey.currentState.save();
                                   setState(() => loading = true);
-                                  API(context).post("add/stores", {
+                                  API(context).post("update/stores/${widget.store.id}", {
                                     "name": namecontroler.text,
                                     "address": AddressController.text,
                                     "lat": 40.111,
@@ -225,7 +230,7 @@ class _add_StoreState extends State<add_Store> {
                                     showDialog(
                                       context: context,
                                       builder: (_) => ResultOverlay(
-                                        'تم إضافة المتجر بنجاح',
+                                        'تم تعديل المتجر بنجاح',
                                       ),
                                     );
                                   });

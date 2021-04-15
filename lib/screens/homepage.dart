@@ -20,7 +20,6 @@ class _HomeState extends State<Home> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   List<double> data = [];
   List<String> labels = [];
-  List<Color> colors = [];
   bool loaded = false;
   Basic_report basic_report;
   DateTime date = DateTime.now();
@@ -288,7 +287,6 @@ class _HomeState extends State<Home> {
       data =
           basic_report.periodDetails.map((e) => e.reports.totalSale).toList();
       labels = basic_report.periodDetails.map((e) => e.day).toList();
-      colors = basic_report.periodDetails.map((e) => Provider.of<Provider_control>(context).getColor()).toList();
     });
   }
 

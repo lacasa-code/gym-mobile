@@ -1,13 +1,16 @@
 import 'dart:async';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/store_model.dart';
 import 'package:trkar_vendor/screens/add_store.dart';
+import 'package:trkar_vendor/screens/edit_store.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
+import 'package:trkar_vendor/widget/ResultOverlay.dart';
 import 'package:trkar_vendor/widget/stores/store_item.dart';
 
 class Stores extends StatefulWidget {
@@ -82,8 +85,97 @@ class _StoresState extends State<Stores> {
                         onTap: () {
                           _navigate_edit_hell(context, stores[index]);
                         },
-                        child: Stores_item(
-                          hall_model: stores[index],
+                        child: Row(
+                          children: [
+                            Stores_item(
+                              hall_model: stores[index],
+                            ),
+                            Column(
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    _navigate_edit_hell(context, stores[index]);
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(6),
+                                    margin: EdgeInsets.all(6),
+                                    decoration: BoxDecoration(
+                                        color: Colors.green,
+                                        borderRadius: BorderRadius.circular(10),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(.2),
+                                            blurRadius: 6.0, // soften the shadow
+                                            spreadRadius: 0.0, //extend the shadow
+                                            offset: Offset(
+                                              0.0, // Move to right 10  horizontally
+                                              1.0, // Move to bottom 10 Vertically
+                                            ),
+                                          )
+                                        ]),
+                                    width: ScreenUtil.getWidth(context) / 4,
+                                    child: Center(
+                                      child: AutoSizeText(
+                                        'Edit',
+                                        minFontSize: 10,
+                                        maxFontSize: 20,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        maxLines: 1,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    API(context).Delete("stores/${stores[index].id}").then((value) {
+                                      showDialog(
+                                        context: context,
+                                        builder: (_) => ResultOverlay(
+                                         "${ value['errors']??'تم حذف المتجر بنجاح'}",
+                                        ),
+                                      );
+                                      getAllStore();
+                                    });
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(6),
+                                    margin: EdgeInsets.all(6),
+                                    decoration: BoxDecoration(
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.circular(10),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(.2),
+                                            blurRadius: 6.0, // soften the shadow
+                                            spreadRadius: 0.0, //extend the shadow
+                                            offset: Offset(
+                                              0.0, // Move to right 10  horizontally
+                                              1.0, // Move to bottom 10 Vertically
+                                            ),
+                                          )
+                                        ]),
+                                    width: ScreenUtil.getWidth(context) / 4,
+                                    child: Center(
+                                      child: AutoSizeText(
+                                        'Delete',
+                                        minFontSize: 10,
+                                        maxFontSize: 20,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        maxLines: 1,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                          ],
                         ),
                       );
                     },
@@ -99,8 +191,8 @@ class _StoresState extends State<Stores> {
   }
 
   _navigate_edit_hell(BuildContext context, Store hall) async {
-    // await Navigator.push(
-    //     context, MaterialPageRoute(builder: (context) => Edit_hall(hall)));
+    await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => edit_Store(hall)));
     Timer(Duration(seconds: 3), () => getAllStore());
   }
 

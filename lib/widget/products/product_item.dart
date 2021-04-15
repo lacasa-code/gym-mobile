@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:trkar_vendor/model/products_model.dart';
 import 'package:trkar_vendor/model/store_model.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
+import 'package:trkar_vendor/utils/service/API.dart';
+import 'package:trkar_vendor/widget/ResultOverlay.dart';
 
 class Product_item extends StatelessWidget {
   Product_item({Key key, this.hall_model}) : super(key: key);
   final Product hall_model;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -31,7 +34,7 @@ class Product_item extends StatelessWidget {
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(15), topRight: Radius.circular(15)),
               child: Image.network(
-               "${ hall_model.photo.isNotEmpty?hall_model.photo[0].image:'https://d3a1v57rabk2hm.cloudfront.net/outerbanksbox/betterman_mobile-copy-42/images/product_placeholder.jpg?ts=1608776387&host=www.outerbanksbox.com'}" ,
+                "${hall_model.photo.isNotEmpty ? hall_model.photo[0].image : 'https://d3a1v57rabk2hm.cloudfront.net/outerbanksbox/betterman_mobile-copy-42/images/product_placeholder.jpg?ts=1608776387&host=www.outerbanksbox.com'}",
                 height: ScreenUtil.getHeight(context) / 5,
                 width: ScreenUtil.getWidth(context),
                 fit: BoxFit.cover,
@@ -107,8 +110,20 @@ class Product_item extends StatelessWidget {
                       ),
                     ),
                   ),
-                ),InkWell(
-                  onTap: () {},
+                ),
+                InkWell(
+                  onTap: () {
+                    API(context)
+                        .Delete("products/?id=${hall_model.id}")
+                        .then((value) {
+                      showDialog(
+                        context: context,
+                        builder: (_) => ResultOverlay(
+                         'تم حذف المنتج بنجاح',
+                        ),
+                      );
+                    });
+                  },
                   child: Container(
                     padding: EdgeInsets.all(2),
                     margin: EdgeInsets.all(2),
@@ -141,10 +156,8 @@ class Product_item extends StatelessWidget {
                     ),
                   ),
                 ),
-
               ],
             ),
-
           ],
         ),
       ),
