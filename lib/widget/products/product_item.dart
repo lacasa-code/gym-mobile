@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:trkar_vendor/model/products_model.dart';
-import 'package:trkar_vendor/model/store_model.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
 import 'package:trkar_vendor/widget/ResultOverlay.dart';
@@ -13,7 +12,7 @@ class Product_item extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(8.0),
       child: Container(
         width: ScreenUtil.getWidth(context) - 20,
         decoration: BoxDecoration(
@@ -35,7 +34,7 @@ class Product_item extends StatelessWidget {
                   topLeft: Radius.circular(15), topRight: Radius.circular(15)),
               child: Image.network(
                 "${hall_model.photo.isNotEmpty ? hall_model.photo[0].image : 'https://d3a1v57rabk2hm.cloudfront.net/outerbanksbox/betterman_mobile-copy-42/images/product_placeholder.jpg?ts=1608776387&host=www.outerbanksbox.com'}",
-                height: ScreenUtil.getHeight(context) / 5,
+                height: ScreenUtil.getHeight(context) / 6,
                 width: ScreenUtil.getWidth(context),
                 fit: BoxFit.cover,
               ),
@@ -52,7 +51,6 @@ class Product_item extends StatelessWidget {
                       minFontSize: 10,
                       style: TextStyle(
                         color: Color(0xFF5D6A78),
-                        fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                       maxLines: 1,
@@ -119,7 +117,7 @@ class Product_item extends StatelessWidget {
                       showDialog(
                         context: context,
                         builder: (_) => ResultOverlay(
-                         'تم حذف المنتج بنجاح',
+                          'تم حذف المنتج بنجاح',
                         ),
                       );
                     });

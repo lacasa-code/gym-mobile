@@ -1,10 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:trkar_vendor/model/store_model.dart';
+import 'package:trkar_vendor/model/invoices.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 
-class Stores_item extends StatelessWidget {
-  Stores_item({Key key, this.hall_model}) : super(key: key);
+class Invoice_item extends StatelessWidget {
+  Invoice_item({Key key, this.hall_model}) : super(key: key);
   final Invoice hall_model;
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class Stores_item extends StatelessWidget {
                       height: 10,
                     ),
                     AutoSizeText(
-                      hall_model.name,
+                      hall_model.invoiceNumber.toString(),
                       minFontSize: 10,
                       style: TextStyle(
                         color: Color(0xFF5D6A78),
@@ -49,7 +49,7 @@ class Stores_item extends StatelessWidget {
                       height: 5,
                     ),
                     AutoSizeText(
-                      'Moderator Name : ${hall_model.moderatorName}',
+                      'Invoice Total : ${hall_model.invoiceTotal}',
                       minFontSize: 10,
                       style: TextStyle(
                         fontSize: 13,
@@ -60,10 +60,10 @@ class Stores_item extends StatelessWidget {
                     SizedBox(
                       height: 5,
                     ),
-                    hall_model.address == null
+                    hall_model.vendorName == null
                         ? Container()
                         : AutoSizeText(
-                            'address :' + hall_model.address.toString(),
+                            'Vendor Name :' + hall_model.vendorName.toString(),
                             minFontSize: 8,
                             maxFontSize: 14,
                             style: TextStyle(

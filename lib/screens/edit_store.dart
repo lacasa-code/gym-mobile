@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +9,7 @@ import 'package:trkar_vendor/utils/service/API.dart';
 import 'package:trkar_vendor/widget/ResultOverlay.dart';
 
 class edit_Store extends StatefulWidget {
-  Store store;
+  Invoice store;
 
   edit_Store(this.store);
 
@@ -23,15 +21,20 @@ class _edit_StoreState extends State<edit_Store> {
   bool loading = false;
   final _formKey = GlobalKey<FormState>();
 
-  TextEditingController moderatorNameController, namecontroler, moderatorPhoneController;
-  TextEditingController moderatorPhoneAltController,AddressController;
+  TextEditingController moderatorNameController,
+      namecontroler,
+      moderatorPhoneController;
+  TextEditingController moderatorPhoneAltController, AddressController;
 
   @override
   void initState() {
-    moderatorNameController = TextEditingController(text: widget.store.moderatorName);
+    moderatorNameController =
+        TextEditingController(text: widget.store.moderatorName);
     namecontroler = TextEditingController(text: widget.store.name);
-    moderatorPhoneAltController = TextEditingController(text: widget.store.moderatorAltPhone);
-    moderatorPhoneController = TextEditingController(text: widget.store.moderatorPhone);
+    moderatorPhoneAltController =
+        TextEditingController(text: widget.store.moderatorAltPhone);
+    moderatorPhoneController =
+        TextEditingController(text: widget.store.moderatorPhone);
     AddressController = TextEditingController(text: widget.store.address);
     super.initState();
   }
@@ -58,12 +61,11 @@ class _edit_StoreState extends State<edit_Store> {
                 key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-
                   children: [
                     Text(
                       "name",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 15),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                     ),
                     SizedBox(
                       height: 10,
@@ -90,8 +92,8 @@ class _edit_StoreState extends State<edit_Store> {
                     ),
                     Text(
                       "Moderator Name",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 15),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                     ),
                     SizedBox(
                       height: 10,
@@ -194,50 +196,52 @@ class _edit_StoreState extends State<edit_Store> {
                     SizedBox(
                       height: 20,
                     ),
-                     Center(
-                          child: FlatButton(
-                              color: themeColor.getColor(),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  'Save',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 22,
-                                  ),
-                                ),
-                              ),
-                              onPressed: () async {
-                                if (_formKey.currentState.validate()) {
-                                  _formKey.currentState.save();
-                                  setState(() => loading = true);
-                                  API(context).post("update/stores/${widget.store.id}", {
-                                    "name": namecontroler.text,
-                                    "address": AddressController.text,
-                                    "lat": 40.111,
-                                    "long": 40.111,
-                                    "moderator_name": moderatorNameController.text,
-                                    "moderator_phone": moderatorPhoneController.text,
-                                    "moderator_alt_phone": moderatorPhoneController.text
-                                  }).then((value) {
-                                    setState(() {
-                                      loading = false;
-                                    });
-                                    Navigator.pop(context);
-                                    showDialog(
-                                      context: context,
-                                      builder: (_) => ResultOverlay(
-                                        'تم تعديل المتجر بنجاح',
-                                      ),
-                                    );
-                                  });
-                                }
-                              },
-                            ),
+                    Center(
+                      child: FlatButton(
+                        color: themeColor.getColor(),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
                         ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Save',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 22,
+                            ),
+                          ),
+                        ),
+                        onPressed: () async {
+                          if (_formKey.currentState.validate()) {
+                            _formKey.currentState.save();
+                            setState(() => loading = true);
+                            API(context)
+                                .post("update/stores/${widget.store.id}", {
+                              "name": namecontroler.text,
+                              "address": AddressController.text,
+                              "lat": 40.111,
+                              "long": 40.111,
+                              "moderator_name": moderatorNameController.text,
+                              "moderator_phone": moderatorPhoneController.text,
+                              "moderator_alt_phone":
+                                  moderatorPhoneController.text
+                            }).then((value) {
+                              setState(() {
+                                loading = false;
+                              });
+                              Navigator.pop(context);
+                              showDialog(
+                                context: context,
+                                builder: (_) => ResultOverlay(
+                                  'تم تعديل المتجر بنجاح',
+                                ),
+                              );
+                            });
+                          }
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ),

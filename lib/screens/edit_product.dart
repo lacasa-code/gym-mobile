@@ -49,7 +49,7 @@ class _add_StoreState extends State<add_Store> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        title: Text("Add Store"),
+        title: Text("Edit Store"),
         centerTitle: true,
         backgroundColor: themeColor.getColor(),
       ),

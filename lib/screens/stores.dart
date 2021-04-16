@@ -1,13 +1,17 @@
 import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/store_model.dart';
 import 'package:trkar_vendor/screens/add_store.dart';
 import 'package:trkar_vendor/screens/edit_store.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
+import 'package:trkar_vendor/utils/SerachLoading.dart';
+import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
 import 'package:trkar_vendor/widget/ResultOverlay.dart';
@@ -19,7 +23,11 @@ class Stores extends StatefulWidget {
 }
 
 class _StoresState extends State<Stores> {
-  List<Store> stores;
+  List<Invoice> stores;
+  List<Invoice> filteredStores;
+  final debouncer = Search(milliseconds: 1000);
+  AutoCompleteTextField searchTextField;
+  GlobalKey<AutoCompleteTextFieldState<Invoice>> key = new GlobalKey();
 
   @override
   void initState() {
@@ -75,110 +83,207 @@ class _StoresState extends State<Stores> {
                   ),
                 )
               : SingleChildScrollView(
-                  child: ListView.builder(
-                    itemCount:
-                        stores == null && stores.isEmpty ? 0 : stores.length,
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (BuildContext context, int index) {
-                      return InkWell(
-                        onTap: () {
-                          _navigate_edit_hell(context, stores[index]);
-                        },
-                        child: Row(
-                          children: [
-                            Stores_item(
-                              hall_model: stores[index],
-                            ),
-                            Column(
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    _navigate_edit_hell(context, stores[index]);
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.all(6),
-                                    margin: EdgeInsets.all(6),
-                                    decoration: BoxDecoration(
-                                        color: Colors.green,
-                                        borderRadius: BorderRadius.circular(10),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.withOpacity(.2),
-                                            blurRadius: 6.0, // soften the shadow
-                                            spreadRadius: 0.0, //extend the shadow
-                                            offset: Offset(
-                                              0.0, // Move to right 10  horizontally
-                                              1.0, // Move to bottom 10 Vertically
-                                            ),
-                                          )
-                                        ]),
-                                    width: ScreenUtil.getWidth(context) / 4,
-                                    child: Center(
-                                      child: AutoSizeText(
-                                        'Edit',
-                                        minFontSize: 10,
-                                        maxFontSize: 20,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        maxLines: 1,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    API(context).Delete("stores/${stores[index].id}").then((value) {
-                                      showDialog(
-                                        context: context,
-                                        builder: (_) => ResultOverlay(
-                                         "${ value['errors']??'تم حذف المتجر بنجاح'}",
-                                        ),
-                                      );
-                                      getAllStore();
+                  child: Column(
+                    children: [
+                      Row(
+                        children: <Widget>[
+                          SvgPicture.asset(
+                            "assets/icons/ic_search.svg",
+                            color: Colors.black45,
+                            height: 12,
+                          ),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Expanded(
+                            child: Container(
+                              padding: EdgeInsets.only(bottom: 4),
+                              height: 72,
+                              child: searchTextField =
+                                  AutoCompleteTextField<Invoice>(
+                                key: key,
+                                clearOnSubmit: false,
+                                suggestions: filteredStores,
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 16.0),
+                                decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: getTransrlate(context, 'search'),
+                                    hintStyle: TextStyle(
+                                      fontSize: 13,
+                                      color: Color(0xFF5D6A78),
+                                      fontWeight: FontWeight.w400,
+                                    )),
+                                itemFilter: (item, query) {
+                                  return item.name
+                                      .toLowerCase()
+                                      .startsWith(query.toLowerCase());
+                                },
+                                itemSorter: (a, b) {
+                                  return a.name.compareTo(b.name);
+                                },
+                                itemSubmitted: (item) {
+                                  setState(() {
+                                    searchTextField.textField.controller.text =
+                                        item.name;
+                                  });
+                                  debouncer.run(() {
+                                    setState(() {
+                                      filteredStores = stores
+                                          .where((u) =>
+                                              (u.name.toLowerCase().contains(
+                                                  searchTextField
+                                                      .textField.controller.text
+                                                      .toLowerCase())) ||
+                                              (u.address.toLowerCase().contains(
+                                                  searchTextField
+                                                      .textField.controller.text
+                                                      .toLowerCase())))
+                                          .toList();
                                     });
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.all(6),
-                                    margin: EdgeInsets.all(6),
-                                    decoration: BoxDecoration(
-                                        color: Colors.red,
-                                        borderRadius: BorderRadius.circular(10),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.withOpacity(.2),
-                                            blurRadius: 6.0, // soften the shadow
-                                            spreadRadius: 0.0, //extend the shadow
-                                            offset: Offset(
-                                              0.0, // Move to right 10  horizontally
-                                              1.0, // Move to bottom 10 Vertically
+                                  });
+                                },
+                                textChanged: (string) {
+                                  debouncer.run(() {
+                                    setState(() {
+                                      filteredStores = stores
+                                          .where((u) =>
+                                              (u.name.toLowerCase().contains(
+                                                  string.toLowerCase())) ||
+                                              (u.address.toLowerCase().contains(
+                                                  string.toLowerCase())))
+                                          .toList();
+                                    });
+                                  });
+                                },
+                                itemBuilder: (context, item) {
+                                  // ui for the autocompelete row
+                                  return row(item);
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      ListView.builder(
+                        itemCount: filteredStores == null && stores.isEmpty
+                            ? 0
+                            : filteredStores.length,
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemBuilder: (BuildContext context, int index) {
+                          return InkWell(
+                            onTap: () {
+                              _navigate_edit_hell(
+                                  context, filteredStores[index]);
+                            },
+                            child: Row(
+                              children: [
+                                Stores_item(
+                                  hall_model: filteredStores[index],
+                                ),
+                                Column(
+                                  children: [
+                                    InkWell(
+                                      onTap: () {
+                                        _navigate_edit_hell(
+                                            context, filteredStores[index]);
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.all(6),
+                                        margin: EdgeInsets.all(6),
+                                        decoration: BoxDecoration(
+                                            color: Colors.green,
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color:
+                                                    Colors.grey.withOpacity(.2),
+                                                blurRadius:
+                                                    6.0, // soften the shadow
+                                                spreadRadius:
+                                                    0.0, //extend the shadow
+                                                offset: Offset(
+                                                  0.0, // Move to right 10  horizontally
+                                                  1.0, // Move to bottom 10 Vertically
+                                                ),
+                                              )
+                                            ]),
+                                        width: ScreenUtil.getWidth(context) / 4,
+                                        child: Center(
+                                          child: AutoSizeText(
+                                            'Edit',
+                                            minFontSize: 10,
+                                            maxFontSize: 20,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
                                             ),
-                                          )
-                                        ]),
-                                    width: ScreenUtil.getWidth(context) / 4,
-                                    child: Center(
-                                      child: AutoSizeText(
-                                        'Delete',
-                                        minFontSize: 10,
-                                        maxFontSize: 20,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
+                                            maxLines: 1,
+                                          ),
                                         ),
-                                        maxLines: 1,
                                       ),
                                     ),
-                                  ),
+                                    InkWell(
+                                      onTap: () {
+                                        API(context)
+                                            .Delete(
+                                                "stores/${stores[index].id}")
+                                            .then((value) {
+                                          showDialog(
+                                            context: context,
+                                            builder: (_) => ResultOverlay(
+                                              "${value['errors'] ?? 'تم حذف المتجر بنجاح'}",
+                                            ),
+                                          );
+                                          getAllStore();
+                                        });
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.all(6),
+                                        margin: EdgeInsets.all(6),
+                                        decoration: BoxDecoration(
+                                            color: Colors.red,
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color:
+                                                    Colors.grey.withOpacity(.2),
+                                                blurRadius:
+                                                    6.0, // soften the shadow
+                                                spreadRadius:
+                                                    0.0, //extend the shadow
+                                                offset: Offset(
+                                                  0.0, // Move to right 10  horizontally
+                                                  1.0, // Move to bottom 10 Vertically
+                                                ),
+                                              )
+                                            ]),
+                                        width: ScreenUtil.getWidth(context) / 4,
+                                        child: Center(
+                                          child: AutoSizeText(
+                                            'Delete',
+                                            minFontSize: 10,
+                                            maxFontSize: 20,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            maxLines: 1,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-
-                          ],
-                        ),
-                      );
-                    },
+                          );
+                        },
+                      ),
+                    ],
                   ),
                 ),
     );
@@ -190,7 +295,7 @@ class _StoresState extends State<Stores> {
     Timer(Duration(seconds: 3), () => getAllStore());
   }
 
-  _navigate_edit_hell(BuildContext context, Store hall) async {
+  _navigate_edit_hell(BuildContext context, Invoice hall) async {
     await Navigator.push(
         context, MaterialPageRoute(builder: (context) => edit_Store(hall)));
     Timer(Duration(seconds: 3), () => getAllStore());
@@ -200,9 +305,27 @@ class _StoresState extends State<Stores> {
     API(context).get('stores').then((value) {
       if (value != null) {
         setState(() {
-          stores = Store_model.fromJson(value).data;
+          filteredStores = stores = Store_model.fromJson(value).data;
         });
       }
     });
+  }
+
+  Widget row(Invoice productModel) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Text(
+          productModel.name,
+          style: TextStyle(fontSize: 16.0),
+        ),
+        SizedBox(
+          width: 10.0,
+        ),
+        Text(
+          productModel.address,
+        ),
+      ],
+    );
   }
 }

@@ -76,13 +76,14 @@ class _ProductsState extends State<Products> {
                     padding: EdgeInsets.all(1),
                     shrinkWrap: true,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      childAspectRatio:0.75,
+                      childAspectRatio: 0.70,
                       crossAxisCount: 2,
                       crossAxisSpacing: 2.0,
                       mainAxisSpacing: 4.0,
                     ),
-                    itemCount:
-                        products == null && products.isEmpty ? 0 : products.length,
+                    itemCount: products == null && products.isEmpty
+                        ? 0
+                        : products.length,
                     physics: NeverScrollableScrollPhysics(),
                     itemBuilder: (BuildContext context, int index) {
                       return InkWell(

@@ -18,6 +18,7 @@ class _LoginPageState extends State<LoginPage> {
 
     return Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: Text(getTransrlate(context, 'login')),
         ),
         body: SingleChildScrollView(

@@ -35,8 +35,14 @@ class _Add_ProductState extends State<Add_Product> {
   List<Carmodel> filteredcarmodels_data = List();
   List<CarMade> filteredCarMades_data = List();
   TextEditingController serialcontroler, namecontroler, description;
-  TextEditingController car_made_id_controler, car_model_id_Controler, part_category_id_controller,
-      year_idcontroler, store_id, price_controller,discountcontroler, quantityController;
+  TextEditingController car_made_id_controler,
+      car_model_id_Controler,
+      part_category_id_controller,
+      year_idcontroler,
+      store_id,
+      price_controller,
+      discountcontroler,
+      quantityController;
   DateTime selectedDate = DateTime.now();
   String SelectDate = ' ';
   File _image;
@@ -58,6 +64,7 @@ class _Add_ProductState extends State<Add_Product> {
       }
     });
   }
+
   @override
   void initState() {
     getAllCareMade();
@@ -108,8 +115,8 @@ class _Add_ProductState extends State<Add_Product> {
                   children: [
                     Text(
                       "name",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 15),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                     ),
                     SizedBox(
                       height: 10,
@@ -163,7 +170,8 @@ class _Add_ProductState extends State<Add_Product> {
                                   filled: true))
                         ],
                       ),
-                    ),    SizedBox(
+                    ),
+                    SizedBox(
                       height: 10,
                     ),
                     Container(
@@ -204,8 +212,8 @@ class _Add_ProductState extends State<Add_Product> {
                     ),
                     Text(
                       "Price",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 15),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                     ),
                     SizedBox(
                       height: 10,
@@ -247,7 +255,8 @@ class _Add_ProductState extends State<Add_Product> {
                       padding: const EdgeInsets.all(6.0),
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),),
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 4, top: 4),
                         child: FindDropdown<CarMade>(
@@ -274,11 +283,11 @@ class _Add_ProductState extends State<Add_Product> {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
                                     border: Border.all(
-                                        color: themeColor.getColor(),
-                                        width: 2),),
+                                        color: themeColor.getColor(), width: 2),
+                                  ),
                                   child: Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
                                       AutoSizeText(
                                         'Car Made',
@@ -309,6 +318,7 @@ class _Add_ProductState extends State<Add_Product> {
                                   ),
                                 ),
                             onChanged: (item) {
+                              car_made_id_controler.text = item.id.toString();
                             },
                             // onFind: (text) {
                             //
@@ -322,10 +332,10 @@ class _Add_ProductState extends State<Add_Product> {
                     ),
                     Container(
                       padding: const EdgeInsets.all(6.0),
-
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),),
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 4, top: 4),
                         child: FindDropdown<Carmodel>(
@@ -352,11 +362,11 @@ class _Add_ProductState extends State<Add_Product> {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
                                     border: Border.all(
-                                        color: themeColor.getColor(),
-                                        width: 2),),
+                                        color: themeColor.getColor(), width: 2),
+                                  ),
                                   child: Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
                                       AutoSizeText(
                                         'Car Model',
@@ -387,7 +397,7 @@ class _Add_ProductState extends State<Add_Product> {
                                   ),
                                 ),
                             onChanged: (item) {
-
+                              car_model_id_Controler.text = item.id.toString();
                             },
                             // onFind: (text) {
                             //
@@ -399,13 +409,12 @@ class _Add_ProductState extends State<Add_Product> {
                             isUnderLine: false),
                       ),
                     ),
-
                     Container(
                       padding: const EdgeInsets.all(6.0),
-
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),),
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 4, top: 4),
                         child: FindDropdown<Part_Category>(
@@ -432,11 +441,11 @@ class _Add_ProductState extends State<Add_Product> {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
                                     border: Border.all(
-                                        color: themeColor.getColor(),
-                                        width: 2),),
+                                        color: themeColor.getColor(), width: 2),
+                                  ),
                                   child: Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
                                       AutoSizeText(
                                         'Part Category',
@@ -467,7 +476,8 @@ class _Add_ProductState extends State<Add_Product> {
                                   ),
                                 ),
                             onChanged: (item) {
-
+                              part_category_id_controller.text =
+                                  item.id.toString();
                             },
                             // onFind: (text) {
                             //
@@ -481,10 +491,10 @@ class _Add_ProductState extends State<Add_Product> {
                     ),
                     Container(
                       padding: const EdgeInsets.all(6.0),
-
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),),
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 4, top: 4),
                         child: FindDropdown<Year>(
@@ -511,11 +521,11 @@ class _Add_ProductState extends State<Add_Product> {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
                                     border: Border.all(
-                                        color: themeColor.getColor(),
-                                        width: 2),),
+                                        color: themeColor.getColor(), width: 2),
+                                  ),
                                   child: Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
                                       AutoSizeText(
                                         'Year',
@@ -546,7 +556,7 @@ class _Add_ProductState extends State<Add_Product> {
                                   ),
                                 ),
                             onChanged: (item) {
-
+                              year_idcontroler.text = item.id.toString();
                             },
                             // onFind: (text) {
                             //
@@ -560,10 +570,10 @@ class _Add_ProductState extends State<Add_Product> {
                     ),
                     Container(
                       padding: const EdgeInsets.all(6.0),
-
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),),
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 4, top: 4),
                         child: FindDropdown<Carmodel>(
@@ -590,11 +600,11 @@ class _Add_ProductState extends State<Add_Product> {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
                                     border: Border.all(
-                                        color: themeColor.getColor(),
-                                        width: 2),),
+                                        color: themeColor.getColor(), width: 2),
+                                  ),
                                   child: Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
                                       AutoSizeText(
                                         'Categories',
@@ -624,9 +634,7 @@ class _Add_ProductState extends State<Add_Product> {
                                             : FontWeight.w600),
                                   ),
                                 ),
-                            onChanged: (item) {
-
-                            },
+                            onChanged: (item) {},
                             // onFind: (text) {
                             //
                             // },
@@ -639,10 +647,10 @@ class _Add_ProductState extends State<Add_Product> {
                     ),
                     Container(
                       padding: const EdgeInsets.all(6.0),
-
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),),
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 4, top: 4),
                         child: FindDropdown<Carmodel>(
@@ -669,11 +677,11 @@ class _Add_ProductState extends State<Add_Product> {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
                                     border: Border.all(
-                                        color: themeColor.getColor(),
-                                        width: 2),),
+                                        color: themeColor.getColor(), width: 2),
+                                  ),
                                   child: Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
                                       AutoSizeText(
                                         'Stores',
@@ -703,9 +711,7 @@ class _Add_ProductState extends State<Add_Product> {
                                             : FontWeight.w600),
                                   ),
                                 ),
-                            onChanged: (item) {
-
-                            },
+                            onChanged: (item) {},
                             // onFind: (text) {
                             //
                             // },
@@ -739,25 +745,24 @@ class _Add_ProductState extends State<Add_Product> {
                         ],
                       ),
                     ),
-
                     InkWell(
                       child: ClipRRect(
                         borderRadius: BorderRadius.all(Radius.circular(15)),
                         child: _image == null
                             ? Container(
-                          color: Color(0xfff3f3f4),
-                            height: ScreenUtil.getHeight(context) / 5,
-                            width: ScreenUtil.getWidth(context),
-                            child: Icon(
-                              Icons.add_a_photo,
-                              size: 30,
-                            ))
+                                color: Color(0xfff3f3f4),
+                                height: ScreenUtil.getHeight(context) / 5,
+                                width: ScreenUtil.getWidth(context),
+                                child: Icon(
+                                  Icons.add_a_photo,
+                                  size: 30,
+                                ))
                             : Image.file(
-                          _image,
-                          height: ScreenUtil.getHeight(context) / 5,
-                          width: ScreenUtil.getWidth(context),
-                          fit: BoxFit.cover,
-                        ),
+                                _image,
+                                height: ScreenUtil.getHeight(context) / 5,
+                                width: ScreenUtil.getWidth(context),
+                                fit: BoxFit.cover,
+                              ),
                       ),
                       onTap: () {
                         getImage();
@@ -767,55 +772,56 @@ class _Add_ProductState extends State<Add_Product> {
                       height: 10,
                     ),
                     Center(
-                     child: FlatButton(
-                              color: themeColor.getColor(),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  'Save',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 22,
-                                  ),
-                                ),
-                              ),
-                              onPressed: () async {
-                                if (_formKey.currentState.validate()) {
-                                  _formKey.currentState.save();
-                                  setState(() => loading = true);
-                                  API(context).post("add/products", {
-                                    "name": namecontroler.text,
-                                  "categories":[1,2],
-                                  "car_made_id":car_made_id_controler.text,
-                                  "car_model_id":car_model_id_Controler.text,
-                                  "year_id":year_idcontroler.text,
-                                  "part_category_id":part_category_id_controller.text,
-                                  "discount":discountcontroler.text,
-                                  "price":price_controller.text,
-                                  "description":discountcontroler.text,
-                                  "store_id":store_id.text,
-                                  "quantity":quantityController.text,
-                                  "serial_number":serialcontroler.text,
-                                  "tags":'',
-                                  }).then((value) {
-                                    setState(() {
-                                      loading = false;
-                                    });
-                                   // Navigator.pop(context);
-                                    showDialog(
-                                      context: context,
-                                      builder: (_) => ResultOverlay(
-                                       value['message'],
-                                      ),
-                                    );
-                                  });
-                                }
-                              },
+                      child: FlatButton(
+                        color: themeColor.getColor(),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Save',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 22,
                             ),
-                   ),
+                          ),
+                        ),
+                        onPressed: () async {
+                          if (_formKey.currentState.validate()) {
+                            _formKey.currentState.save();
+                            setState(() => loading = true);
+                            API(context).post("add/products", {
+                              "name": namecontroler.text,
+                              "categories": [1, 2],
+                              "car_made_id": car_made_id_controler.text,
+                              "car_model_id": car_model_id_Controler.text,
+                              "year_id": year_idcontroler.text,
+                              "part_category_id":
+                                  part_category_id_controller.text,
+                              "discount": discountcontroler.text,
+                              "price": price_controller.text,
+                              "description": discountcontroler.text,
+                              "store_id": store_id.text,
+                              "quantity": quantityController.text,
+                              "serial_number": serialcontroler.text,
+                              // "tags": '',
+                            }).then((value) {
+                              setState(() {
+                                loading = false;
+                              });
+                              // Navigator.pop(context);
+                              showDialog(
+                                context: context,
+                                builder: (_) => ResultOverlay(
+                                  value['message'],
+                                ),
+                              );
+                            });
+                          }
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -825,6 +831,7 @@ class _Add_ProductState extends State<Add_Product> {
       ),
     );
   }
+
   Future<void> getAllCareMade() async {
     API(context).get('car-mades').then((value) {
       if (value != null) {
@@ -834,6 +841,7 @@ class _Add_ProductState extends State<Add_Product> {
       }
     });
   }
+
   Future<void> getAllCareModel() async {
     API(context).get('car-models').then((value) {
       if (value != null) {
@@ -843,11 +851,14 @@ class _Add_ProductState extends State<Add_Product> {
             value["data"].forEach((v) {
               carmodels.add(Carmodel.fromJson(v));
             });
-          } });
+          }
+        });
       }
       getAllParts_Category();
     });
-  }  Future<void> getAllParts_Category() async {
+  }
+
+  Future<void> getAllParts_Category() async {
     API(context).get('part-categories').then((value) {
       if (value != null) {
         setState(() {
@@ -856,7 +867,9 @@ class _Add_ProductState extends State<Add_Product> {
         getAllYear();
       }
     });
-  }  Future<void> getAllYear() async {
+  }
+
+  Future<void> getAllYear() async {
     API(context).get('car-yearslist').then((value) {
       if (value != null) {
         setState(() {

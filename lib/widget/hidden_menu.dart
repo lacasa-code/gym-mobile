@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:trkar_vendor/screens/Orders.dart';
+import 'package:trkar_vendor/screens/invoices.dart';
 import 'package:trkar_vendor/screens/login.dart';
 import 'package:trkar_vendor/screens/product.dart';
 import 'package:trkar_vendor/screens/stores.dart';
@@ -28,7 +30,7 @@ class _HiddenMenuState extends State<HiddenMenu> {
 
   @override
   void initState() {
-    am_pm =  DateFormat('a').format(new DateTime.now());
+    am_pm = DateFormat('a').format(new DateTime.now());
     SharedPreferences.getInstance().then((prefs) {
       setState(() {
         id = prefs.getInt('user_id');
@@ -124,13 +126,48 @@ class _HiddenMenuState extends State<HiddenMenu> {
                           colorLineSelected: Colors.orange,
                         ),
                       ),
+                      InkWell(
+                        onTap: () {
+                          Nav.route(context, Orders());
+                        },
+                        child: ItemHiddenMenu(
+                          icon: Icon(
+                            Icons.shopping_cart,
+                            size: 25,
+                            color: Colors.white.withOpacity(0.8),
+                          ),
+                          name: "Orders",
+                          baseStyle: TextStyle(
+                              color: Colors.white.withOpacity(0.6),
+                              fontSize: 19.0,
+                              fontWeight: FontWeight.w800),
+                          colorLineSelected: Colors.orange,
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Nav.route(context, Invoices());
+                        },
+                        child: ItemHiddenMenu(
+                          icon: Icon(
+                            Icons.assignment_sharp,
+                            size: 25,
+                            color: Colors.white.withOpacity(0.8),
+                          ),
+                          name: "Invoices",
+                          baseStyle: TextStyle(
+                              color: Colors.white.withOpacity(0.6),
+                              fontSize: 19.0,
+                              fontWeight: FontWeight.w800),
+                          colorLineSelected: Colors.orange,
+                        ),
+                      ),
                       Container(
                           height: 28,
                           margin: EdgeInsets.only(left: 24, right: 48),
                           child: Divider(
                             color: Colors.white.withOpacity(0.5),
                           )),
-
                       InkWell(
                         onTap: () {},
                         child: ItemHiddenMenu(
