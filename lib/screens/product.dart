@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +9,7 @@ import 'package:trkar_vendor/screens/add_product.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
+import 'package:trkar_vendor/widget/ResultOverlay.dart';
 import 'package:trkar_vendor/widget/products/product_item.dart';
 
 class Products extends StatefulWidget {
@@ -86,12 +88,115 @@ class _ProductsState extends State<Products> {
                         : products.length,
                     physics: NeverScrollableScrollPhysics(),
                     itemBuilder: (BuildContext context, int index) {
-                      return InkWell(
-                        onTap: () {
-                          _navigate_edit_hell(context, products[index]);
-                        },
-                        child: Product_item(
-                          hall_model: products[index],
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Color(0xffeeeeee),
+                            borderRadius: BorderRadius.circular(15),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  offset: Offset(0, 0),
+                                  blurRadius: 3)
+                            ],
+                          ),
+                          child: InkWell(
+                            onTap: () {
+                              _navigate_edit_hell(context, products[index]);
+                            },
+                            child: Column(
+                              children: [
+                                Product_item(
+                                  hall_model: products[index],
+                                ),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    InkWell(
+                                      onTap: () {},
+                                      child: Container(
+                                        padding: EdgeInsets.all(2),
+                                        margin: EdgeInsets.all(2),
+                                        decoration: BoxDecoration(
+                                            color: Colors.green,
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color:
+                                                    Colors.grey.withOpacity(.2),
+                                                blurRadius:
+                                                    6.0, // soften the shadow
+                                                spreadRadius:
+                                                    0.0, //extend the shadow
+                                                offset: Offset(
+                                                  0.0, // Move to right 10  horizontally
+                                                  1.0, // Move to bottom 10 Vertically
+                                                ),
+                                              )
+                                            ]),
+                                        width: ScreenUtil.getWidth(context) / 6,
+                                        child: Center(
+                                          child: AutoSizeText(
+                                            'Edit',
+                                            minFontSize: 10,
+                                            maxFontSize: 20,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            maxLines: 1,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        Delete_Products(products[index].id);
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.all(2),
+                                        margin: EdgeInsets.all(2),
+                                        decoration: BoxDecoration(
+                                            color: Colors.red,
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color:
+                                                    Colors.grey.withOpacity(.2),
+                                                blurRadius:
+                                                    6.0, // soften the shadow
+                                                spreadRadius:
+                                                    0.0, //extend the shadow
+                                                offset: Offset(
+                                                  0.0, // Move to right 10  horizontally
+                                                  1.0, // Move to bottom 10 Vertically
+                                                ),
+                                              )
+                                            ]),
+                                        width: ScreenUtil.getWidth(context) / 6,
+                                        child: Center(
+                                          child: AutoSizeText(
+                                            'Delete',
+                                            minFontSize: 10,
+                                            maxFontSize: 20,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            maxLines: 1,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       );
                     },
@@ -120,6 +225,21 @@ class _ProductsState extends State<Products> {
         });
         print(products.toString());
       }
+    });
+  }
+
+  Future<void> Delete_Products(int id) async {
+    API(context).Delete('products/$id').then((value) {
+      if (value != null) {
+        print(value.containsKey('errors'));
+        showDialog(
+          context: context,
+          builder: (_) => ResultOverlay(
+            value.containsKey('errors') ? value['errors'] : 'Done',
+          ),
+        );
+      }
+      getProducts();
     });
   }
 }

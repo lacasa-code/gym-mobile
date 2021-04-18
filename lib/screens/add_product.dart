@@ -1,14 +1,19 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:async/async.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/car_made.dart';
 import 'package:trkar_vendor/model/carmodel.dart';
+import 'package:trkar_vendor/model/category.dart';
 import 'package:trkar_vendor/model/part__category.dart';
+import 'package:trkar_vendor/model/store_model.dart';
+import 'package:trkar_vendor/model/tags_model.dart';
 import 'package:trkar_vendor/model/year.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/SerachLoading.dart';
@@ -30,10 +35,14 @@ class _Add_ProductState extends State<Add_Product> {
   List<Carmodel> carmodels;
   List<CarMade> CarMades;
   List<Year> years;
-
+  List<Store> _store;
+  List<Tag> _tags;
+  List<Categories> _category;
+  List<int> categorySelect = [];
   List<Part_Category> part_Categories;
   List<Carmodel> filteredcarmodels_data = List();
   List<CarMade> filteredCarMades_data = List();
+
   TextEditingController serialcontroler, namecontroler, description;
   TextEditingController car_made_id_controler,
       car_model_id_Controler,
@@ -41,8 +50,10 @@ class _Add_ProductState extends State<Add_Product> {
       year_idcontroler,
       store_id,
       price_controller,
+      tagscontroler,
       discountcontroler,
       quantityController;
+
   DateTime selectedDate = DateTime.now();
   String SelectDate = ' ';
   File _image;
@@ -58,6 +69,9 @@ class _Add_ProductState extends State<Add_Product> {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
         base64Image = base64Encode(_image.readAsBytesSync());
+
+        //contentType: new MediaType('image', 'png'));
+
         print(base64Image);
       } else {
         print('No image selected.');
@@ -68,7 +82,6 @@ class _Add_ProductState extends State<Add_Product> {
   @override
   void initState() {
     getAllCareMade();
-    getAllCareModel();
 
     serialcontroler = TextEditingController();
     namecontroler = TextEditingController();
@@ -76,9 +89,10 @@ class _Add_ProductState extends State<Add_Product> {
     car_model_id_Controler = TextEditingController();
     part_category_id_controller = TextEditingController();
     description = TextEditingController();
+    discountcontroler = TextEditingController();
     store_id = TextEditingController();
     price_controller = TextEditingController();
-    discountcontroler = TextEditingController();
+    tagscontroler = TextEditingController();
     year_idcontroler = TextEditingController();
     serialcontroler = TextEditingController();
     namecontroler = TextEditingController();
@@ -127,8 +141,8 @@ class _Add_ProductState extends State<Add_Product> {
                         validator: (String value) {
                           if (value.isEmpty) {
                             return getTransrlate(context, 'name');
-                          } else if (value.length < 10) {
-                            return getTransrlate(context, 'name') + ' < 10';
+                          } else if (value.length < 3) {
+                            return getTransrlate(context, 'name') + ' < 2';
                           }
                           _formKey.currentState.save();
 
@@ -220,7 +234,7 @@ class _Add_ProductState extends State<Add_Product> {
                     ),
                     TextField(
                         controller: price_controller,
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                             border: InputBorder.none,
                             fillColor: Color(0xfff3f3f4),
@@ -243,7 +257,7 @@ class _Add_ProductState extends State<Add_Product> {
                           ),
                           TextField(
                               controller: discountcontroler,
-                              keyboardType: TextInputType.text,
+                              keyboardType: TextInputType.number,
                               decoration: InputDecoration(
                                   border: InputBorder.none,
                                   fillColor: Color(0xfff3f3f4),
@@ -261,20 +275,6 @@ class _Add_ProductState extends State<Add_Product> {
                         padding: const EdgeInsets.only(bottom: 4, top: 4),
                         child: FindDropdown<CarMade>(
                             items: CarMades,
-                            // onFind: (f) async {
-                            //   search.run(() {
-                            //     setState(() {
-                            //       filteredCarMades_data = CarMades
-                            //           .where((u) =>
-                            //       (u.carMade
-                            //           .toLowerCase()
-                            //           .contains(f
-                            //           .toLowerCase())))
-                            //           .toList();
-                            //     });
-                            //   });
-                            //   return filteredCarMades_data;
-                            // } ,
                             dropdownBuilder: (context, selectedText) => Align(
                                 alignment: Alignment.topRight,
                                 child: Container(
@@ -290,7 +290,7 @@ class _Add_ProductState extends State<Add_Product> {
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
                                       AutoSizeText(
-                                        'Car Made',
+                                        selectedText.carMade,
                                         minFontSize: 8,
                                         maxLines: 1,
                                         //overflow: TextOverflow.ellipsis,
@@ -319,11 +319,10 @@ class _Add_ProductState extends State<Add_Product> {
                                 ),
                             onChanged: (item) {
                               car_made_id_controler.text = item.id.toString();
+                              getAllCareModel(item.id);
                             },
-                            // onFind: (text) {
-                            //
-                            // },
                             labelStyle: TextStyle(fontSize: 20),
+                            selectedItem: CarMade(carMade: 'Select Car Made'),
                             titleStyle: TextStyle(fontSize: 20),
                             label: "Car Made",
                             showSearchBox: false,
@@ -369,7 +368,7 @@ class _Add_ProductState extends State<Add_Product> {
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
                                       AutoSizeText(
-                                        'Car Model',
+                                        selectedText.carmodel,
                                         minFontSize: 8,
                                         maxLines: 1,
                                         //overflow: TextOverflow.ellipsis,
@@ -404,6 +403,8 @@ class _Add_ProductState extends State<Add_Product> {
                             // },
                             labelStyle: TextStyle(fontSize: 20),
                             titleStyle: TextStyle(fontSize: 20),
+                            selectedItem:
+                                Carmodel(carmodel: 'Select Car model'),
                             label: "Car Model",
                             showSearchBox: false,
                             isUnderLine: false),
@@ -448,7 +449,7 @@ class _Add_ProductState extends State<Add_Product> {
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
                                       AutoSizeText(
-                                        'Part Category',
+                                        selectedText.categoryName,
                                         minFontSize: 8,
                                         maxLines: 1,
                                         //overflow: TextOverflow.ellipsis,
@@ -484,7 +485,9 @@ class _Add_ProductState extends State<Add_Product> {
                             // },
                             labelStyle: TextStyle(fontSize: 20),
                             titleStyle: TextStyle(fontSize: 20),
-                            label: "Year",
+                            selectedItem: Part_Category(
+                                categoryName: 'Select Part Category'),
+                            label: "part",
                             showSearchBox: false,
                             isUnderLine: false),
                       ),
@@ -528,7 +531,7 @@ class _Add_ProductState extends State<Add_Product> {
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
                                       AutoSizeText(
-                                        'Year',
+                                        selectedText.year,
                                         minFontSize: 8,
                                         maxLines: 1,
                                         //overflow: TextOverflow.ellipsis,
@@ -563,6 +566,7 @@ class _Add_ProductState extends State<Add_Product> {
                             // },
                             labelStyle: TextStyle(fontSize: 20),
                             titleStyle: TextStyle(fontSize: 20),
+                            selectedItem: Year(year: 'Select Year'),
                             label: "Year",
                             showSearchBox: false,
                             isUnderLine: false),
@@ -576,8 +580,8 @@ class _Add_ProductState extends State<Add_Product> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 4, top: 4),
-                        child: FindDropdown<Carmodel>(
-                            items: carmodels,
+                        child: FindDropdown<Categories>(
+                            items: _category,
                             // onFind: (f) async {
                             //   search.run(() {
                             //     setState(() {
@@ -607,7 +611,7 @@ class _Add_ProductState extends State<Add_Product> {
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
                                       AutoSizeText(
-                                        'Categories',
+                                        selectedText.name,
                                         minFontSize: 8,
                                         maxLines: 1,
                                         //overflow: TextOverflow.ellipsis,
@@ -623,7 +627,7 @@ class _Add_ProductState extends State<Add_Product> {
                                 Padding(
                                   padding: const EdgeInsets.all(12),
                                   child: Text(
-                                    item.carmodel,
+                                    item.name,
                                     style: TextStyle(
                                         color: isSelected
                                             ? themeColor.getColor()
@@ -634,12 +638,15 @@ class _Add_ProductState extends State<Add_Product> {
                                             : FontWeight.w600),
                                   ),
                                 ),
-                            onChanged: (item) {},
+                            onChanged: (item) {
+                              categorySelect.add(item.id);
+                            },
                             // onFind: (text) {
                             //
                             // },
                             labelStyle: TextStyle(fontSize: 20),
                             titleStyle: TextStyle(fontSize: 20),
+                            selectedItem: Categories(name: 'Categories'),
                             label: "Categories",
                             showSearchBox: false,
                             isUnderLine: false),
@@ -653,8 +660,8 @@ class _Add_ProductState extends State<Add_Product> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 4, top: 4),
-                        child: FindDropdown<Carmodel>(
-                            items: carmodels,
+                        child: FindDropdown<Store>(
+                            items: _store,
                             // onFind: (f) async {
                             //   search.run(() {
                             //     setState(() {
@@ -684,7 +691,7 @@ class _Add_ProductState extends State<Add_Product> {
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
                                       AutoSizeText(
-                                        'Stores',
+                                        selectedText.name,
                                         minFontSize: 8,
                                         maxLines: 1,
                                         //overflow: TextOverflow.ellipsis,
@@ -700,7 +707,7 @@ class _Add_ProductState extends State<Add_Product> {
                                 Padding(
                                   padding: const EdgeInsets.all(12),
                                   child: Text(
-                                    item.carmodel,
+                                    item.name,
                                     style: TextStyle(
                                         color: isSelected
                                             ? themeColor.getColor()
@@ -711,13 +718,96 @@ class _Add_ProductState extends State<Add_Product> {
                                             : FontWeight.w600),
                                   ),
                                 ),
-                            onChanged: (item) {},
+                            onChanged: (item) {
+                              store_id.text = item.id.toString();
+                            },
                             // onFind: (text) {
                             //
                             // },
                             labelStyle: TextStyle(fontSize: 20),
                             titleStyle: TextStyle(fontSize: 20),
+                            selectedItem: Store(name: 'Stores'),
                             label: "Stores",
+                            showSearchBox: false,
+                            isUnderLine: false),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(6.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 4, top: 4),
+                        child: FindDropdown<Tag>(
+                            items: _tags,
+                            // onFind: (f) async {
+                            //   search.run(() {
+                            //     setState(() {
+                            //       filteredcarmodels_data = carmodels
+                            //           .where((u) =>
+                            //       (u.carmodel
+                            //           .toLowerCase()
+                            //           .contains(f
+                            //           .toLowerCase())))
+                            //           .toList();
+                            //     });
+                            //   });
+                            //   return filteredcarmodels_data;
+                            // } ,
+                            dropdownBuilder: (context, selectedText) => Align(
+                                alignment: Alignment.topRight,
+                                child: Container(
+                                  height: 50,
+                                  width: ScreenUtil.getWidth(context) / 1.1,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                        color: themeColor.getColor(), width: 2),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      AutoSizeText(
+                                        selectedText.name,
+                                        minFontSize: 8,
+                                        maxLines: 1,
+                                        //overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            color: themeColor.getColor(),
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                )),
+                            dropdownItemBuilder: (context, item, isSelected) =>
+                                Padding(
+                                  padding: const EdgeInsets.all(12),
+                                  child: Text(
+                                    item.name,
+                                    style: TextStyle(
+                                        color: isSelected
+                                            ? themeColor.getColor()
+                                            : Color(0xFF5D6A78),
+                                        fontSize: isSelected ? 20 : 17,
+                                        fontWeight: isSelected
+                                            ? FontWeight.w600
+                                            : FontWeight.w600),
+                                  ),
+                                ),
+                            onChanged: (item) {
+                              tagscontroler.text = item.name.toString();
+                            },
+                            // onFind: (text) {
+                            //
+                            // },
+                            labelStyle: TextStyle(fontSize: 20),
+                            titleStyle: TextStyle(fontSize: 20),
+                            selectedItem: Tag(name: 'Select Tags'),
+                            label: "Tag",
                             showSearchBox: false,
                             isUnderLine: false),
                       ),
@@ -735,13 +825,24 @@ class _Add_ProductState extends State<Add_Product> {
                           SizedBox(
                             height: 10,
                           ),
-                          TextField(
-                              controller: description,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  fillColor: Color(0xfff3f3f4),
-                                  filled: true))
+                          TextFormField(
+                            controller: description,
+                            keyboardType: TextInputType.text,
+                            decoration: InputDecoration(
+                                border: InputBorder.none,
+                                fillColor: Color(0xfff3f3f4),
+                                filled: true),
+                            validator: (String value) {
+                              if (value.isEmpty) {
+                                return "description";
+                              } else if (value.length < 5) {
+                                return "description" + ' < 5';
+                              }
+                              _formKey.currentState.save();
+
+                              return null;
+                            },
+                          )
                         ],
                       ),
                     ),
@@ -793,30 +894,42 @@ class _Add_ProductState extends State<Add_Product> {
                             setState(() => loading = true);
                             API(context).post("add/products", {
                               "name": namecontroler.text,
-                              "categories": [1, 2],
+                              "categories": "[1, 2]",
                               "car_made_id": car_made_id_controler.text,
                               "car_model_id": car_model_id_Controler.text,
                               "year_id": year_idcontroler.text,
                               "part_category_id":
                                   part_category_id_controller.text,
+                              "photo": UploadFileInfo(_image, "upload1.jpg"),
                               "discount": discountcontroler.text,
                               "price": price_controller.text,
-                              "description": discountcontroler.text,
+                              "description": description.text,
                               "store_id": store_id.text,
                               "quantity": quantityController.text,
                               "serial_number": serialcontroler.text,
-                              // "tags": '',
+                              "tags": tagscontroler.text,
                             }).then((value) {
                               setState(() {
                                 loading = false;
                               });
-                              // Navigator.pop(context);
-                              showDialog(
-                                context: context,
-                                builder: (_) => ResultOverlay(
-                                  value['message'],
-                                ),
-                              );
+                              print(value.containsKey('errors'));
+                              if (value.containsKey('errors')) {
+                                showDialog(
+                                  context: context,
+                                  builder: (_) => ResultOverlay(
+                                    value['errors'].toString(),
+                                  ),
+                                );
+                              } else {
+                                Navigator.pop(context);
+
+                                showDialog(
+                                  context: context,
+                                  builder: (_) => ResultOverlay(
+                                    'Done',
+                                  ),
+                                );
+                              }
                             });
                           }
                         },
@@ -842,8 +955,8 @@ class _Add_ProductState extends State<Add_Product> {
     });
   }
 
-  Future<void> getAllCareModel() async {
-    API(context).get('car-models').then((value) {
+  Future<void> getAllCareModel(int id) async {
+    API(context).get('car-modelslist/$id').then((value) {
       if (value != null) {
         setState(() {
           if (value["data"] != null) {
@@ -877,5 +990,46 @@ class _Add_ProductState extends State<Add_Product> {
         });
       }
     });
+    getAllStore();
+  }
+
+  Future<void> getAllStore() async {
+    API(context).get('stores').then((value) {
+      if (value != null) {
+        setState(() {
+          _store = Store_model.fromJson(value).data;
+        });
+      }
+    });
+    getAllCategory();
+  }
+
+  Future<void> getAllCategory() async {
+    API(context).get('categorieslist').then((value) {
+      if (value != null) {
+        setState(() {
+          _category = Category_model.fromJson(value).data;
+        });
+      }
+    });
+    getAlltag();
+  }
+
+  Future<void> getAlltag() async {
+    API(context).get('product-tagslist').then((value) {
+      if (value != null) {
+        setState(() {
+          _tags = Tags_model.fromJson(value).data;
+        });
+      }
+    });
+  }
+
+  UploadFileInfo(File image, String s) async {
+    var stream = new http.ByteStream(DelegatingStream.typed(image.openRead()));
+    var length = await image.length();
+    var multipartFile =
+        new http.MultipartFile('file', stream, length, filename: s);
+    return multipartFile;
   }
 }

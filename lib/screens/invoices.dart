@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/invoices.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
@@ -73,11 +72,6 @@ class _InvoicesState extends State<Invoices> {
                     children: [
                       Row(
                         children: <Widget>[
-                          SvgPicture.asset(
-                            "assets/icons/ic_search.svg",
-                            color: Colors.black45,
-                            height: 12,
-                          ),
                           SizedBox(
                             width: 8,
                           ),

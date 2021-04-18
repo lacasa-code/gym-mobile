@@ -6,6 +6,8 @@ import 'package:trkar_vendor/model/orders_model.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
+import 'package:trkar_vendor/utils/service/API.dart';
+import 'package:trkar_vendor/widget/ResultOverlay.dart';
 
 class OrderItem extends StatelessWidget {
   final Order orders_model;
@@ -39,7 +41,7 @@ class OrderItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 AutoSizeText(
-                  getTransrlate(context, 'OrderDitails') +
+                  getTransrlate(context, 'OrderNO') +
                       ' : ${orders_model.orderNumber}',
                   style: TextStyle(
                     fontSize: 13,
@@ -62,55 +64,83 @@ class OrderItem extends StatelessWidget {
                     fontWeight: FontWeight.w300,
                   ),
                 ),
-                SizedBox(
-                  height: 8,
-                ),
                 Container(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(
-                        getTransrlate(context, 'OrderState') + ' : ',
+                        getTransrlate(context, 'OrderState') +
+                            ' : ${orders_model.orderStatus}',
                         style: TextStyle(
                           fontSize: 13,
                           color: Color(0xFF5D6A78),
                           fontWeight: FontWeight.w300,
                         ),
                       ),
-                      Container(
-                        padding: EdgeInsets.all(4),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(3),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(.2),
-                                blurRadius: 6.0, // soften the shadow
-                                spreadRadius: 0.0, //extend the shadow
-                                offset: Offset(
-                                  0.0, // Move to right 10  horizontally
-                                  1.0, // Move to bottom 10 Vertically
-                                ),
-                              )
-                            ]),
-                        child: Row(
-                          children: <Widget>[
-                            Text(
-                              orders_model.orderStatus,
-                              style: TextStyle(
-                                  color: Color(0xFF5D6A78),
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w400),
-                            ),
-                            SizedBox(
-                              width: 4,
-                            ),
-                          ],
-                        ),
-                      ),
                     ],
                   ),
                 ),
+                orders_model.orderStatus == 'cancelled'
+                    ? Container()
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          FlatButton(
+                            color: Colors.green,
+                            padding: EdgeInsets.all(4),
+                            onPressed: () {
+                              API(context).post('vendor/approve/orders', {
+                                "status": "1",
+                                "order_id": orders_model.id
+                              }).then((value) {
+                                if (value != null) {
+                                  showDialog(
+                                    context: context,
+                                    builder: (_) => ResultOverlay(
+                                      value.containsKey('message')
+                                          ? value['message']
+                                          : 'Done',
+                                    ),
+                                  );
+                                }
+                              });
+                            },
+                            child: Text(
+                              'Accept',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          FlatButton(
+                            color: Colors.red,
+                            padding: EdgeInsets.all(4),
+                            onPressed: () {
+                              API(context).post('vendor/cancel/order',
+                                  {"order_id": orders_model.id}).then((value) {
+                                if (value != null) {
+                                  showDialog(
+                                    context: context,
+                                    builder: (_) => ResultOverlay(
+                                      value.containsKey('message')
+                                          ? value['message']
+                                          : 'Done',
+                                    ),
+                                  );
+                                }
+                              });
+                            },
+                            child: Text(
+                              'Cancel',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ],
+                      ),
               ],
             ),
             Divider(),

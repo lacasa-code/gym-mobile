@@ -9,7 +9,7 @@ import 'package:trkar_vendor/utils/service/API.dart';
 import 'package:trkar_vendor/widget/ResultOverlay.dart';
 
 class edit_Store extends StatefulWidget {
-  Invoice store;
+  Store store;
 
   edit_Store(this.store);
 

@@ -140,6 +140,7 @@ class API {
     final String full_url =
         '${GlobalConfiguration().getString('api_base_url')}$url';
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    print(full_url);
     try {
       http.Response response = await http.delete(
         full_url,

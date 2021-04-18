@@ -5,7 +5,7 @@ import 'package:trkar_vendor/utils/screen_size.dart';
 
 class Stores_item extends StatelessWidget {
   Stores_item({Key key, this.hall_model}) : super(key: key);
-  final Invoice hall_model;
+  final Store hall_model;
   @override
   Widget build(BuildContext context) {
     return Padding(

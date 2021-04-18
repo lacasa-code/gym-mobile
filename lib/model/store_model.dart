@@ -2,13 +2,13 @@
 /// total : 2
 
 class Store_model {
-  List<Invoice> _data;
+  List<Store> _data;
   int _total;
 
-  List<Invoice> get data => _data;
+  List<Store> get data => _data;
   int get total => _total;
 
-  Store_model({List<Invoice> data, int total}) {
+  Store_model({List<Store> data, int total}) {
     _data = data;
     _total = total;
   }
@@ -17,7 +17,7 @@ class Store_model {
     if (json["data"] != null) {
       _data = [];
       json["data"].forEach((v) {
-        _data.add(Invoice.fromJson(v));
+        _data.add(Store.fromJson(v));
       });
     }
     _total = json["total"];
@@ -49,7 +49,7 @@ class Store_model {
 /// vendor_name : "second  vendor"
 /// vendor : {"id":2,"vendor_name":"second  vendor","email":"second@second.com","type":"1","serial":"V002","created_at":"2021-03-09 14:24:50","updated_at":"2021-03-14 11:41:50","deleted_at":null,"userid_id":2,"images":{"id":25,"model_type":"App\\Models\\AddVendor","model_id":2,"uuid":"56174073-a706-423f-a505-6123e436cb78","collection_name":"images","name":"6047852d71270_img","file_name":"6047852d71270_img.png","mime_type":"image/png","disk":"public","conversions_disk":"public","size":7308,"manipulations":[],"custom_properties":{"generated_conversions":{"thumb":true,"preview":true}},"responsive_images":[],"order_column":25,"created_at":"2021-03-09T14:24:50.000000Z","updated_at":"2021-03-09T14:24:51.000000Z","image":"https://traker.fra1.digitaloceanspaces.com/add-vendors/6047852d71270_img.png","url":"https://development.lacasacode.dev/storage/25/6047852d71270_img.png","fullurl":"https://development.lacasacode.dev/storage/25/6047852d71270_img.png","thumbnail":"https://development.lacasacode.dev/storage/25/conversions/6047852d71270_img-thumb.jpg","preview":"https://development.lacasacode.dev/storage/25/conversions/6047852d71270_img-preview.jpg"},"media":[{"id":25,"model_type":"App\\Models\\AddVendor","model_id":2,"uuid":"56174073-a706-423f-a505-6123e436cb78","collection_name":"images","name":"6047852d71270_img","file_name":"6047852d71270_img.png","mime_type":"image/png","disk":"public","conversions_disk":"public","size":7308,"manipulations":[],"custom_properties":{"generated_conversions":{"thumb":true,"preview":true}},"responsive_images":[],"order_column":25,"created_at":"2021-03-09T14:24:50.000000Z","updated_at":"2021-03-09T14:24:51.000000Z","image":"https://traker.fra1.digitaloceanspaces.com/add-vendors/6047852d71270_img.png","url":"https://development.lacasacode.dev/storage/25/6047852d71270_img.png","fullurl":"https://development.lacasacode.dev/storage/25/6047852d71270_img.png","thumbnail":"https://development.lacasacode.dev/storage/25/conversions/6047852d71270_img-thumb.jpg","preview":"https://development.lacasacode.dev/storage/25/conversions/6047852d71270_img-preview.jpg"}]}
 
-class Invoice {
+class Store {
   int _id;
   String _name;
   String _address;
@@ -82,7 +82,7 @@ class Invoice {
   String get vendorName => _vendorName;
   Vendor get vendor => _vendor;
 
-  Invoice(
+  Store(
       {int id,
       String name,
       String address,
@@ -115,7 +115,7 @@ class Invoice {
     _vendor = vendor;
   }
 
-  Invoice.fromJson(dynamic json) {
+  Store.fromJson(dynamic json) {
     _id = json["id"];
     _name = json["name"];
     _address = json["address"];

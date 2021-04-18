@@ -94,7 +94,7 @@ class Order {
     _id = json["id"];
     _userId = json["user_id"];
     _orderNumber = json["order_number"];
-    _orderTotal = json["order_total"];
+    _orderTotal = json["order_total"].toString();
     _expired = json["expired"];
     _approved = json["approved"];
     _paid = json["paid"];

@@ -4,7 +4,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/store_model.dart';
 import 'package:trkar_vendor/screens/add_store.dart';
@@ -23,11 +22,11 @@ class Stores extends StatefulWidget {
 }
 
 class _StoresState extends State<Stores> {
-  List<Invoice> stores;
-  List<Invoice> filteredStores;
+  List<Store> stores;
+  List<Store> filteredStores;
   final debouncer = Search(milliseconds: 1000);
   AutoCompleteTextField searchTextField;
-  GlobalKey<AutoCompleteTextFieldState<Invoice>> key = new GlobalKey();
+  GlobalKey<AutoCompleteTextFieldState<Store>> key = new GlobalKey();
 
   @override
   void initState() {
@@ -87,11 +86,6 @@ class _StoresState extends State<Stores> {
                     children: [
                       Row(
                         children: <Widget>[
-                          SvgPicture.asset(
-                            "assets/icons/ic_search.svg",
-                            color: Colors.black45,
-                            height: 12,
-                          ),
                           SizedBox(
                             width: 8,
                           ),
@@ -100,7 +94,7 @@ class _StoresState extends State<Stores> {
                               padding: EdgeInsets.only(bottom: 4),
                               height: 72,
                               child: searchTextField =
-                                  AutoCompleteTextField<Invoice>(
+                                  AutoCompleteTextField<Store>(
                                 key: key,
                                 clearOnSubmit: false,
                                 suggestions: filteredStores,
@@ -295,7 +289,7 @@ class _StoresState extends State<Stores> {
     Timer(Duration(seconds: 3), () => getAllStore());
   }
 
-  _navigate_edit_hell(BuildContext context, Invoice hall) async {
+  _navigate_edit_hell(BuildContext context, Store hall) async {
     await Navigator.push(
         context, MaterialPageRoute(builder: (context) => edit_Store(hall)));
     Timer(Duration(seconds: 3), () => getAllStore());
@@ -311,7 +305,7 @@ class _StoresState extends State<Stores> {
     });
   }
 
-  Widget row(Invoice productModel) {
+  Widget row(Store productModel) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
