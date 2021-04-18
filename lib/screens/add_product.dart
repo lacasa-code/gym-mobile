@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:async/async.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/car_made.dart';
@@ -70,8 +68,6 @@ class _Add_ProductState extends State<Add_Product> {
         _image = File(pickedFile.path);
         base64Image = base64Encode(_image.readAsBytesSync());
 
-        //contentType: new MediaType('image', 'png'));
-
         print(base64Image);
       } else {
         print('No image selected.');
@@ -82,7 +78,6 @@ class _Add_ProductState extends State<Add_Product> {
   @override
   void initState() {
     getAllCareMade();
-
     serialcontroler = TextEditingController();
     namecontroler = TextEditingController();
     car_made_id_controler = TextEditingController();
@@ -900,7 +895,7 @@ class _Add_ProductState extends State<Add_Product> {
                               "year_id": year_idcontroler.text,
                               "part_category_id":
                                   part_category_id_controller.text,
-                              "photo": UploadFileInfo(_image, "upload1.jpg"),
+                              "photo": base64Image,
                               "discount": discountcontroler.text,
                               "price": price_controller.text,
                               "description": description.text,
@@ -909,26 +904,28 @@ class _Add_ProductState extends State<Add_Product> {
                               "serial_number": serialcontroler.text,
                               "tags": tagscontroler.text,
                             }).then((value) {
-                              setState(() {
-                                loading = false;
-                              });
-                              print(value.containsKey('errors'));
-                              if (value.containsKey('errors')) {
-                                showDialog(
-                                  context: context,
-                                  builder: (_) => ResultOverlay(
-                                    value['errors'].toString(),
-                                  ),
-                                );
-                              } else {
-                                Navigator.pop(context);
+                              if (value != null) {
+                                setState(() {
+                                  loading = false;
+                                });
+                                print(value.containsKey('errors'));
+                                if (value.containsKey('errors')) {
+                                  showDialog(
+                                    context: context,
+                                    builder: (_) => ResultOverlay(
+                                      value['errors'].toString(),
+                                    ),
+                                  );
+                                } else {
+                                  Navigator.pop(context);
 
-                                showDialog(
-                                  context: context,
-                                  builder: (_) => ResultOverlay(
-                                    'Done',
-                                  ),
-                                );
+                                  showDialog(
+                                    context: context,
+                                    builder: (_) => ResultOverlay(
+                                      'Done',
+                                    ),
+                                  );
+                                }
                               }
                             });
                           }
@@ -946,7 +943,7 @@ class _Add_ProductState extends State<Add_Product> {
   }
 
   Future<void> getAllCareMade() async {
-    API(context).get('car-mades').then((value) {
+    API(context).get('car-madeslist').then((value) {
       if (value != null) {
         setState(() {
           CarMades = CarsMade.fromJson(value).data;
@@ -972,7 +969,7 @@ class _Add_ProductState extends State<Add_Product> {
   }
 
   Future<void> getAllParts_Category() async {
-    API(context).get('part-categories').then((value) {
+    API(context).get('part-categorieslist').then((value) {
       if (value != null) {
         setState(() {
           part_Categories = Parts_Category.fromJson(value).data;
@@ -994,7 +991,7 @@ class _Add_ProductState extends State<Add_Product> {
   }
 
   Future<void> getAllStore() async {
-    API(context).get('stores').then((value) {
+    API(context).get('storeslist').then((value) {
       if (value != null) {
         setState(() {
           _store = Store_model.fromJson(value).data;
@@ -1023,13 +1020,5 @@ class _Add_ProductState extends State<Add_Product> {
         });
       }
     });
-  }
-
-  UploadFileInfo(File image, String s) async {
-    var stream = new http.ByteStream(DelegatingStream.typed(image.openRead()));
-    var length = await image.length();
-    var multipartFile =
-        new http.MultipartFile('file', stream, length, filename: s);
-    return multipartFile;
   }
 }

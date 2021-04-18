@@ -10,6 +10,7 @@ import 'package:trkar_vendor/utils/SerachLoading.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
+import 'package:trkar_vendor/widget/ResultOverlay.dart';
 import 'package:trkar_vendor/widget/stores/Order_item.dart';
 
 class Orders extends StatefulWidget {
@@ -23,9 +24,16 @@ class _OrdersState extends State<Orders> {
   final debouncer = Search(milliseconds: 1000);
   AutoCompleteTextField searchTextField;
   GlobalKey<AutoCompleteTextFieldState<Order>> key = new GlobalKey();
-
+  ScrollController _scrollController = new ScrollController();
+  int i = 2;
   @override
   void initState() {
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        pageFetch();
+      }
+    });
     getAllStore();
     super.initState();
   }
@@ -68,6 +76,7 @@ class _OrdersState extends State<Orders> {
                   ),
                 )
               : SingleChildScrollView(
+                  controller: _scrollController,
                   child: Column(
                     children: [
                       Row(
@@ -163,9 +172,82 @@ class _OrdersState extends State<Orders> {
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (BuildContext context, int index) {
-                          return OrderItem(
-                            orders_model: filteredStores[index],
-                            themeColor: themeColor,
+                          return Column(
+                            children: [
+                              OrderItem(
+                                orders_model: filteredStores[index],
+                                themeColor: themeColor,
+                              ),
+                              filteredStores[index].orderStatus != 'pending'
+                                  ? Container()
+                                  : Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        FlatButton(
+                                          color: Colors.green,
+                                          padding: EdgeInsets.all(4),
+                                          onPressed: () {
+                                            API(context).post(
+                                                'vendor/approve/orders', {
+                                              "status": "1",
+                                              "order_id":
+                                                  filteredStores[index].id
+                                            }).then((value) {
+                                              if (value != null) {
+                                                showDialog(
+                                                  context: context,
+                                                  builder: (_) => ResultOverlay(
+                                                    value.containsKey('message')
+                                                        ? value['message']
+                                                        : 'Done',
+                                                  ),
+                                                );
+                                                getAllStore();
+                                              }
+                                            });
+                                          },
+                                          child: Text(
+                                            'Accept',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                        FlatButton(
+                                          color: Colors.red,
+                                          padding: EdgeInsets.all(4),
+                                          onPressed: () {
+                                            API(context).post(
+                                                'vendor/cancel/order', {
+                                              "order_id":
+                                                  filteredStores[index].id
+                                            }).then((value) {
+                                              if (value != null) {
+                                                showDialog(
+                                                  context: context,
+                                                  builder: (_) => ResultOverlay(
+                                                    value.containsKey('message')
+                                                        ? value['message']
+                                                        : 'Done',
+                                                  ),
+                                                );
+                                              }
+                                              getAllStore();
+                                            });
+                                          },
+                                          child: Text(
+                                            'Cancel',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                            ],
                           );
                         },
                       ),
@@ -176,12 +258,27 @@ class _OrdersState extends State<Orders> {
   }
 
   Future<void> getAllStore() async {
-    API(context).get('show/orders').then((value) {
+    // ordered_by   >>> created_at
+    // sort_type  >>> desc
+    API(context)
+        .get('show/orders?ordered_by=created_at&sort_type=desc')
+        .then((value) {
       if (value != null) {
         setState(() {
           filteredStores = stores = Orders_model.fromJson(value).data;
         });
       }
+    });
+  }
+
+  void pageFetch() {
+    API(context)
+        .get('show/orders?page=${i++}&ordered_by=created_at&sort_type=desc')
+        .then((value) {
+      setState(() {
+        stores.addAll(Orders_model.fromJson(value).data);
+        filteredStores.addAll(Orders_model.fromJson(value).data);
+      });
     });
   }
 

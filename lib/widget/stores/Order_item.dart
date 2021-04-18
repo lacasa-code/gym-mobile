@@ -6,8 +6,6 @@ import 'package:trkar_vendor/model/orders_model.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
-import 'package:trkar_vendor/utils/service/API.dart';
-import 'package:trkar_vendor/widget/ResultOverlay.dart';
 
 class OrderItem extends StatelessWidget {
   final Order orders_model;
@@ -80,67 +78,6 @@ class OrderItem extends StatelessWidget {
                     ],
                   ),
                 ),
-                orders_model.orderStatus == 'cancelled'
-                    ? Container()
-                    : Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          FlatButton(
-                            color: Colors.green,
-                            padding: EdgeInsets.all(4),
-                            onPressed: () {
-                              API(context).post('vendor/approve/orders', {
-                                "status": "1",
-                                "order_id": orders_model.id
-                              }).then((value) {
-                                if (value != null) {
-                                  showDialog(
-                                    context: context,
-                                    builder: (_) => ResultOverlay(
-                                      value.containsKey('message')
-                                          ? value['message']
-                                          : 'Done',
-                                    ),
-                                  );
-                                }
-                              });
-                            },
-                            child: Text(
-                              'Accept',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          FlatButton(
-                            color: Colors.red,
-                            padding: EdgeInsets.all(4),
-                            onPressed: () {
-                              API(context).post('vendor/cancel/order',
-                                  {"order_id": orders_model.id}).then((value) {
-                                if (value != null) {
-                                  showDialog(
-                                    context: context,
-                                    builder: (_) => ResultOverlay(
-                                      value.containsKey('message')
-                                          ? value['message']
-                                          : 'Done',
-                                    ),
-                                  );
-                                }
-                              });
-                            },
-                            child: Text(
-                              'Cancel',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ],
-                      ),
               ],
             ),
             Divider(),

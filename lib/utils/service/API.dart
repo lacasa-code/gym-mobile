@@ -32,15 +32,12 @@ class API {
       print(response.body);
       if (response.statusCode == 500) {
         Nav.route(
-            context,
-            Maintenance(
-              erorr: response.body,
-            ));
+            context, Maintenance(erorr: jsonDecode(response.body).toString()));
       } else if (response.statusCode == 404) {
         Nav.route(
             context,
             Maintenance(
-              erorr: full_url + '\n' + response.body,
+              erorr: full_url + '\n' + response.body.toString(),
             ));
       } else if (response.statusCode == 401) {
         showDialog(
@@ -78,16 +75,10 @@ class API {
 
       if (response.statusCode == 500) {
         Nav.route(
-            context,
-            Maintenance(
-              erorr: jsonDecode(response.body),
-            ));
+            context, Maintenance(erorr: jsonDecode(response.body).toString()));
       } else if (response.statusCode == 404) {
         Nav.route(
-            context,
-            Maintenance(
-              erorr: jsonDecode(response.body),
-            ));
+            context, Maintenance(erorr: jsonDecode(response.body).toString()));
       } else if (response.statusCode == 401) {
         showDialog(
           context: context,
@@ -128,7 +119,7 @@ class API {
         Nav.route(
             context,
             Maintenance(
-              erorr: jsonDecode(response.body),
+              erorr: jsonDecode(response.body).toString(),
             ));
       } else {
         return jsonDecode(response.body);
@@ -153,10 +144,7 @@ class API {
       print(response.body);
       if (response.statusCode == 500) {
         Nav.route(
-            context,
-            Maintenance(
-              erorr: jsonDecode(response.body),
-            ));
+            context, Maintenance(erorr: jsonDecode(response.body).toString()));
       } else {
         return jsonDecode(response.body);
       }

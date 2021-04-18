@@ -41,6 +41,7 @@ dependencies:
   flutter_svg: ^0.21.0+1
   autocomplete_textfield: ^1.7.3
   expandable: ^5.0.1
+  dio: ^3.0.10
 
 
 dev_dependencies:
