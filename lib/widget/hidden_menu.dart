@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:trkar_vendor/main.dart';
 import 'package:trkar_vendor/screens/Orders.dart';
 import 'package:trkar_vendor/screens/invoices.dart';
 import 'package:trkar_vendor/screens/login.dart';
 import 'package:trkar_vendor/screens/product.dart';
+import 'package:trkar_vendor/screens/staff.dart';
 import 'package:trkar_vendor/screens/stores.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
@@ -47,266 +49,284 @@ class _HiddenMenuState extends State<HiddenMenu> {
       child: Container(
         color: themeColor.getColor(),
         child: SingleChildScrollView(
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-              SizedBox(
-                height: ScreenUtil.getHeight(context) / 10,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(12),
-                child: ListTile(
-                  title: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      AutoSizeText(
-                        //  getTransrlate(context, 'welcome'),
-                        am_pm == 'AM'
-                            ? getTransrlate(context, 'good_morning')
-                            : getTransrlate(context, 'good_night'),
-                        style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      AutoSizeText(
-                        name == null ? getTransrlate(context, 'gust') : name,
-                        style: TextStyle(
-                            fontSize: 17,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w400),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(right: 16, left: 16),
-                child: NotificationListener<OverscrollIndicatorNotification>(
-                  onNotification: (scroll) {
-                    scroll.disallowGlow();
-                    return false;
-                  },
-                  child: Column(
-                    children: <Widget>[
-                      InkWell(
-                        onTap: () {
-                          Nav.route(context, Stores());
-                        },
-                        child: ItemHiddenMenu(
-                          icon: Icon(
-                            Icons.store,
-                            size: 25,
-                            color: Colors.white.withOpacity(0.8),
-                          ),
-                          name: "Stores",
-                          baseStyle: TextStyle(
-                              color: Colors.white.withOpacity(0.6),
-                              fontSize: 19.0,
-                              fontWeight: FontWeight.w800),
-                          colorLineSelected: Colors.orange,
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Nav.route(context, Products());
-                        },
-                        child: ItemHiddenMenu(
-                          icon: Icon(
-                            Icons.shopping_bag,
-                            size: 25,
-                            color: Colors.white.withOpacity(0.8),
-                          ),
-                          name: "Products",
-                          baseStyle: TextStyle(
-                              color: Colors.white.withOpacity(0.6),
-                              fontSize: 19.0,
-                              fontWeight: FontWeight.w800),
-                          colorLineSelected: Colors.orange,
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Nav.route(context, Orders());
-                        },
-                        child: ItemHiddenMenu(
-                          icon: Icon(
-                            Icons.shopping_cart,
-                            size: 25,
-                            color: Colors.white.withOpacity(0.8),
-                          ),
-                          name: "Orders",
-                          baseStyle: TextStyle(
-                              color: Colors.white.withOpacity(0.6),
-                              fontSize: 19.0,
-                              fontWeight: FontWeight.w800),
-                          colorLineSelected: Colors.orange,
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Nav.route(context, Invoices());
-                        },
-                        child: ItemHiddenMenu(
-                          icon: Icon(
-                            Icons.assignment_sharp,
-                            size: 25,
-                            color: Colors.white.withOpacity(0.8),
-                          ),
-                          name: "Invoices",
-                          baseStyle: TextStyle(
-                              color: Colors.white.withOpacity(0.6),
-                              fontSize: 19.0,
-                              fontWeight: FontWeight.w800),
-                          colorLineSelected: Colors.orange,
-                        ),
-                      ),
-                      Container(
-                          height: 28,
-                          margin: EdgeInsets.only(left: 24, right: 48),
-                          child: Divider(
-                            color: Colors.white.withOpacity(0.5),
-                          )),
-                      InkWell(
-                        onTap: () {},
-                        child: ItemHiddenMenu(
-                          icon: Icon(
-                            Icons.person,
-                            size: 25,
-                            color: Colors.white.withOpacity(0.8),
-                          ),
-                          name: getTransrlate(context, 'ProfileSettings'),
-                          baseStyle: TextStyle(
-                              color: Colors.white.withOpacity(0.6),
-                              fontSize: 19.0,
-                              fontWeight: FontWeight.w800),
-                          colorLineSelected: Colors.orange,
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {},
-                        child: ItemHiddenMenu(
-                          icon: Icon(
-                            Icons.call,
-                            size: 25,
-                            color: Colors.white.withOpacity(0.8),
-                          ),
-                          name: getTransrlate(context, 'contact'),
-                          baseStyle: TextStyle(
-                              color: Colors.white.withOpacity(0.6),
-                              fontSize: 19.0,
-                              fontWeight: FontWeight.w800),
-                          colorLineSelected: Colors.orange,
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {},
-                        child: ItemHiddenMenu(
-                          icon: Icon(
-                            Icons.info_outline,
-                            size: 25,
-                            color: Colors.white.withOpacity(0.8),
-                          ),
-                          name: getTransrlate(context, 'About'),
-                          baseStyle: TextStyle(
-                              color: Colors.white.withOpacity(0.6),
-                              fontSize: 19.0,
-                              fontWeight: FontWeight.w800),
-                          colorLineSelected: Colors.orange,
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () async {
-                          if (themeColor.isLogin) {
-                            themeColor.setLogin(false);
-                            final SharedPreferences prefs =
-                                await SharedPreferences.getInstance();
-                            API(context).post('logout', {});
-                            prefs.clear();
-                            Nav.routeReplacement(context, LoginPage());
-                          } else {
-                            Nav.route(context, LoginPage());
-                          }
-                        },
-                        child: ItemHiddenMenu(
-                          icon: Icon(
-                            Icons.exit_to_app,
-                            size: 19,
-                            color: Colors.white.withOpacity(0.8),
-                          ),
-                          name: themeColor.isLogin
-                              ? getTransrlate(context, 'Logout')
-                              : getTransrlate(context, 'login'),
-                          baseStyle: TextStyle(
-                              color: Colors.white.withOpacity(0.6),
-                              fontSize: 19.0,
-                              fontWeight: FontWeight.w800),
-                          colorLineSelected: Colors.orange,
-                        ),
-                      ),
-                      Container(
-                        child: NotificationListener<
-                            OverscrollIndicatorNotification>(
-                          onNotification: (scroll) {
-                            scroll.disallowGlow();
-                            return false;
-                          },
-                          child: ListView(
-                            shrinkWrap: true,
-                            padding: EdgeInsets.all(0.0),
-                            children: <Widget>[
-                              InkWell(
-                                onTap: () async {
-                                  // await themeColor.local == 'ar'
-                                  //     ? themeColor.setLocal('en')
-                                  //     : themeColor.setLocal('ar');
-                                  // MyApp.setlocal(
-                                  //     context, Locale(themeColor.getlocal(), ''));
-                                  // SharedPreferences.getInstance().then((prefs) {
-                                  //   prefs.setString('local', themeColor.local);
-                                  // });
-                                },
-                                child: ItemHiddenMenu(
-                                  icon: Icon(
-                                    Icons.language,
-                                    size: 25,
-                                    color: Colors.white.withOpacity(0.8),
-                                  ),
-                                  name: Provider.of<Provider_control>(context)
-                                              .local ==
-                                          'ar'
-                                      ? 'English'
-                                      : 'عربى',
-                                  baseStyle: TextStyle(
-                                      color: Colors.white.withOpacity(0.6),
-                                      fontSize: 19.0,
-                                      fontWeight: FontWeight.w800),
-                                  colorLineSelected: Colors.orange,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.center,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    getTransrlate(context, 'version') + ' 1.0.0',
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
+                    Widget>[
+          SizedBox(
+            height: ScreenUtil.getHeight(context) / 10,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(12),
+            child: ListTile(
+              title: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  AutoSizeText(
+                    //  getTransrlate(context, 'welcome'),
+                    am_pm == 'AM'
+                        ? getTransrlate(context, 'good_morning')
+                        : getTransrlate(context, 'good_night'),
                     style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white60,
+                        fontSize: 20,
+                        color: Colors.white,
                         fontWeight: FontWeight.bold),
                   ),
-                ),
+                  AutoSizeText(
+                    name == null ? getTransrlate(context, 'gust') : name,
+                    style: TextStyle(
+                        fontSize: 17,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w400),
+                  )
+                ],
               ),
-            ])),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.only(right: 16, left: 16),
+            child: NotificationListener<OverscrollIndicatorNotification>(
+              onNotification: (scroll) {
+                scroll.disallowGlow();
+                return false;
+              },
+              child: Column(
+                children: <Widget>[
+                  InkWell(
+                    onTap: () {
+                      Nav.route(context, Staff());
+                    },
+                    child: ItemHiddenMenu(
+                      icon: Icon(
+                        Icons.supervised_user_circle,
+                        size: 25,
+                        color: Colors.white.withOpacity(0.8),
+                      ),
+                      name: getTransrlate(context, 'staff'),
+                      baseStyle: TextStyle(
+                          color: Colors.white.withOpacity(0.6),
+                          fontSize: 19.0,
+                          fontWeight: FontWeight.w800),
+                      colorLineSelected: Colors.orange,
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Nav.route(context, Stores());
+                    },
+                    child: ItemHiddenMenu(
+                      icon: Icon(
+                        Icons.store,
+                        size: 25,
+                        color: Colors.white.withOpacity(0.8),
+                      ),
+                      name: getTransrlate(context, 'stores'),
+                      baseStyle: TextStyle(
+                          color: Colors.white.withOpacity(0.6),
+                          fontSize: 19.0,
+                          fontWeight: FontWeight.w800),
+                      colorLineSelected: Colors.orange,
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Nav.route(context, Products());
+                    },
+                    child: ItemHiddenMenu(
+                      icon: Icon(
+                        Icons.shopping_bag,
+                        size: 25,
+                        color: Colors.white.withOpacity(0.8),
+                      ),
+                      name: getTransrlate(context, 'product'),
+                      baseStyle: TextStyle(
+                          color: Colors.white.withOpacity(0.6),
+                          fontSize: 19.0,
+                          fontWeight: FontWeight.w800),
+                      colorLineSelected: Colors.orange,
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Nav.route(context, Orders());
+                    },
+                    child: ItemHiddenMenu(
+                      icon: Icon(
+                        Icons.shopping_cart,
+                        size: 25,
+                        color: Colors.white.withOpacity(0.8),
+                      ),
+                      name: getTransrlate(context, 'Myorders'),
+                      baseStyle: TextStyle(
+                          color: Colors.white.withOpacity(0.6),
+                          fontSize: 19.0,
+                          fontWeight: FontWeight.w800),
+                      colorLineSelected: Colors.orange,
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Nav.route(context, Invoices());
+                    },
+                    child: ItemHiddenMenu(
+                      icon: Icon(
+                        Icons.assignment_sharp,
+                        size: 25,
+                        color: Colors.white.withOpacity(0.8),
+                      ),
+                      name: getTransrlate(context, 'invoices'),
+                      baseStyle: TextStyle(
+                          color: Colors.white.withOpacity(0.6),
+                          fontSize: 19.0,
+                          fontWeight: FontWeight.w800),
+                      colorLineSelected: Colors.orange,
+                    ),
+                  ),
+                  Container(
+                      height: 28,
+                      margin: EdgeInsets.only(left: 24, right: 48),
+                      child: Divider(
+                        color: Colors.white.withOpacity(0.5),
+                      )),
+                  InkWell(
+                    onTap: () {},
+                    child: ItemHiddenMenu(
+                      icon: Icon(
+                        Icons.person,
+                        size: 25,
+                        color: Colors.white.withOpacity(0.8),
+                      ),
+                      name: getTransrlate(context, 'ProfileSettings'),
+                      baseStyle: TextStyle(
+                          color: Colors.white.withOpacity(0.6),
+                          fontSize: 19.0,
+                          fontWeight: FontWeight.w800),
+                      colorLineSelected: Colors.orange,
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {},
+                    child: ItemHiddenMenu(
+                      icon: Icon(
+                        Icons.call,
+                        size: 25,
+                        color: Colors.white.withOpacity(0.8),
+                      ),
+                      name: getTransrlate(context, 'contact'),
+                      baseStyle: TextStyle(
+                          color: Colors.white.withOpacity(0.6),
+                          fontSize: 19.0,
+                          fontWeight: FontWeight.w800),
+                      colorLineSelected: Colors.orange,
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {},
+                    child: ItemHiddenMenu(
+                      icon: Icon(
+                        Icons.info_outline,
+                        size: 25,
+                        color: Colors.white.withOpacity(0.8),
+                      ),
+                      name: getTransrlate(context, 'About'),
+                      baseStyle: TextStyle(
+                          color: Colors.white.withOpacity(0.6),
+                          fontSize: 19.0,
+                          fontWeight: FontWeight.w800),
+                      colorLineSelected: Colors.orange,
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      if (themeColor.isLogin) {
+                        themeColor.setLogin(false);
+                        final SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        API(context).post('logout', {});
+                        prefs.clear();
+                        Nav.routeReplacement(context, LoginPage());
+                      } else {
+                        Nav.route(context, LoginPage());
+                      }
+                    },
+                    child: ItemHiddenMenu(
+                      icon: Icon(
+                        Icons.exit_to_app,
+                        size: 19,
+                        color: Colors.white.withOpacity(0.8),
+                      ),
+                      name: themeColor.isLogin
+                          ? getTransrlate(context, 'Logout')
+                          : getTransrlate(context, 'login'),
+                      baseStyle: TextStyle(
+                          color: Colors.white.withOpacity(0.6),
+                          fontSize: 19.0,
+                          fontWeight: FontWeight.w800),
+                      colorLineSelected: Colors.orange,
+                    ),
+                  ),
+                  Container(
+                    child:
+                        NotificationListener<OverscrollIndicatorNotification>(
+                      onNotification: (scroll) {
+                        scroll.disallowGlow();
+                        return false;
+                      },
+                      child: ListView(
+                        shrinkWrap: true,
+                        padding: EdgeInsets.all(0.0),
+                        children: <Widget>[
+                          InkWell(
+                            onTap: () async {
+                              await themeColor.local == 'ar'
+                                  ? themeColor.setLocal('en')
+                                  : themeColor.setLocal('ar');
+                              MyApp.setlocal(
+                                  context, Locale(themeColor.getlocal(), ''));
+                              SharedPreferences.getInstance().then((prefs) {
+                                prefs.setString('local', themeColor.local);
+                              });
+                            },
+                            child: ItemHiddenMenu(
+                              icon: Icon(
+                                Icons.language,
+                                size: 25,
+                                color: Colors.white.withOpacity(0.8),
+                              ),
+                              name: Provider.of<Provider_control>(context)
+                                          .local ==
+                                      'ar'
+                                  ? 'English'
+                                  : 'عربى',
+                              baseStyle: TextStyle(
+                                  color: Colors.white.withOpacity(0.6),
+                                  fontSize: 19.0,
+                                  fontWeight: FontWeight.w800),
+                              colorLineSelected: Colors.orange,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                getTransrlate(context, 'version') + ' 1.0.0',
+                style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white60,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+        ])),
       ),
     );
   }

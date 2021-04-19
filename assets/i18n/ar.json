@@ -29,7 +29,8 @@
   "allcatery": "كل الفئات",
   "Empty": "لا توجد منتجات",
   "allproduct": "كل المنتجات",
-  "add": "أضف",
+  "addProduct": "أضف منتج",
+  "addStore": "أضف متجر",
   "OrderNote": "ملاحظات",
   "OrderHint": "برجاء ادخال ملاحظاتك",
   "couponcode": " كود الخصم",
@@ -126,7 +127,7 @@
   "Myorders": "الطلبات السابقة",
   "MyProfile": "حسابى",
   "productRateing": "تقيماتك",
-  "MyFav": "المفضلة",
+  "invoices": "الفواتير",
   "SortByPricemore": "الأعلى سعراً",
   "SortByPriceLess": "الأقل سعراً",
   "SortByNew": "الاجدد",
@@ -184,7 +185,8 @@
 
   "addressShipping": "عنوان الشحن",
   "totalOrder": "إجمالى المبلغ ",
-  "totalWeight": "إجمالى الوزن ",
+  "staff": "العاملين",
+  "addstaff": "اضافة عامل",
   "totalShipping": "إجمالى الشحن",
   "totaldiscount": "قيمة الخصم",
   "total": "الإجمالى",
@@ -198,6 +200,8 @@
   "AddNewAddress": "أضافة عنوان جديد",
   "Countroy": "الدولة",
   "City": "المدينة",
+  "stores": "المتاجر",
+
   "Addres": "العنوان",
   "Street": "رقم الشارع",
   "Building": "رقم البناية",
@@ -238,6 +242,7 @@
   "Firstname": "الاسم الاول",
   "Lastname": "الاسم التالى",
   "Username": "اسم المستخدم",
+  "Username": "اسم المستخدم",
   "UsernameError": "اسم المستخدم فصير جداً",
   "RegisterError": "خطأ فى التسجيلً",
   "bacs": " تحويل بنكى مباشر",
@@ -251,13 +256,9 @@
   "vistStore": "زيارة المتجر",
 
 
-  "Dailyopportunity": "العروض اليومية",
 
-  "ProductsLike": "منتجات قد تعجبك",
-  "MostRated": "ألاعلى تقيما",
-  "Low-PricedProducts": "الاقل سعرا",
-  "Mostrecently": "اخر الزيارات",
 
+  "filter": "تصفيه",
   "Browse": "تصفح الأن",
   "Shopping": "شراء الأن",
   "NoOrder": "لا يوجد طلبات سابقة",

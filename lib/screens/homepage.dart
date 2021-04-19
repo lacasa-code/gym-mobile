@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/basic_report.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/data_repostory.dart';
+import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
 import 'package:trkar_vendor/widget/commons/default_button.dart';
@@ -104,7 +105,7 @@ class _HomeState extends State<Home> {
             Container(
               width: ScreenUtil.getWidth(context) / 3,
               child: DefaultButton(
-                  text: "filter",
+                  text: getTransrlate(context, 'filter'),
                   press: () {
                     showDialog(
                       context: context,
@@ -164,7 +165,7 @@ class _HomeState extends State<Home> {
                                   get_report(
                                       _tocontroller.text, _fromcontroller.text);
                                 },
-                                child: Text('Submit')),
+                                child: Text(getTransrlate(context, 'Submit'))),
                           ],
                         );
                       },
@@ -188,7 +189,9 @@ class _HomeState extends State<Home> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text("Total Sale"),
-                              Text("${basic_report.totalSale}"),
+                              Text("${basic_report.totalSale}",
+                                  style:
+                                      TextStyle(color: themeColor.getColor())),
                             ],
                           ),
                         ),
@@ -200,7 +203,9 @@ class _HomeState extends State<Home> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text("Total Invoices"),
-                              Text("${basic_report.totalInvoices}"),
+                              Text("${basic_report.totalInvoices}",
+                                  style:
+                                      TextStyle(color: themeColor.getColor())),
                             ],
                           ),
                         ),
@@ -212,7 +217,9 @@ class _HomeState extends State<Home> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text("Total Customers"),
-                              Text("${basic_report.totalCustomers}"),
+                              Text("${basic_report.totalCustomers ?? 0}",
+                                  style:
+                                      TextStyle(color: themeColor.getColor())),
                             ],
                           ),
                         ),
@@ -224,7 +231,9 @@ class _HomeState extends State<Home> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text("Total Orders"),
-                              Text("${basic_report.totalOrders}"),
+                              Text("${basic_report.totalOrders}",
+                                  style:
+                                      TextStyle(color: themeColor.getColor())),
                             ],
                           ),
                         ),
@@ -236,7 +245,9 @@ class _HomeState extends State<Home> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text("Total Vendors"),
-                              Text("${basic_report.totalVendors}"),
+                              Text("${basic_report.totalVendors ?? 0}",
+                                  style:
+                                      TextStyle(color: themeColor.getColor())),
                             ],
                           ),
                         ),
@@ -248,7 +259,10 @@ class _HomeState extends State<Home> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text("Total Products"),
-                              Text("${basic_report.totalProducts}"),
+                              Text(
+                                "${basic_report.totalProducts}",
+                                style: TextStyle(color: themeColor.getColor()),
+                              ),
                             ],
                           ),
                         ),

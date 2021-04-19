@@ -5,28 +5,28 @@ import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:trkar_vendor/model/store_model.dart';
-import 'package:trkar_vendor/screens/add_store.dart';
-import 'package:trkar_vendor/screens/edit_store.dart';
+import 'package:trkar_vendor/model/user_model.dart';
+import 'package:trkar_vendor/screens/add_staff.dart';
+import 'package:trkar_vendor/screens/edit_staff.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/SerachLoading.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
 import 'package:trkar_vendor/widget/ResultOverlay.dart';
-import 'package:trkar_vendor/widget/stores/store_item.dart';
+import 'package:trkar_vendor/widget/stores/user_item.dart';
 
-class Stores extends StatefulWidget {
+class Staff extends StatefulWidget {
   @override
-  _StoresState createState() => _StoresState();
+  _StaffState createState() => _StaffState();
 }
 
-class _StoresState extends State<Stores> {
-  List<Store> stores;
-  List<Store> filteredStores;
+class _StaffState extends State<Staff> {
+  List<User> stores;
+  List<User> filteredStores;
   final debouncer = Search(milliseconds: 1000);
   AutoCompleteTextField searchTextField;
-  GlobalKey<AutoCompleteTextFieldState<Store>> key = new GlobalKey();
+  GlobalKey<AutoCompleteTextFieldState<User>> key = new GlobalKey();
 
   @override
   void initState() {
@@ -40,7 +40,7 @@ class _StoresState extends State<Stores> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(getTransrlate(context, 'stores')),
+        title: Text(getTransrlate(context, 'staff')),
         centerTitle: true,
         actions: [
           Padding(
@@ -49,7 +49,7 @@ class _StoresState extends State<Stores> {
                 onTap: () {
                   _navigate_add_hell(context);
                 },
-                child: Text(getTransrlate(context, 'addStore'))),
+                child: Text(getTransrlate(context, 'addstaff'))),
           )
         ],
         backgroundColor: themeColor.getColor(),
@@ -71,7 +71,7 @@ class _StoresState extends State<Stores> {
                         Icon(Icons.check_box_outline_blank_sharp),
                         SizedBox(height: 20),
                         Text(
-                          'no stores found ',
+                          'no users found ',
                           style: TextStyle(
                               fontSize: 20,
                               color: Colors.grey,
@@ -94,7 +94,7 @@ class _StoresState extends State<Stores> {
                               padding: EdgeInsets.only(bottom: 4),
                               height: 72,
                               child: searchTextField =
-                                  AutoCompleteTextField<Store>(
+                                  AutoCompleteTextField<User>(
                                 key: key,
                                 clearOnSubmit: false,
                                 suggestions: filteredStores,
@@ -129,7 +129,7 @@ class _StoresState extends State<Stores> {
                                                   searchTextField
                                                       .textField.controller.text
                                                       .toLowerCase())) ||
-                                              (u.address.toLowerCase().contains(
+                                              (u.email.toLowerCase().contains(
                                                   searchTextField
                                                       .textField.controller.text
                                                       .toLowerCase())))
@@ -144,7 +144,7 @@ class _StoresState extends State<Stores> {
                                           .where((u) =>
                                               (u.name.toLowerCase().contains(
                                                   string.toLowerCase())) ||
-                                              (u.address.toLowerCase().contains(
+                                              (u.email.toLowerCase().contains(
                                                   string.toLowerCase())))
                                           .toList();
                                     });
@@ -173,7 +173,7 @@ class _StoresState extends State<Stores> {
                             },
                             child: Row(
                               children: [
-                                Stores_item(
+                                User_item(
                                   hall_model: filteredStores[index],
                                 ),
                                 Column(
@@ -222,15 +222,18 @@ class _StoresState extends State<Stores> {
                                     InkWell(
                                       onTap: () {
                                         API(context)
-                                            .Delete(
-                                                "stores/${stores[index].id}")
+                                            .Delete("users/${stores[index].id}")
                                             .then((value) {
-                                          showDialog(
-                                            context: context,
-                                            builder: (_) => ResultOverlay(
-                                              "${value['errors'] ?? 'تم حذف المتجر بنجاح'}",
-                                            ),
-                                          );
+                                          if (value != null) {
+                                            showDialog(
+                                              context: context,
+                                              builder: (_) => ResultOverlay(
+                                                value.containsKey('errors')
+                                                    ? "${value['errors']}"
+                                                    : 'تم حذف العامل بنجاح',
+                                              ),
+                                            );
+                                          }
                                           getAllStore();
                                         });
                                       },
@@ -285,27 +288,27 @@ class _StoresState extends State<Stores> {
 
   _navigate_add_hell(BuildContext context) async {
     await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => add_Store()));
+        context, MaterialPageRoute(builder: (context) => add_Staff()));
     Timer(Duration(seconds: 3), () => getAllStore());
   }
 
-  _navigate_edit_hell(BuildContext context, Store hall) async {
+  _navigate_edit_hell(BuildContext context, User hall) async {
     await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => edit_Store(hall)));
+        context, MaterialPageRoute(builder: (context) => Edit_Staff(hall)));
     Timer(Duration(seconds: 3), () => getAllStore());
   }
 
   Future<void> getAllStore() async {
-    API(context).get('stores').then((value) {
+    API(context).get('users').then((value) {
       if (value != null) {
         setState(() {
-          filteredStores = stores = Store_model.fromJson(value).data;
+          filteredStores = stores = User_model.fromJson(value).data;
         });
       }
     });
   }
 
-  Widget row(Store productModel) {
+  Widget row(User productModel) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -317,7 +320,7 @@ class _StoresState extends State<Stores> {
           width: 10.0,
         ),
         Text(
-          productModel.address,
+          productModel.email,
         ),
       ],
     );

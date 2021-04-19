@@ -8,6 +8,7 @@ import 'package:trkar_vendor/model/products_model.dart';
 import 'package:trkar_vendor/screens/add_product.dart';
 import 'package:trkar_vendor/screens/edit_product.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
+import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
 import 'package:trkar_vendor/widget/ResultOverlay.dart';
@@ -32,7 +33,7 @@ class _ProductsState extends State<Products> {
     final themeColor = Provider.of<Provider_control>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Products"),
+        title: Text(getTransrlate(context, 'product')),
         centerTitle: true,
         actions: [
           Padding(
@@ -41,7 +42,7 @@ class _ProductsState extends State<Products> {
                 onTap: () {
                   _navigate_add_hell(context);
                 },
-                child: Text("Add Product")),
+                child: Text(getTransrlate(context, 'addProduct'))),
           )
         ],
         backgroundColor: themeColor.getColor(),
