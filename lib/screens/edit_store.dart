@@ -44,7 +44,7 @@ class _edit_StoreState extends State<edit_Store> {
     final themeColor = Provider.of<Provider_control>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add Store"),
+        title: Text("Edit Store"),
         centerTitle: true,
         backgroundColor: themeColor.getColor(),
       ),

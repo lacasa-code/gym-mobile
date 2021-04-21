@@ -11,6 +11,7 @@ import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
 import 'package:trkar_vendor/widget/commons/default_button.dart';
 import 'package:trkar_vendor/widget/hidden_menu.dart';
+import 'package:responsive_grid/responsive_grid.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -172,107 +173,108 @@ class _HomeState extends State<Home> {
                     );
                   }),
             ),
+            Divider(),
             basic_report == null
                 ? Container()
-                : GridView.count(
-                    shrinkWrap: true,
-                    primary: false,
-                    padding: const EdgeInsets.all(20),
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    crossAxisCount: 2,
-                    children: [
-                      Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text("Total Sale"),
-                              Text("${basic_report.totalSale}",
-                                  style:
-                                      TextStyle(color: themeColor.getColor())),
-                            ],
+                : Container(
+              height: ScreenUtil.getHeight(context) / 3,
+              width: ScreenUtil.getWidth(context) / 1,
+                  child: ResponsiveGridList(
+              desiredItemWidth: 120,
+              minSpacing: 10,
+                      children: [
+                        Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("Total Sale"),
+                                Text("${basic_report.totalSale}",
+                                    style:
+                                        TextStyle(color: themeColor.getColor())),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text("Total Invoices"),
-                              Text("${basic_report.totalInvoices}",
-                                  style:
-                                      TextStyle(color: themeColor.getColor())),
-                            ],
+                        Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("Total Invoices"),
+                                Text("${basic_report.totalInvoices}",
+                                    style:
+                                        TextStyle(color: themeColor.getColor())),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text("Total Customers"),
-                              Text("${basic_report.totalCustomers ?? 0}",
-                                  style:
-                                      TextStyle(color: themeColor.getColor())),
-                            ],
+                        Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("Total Customers"),
+                                Text("${basic_report.totalCustomers ?? 0}",
+                                    style:
+                                        TextStyle(color: themeColor.getColor())),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text("Total Orders"),
-                              Text("${basic_report.totalOrders}",
-                                  style:
-                                      TextStyle(color: themeColor.getColor())),
-                            ],
+                        Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("Total Orders"),
+                                Text("${basic_report.totalOrders}",
+                                    style:
+                                        TextStyle(color: themeColor.getColor())),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text("Total Vendors"),
-                              Text("${basic_report.totalVendors ?? 0}",
-                                  style:
-                                      TextStyle(color: themeColor.getColor())),
-                            ],
+                        Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("Total Vendors"),
+                                Text("${basic_report.totalVendors ?? 0}",
+                                    style:
+                                        TextStyle(color: themeColor.getColor())),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text("Total Products"),
-                              Text(
-                                "${basic_report.totalProducts}",
-                                style: TextStyle(color: themeColor.getColor()),
-                              ),
-                            ],
+                        Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("Total Products"),
+                                Text(
+                                  "${basic_report.totalProducts}",
+                                  style: TextStyle(color: themeColor.getColor()),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
+                ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
-                height: ScreenUtil.getHeight(context) / 2,
+                height: ScreenUtil.getHeight(context) / 1.5,
                 child: BarChart(
                   data: data,
                   labels: labels,

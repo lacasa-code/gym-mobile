@@ -7,6 +7,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trkar_vendor/main.dart';
 import 'package:trkar_vendor/screens/Orders.dart';
 import 'package:trkar_vendor/screens/invoices.dart';
+import 'package:trkar_vendor/screens/tickets.dart';
+import 'package:trkar_vendor/screens/edit_profile.dart';
 import 'package:trkar_vendor/screens/login.dart';
 import 'package:trkar_vendor/screens/product.dart';
 import 'package:trkar_vendor/screens/staff.dart';
@@ -182,6 +184,24 @@ class _HiddenMenuState extends State<HiddenMenu> {
                       colorLineSelected: Colors.orange,
                     ),
                   ),
+                  InkWell(
+                    onTap: () {
+                      Nav.route(context, Tickets());
+                    },
+                    child: ItemHiddenMenu(
+                      icon: Icon(
+                        Icons.message,
+                        size: 25,
+                        color: Colors.white.withOpacity(0.8),
+                      ),
+                      name: getTransrlate(context, 'ticket'),
+                      baseStyle: TextStyle(
+                          color: Colors.white.withOpacity(0.6),
+                          fontSize: 19.0,
+                          fontWeight: FontWeight.w800),
+                      colorLineSelected: Colors.orange,
+                    ),
+                  ),
                   Container(
                       height: 28,
                       margin: EdgeInsets.only(left: 24, right: 48),
@@ -189,7 +209,9 @@ class _HiddenMenuState extends State<HiddenMenu> {
                         color: Colors.white.withOpacity(0.5),
                       )),
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Nav.route(context, Edit_profile());
+                    },
                     child: ItemHiddenMenu(
                       icon: Icon(
                         Icons.person,

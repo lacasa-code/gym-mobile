@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:responsive_grid/responsive_grid.dart';
 import 'package:trkar_vendor/model/products_model.dart';
 import 'package:trkar_vendor/screens/add_product.dart';
 import 'package:trkar_vendor/screens/edit_product.dart';
@@ -75,22 +76,13 @@ class _ProductsState extends State<Products> {
                   ),
                 )
               : SingleChildScrollView(
-                  child: GridView.builder(
-                    primary: false,
-                    padding: EdgeInsets.all(1),
-                    shrinkWrap: true,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      childAspectRatio: 0.70,
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 2.0,
-                      mainAxisSpacing: 4.0,
-                    ),
-                    itemCount: products == null && products.isEmpty
-                        ? 0
-                        : products.length,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (BuildContext context, int index) {
-                      return Padding(
+                  child: Container(
+                    height: ScreenUtil.getHeight(context)-80 ,
+                    width: ScreenUtil.getWidth(context) ,
+                    child: ResponsiveGridList(
+                      desiredItemWidth: ScreenUtil.getWidth(context)/2.2,
+                      minSpacing: 10,
+                      children: products.map((product) =>  Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
                           decoration: BoxDecoration(
@@ -106,7 +98,7 @@ class _ProductsState extends State<Products> {
                           child: Column(
                             children: [
                               Product_item(
-                                hall_model: products[index],
+                                hall_model: product,
                               ),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -115,7 +107,7 @@ class _ProductsState extends State<Products> {
                                   InkWell(
                                     onTap: () {
                                       _navigate_edit_hell(
-                                          context, products[index]);
+                                          context, product);
                                     },
                                     child: Container(
                                       padding: EdgeInsets.all(2),
@@ -123,15 +115,15 @@ class _ProductsState extends State<Products> {
                                       decoration: BoxDecoration(
                                           color: Colors.green,
                                           borderRadius:
-                                              BorderRadius.circular(10),
+                                          BorderRadius.circular(10),
                                           boxShadow: [
                                             BoxShadow(
                                               color:
-                                                  Colors.grey.withOpacity(.2),
+                                              Colors.grey.withOpacity(.2),
                                               blurRadius:
-                                                  6.0, // soften the shadow
+                                              6.0, // soften the shadow
                                               spreadRadius:
-                                                  0.0, //extend the shadow
+                                              0.0, //extend the shadow
                                               offset: Offset(
                                                 0.0, // Move to right 10  horizontally
                                                 1.0, // Move to bottom 10 Vertically
@@ -155,7 +147,7 @@ class _ProductsState extends State<Products> {
                                   ),
                                   InkWell(
                                     onTap: () {
-                                      Delete_Products(products[index].id);
+                                      Delete_Products(product.id);
                                     },
                                     child: Container(
                                       padding: EdgeInsets.all(2),
@@ -163,15 +155,15 @@ class _ProductsState extends State<Products> {
                                       decoration: BoxDecoration(
                                           color: Colors.red,
                                           borderRadius:
-                                              BorderRadius.circular(10),
+                                          BorderRadius.circular(10),
                                           boxShadow: [
                                             BoxShadow(
                                               color:
-                                                  Colors.grey.withOpacity(.2),
+                                              Colors.grey.withOpacity(.2),
                                               blurRadius:
-                                                  6.0, // soften the shadow
+                                              6.0, // soften the shadow
                                               spreadRadius:
-                                                  0.0, //extend the shadow
+                                              0.0, //extend the shadow
                                               offset: Offset(
                                                 0.0, // Move to right 10  horizontally
                                                 1.0, // Move to bottom 10 Vertically
@@ -198,8 +190,8 @@ class _ProductsState extends State<Products> {
                             ],
                           ),
                         ),
-                      );
-                    },
+                      )).toList(),
+                    ),
                   ),
                 ),
     );

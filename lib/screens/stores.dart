@@ -166,114 +166,108 @@ class _StoresState extends State<Stores> {
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (BuildContext context, int index) {
-                          return InkWell(
-                            onTap: () {
-                              _navigate_edit_hell(
-                                  context, filteredStores[index]);
-                            },
-                            child: Row(
-                              children: [
-                                Stores_item(
-                                  hall_model: filteredStores[index],
-                                ),
-                                Column(
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        _navigate_edit_hell(
-                                            context, filteredStores[index]);
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.all(6),
-                                        margin: EdgeInsets.all(6),
-                                        decoration: BoxDecoration(
-                                            color: Colors.green,
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color:
-                                                    Colors.grey.withOpacity(.2),
-                                                blurRadius:
-                                                    6.0, // soften the shadow
-                                                spreadRadius:
-                                                    0.0, //extend the shadow
-                                                offset: Offset(
-                                                  0.0, // Move to right 10  horizontally
-                                                  1.0, // Move to bottom 10 Vertically
-                                                ),
-                                              )
-                                            ]),
-                                        width: ScreenUtil.getWidth(context) / 4,
-                                        child: Center(
-                                          child: AutoSizeText(
-                                            'Edit',
-                                            minFontSize: 10,
-                                            maxFontSize: 20,
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                            maxLines: 1,
+                          return Row(
+                            children: [
+                              Stores_item(
+                                hall_model: filteredStores[index],
+                              ),
+                              Column(
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      _navigate_edit_hell(
+                                          context, filteredStores[index]);
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.all(6),
+                                      margin: EdgeInsets.all(6),
+                                      decoration: BoxDecoration(
+                                          color: Colors.green,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(.2),
+                                              blurRadius:
+                                                  6.0, // soften the shadow
+                                              spreadRadius:
+                                                  0.0, //extend the shadow
+                                              offset: Offset(
+                                                0.0, // Move to right 10  horizontally
+                                                1.0, // Move to bottom 10 Vertically
+                                              ),
+                                            )
+                                          ]),
+                                      width: ScreenUtil.getWidth(context) / 4,
+                                      child: Center(
+                                        child: AutoSizeText(
+                                          'Edit',
+                                          minFontSize: 10,
+                                          maxFontSize: 20,
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
                                           ),
+                                          maxLines: 1,
                                         ),
                                       ),
                                     ),
-                                    InkWell(
-                                      onTap: () {
-                                        API(context)
-                                            .Delete(
-                                                "stores/${stores[index].id}")
-                                            .then((value) {
-                                          showDialog(
-                                            context: context,
-                                            builder: (_) => ResultOverlay(
-                                              "${value['errors'] ?? 'تم حذف المتجر بنجاح'}",
-                                            ),
-                                          );
-                                          getAllStore();
-                                        });
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.all(6),
-                                        margin: EdgeInsets.all(6),
-                                        decoration: BoxDecoration(
-                                            color: Colors.red,
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color:
-                                                    Colors.grey.withOpacity(.2),
-                                                blurRadius:
-                                                    6.0, // soften the shadow
-                                                spreadRadius:
-                                                    0.0, //extend the shadow
-                                                offset: Offset(
-                                                  0.0, // Move to right 10  horizontally
-                                                  1.0, // Move to bottom 10 Vertically
-                                                ),
-                                              )
-                                            ]),
-                                        width: ScreenUtil.getWidth(context) / 4,
-                                        child: Center(
-                                          child: AutoSizeText(
-                                            'Delete',
-                                            minFontSize: 10,
-                                            maxFontSize: 20,
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                            maxLines: 1,
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      API(context)
+                                          .Delete(
+                                              "stores/${stores[index].id}")
+                                          .then((value) {
+                                        showDialog(
+                                          context: context,
+                                          builder: (_) => ResultOverlay(
+                                            "${value['errors'] ?? 'تم حذف المتجر بنجاح'}",
                                           ),
+                                        );
+                                        getAllStore();
+                                      });
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.all(6),
+                                      margin: EdgeInsets.all(6),
+                                      decoration: BoxDecoration(
+                                          color: Colors.red,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(.2),
+                                              blurRadius:
+                                                  6.0, // soften the shadow
+                                              spreadRadius:
+                                                  0.0, //extend the shadow
+                                              offset: Offset(
+                                                0.0, // Move to right 10  horizontally
+                                                1.0, // Move to bottom 10 Vertically
+                                              ),
+                                            )
+                                          ]),
+                                      width: ScreenUtil.getWidth(context) / 4,
+                                      child: Center(
+                                        child: AutoSizeText(
+                                          'Delete',
+                                          minFontSize: 10,
+                                          maxFontSize: 20,
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          maxLines: 1,
                                         ),
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           );
                         },
                       ),

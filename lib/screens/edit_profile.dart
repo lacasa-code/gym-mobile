@@ -1,37 +1,38 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:trkar_vendor/model/user_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
 import 'package:trkar_vendor/widget/ResultOverlay.dart';
 
-class Edit_Staff extends StatefulWidget {
-  User user;
-
-  Edit_Staff(this.user);
-
+class Edit_profile extends StatefulWidget {
   @override
-  _Edit_StaffState createState() => _Edit_StaffState();
+  _Edit_profileState createState() => _Edit_profileState();
 }
 
-class _Edit_StaffState extends State<Edit_Staff> {
+class _Edit_profileState extends State<Edit_profile> {
   bool loading = false;
   final _formKey = GlobalKey<FormState>();
-
   TextEditingController passwordController,
       namecontroler,
       emailController,
+      rolesController,
       confirempasswordController;
 
   @override
   void initState() {
     passwordController = TextEditingController();
-    namecontroler = TextEditingController(text: widget.user.name);
+    namecontroler = TextEditingController();
     confirempasswordController = TextEditingController();
-    emailController = TextEditingController(text: widget.user.email);
+    emailController = TextEditingController();
+    SharedPreferences.getInstance().then((pref) => {
+   namecontroler.text=pref.getString('user_name'),
+   emailController.text=pref.getString('user_email'),
+    });
+
     super.initState();
   }
 
@@ -40,7 +41,7 @@ class _Edit_StaffState extends State<Edit_Staff> {
     final themeColor = Provider.of<Provider_control>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Edit User"),
+        title: Text("Edit Profile"),
         centerTitle: true,
         backgroundColor: themeColor.getColor(),
       ),
@@ -111,6 +112,61 @@ class _Edit_StaffState extends State<Edit_Staff> {
                             border: InputBorder.none,
                             fillColor: Color(0xfff3f3f4),
                             filled: true)),
+
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Center(
+                      child: FlatButton(
+                        color: themeColor.getColor(),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Update profile',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
+                        onPressed: () async {
+                          if (_formKey.currentState.validate()) {
+                            _formKey.currentState.save();
+                            setState(() => loading = true);
+                            API(context).post("edit/profile", {
+                              "name": namecontroler.text,
+                              "email": emailController.text,
+                            }).then((value) {
+                              if (value != null) {
+                                setState(() {
+                                  loading = false;
+                                });
+                                print(value.containsKey('errors'));
+                                if (value.containsKey('errors')) {
+                                  showDialog(
+                                    context: context,
+                                    builder: (_) => ResultOverlay(
+                                      value['errors'].toString(),
+                                    ),
+                                  );
+                                } else {
+                                  showDialog(
+                                    context: context,
+                                    builder: (_) => ResultOverlay(
+                                      'Done',
+                                    ),
+                                  );
+                                }
+                              }
+                            });
+                          }
+                        },
+                      ),
+                    ),
                     SizedBox(
                       height: 10,
                     ),
@@ -180,9 +236,6 @@ class _Edit_StaffState extends State<Edit_Staff> {
                             validator: (String value) {
                               if (value.isEmpty) {
                                 return getTransrlate(context, 'password');
-                              } else if (value.length < 8) {
-                                return getTransrlate(context, 'password') +
-                                    ' < 8';
                               } else if (value != passwordController.text) {
                                 return getTransrlate(context, 'Passwordmatch');
                               }
@@ -190,65 +243,64 @@ class _Edit_StaffState extends State<Edit_Staff> {
 
                               return null;
                             },
-                          )
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Center(
-                      child: FlatButton(
-                        color: themeColor.getColor(),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            'Save',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Center(
+                            child: FlatButton(
+                              color: themeColor.getColor(),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  'Change Password',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                              ),
+                              onPressed: () async {
+                                if (_formKey.currentState.validate()) {
+                                  _formKey.currentState.save();
+                                  setState(() => loading = true);
+                                  API(context).post("change/password", {
+                                    "password": passwordController.text,
+                                    "password_confirmation": confirempasswordController.text,
+                                  }).then((value) {
+                                    if (value != null) {
+                                      setState(() {
+                                        loading = false;
+                                      });
+                                      print(value.containsKey('errors'));
+                                      if (value.containsKey('errors')) {
+                                        showDialog(
+                                          context: context,
+                                          builder: (_) => ResultOverlay(
+                                            value['errors'].toString(),
+                                          ),
+                                        );
+                                      } else {
+                                        Navigator.pop(context);
+
+                                        showDialog(
+                                          context: context,
+                                          builder: (_) => ResultOverlay(
+                                            'Done',
+                                          ),
+                                        );
+                                      }
+                                    }
+                                  });
+                                }
+                              },
                             ),
                           ),
-                        ),
-                        onPressed: () async {
-                          if (_formKey.currentState.validate()) {
-                            _formKey.currentState.save();
-                            setState(() => loading = true);
-                            API(context).Put("users/${widget.user.id}", {
-                              "name": namecontroler.text,
-                              "email": emailController.text,
-                              "password": passwordController.text,
-                              "roles": 1
-                            }).then((value) {
-                              if (value != null) {
-                                setState(() {
-                                  loading = false;
-                                });
-                                print(value.containsKey('errors'));
-                                if (value.containsKey('errors')) {
-                                  showDialog(
-                                    context: context,
-                                    builder: (_) => ResultOverlay(
-                                      value['errors'].toString(),
-                                    ),
-                                  );
-                                } else {
-                                  Navigator.pop(context);
-
-                                  showDialog(
-                                    context: context,
-                                    builder: (_) => ResultOverlay(
-                                      'Done',
-                                    ),
-                                  );
-                                }
-                              }
-                            });
-                          }
-                        },
+                        ],
                       ),
                     ),
                   ],
