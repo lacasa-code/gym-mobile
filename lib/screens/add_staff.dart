@@ -1,11 +1,14 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:trkar_vendor/model/roles_model.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
 import 'package:trkar_vendor/widget/ResultOverlay.dart';
+import 'package:trkar_vendor/widget/commons/drop_down_menu/find_dropdown.dart';
 
 class add_Staff extends StatefulWidget {
   @override
@@ -15,6 +18,7 @@ class add_Staff extends StatefulWidget {
 class _add_StaffState extends State<add_Staff> {
   bool loading = false;
   final _formKey = GlobalKey<FormState>();
+  List<Role> roles;
 
   TextEditingController passwordController,
       namecontroler,
@@ -24,6 +28,7 @@ class _add_StaffState extends State<add_Staff> {
 
   @override
   void initState() {
+    getRoles();
     passwordController = TextEditingController();
     namecontroler = TextEditingController();
     rolesController = TextEditingController();
@@ -91,6 +96,7 @@ class _add_StaffState extends State<add_Staff> {
                     SizedBox(
                       height: 10,
                     ),
+
                     TextFormField(
                         controller: emailController,
                         keyboardType: TextInputType.emailAddress,
@@ -108,6 +114,97 @@ class _add_StaffState extends State<add_Staff> {
                             border: InputBorder.none,
                             fillColor: Color(0xfff3f3f4),
                             filled: true)),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "Roles",
+                      style:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(6.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 4, top: 4),
+                        child: FindDropdown<Role>(
+                            items: roles,
+                            // onFind: (f) async {
+                            //   search.run(() {
+                            //     setState(() {
+                            //       filteredcarmodels_data = carmodels
+                            //           .where((u) =>
+                            //       (u.carmodel
+                            //           .toLowerCase()
+                            //           .contains(f
+                            //           .toLowerCase())))
+                            //           .toList();
+                            //     });
+                            //   });
+                            //   return filteredcarmodels_data;
+                            // } ,
+                            dropdownBuilder: (context, selectedText) => Align(
+                                alignment: Alignment.topRight,
+                                child: Container(
+                                  height: 50,
+                                  width: ScreenUtil.getWidth(context) / 1.1,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                        color: themeColor.getColor(), width: 2),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      AutoSizeText(
+                                        "${selectedText==null?' ':selectedText.title}",
+                                        minFontSize: 8,
+                                        maxLines: 1,
+                                        //overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            color: themeColor.getColor(),
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                )),
+                            dropdownItemBuilder: (context, item, isSelected) =>
+                                Padding(
+                                  padding: const EdgeInsets.all(12),
+                                  child: Text(
+                                    item.title,
+                                    style: TextStyle(
+                                        color: isSelected
+                                            ? themeColor.getColor()
+                                            : Color(0xFF5D6A78),
+                                        fontSize: isSelected ? 20 : 17,
+                                        fontWeight: isSelected
+                                            ? FontWeight.w600
+                                            : FontWeight.w600),
+                                  ),
+                                ),
+                            onChanged: (item) {
+                              rolesController.text = item.id.toString();
+                            },
+                            // onFind: (text) {
+                            //
+                            // },
+                            labelStyle: TextStyle(fontSize: 20),
+                            titleStyle: TextStyle(fontSize: 20),
+                            selectedItem:
+                            Role(title: 'Select  Role'),
+                            label: " Roles",
+                            showSearchBox: false,
+                            isUnderLine: false),
+                      ),
+                    ),
+
+
                     SizedBox(
                       height: 10,
                     ),
@@ -218,7 +315,7 @@ class _add_StaffState extends State<add_Staff> {
                               "name": namecontroler.text,
                               "email": emailController.text,
                               "password": passwordController.text,
-                              "roles": 1
+                              "roles": rolesController.text
                             }).then((value) {
                               if (value != null) {
                                 setState(() {
@@ -256,5 +353,14 @@ class _add_StaffState extends State<add_Staff> {
         ],
       ),
     );
+  }
+  Future<void> getRoles() async {
+    API(context).get('roleslist').then((value) {
+      if (value != null) {
+        setState(() {
+          roles = Roles_model.fromJson(value).data;
+        });
+      }
+    });
   }
 }
