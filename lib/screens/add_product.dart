@@ -55,6 +55,7 @@ class _Add_ProductState extends State<Add_Product> {
   DateTime selectedDate = DateTime.now();
   String SelectDate = ' ';
   File _image;
+  List<String> photos=[];
   String base64Image;
   final search = Search(milliseconds: 1000);
 
@@ -67,8 +68,7 @@ class _Add_ProductState extends State<Add_Product> {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
         base64Image = base64Encode(_image.readAsBytesSync());
-
-        print(base64Image);
+        print(base64Image);photos.add(base64Image);
       } else {
         print('No image selected.');
       }
@@ -893,9 +893,8 @@ class _Add_ProductState extends State<Add_Product> {
                               "car_made_id": car_made_id_controler.text,
                               "car_model_id": car_model_id_Controler.text,
                               "year_id": year_idcontroler.text,
-                              "part_category_id":
-                                  part_category_id_controller.text,
-                              "photo": base64Image,
+                              "part_category_id": part_category_id_controller.text,
+                              "photo": photos.map((v) => v).toList(),
                               "discount": discountcontroler.text,
                               "price": price_controller.text,
                               "description": description.text,

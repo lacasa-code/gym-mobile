@@ -63,7 +63,7 @@ class _Edit_ProductState extends State<Edit_Product> {
   File _image;
   String base64Image;
   final search = Search(milliseconds: 1000);
-
+  List<String>photos=[];
   final picker = ImagePicker();
 
   Future getImage() async {
@@ -73,8 +73,7 @@ class _Edit_ProductState extends State<Edit_Product> {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
         base64Image = base64Encode(_image.readAsBytesSync());
-
-        print(base64Image);
+        photos.add(base64Image);
       } else {
         print('No image selected.');
       }
@@ -1061,7 +1060,8 @@ class _Edit_ProductState extends State<Edit_Product> {
                               "year_id": year_idcontroler.text,
                               "part_category_id":
                                   part_category_id_controller.text,
-                              "photo": base64Image,
+                             // "photo": photos.map((v) => v).toList(),
+
                               "discount": discountcontroler.text,
                               "price": price_controller.text,
                               "description": description.text,

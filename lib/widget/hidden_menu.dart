@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trkar_vendor/main.dart';
 import 'package:trkar_vendor/screens/Orders.dart';
+import 'package:trkar_vendor/screens/faq.dart';
 import 'package:trkar_vendor/screens/invoices.dart';
 import 'package:trkar_vendor/screens/tickets.dart';
 import 'package:trkar_vendor/screens/edit_profile.dart';
@@ -243,14 +244,16 @@ class _HiddenMenuState extends State<HiddenMenu> {
                     ),
                   ),
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Nav.route(context, FaqPage());
+                    },
                     child: ItemHiddenMenu(
                       icon: Icon(
                         Icons.info_outline,
                         size: 25,
                         color: Colors.white.withOpacity(0.8),
                       ),
-                      name: getTransrlate(context, 'About'),
+                      name: getTransrlate(context, 'FAQ'),
                       baseStyle: TextStyle(
                           color: Colors.white.withOpacity(0.6),
                           fontSize: 19.0,
