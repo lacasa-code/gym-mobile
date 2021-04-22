@@ -23,14 +23,7 @@ class User_model {
     _total = json["total"];
   }
 
-  Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
-    if (_data != null) {
-      map["data"] = _data.map((v) => v.toJson()).toList();
-    }
-    map["total"] = _total;
-    return map;
-  }
+
 }
 
 /// id : 4
@@ -44,15 +37,15 @@ class User {
   String _name;
   String _email;
   int _addedById;
-  List<Roles> _roles;
+  Roles _roles;
 
   int get id => _id;
   String get name => _name;
   String get email => _email;
   int get addedById => _addedById;
-  List<Roles> get roles => _roles;
+  Roles get roles => _roles;
 
-  User({int id, String name, String email, int addedById, List<Roles> roles}) {
+  User({int id, String name, String email, int addedById, Roles roles}) {
     _id = id;
     _name = name;
     _email = email;
@@ -66,24 +59,11 @@ class User {
     _email = json["email"];
     _addedById = json["added_by_id"];
     if (json["roles"] != null) {
-      _roles = [];
-      json["roles"].forEach((v) {
-        _roles.add(Roles.fromJson(v));
-      });
+        _roles=Roles.fromJson(json["roles"]);
+
     }
   }
 
-  Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
-    map["id"] = _id;
-    map["name"] = _name;
-    map["email"] = _email;
-    map["added_by_id"] = _addedById;
-    if (_roles != null) {
-      map["roles"] = _roles.map((v) => v.toJson()).toList();
-    }
-    return map;
-  }
 }
 
 /// id : 2

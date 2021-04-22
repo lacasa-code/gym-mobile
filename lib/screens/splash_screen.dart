@@ -69,7 +69,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   void _auth() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    print(prefs.getString('token'));
+
     API(context).post('token/data', {}).then((value) {
       if (value != null) {
         var user = value['data']['user'];

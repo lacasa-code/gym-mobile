@@ -31,7 +31,7 @@ dependencies:
   intl: ^0.17.0
   onesignal_flutter: ^2.6.2
   flutter_webview_plugin: ^0.3.11
-  shared_preferences: ^0.5.12+4
+  shared_preferences: ^0.5.7+2
   global_configuration: ^1.6.0
   url_launcher: ^5.7.10
   auto_size_text: ^2.1.0

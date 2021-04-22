@@ -63,31 +63,22 @@ class User_item extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      height: 50,
-                      child: ListView.builder(scrollDirection: Axis.horizontal,
-                          itemCount: hall_model.roles.length,
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemBuilder: (BuildContext context, int index) {
-                            return  Container(
-                              child: Align(
-                                  alignment: Alignment.center,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Text(
-                                      "${hall_model.roles[index].title}",
-                                      maxLines: 1,
-                                      style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold, fontSize: 12),
-                                    ),
-                                  )),
-                              decoration: BoxDecoration(
-                                  color: themeColor.getColor(),
-                                  border: Border.all(color: themeColor.getColor(), width: 1),
-                                  borderRadius: BorderRadius.circular(35)),
-                              margin: EdgeInsets.only(right: 12),
-                            );
-                          }),
-                    )
+                            child: Align(
+                                alignment: Alignment.center,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Text(
+                                    "${hall_model.roles.title}",
+                                    maxLines: 1,
+                                    style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold, fontSize: 12),
+                                  ),
+                                )),
+                            decoration: BoxDecoration(
+                                color: themeColor.getColor(),
+                                border: Border.all(color: themeColor.getColor(), width: 1),
+                                borderRadius: BorderRadius.circular(35)),
+                            margin: EdgeInsets.only(right: 12),
+                          )
                   ],
                 ),
               ),
