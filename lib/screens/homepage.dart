@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:responsive_grid/responsive_grid.dart';
 import 'package:trkar_vendor/model/basic_report.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/data_repostory.dart';
@@ -11,7 +12,6 @@ import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
 import 'package:trkar_vendor/widget/commons/default_button.dart';
 import 'package:trkar_vendor/widget/hidden_menu.dart';
-import 'package:responsive_grid/responsive_grid.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -177,11 +177,10 @@ class _HomeState extends State<Home> {
             basic_report == null
                 ? Container()
                 : Container(
-              height: ScreenUtil.getHeight(context) / 3,
-              width: ScreenUtil.getWidth(context) / 1,
-                  child: ResponsiveGridList(
-              desiredItemWidth: 120,
-              minSpacing: 10,
+                    child: ResponsiveGridList(
+                      scroll: false,
+                      desiredItemWidth: 120,
+                      minSpacing: 10,
                       children: [
                         Card(
                           child: Padding(
@@ -191,8 +190,8 @@ class _HomeState extends State<Home> {
                               children: [
                                 Text("Total Sale"),
                                 Text("${basic_report.totalSale}",
-                                    style:
-                                        TextStyle(color: themeColor.getColor())),
+                                    style: TextStyle(
+                                        color: themeColor.getColor())),
                               ],
                             ),
                           ),
@@ -205,8 +204,8 @@ class _HomeState extends State<Home> {
                               children: [
                                 Text("Total Invoices"),
                                 Text("${basic_report.totalInvoices}",
-                                    style:
-                                        TextStyle(color: themeColor.getColor())),
+                                    style: TextStyle(
+                                        color: themeColor.getColor())),
                               ],
                             ),
                           ),
@@ -219,8 +218,8 @@ class _HomeState extends State<Home> {
                               children: [
                                 Text("Total Customers"),
                                 Text("${basic_report.totalCustomers ?? 0}",
-                                    style:
-                                        TextStyle(color: themeColor.getColor())),
+                                    style: TextStyle(
+                                        color: themeColor.getColor())),
                               ],
                             ),
                           ),
@@ -233,8 +232,8 @@ class _HomeState extends State<Home> {
                               children: [
                                 Text("Total Orders"),
                                 Text("${basic_report.totalOrders}",
-                                    style:
-                                        TextStyle(color: themeColor.getColor())),
+                                    style: TextStyle(
+                                        color: themeColor.getColor())),
                               ],
                             ),
                           ),
@@ -247,8 +246,8 @@ class _HomeState extends State<Home> {
                               children: [
                                 Text("Total Vendors"),
                                 Text("${basic_report.totalVendors ?? 0}",
-                                    style:
-                                        TextStyle(color: themeColor.getColor())),
+                                    style: TextStyle(
+                                        color: themeColor.getColor())),
                               ],
                             ),
                           ),
@@ -262,7 +261,8 @@ class _HomeState extends State<Home> {
                                 Text("Total Products"),
                                 Text(
                                   "${basic_report.totalProducts}",
-                                  style: TextStyle(color: themeColor.getColor()),
+                                  style:
+                                      TextStyle(color: themeColor.getColor()),
                                 ),
                               ],
                             ),
@@ -270,11 +270,11 @@ class _HomeState extends State<Home> {
                         ),
                       ],
                     ),
-                ),
+                  ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
-                height: ScreenUtil.getHeight(context) / 1.5,
+                height: ScreenUtil.getHeight(context) / 2,
                 child: BarChart(
                   data: data,
                   labels: labels,
@@ -282,7 +282,8 @@ class _HomeState extends State<Home> {
                   reverse: true,
                   getColor: DataRepository.getColor,
                   //getIcon: DataRepository.getIcon,
-                  barWidth: ScreenUtil.divideWidth(context) / 3,
+                  barWidth:
+                      ScreenUtil.divideWidth(context) / (labels.length + 2),
                   barSeparation: 12,
                   animationDuration: Duration(milliseconds: 1800),
                   animationCurve: Curves.easeInOutSine,

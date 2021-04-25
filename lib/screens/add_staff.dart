@@ -19,6 +19,7 @@ class _add_StaffState extends State<add_Staff> {
   bool loading = false;
   final _formKey = GlobalKey<FormState>();
   List<Role> roles;
+  bool passwordVisible = false;
 
   TextEditingController passwordController,
       namecontroler,
@@ -96,15 +97,16 @@ class _add_StaffState extends State<add_Staff> {
                     SizedBox(
                       height: 10,
                     ),
-
                     TextFormField(
                         controller: emailController,
                         keyboardType: TextInputType.emailAddress,
                         validator: (String value) {
                           if (value.isEmpty) {
                             return getTransrlate(context, 'email');
-                          } else if (value.length < 4) {
-                            return getTransrlate(context, 'email') + ' < 4';
+                          } else if (!RegExp(
+                                  r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
+                              .hasMatch(value)) {
+                            return getTransrlate(context, 'invalidemail');
                           }
                           _formKey.currentState.save();
 
@@ -120,7 +122,7 @@ class _add_StaffState extends State<add_Staff> {
                     Text(
                       "Roles",
                       style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                     ),
                     Container(
                       padding: const EdgeInsets.all(6.0),
@@ -158,10 +160,10 @@ class _add_StaffState extends State<add_Staff> {
                                   ),
                                   child: Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
                                       AutoSizeText(
-                                        "${selectedText==null?' ':selectedText.title}",
+                                        "${selectedText == null ? ' ' : selectedText.title}",
                                         minFontSize: 8,
                                         maxLines: 1,
                                         //overflow: TextOverflow.ellipsis,
@@ -196,15 +198,12 @@ class _add_StaffState extends State<add_Staff> {
                             // },
                             labelStyle: TextStyle(fontSize: 20),
                             titleStyle: TextStyle(fontSize: 20),
-                            selectedItem:
-                            Role(title: 'Select  Role'),
+                            selectedItem: Role(title: 'Select  Role'),
                             label: " Roles",
                             showSearchBox: false,
                             isUnderLine: false),
                       ),
                     ),
-
-
                     SizedBox(
                       height: 10,
                     ),
@@ -223,7 +222,7 @@ class _add_StaffState extends State<add_Staff> {
                           ),
                           TextFormField(
                               controller: passwordController,
-                              obscureText: true,
+                              obscureText: passwordVisible,
                               keyboardType: TextInputType.visiblePassword,
                               validator: (String value) {
                                 if (value.isEmpty) {
@@ -231,6 +230,9 @@ class _add_StaffState extends State<add_Staff> {
                                 } else if (value.length < 8) {
                                   return getTransrlate(context, 'password') +
                                       ' < 8';
+                                } else if (!value.contains(new RegExp(
+                                    r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"))) {
+                                  return "one Uppercase, One Lowercase, One Number and one Special Character";
                                 } else if (value !=
                                     confirempasswordController.text) {
                                   return getTransrlate(
@@ -241,9 +243,25 @@ class _add_StaffState extends State<add_Staff> {
                                 return null;
                               },
                               decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  fillColor: Color(0xfff3f3f4),
-                                  filled: true))
+                                border: InputBorder.none,
+                                fillColor: Color(0xfff3f3f4),
+                                filled: true,
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    // Based on passwordVisible state choose the icon
+                                    passwordVisible
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                    color: themeColor.getColor(),
+                                  ),
+                                  onPressed: () {
+                                    // Update the state i.e. toogle the state of passwordVisible variable
+                                    setState(() {
+                                      passwordVisible = !passwordVisible;
+                                    });
+                                  },
+                                ),
+                              ))
                         ],
                       ),
                     ),
@@ -266,11 +284,27 @@ class _add_StaffState extends State<add_Staff> {
                           TextFormField(
                             controller: confirempasswordController,
                             keyboardType: TextInputType.visiblePassword,
-                            obscureText: true,
+                            obscureText: passwordVisible,
                             decoration: InputDecoration(
-                                border: InputBorder.none,
-                                fillColor: Color(0xfff3f3f4),
-                                filled: true),
+                              border: InputBorder.none,
+                              fillColor: Color(0xfff3f3f4),
+                              filled: true,
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  // Based on passwordVisible state choose the icon
+                                  passwordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: themeColor.getColor(),
+                                ),
+                                onPressed: () {
+                                  // Update the state i.e. toogle the state of passwordVisible variable
+                                  setState(() {
+                                    passwordVisible = !passwordVisible;
+                                  });
+                                },
+                              ),
+                            ),
                             validator: (String value) {
                               if (value.isEmpty) {
                                 return getTransrlate(context, 'password');
@@ -354,6 +388,7 @@ class _add_StaffState extends State<add_Staff> {
       ),
     );
   }
+
   Future<void> getRoles() async {
     API(context).get('roleslist').then((value) {
       if (value != null) {
