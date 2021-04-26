@@ -74,7 +74,7 @@ class _add_StaffState extends State<add_Staff> {
                         keyboardType: TextInputType.text,
                         validator: (String value) {
                           if (value.isEmpty) {
-                            return getTransrlate(context, 'name');
+                            return getTransrlate(context, 'Required');
                           } else if (value.length < 4) {
                             return getTransrlate(context, 'name') + ' < 4';
                           }
@@ -102,7 +102,7 @@ class _add_StaffState extends State<add_Staff> {
                         keyboardType: TextInputType.emailAddress,
                         validator: (String value) {
                           if (value.isEmpty) {
-                            return getTransrlate(context, 'email');
+                            return getTransrlate(context, 'Required');
                           } else if (!RegExp(
                                   r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
                               .hasMatch(value)) {
@@ -124,6 +124,7 @@ class _add_StaffState extends State<add_Staff> {
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                     ),
+
                     Container(
                       padding: const EdgeInsets.all(6.0),
                       decoration: BoxDecoration(
