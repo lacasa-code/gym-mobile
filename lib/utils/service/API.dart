@@ -61,7 +61,7 @@ class API {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     print("full_url =$full_url");
-
+    print(body);
     try {
       http.Response response = await http.post(full_url,
           headers: {

@@ -38,6 +38,8 @@ class Product {
   int partCategoryId;
   int vendorId;
   int storeId;
+  int manufacturer_id;
+  int prodcountry_id;
   int quantity;
   String serialNumber;
 
@@ -54,6 +56,8 @@ class Product {
       this.partCategoryId,
       this.photo,
       this.vendorId,
+      this.manufacturer_id,
+      this.prodcountry_id,
       this.storeId,
       this.quantity,
       this.serialNumber});
@@ -64,6 +68,8 @@ class Product {
     description = json['description'];
     price = json['price'];
     discount = json['discount'];
+    manufacturer_id = json['manufacturer_id'];
+    prodcountry_id = json['prodcountry_id'];
     createdAt = json['created_at'];
     carMadeId = json['car_made_id'];
     carModelId = json['car_model_id'];

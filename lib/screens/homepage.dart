@@ -25,6 +25,7 @@ class _HomeState extends State<Home> {
   bool loaded = false;
   Basic_report basic_report;
   DateTime date = DateTime.now();
+  DateTime from = DateTime.now();
   TextEditingController _tocontroller = TextEditingController();
   TextEditingController _fromcontroller = TextEditingController();
   Future<void> _selectDatefrom(BuildContext context) async {
@@ -36,6 +37,7 @@ class _HomeState extends State<Home> {
     if (picked != null && picked != date)
       setState(() {
         _fromcontroller.text = DateFormat('yyyy-MM-dd').format(picked);
+        from=picked;
       });
   }
 
@@ -43,7 +45,7 @@ class _HomeState extends State<Home> {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: date,
-        firstDate: DateTime(2015, 8),
+        firstDate: from,
         lastDate: date);
     print("${DateFormat('yyyy-MM-dd').format(picked)}");
 
@@ -108,56 +110,69 @@ class _HomeState extends State<Home> {
               child: DefaultButton(
                   text: getTransrlate(context, 'filter'),
                   press: () {
+                    final _formKey = GlobalKey<FormState>();
+
                     showDialog(
                       context: context,
                       builder: (BuildContext contex) {
                         return AlertDialog(
                           title: Text('Filter Sales by period'),
-                          content: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              SizedBox(height: 10),
-                              TextFormField(
-                                  readOnly: true,
-                                  onTap: () => _selectDatefrom(context),
-                                  controller: _fromcontroller,
-                                  decoration: InputDecoration(
-                                    suffixIcon: Icon(Icons.calendar_today),
-                                    hintText: 'date',
-                                    contentPadding: EdgeInsets.all(15.0),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                      borderSide: BorderSide(
-                                        width: 0,
-                                        style: BorderStyle.none,
+                          content: Form(
+                            key: _formKey,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SizedBox(height: 10),
+                                TextFormField(
+                                    readOnly: true,
+                                    onTap: () => _selectDatefrom(context),
+                                    controller: _fromcontroller,
+                                    decoration: InputDecoration(
+                                      suffixIcon: Icon(Icons.calendar_today),
+                                      hintText: 'date',
+                                      contentPadding: EdgeInsets.all(15.0),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                        borderSide: BorderSide(
+                                          width: 0,
+                                          style: BorderStyle.none,
+                                        ),
                                       ),
+                                      fillColor: Color(0xFFEEEEF3),
+                                      labelText: 'from',
+                                      filled: true,
                                     ),
-                                    fillColor: Color(0xFFEEEEF3),
-                                    labelText: 'from',
-                                    filled: true,
-                                  )),
-                              SizedBox(height: 10),
-                              TextFormField(
-                                  readOnly: true,
-                                  onTap: () => _selectDateto(context),
-                                  controller: _tocontroller,
-                                  decoration: InputDecoration(
-                                    suffixIcon: Icon(Icons.calendar_today),
-                                    hintText: 'date',
-                                    contentPadding: EdgeInsets.all(15.0),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                      borderSide: BorderSide(
-                                        width: 0,
-                                        style: BorderStyle.none,
+                                    validator: (String value) {
+                                      if (value.isEmpty) {
+                                        return 'from required';
+                                      }
+                                      _formKey.currentState.save();
+
+                                      return null;
+                                    }),
+                                SizedBox(height: 10),
+                                TextFormField(
+                                    readOnly: true,
+                                    onTap: () => _selectDateto(context),
+                                    controller: _tocontroller,
+                                    decoration: InputDecoration(
+                                      suffixIcon: Icon(Icons.calendar_today),
+                                      hintText: 'date',
+                                      contentPadding: EdgeInsets.all(15.0),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                        borderSide: BorderSide(
+                                          width: 0,
+                                          style: BorderStyle.none,
+                                        ),
                                       ),
-                                    ),
-                                    fillColor: Color(0xFFEEEEF3),
-                                    labelText: 'to',
-                                    filled: true,
-                                  )),
-                              SizedBox(height: 10),
-                            ],
+                                      fillColor: Color(0xFFEEEEF3),
+                                      labelText: 'to',
+                                      filled: true,
+                                    )),
+                                SizedBox(height: 10),
+                              ],
+                            ),
                           ),
                           actions: [
                             FlatButton(

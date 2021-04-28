@@ -8,6 +8,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/car_made.dart';
 import 'package:trkar_vendor/model/carmodel.dart';
+import 'package:trkar_vendor/model/prod_country.dart';
+import 'package:trkar_vendor/model/manufacturer_model.dart';
 import 'package:trkar_vendor/model/category.dart';
 import 'package:trkar_vendor/model/part__category.dart';
 import 'package:trkar_vendor/model/store_model.dart';
@@ -40,6 +42,8 @@ class _Add_ProductState extends State<Add_Product> {
   List<Part_Category> part_Categories;
   List<Carmodel> filteredcarmodels_data = List();
   List<CarMade> filteredCarMades_data = List();
+  List<Manufacturer> _manufacturers;
+  List<ProdCountry> _prodcountries;
 
   TextEditingController serialcontroler, namecontroler, description;
   TextEditingController car_made_id_controler,
@@ -50,6 +54,8 @@ class _Add_ProductState extends State<Add_Product> {
       price_controller,
       tagscontroler,
       discountcontroler,
+      manufacturer_id,
+      prodcountry_id,
       quantityController;
 
   DateTime selectedDate = DateTime.now();
@@ -94,6 +100,8 @@ class _Add_ProductState extends State<Add_Product> {
     car_made_id_controler = TextEditingController();
     car_model_id_Controler = TextEditingController();
     quantityController = TextEditingController();
+    manufacturer_id = TextEditingController();
+    prodcountry_id = TextEditingController();
 
     super.initState();
   }
@@ -808,6 +816,166 @@ class _Add_ProductState extends State<Add_Product> {
                       ),
                     ),
                     Container(
+                      padding: const EdgeInsets.all(6.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 4, top: 4),
+                        child: FindDropdown<ProdCountry>(
+                            items: _prodcountries,
+                            // onFind: (f) async {
+                            //   search.run(() {
+                            //     setState(() {
+                            //       filteredcarmodels_data = carmodels
+                            //           .where((u) =>
+                            //       (u.carmodel
+                            //           .toLowerCase()
+                            //           .contains(f
+                            //           .toLowerCase())))
+                            //           .toList();
+                            //     });
+                            //   });
+                            //   return filteredcarmodels_data;
+                            // } ,
+                            dropdownBuilder: (context, selectedText) => Align(
+                                alignment: Alignment.topRight,
+                                child: Container(
+                                  height: 50,
+                                  width: ScreenUtil.getWidth(context) / 1.1,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                        color: themeColor.getColor(), width: 2),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      AutoSizeText(
+                                        selectedText.countryName,
+                                        minFontSize: 8,
+                                        maxLines: 1,
+                                        //overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            color: themeColor.getColor(),
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                )),
+                            dropdownItemBuilder: (context, item, isSelected) =>
+                                Padding(
+                                  padding: const EdgeInsets.all(12),
+                                  child: Text(
+                                    item.countryName,
+                                    style: TextStyle(
+                                        color: isSelected
+                                            ? themeColor.getColor()
+                                            : Color(0xFF5D6A78),
+                                        fontSize: isSelected ? 20 : 17,
+                                        fontWeight: isSelected
+                                            ? FontWeight.w600
+                                            : FontWeight.w600),
+                                  ),
+                                ),
+                            onChanged: (item) {
+                              prodcountry_id.text = item.id.toString();
+                            },
+                            // onFind: (text) {
+                            //
+                            // },
+                            labelStyle: TextStyle(fontSize: 20),
+                            titleStyle: TextStyle(fontSize: 20),
+                            selectedItem: ProdCountry(countryName:  'Select Product Country'),
+                            label: "ProdCountry",
+                            showSearchBox: false,
+                            isUnderLine: false),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(6.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 4, top: 4),
+                        child: FindDropdown<Manufacturer>(
+                            items: _manufacturers,
+                            // onFind: (f) async {
+                            //   search.run(() {
+                            //     setState(() {
+                            //       filteredcarmodels_data = carmodels
+                            //           .where((u) =>
+                            //       (u.carmodel
+                            //           .toLowerCase()
+                            //           .contains(f
+                            //           .toLowerCase())))
+                            //           .toList();
+                            //     });
+                            //   });
+                            //   return filteredcarmodels_data;
+                            // } ,
+                            dropdownBuilder: (context, selectedText) => Align(
+                                alignment: Alignment.topRight,
+                                child: Container(
+                                  height: 50,
+                                  width: ScreenUtil.getWidth(context) / 1.1,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                        color: themeColor.getColor(), width: 2),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      AutoSizeText(
+                                        selectedText.manufacturerName,
+                                        minFontSize: 8,
+                                        maxLines: 1,
+                                        //overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            color: themeColor.getColor(),
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                )),
+                            dropdownItemBuilder: (context, item, isSelected) =>
+                                Padding(
+                                  padding: const EdgeInsets.all(12),
+                                  child: Text(
+                                    item.manufacturerName,
+                                    style: TextStyle(
+                                        color: isSelected
+                                            ? themeColor.getColor()
+                                            : Color(0xFF5D6A78),
+                                        fontSize: isSelected ? 20 : 17,
+                                        fontWeight: isSelected
+                                            ? FontWeight.w600
+                                            : FontWeight.w600),
+                                  ),
+                                ),
+                            onChanged: (item) {
+                              manufacturer_id.text = item.id.toString();
+                            },
+                            // onFind: (text) {
+                            //
+                            // },
+                            labelStyle: TextStyle(fontSize: 20),
+                            titleStyle: TextStyle(fontSize: 20),
+                            selectedItem: Manufacturer(manufacturerName: 'Select manufacturer'),
+                            label: "manufacturer",
+                            showSearchBox: false,
+                            isUnderLine: false),
+                      ),
+                    ),
+                    Container(
                       margin: EdgeInsets.symmetric(vertical: 10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -902,6 +1070,8 @@ class _Add_ProductState extends State<Add_Product> {
                               "quantity": quantityController.text,
                               "serial_number": serialcontroler.text,
                               "tags": tagscontroler.text,
+                              "manufacturer_id": manufacturer_id.text,
+                              "prodcountry_id": prodcountry_id.text,
                             }).then((value) {
                               if (value != null) {
                                 setState(() {
@@ -948,6 +1118,7 @@ class _Add_ProductState extends State<Add_Product> {
           CarMades = CarsMade.fromJson(value).data;
         });
       }
+      getAllParts_Category();
     });
   }
 
@@ -963,7 +1134,6 @@ class _Add_ProductState extends State<Add_Product> {
           }
         });
       }
-      getAllParts_Category();
     });
   }
 
@@ -1016,6 +1186,27 @@ class _Add_ProductState extends State<Add_Product> {
       if (value != null) {
         setState(() {
           _tags = Tags_model.fromJson(value).data;
+        });
+      }
+      getAllprodcountry();
+    });
+  }
+  Future<void> getAllprodcountry() async {
+    API(context).get('prodcountries/list').then((value) {
+      if (value != null) {
+        setState(() {
+          _prodcountries = ProdCountry_model.fromJson(value).data;
+        });
+      }
+      getAllmanufacturer();
+
+    });
+  }
+  Future<void> getAllmanufacturer() async {
+    API(context).get('manufacturer/list').then((value) {
+      if (value != null) {
+        setState(() {
+          _manufacturers = Manufacturer_model.fromJson(value).data;
         });
       }
     });
