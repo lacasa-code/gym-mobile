@@ -240,9 +240,7 @@ class _edit_StoreState extends State<edit_Store> {
                                           fillColor: Color(0xfff3f3f4),
                                           filled: true),
                                       validator: (String value) {
-                                        if (value.isEmpty) {
-                                          return "Moderator Phone Alternative";
-                                        } else if (value.length < 8) {
+                                        if (value.length > 0 && value.length < 8) {
                                           return "Moderator Phone Alternative" + ' < 8';
                                         }
                                         _formKey.currentState.save();
@@ -311,16 +309,14 @@ class _edit_StoreState extends State<edit_Store> {
                                   if (_formKey.currentState.validate()) {
                                     _formKey.currentState.save();
                                     setState(() => loading = true);
-                                    API(context).post("add/stores", {
+                                    API(context).post("update/stores/${widget.store.id}", {
                                       "name": namecontroler.text,
                                       "address": AddressController.text,
                                       "lat": lat,
                                       "long": long,
                                       "moderator_name": moderatorNameController.text,
-                                      "moderator_phone":
-                                      "00966${moderatorPhoneController.text}",
-                                      "moderator_alt_phone":
-                                      "00966${moderatorPhoneAltController.text}"
+                                      "moderator_phone": "${moderatorPhoneController.text}",
+                                      "moderator_alt_phone":"${moderatorPhoneAltController.text}"
                                     }).then((value) {
                                       setState(() {
                                         loading = false;

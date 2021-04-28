@@ -135,23 +135,14 @@ class Store {
 
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
-    map["id"] = _id;
     map["name"] = _name;
     map["address"] = _address;
     map["lat"] = _lat;
     map["long"] = _long;
-    map["vendor_id"] = _vendorId;
     map["moderator_name"] = _moderatorName;
     map["moderator_phone"] = _moderatorPhone;
     map["moderator_alt_phone"] = _moderatorAltPhone;
-    map["status"] = _status;
-    map["created_at"] = _createdAt;
-    map["updated_at"] = _updatedAt;
-    map["deleted_at"] = _deletedAt;
-    map["vendor_name"] = _vendorName;
-    if (_vendor != null) {
-      map["vendor"] = _vendor.toJson();
-    }
+
     return map;
   }
 }

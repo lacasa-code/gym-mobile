@@ -1,12 +1,10 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:geocoder/model.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:intl/intl.dart';
 import 'package:map_pin_picker/map_pin_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
@@ -224,9 +222,7 @@ class _add_StoreState extends State<add_Store> {
                                       fillColor: Color(0xfff3f3f4),
                                       filled: true),
                                   validator: (String value) {
-                                    if (value.isEmpty) {
-                                      return "Moderator Phone Alternative";
-                                    } else if (value.length < 8) {
+                                     if (value.length > 0 && value.length < 8) {
                                       return "Moderator Phone Alternative" + ' < 8';
                                     }
                                     _formKey.currentState.save();
@@ -301,10 +297,8 @@ class _add_StoreState extends State<add_Store> {
                                   "lat": lat,
                                   "long": long,
                                   "moderator_name": moderatorNameController.text,
-                                  "moderator_phone":
-                                      "00966${moderatorPhoneController.text}",
-                                  "moderator_alt_phone":
-                                      "00966${moderatorPhoneAltController.text}"
+                                  "moderator_phone": "00966${moderatorPhoneController.text}",
+                                  "moderator_alt_phone": "00966${moderatorPhoneAltController.text}"
                                 }).then((value) {
                                   setState(() {
                                     loading = false;
