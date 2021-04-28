@@ -309,15 +309,8 @@ class _edit_StoreState extends State<edit_Store> {
                                   if (_formKey.currentState.validate()) {
                                     _formKey.currentState.save();
                                     setState(() => loading = true);
-                                    API(context).post("update/stores/${widget.store.id}", {
-                                      "name": namecontroler.text,
-                                      "address": AddressController.text,
-                                      "lat": lat,
-                                      "long": long,
-                                      "moderator_name": moderatorNameController.text,
-                                      "moderator_phone": "${moderatorPhoneController.text}",
-                                      "moderator_alt_phone":"${moderatorPhoneAltController.text}"
-                                    }).then((value) {
+                                    API(context).post("update/stores/${widget.store.id}", Store(name: namecontroler.text,address:AddressController.text,lat: lat.toString(),long: long.toString(),
+                                        moderatorName: moderatorNameController.text,moderatorPhone: moderatorPhoneController.text,moderatorAltPhone: moderatorPhoneAltController.text ).toJson()).then((value) {
                                       setState(() {
                                         loading = false;
                                       });

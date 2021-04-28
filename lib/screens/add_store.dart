@@ -7,6 +7,7 @@ import 'package:geocoder/model.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:map_pin_picker/map_pin_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:trkar_vendor/model/store_model.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
@@ -288,18 +289,13 @@ class _add_StoreState extends State<add_Store> {
                               ),
                             ),
                             onPressed: () async {
+
                               if (_formKey.currentState.validate()) {
                                 _formKey.currentState.save();
                                 setState(() => loading = true);
-                                API(context).post("add/stores", {
-                                  "name": namecontroler.text,
-                                  "address": AddressController.text,
-                                  "lat": lat,
-                                  "long": long,
-                                  "moderator_name": moderatorNameController.text,
-                                  "moderator_phone": "00966${moderatorPhoneController.text}",
-                                  "moderator_alt_phone": "00966${moderatorPhoneAltController.text}"
-                                }).then((value) {
+
+                                API(context).post("add/stores", Store(name: namecontroler.text,address:AddressController.text,lat: lat.toString(),long: long.toString(),
+                                    moderatorName: moderatorNameController.text,moderatorPhone: moderatorPhoneController.text,moderatorAltPhone: moderatorPhoneAltController.text ).toJson()).then((value) {
                                   setState(() {
                                     loading = false;
                                   });
