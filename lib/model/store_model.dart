@@ -142,7 +142,7 @@ class Store {
     map["moderator_name"] = _moderatorName;
     map["moderator_phone"] = moderatorPhone;
     if (_moderatorAltPhone.isNotEmpty) {
-      map["moderator_alt_phone"] = "_moderatorAltPhone";
+      map["moderator_alt_phone"] = moderatorAltPhone;
     }
     return map;
   }

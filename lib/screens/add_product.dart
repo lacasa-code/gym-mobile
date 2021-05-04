@@ -8,10 +8,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/car_made.dart';
 import 'package:trkar_vendor/model/carmodel.dart';
-import 'package:trkar_vendor/model/prod_country.dart';
-import 'package:trkar_vendor/model/manufacturer_model.dart';
 import 'package:trkar_vendor/model/category.dart';
+import 'package:trkar_vendor/model/manufacturer_model.dart';
 import 'package:trkar_vendor/model/part__category.dart';
+import 'package:trkar_vendor/model/prod_country.dart';
 import 'package:trkar_vendor/model/store_model.dart';
 import 'package:trkar_vendor/model/tags_model.dart';
 import 'package:trkar_vendor/model/year.dart';
@@ -61,7 +61,7 @@ class _Add_ProductState extends State<Add_Product> {
   DateTime selectedDate = DateTime.now();
   String SelectDate = ' ';
   File _image;
-  List<String> photos=[];
+  List<String> photos = [];
   String base64Image;
   final search = Search(milliseconds: 1000);
 
@@ -74,7 +74,8 @@ class _Add_ProductState extends State<Add_Product> {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
         base64Image = base64Encode(_image.readAsBytesSync());
-        print(base64Image);photos.add(base64Image);
+        print(base64Image);
+        photos.add(base64Image);
       } else {
         print('No image selected.');
       }
@@ -889,7 +890,8 @@ class _Add_ProductState extends State<Add_Product> {
                             // },
                             labelStyle: TextStyle(fontSize: 20),
                             titleStyle: TextStyle(fontSize: 20),
-                            selectedItem: ProdCountry(countryName:  'Select Product Country'),
+                            selectedItem: ProdCountry(
+                                countryName: 'Select Product Country'),
                             label: "ProdCountry",
                             showSearchBox: false,
                             isUnderLine: false),
@@ -969,7 +971,8 @@ class _Add_ProductState extends State<Add_Product> {
                             // },
                             labelStyle: TextStyle(fontSize: 20),
                             titleStyle: TextStyle(fontSize: 20),
-                            selectedItem: Manufacturer(manufacturerName: 'Select manufacturer'),
+                            selectedItem: Manufacturer(
+                                manufacturerName: 'Select manufacturer'),
                             label: "manufacturer",
                             showSearchBox: false,
                             isUnderLine: false),
@@ -1060,8 +1063,10 @@ class _Add_ProductState extends State<Add_Product> {
                               "categories": "[1, 2]",
                               "car_made_id": car_made_id_controler.text,
                               "car_model_id": car_model_id_Controler.text,
+                              "transmission_id ": '1',
                               "year_id": year_idcontroler.text,
-                              "part_category_id": part_category_id_controller.text,
+                              "part_category_id":
+                                  part_category_id_controller.text,
                               "photo": photos.map((v) => v).toList(),
                               "discount": discountcontroler.text,
                               "price": price_controller.text,
@@ -1191,6 +1196,7 @@ class _Add_ProductState extends State<Add_Product> {
       getAllprodcountry();
     });
   }
+
   Future<void> getAllprodcountry() async {
     API(context).get('prodcountries/list').then((value) {
       if (value != null) {
@@ -1199,9 +1205,9 @@ class _Add_ProductState extends State<Add_Product> {
         });
       }
       getAllmanufacturer();
-
     });
   }
+
   Future<void> getAllmanufacturer() async {
     API(context).get('manufacturer/list').then((value) {
       if (value != null) {
