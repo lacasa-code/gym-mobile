@@ -36,7 +36,8 @@ class _Edit_StaffState extends State<Edit_Staff> {
     getRoles();
     passwordController = TextEditingController();
     namecontroler = TextEditingController(text: widget.user.name);
-    rolesController = TextEditingController();
+    rolesController =
+        TextEditingController(text: widget.user.roles.id.toString());
     confirempasswordController = TextEditingController();
     emailController = TextEditingController(text: widget.user.email);
     super.initState();
@@ -124,7 +125,7 @@ class _Edit_StaffState extends State<Edit_Staff> {
                     Text(
                       "Roles",
                       style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                     ),
                     Container(
                       padding: const EdgeInsets.all(6.0),
@@ -136,20 +137,6 @@ class _Edit_StaffState extends State<Edit_Staff> {
                         padding: const EdgeInsets.only(bottom: 4, top: 4),
                         child: FindDropdown<Role>(
                             items: roles,
-                            // onFind: (f) async {
-                            //   search.run(() {
-                            //     setState(() {
-                            //       filteredcarmodels_data = carmodels
-                            //           .where((u) =>
-                            //       (u.carmodel
-                            //           .toLowerCase()
-                            //           .contains(f
-                            //           .toLowerCase())))
-                            //           .toList();
-                            //     });
-                            //   });
-                            //   return filteredcarmodels_data;
-                            // } ,
                             dropdownBuilder: (context, selectedText) => Align(
                                 alignment: Alignment.topRight,
                                 child: Container(
@@ -162,10 +149,10 @@ class _Edit_StaffState extends State<Edit_Staff> {
                                   ),
                                   child: Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
                                       AutoSizeText(
-                                        "${selectedText==null?' ':selectedText.title}",
+                                        "${selectedText == null ? ' ' : selectedText.title}",
                                         minFontSize: 8,
                                         maxLines: 1,
                                         //overflow: TextOverflow.ellipsis,
@@ -195,19 +182,14 @@ class _Edit_StaffState extends State<Edit_Staff> {
                             onChanged: (item) {
                               rolesController.text = item.id.toString();
                             },
-                            // onFind: (text) {
-                            //
-                            // },
                             labelStyle: TextStyle(fontSize: 20),
                             titleStyle: TextStyle(fontSize: 20),
-                            selectedItem:
-                            Role(title: 'Select  Role'),
+                            selectedItem: widget.user.roles,
                             label: " Roles",
                             showSearchBox: false,
                             isUnderLine: false),
                       ),
                     ),
-
                     SizedBox(
                       height: 10,
                     ),
@@ -314,36 +296,39 @@ class _Edit_StaffState extends State<Edit_Staff> {
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
                             setState(() => loading = true);
-                            API(context).Put("users/${widget.user.id}", {
-                              "name": namecontroler.text,
-                              "email": emailController.text,
-                              "password": passwordController.text,
-                              "roles": 1
-                            }).then((value) {
-                              if (value != null) {
-                                setState(() {
-                                  loading = false;
-                                });
-                                print(value.containsKey('errors'));
-                                if (value.containsKey('errors')) {
-                                  showDialog(
-                                    context: context,
-                                    builder: (_) => ResultOverlay(
-                                      value['errors'].toString(),
-                                    ),
-                                  );
-                                } else {
-                                  Navigator.pop(context);
 
-                                  showDialog(
-                                    context: context,
-                                    builder: (_) => ResultOverlay(
-                                      'Done',
-                                    ),
-                                  );
+                            if (rolesController.text.isNotEmpty) {
+                              API(context).Put("users/${widget.user.id}", {
+                                "name": namecontroler.text,
+                                "email": emailController.text,
+                                "password": passwordController.text,
+                                "roles": rolesController.text
+                              }).then((value) {
+                                if (value != null) {
+                                  setState(() {
+                                    loading = false;
+                                  });
+                                  print(value.containsKey('errors'));
+                                  if (value.containsKey('errors')) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (_) => ResultOverlay(
+                                        value['errors'].toString(),
+                                      ),
+                                    );
+                                  } else {
+                                    Navigator.pop(context);
+
+                                    showDialog(
+                                      context: context,
+                                      builder: (_) => ResultOverlay(
+                                        'Done',
+                                      ),
+                                    );
+                                  }
                                 }
-                              }
-                            });
+                              });
+                            }
                           }
                         },
                       ),
@@ -357,6 +342,7 @@ class _Edit_StaffState extends State<Edit_Staff> {
       ),
     );
   }
+
   Future<void> getRoles() async {
     API(context).get('roleslist').then((value) {
       if (value != null) {
@@ -366,5 +352,4 @@ class _Edit_StaffState extends State<Edit_Staff> {
       }
     });
   }
-
 }

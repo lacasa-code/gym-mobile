@@ -60,6 +60,18 @@ class Invoice_item extends StatelessWidget {
                     SizedBox(
                       height: 5,
                     ),
+                    AutoSizeText(
+                      'Status : ${hall_model.status}',
+                      minFontSize: 10,
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Color(0xFF5D6A78),
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
                     hall_model.vendorName == null
                         ? Container()
                         : AutoSizeText(

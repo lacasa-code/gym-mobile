@@ -4,10 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trkar_vendor/screens/Maintenance.dart';
-import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/navigator.dart';
 import 'package:trkar_vendor/widget/ResultOverlay.dart';
 
@@ -42,8 +40,8 @@ class API {
       } else if (response.statusCode == 401) {
         showDialog(
           context: context,
-          builder: (_) =>
-              ResultOverlay('${jsonDecode(response.body)['errors']}'),
+          builder: (_) => ResultOverlay(
+              '${jsonDecode(response.body)['errors'] ?? jsonDecode(response.body)}'),
         );
       } else {
         return jsonDecode(response.body);
@@ -111,7 +109,6 @@ class API {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
             'Authorization': 'Bearer ${prefs.getString('token')}',
-            'locale': Provider.of<Provider_control>(context).getlocal(),
           },
           body: json.encode(body));
       print(jsonDecode(response.body));

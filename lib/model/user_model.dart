@@ -1,3 +1,5 @@
+import 'package:trkar_vendor/model/roles_model.dart';
+
 /// data : [{"id":4,"name":"thirduser","email":"seconduser@user.com","added_by_id":2,"roles":[{"id":2,"title":"User","added_by_id":1,"pivot":{"user_id":4,"role_id":2}}]}]
 /// total : 6
 
@@ -22,8 +24,6 @@ class User_model {
     }
     _total = json["total"];
   }
-
-
 }
 
 /// id : 4
@@ -37,15 +37,15 @@ class User {
   String _name;
   String _email;
   int _addedById;
-  Roles _roles;
+  Role _roles;
 
   int get id => _id;
   String get name => _name;
   String get email => _email;
   int get addedById => _addedById;
-  Roles get roles => _roles;
+  Role get roles => _roles;
 
-  User({int id, String name, String email, int addedById, Roles roles}) {
+  User({int id, String name, String email, int addedById, Role roles}) {
     _id = id;
     _name = name;
     _email = email;
@@ -59,54 +59,15 @@ class User {
     _email = json["email"];
     _addedById = json["added_by_id"];
     if (json["roles"] != null) {
-        _roles=Roles.fromJson(json["roles"]);
-
+      _roles = Role.fromJson(json["roles"]);
     }
   }
-
 }
 
 /// id : 2
 /// title : "User"
 /// added_by_id : 1
 /// pivot : {"user_id":4,"role_id":2}
-
-class Roles {
-  int _id;
-  String _title;
-  int _addedById;
-  Pivot _pivot;
-
-  int get id => _id;
-  String get title => _title;
-  int get addedById => _addedById;
-  Pivot get pivot => _pivot;
-
-  Roles({int id, String title, int addedById, Pivot pivot}) {
-    _id = id;
-    _title = title;
-    _addedById = addedById;
-    _pivot = pivot;
-  }
-
-  Roles.fromJson(dynamic json) {
-    _id = json["id"];
-    _title = json["title"];
-    _addedById = json["added_by_id"];
-    _pivot = json["pivot"] != null ? Pivot.fromJson(json["pivot"]) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
-    map["id"] = _id;
-    map["title"] = _title;
-    map["added_by_id"] = _addedById;
-    if (_pivot != null) {
-      map["pivot"] = _pivot.toJson();
-    }
-    return map;
-  }
-}
 
 /// user_id : 4
 /// role_id : 2

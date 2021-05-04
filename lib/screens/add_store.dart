@@ -91,11 +91,11 @@ class _add_StoreState extends State<add_Store> {
                   long = cameraPosition.target.longitude;
                   List<Address> addresses = await Geocoder.local
                       .findAddressesFromCoordinates(Coordinates(
-                      cameraPosition.target.latitude,
-                      cameraPosition.target.longitude));
+                          cameraPosition.target.latitude,
+                          cameraPosition.target.longitude));
                   // update the ui with the address
                   AddressController.text =
-                  '${addresses.first?.addressLine ?? ''}';
+                      '${addresses.first?.addressLine ?? ''}';
                 },
               ),
             ),
@@ -112,7 +112,8 @@ class _add_StoreState extends State<add_Store> {
                       children: [
                         Text(
                           "name",
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15),
                         ),
                         SizedBox(
                           height: 10,
@@ -139,7 +140,8 @@ class _add_StoreState extends State<add_Store> {
                         ),
                         Text(
                           "Moderator Name",
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15),
                         ),
                         SizedBox(
                           height: 10,
@@ -223,8 +225,9 @@ class _add_StoreState extends State<add_Store> {
                                       fillColor: Color(0xfff3f3f4),
                                       filled: true),
                                   validator: (String value) {
-                                     if (value.length > 0 && value.length < 8) {
-                                      return "Moderator Phone Alternative" + ' < 8';
+                                    if (value.length > 0 && value.length < 8) {
+                                      return "Moderator Phone Alternative" +
+                                          ' < 8';
                                     }
                                     _formKey.currentState.save();
 
@@ -289,13 +292,35 @@ class _add_StoreState extends State<add_Store> {
                               ),
                             ),
                             onPressed: () async {
-
                               if (_formKey.currentState.validate()) {
                                 _formKey.currentState.save();
                                 setState(() => loading = true);
 
-                                API(context).post("add/stores", Store(name: namecontroler.text,address:AddressController.text,lat: lat.toString(),long: long.toString(),
-                                    moderatorName: moderatorNameController.text,moderatorPhone: moderatorPhoneController.text,moderatorAltPhone: moderatorPhoneAltController.text ).toJson()).then((value) {
+                                API(context)
+                                    .post(
+                                        "add/stores",
+                                        Store(
+                                                name: namecontroler.text,
+                                                address: AddressController.text,
+                                                lat: lat.toString(),
+                                                long: long.toString(),
+                                                moderatorName:
+                                                    moderatorNameController
+                                                        .text,
+                                                moderatorPhone:
+                                                    moderatorPhoneController
+                                                            .text.isEmpty
+                                                        ? moderatorPhoneController
+                                                            .text
+                                                        : "00966${moderatorPhoneController.text}",
+                                                moderatorAltPhone:
+                                                    moderatorPhoneAltController
+                                                            .text.isEmpty
+                                                        ? moderatorPhoneAltController
+                                                            .text
+                                                        : "00966${moderatorPhoneAltController.text}")
+                                            .toJson())
+                                    .then((value) {
                                   setState(() {
                                     loading = false;
                                   });

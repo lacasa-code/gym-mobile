@@ -217,8 +217,7 @@ class _StoresState extends State<Stores> {
                                   InkWell(
                                     onTap: () {
                                       API(context)
-                                          .Delete(
-                                              "stores/${stores[index].id}")
+                                          .Delete("stores/${stores[index].id}")
                                           .then((value) {
                                         showDialog(
                                           context: context,
@@ -293,6 +292,7 @@ class _StoresState extends State<Stores> {
     API(context).get('stores').then((value) {
       if (value != null) {
         setState(() {
+          filteredStores = stores = [];
           filteredStores = stores = Store_model.fromJson(value).data;
         });
       }

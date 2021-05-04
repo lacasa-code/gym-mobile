@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Provider_control with ChangeNotifier {
-  Color _themeData = Colors.teal;
+  Color _themeData = Colors.blueGrey;
   String local = 'en';
   bool isLogin = false;
 

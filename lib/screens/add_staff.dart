@@ -124,7 +124,6 @@ class _add_StaffState extends State<add_Staff> {
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                     ),
-
                     Container(
                       padding: const EdgeInsets.all(6.0),
                       decoration: BoxDecoration(
@@ -135,20 +134,6 @@ class _add_StaffState extends State<add_Staff> {
                         padding: const EdgeInsets.only(bottom: 4, top: 4),
                         child: FindDropdown<Role>(
                             items: roles,
-                            // onFind: (f) async {
-                            //   search.run(() {
-                            //     setState(() {
-                            //       filteredcarmodels_data = carmodels
-                            //           .where((u) =>
-                            //       (u.carmodel
-                            //           .toLowerCase()
-                            //           .contains(f
-                            //           .toLowerCase())))
-                            //           .toList();
-                            //     });
-                            //   });
-                            //   return filteredcarmodels_data;
-                            // } ,
                             dropdownBuilder: (context, selectedText) => Align(
                                 alignment: Alignment.topRight,
                                 child: Container(
@@ -159,20 +144,30 @@ class _add_StaffState extends State<add_Staff> {
                                     border: Border.all(
                                         color: themeColor.getColor(), width: 2),
                                   ),
-                                  child: Row(
+                                  child: Column(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      AutoSizeText(
-                                        "${selectedText == null ? ' ' : selectedText.title}",
-                                        minFontSize: 8,
-                                        maxLines: 1,
-                                        //overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                            color: themeColor.getColor(),
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
-                                      ),
+                                      selectedText == null
+                                          ? AutoSizeText(
+                                              " Select Roles",
+                                              minFontSize: 8,
+                                              maxLines: 1,
+                                              //overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  color: Colors.red,
+                                                  fontSize: 18),
+                                            )
+                                          : AutoSizeText(
+                                              "${selectedText.title}",
+                                              minFontSize: 8,
+                                              maxLines: 1,
+                                              //overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  color: themeColor.getColor(),
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
                                     ],
                                   ),
                                 )),
@@ -194,12 +189,11 @@ class _add_StaffState extends State<add_Staff> {
                             onChanged: (item) {
                               rolesController.text = item.id.toString();
                             },
-                            // onFind: (text) {
-                            //
-                            // },
+                            validate: (role) {
+                              return 'role';
+                            },
                             labelStyle: TextStyle(fontSize: 20),
                             titleStyle: TextStyle(fontSize: 20),
-                            selectedItem: Role(title: 'Select  Role'),
                             label: " Roles",
                             showSearchBox: false,
                             isUnderLine: false),
@@ -328,57 +322,58 @@ class _add_StaffState extends State<add_Staff> {
                     ),
                     Center(
                       child: FlatButton(
-                        color: themeColor.getColor(),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            'Save',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
+                          color: themeColor.getColor(),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'Save',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 22,
+                              ),
                             ),
                           ),
-                        ),
-                        onPressed: () async {
-                          if (_formKey.currentState.validate()) {
-                            _formKey.currentState.save();
-                            setState(() => loading = true);
-                            API(context).post("users", {
-                              "name": namecontroler.text,
-                              "email": emailController.text,
-                              "password": passwordController.text,
-                              "roles": rolesController.text
-                            }).then((value) {
-                              if (value != null) {
-                                setState(() {
-                                  loading = false;
-                                });
-                                print(value.containsKey('errors'));
-                                if (value.containsKey('errors')) {
-                                  showDialog(
-                                    context: context,
-                                    builder: (_) => ResultOverlay(
-                                      value['errors'].toString(),
-                                    ),
-                                  );
-                                } else {
-                                  Navigator.pop(context);
+                          onPressed: () async {
+                            if (_formKey.currentState.validate()) {
+                              _formKey.currentState.save();
+                              setState(() => loading = true);
+                              if (rolesController.text.isNotEmpty) {
+                                API(context).post("users", {
+                                  "name": namecontroler.text,
+                                  "email": emailController.text,
+                                  "password": passwordController.text,
+                                  "roles": rolesController.text
+                                }).then((value) {
+                                  if (value != null) {
+                                    setState(() {
+                                      loading = false;
+                                    });
+                                    print(value.containsKey('errors'));
+                                    if (value.containsKey('errors')) {
+                                      showDialog(
+                                        context: context,
+                                        builder: (_) => ResultOverlay(
+                                          value['errors'].toString(),
+                                        ),
+                                      );
+                                    } else {
+                                      Navigator.pop(context);
 
-                                  showDialog(
-                                    context: context,
-                                    builder: (_) => ResultOverlay(
-                                      'Done',
-                                    ),
-                                  );
-                                }
+                                      showDialog(
+                                        context: context,
+                                        builder: (_) => ResultOverlay(
+                                          'Done',
+                                        ),
+                                      );
+                                    }
+                                  }
+                                });
                               }
-                            });
-                          }
-                        },
-                      ),
+                            }
+                          }),
                     ),
                   ],
                 ),

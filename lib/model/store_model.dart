@@ -140,9 +140,9 @@ class Store {
     map["lat"] = _lat;
     map["long"] = _long;
     map["moderator_name"] = _moderatorName;
-    map["moderator_phone"] = "00966$_moderatorPhone";
-    if(_moderatorAltPhone.isNotEmpty) {
-      map["moderator_alt_phone"] = "00966$_moderatorAltPhone";
+    map["moderator_phone"] = moderatorPhone;
+    if (_moderatorAltPhone.isNotEmpty) {
+      map["moderator_alt_phone"] = "_moderatorAltPhone";
     }
     return map;
   }

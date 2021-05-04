@@ -37,16 +37,13 @@ class _HomeState extends State<Home> {
     if (picked != null && picked != date)
       setState(() {
         _fromcontroller.text = DateFormat('yyyy-MM-dd').format(picked);
-        from=picked;
+        from = picked;
       });
   }
 
   Future<void> _selectDateto(BuildContext context) async {
     final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: date,
-        firstDate: from,
-        lastDate: date);
+        context: context, initialDate: date, firstDate: from, lastDate: date);
     print("${DateFormat('yyyy-MM-dd').format(picked)}");
 
     if (picked != null)
@@ -204,7 +201,9 @@ class _HomeState extends State<Home> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text("Total Sale"),
-                                Text("${basic_report.totalSale}",
+                                Text(
+                                    "${basic_report.totalSale.roundToDouble()}",
+                                    maxLines: 1,
                                     style: TextStyle(
                                         color: themeColor.getColor())),
                               ],
