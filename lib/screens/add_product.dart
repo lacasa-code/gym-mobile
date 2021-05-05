@@ -14,6 +14,7 @@ import 'package:trkar_vendor/model/part__category.dart';
 import 'package:trkar_vendor/model/prod_country.dart';
 import 'package:trkar_vendor/model/store_model.dart';
 import 'package:trkar_vendor/model/tags_model.dart';
+import 'package:trkar_vendor/model/transmissions.dart';
 import 'package:trkar_vendor/model/year.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/SerachLoading.dart';
@@ -38,18 +39,20 @@ class _Add_ProductState extends State<Add_Product> {
   List<Store> _store;
   List<Tag> _tags;
   List<Categories> _category;
-  List<int> categorySelect = [];
+  List<String> categories;
   List<Part_Category> part_Categories;
   List<Carmodel> filteredcarmodels_data = List();
   List<CarMade> filteredCarMades_data = List();
   List<Manufacturer> _manufacturers;
   List<ProdCountry> _prodcountries;
+  List<Transmission> transmissions;
 
   TextEditingController serialcontroler, namecontroler, description;
   TextEditingController car_made_id_controler,
       car_model_id_Controler,
       part_category_id_controller,
       year_idcontroler,
+      transmission_id,
       store_id,
       price_controller,
       tagscontroler,
@@ -86,6 +89,7 @@ class _Add_ProductState extends State<Add_Product> {
   void initState() {
     getAllCareMade();
     serialcontroler = TextEditingController();
+    transmission_id = TextEditingController();
     namecontroler = TextEditingController();
     car_made_id_controler = TextEditingController();
     car_model_id_Controler = TextEditingController();
@@ -263,6 +267,7 @@ class _Add_ProductState extends State<Add_Product> {
                               controller: discountcontroler,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
+                                  suffix: Text('%'),
                                   border: InputBorder.none,
                                   fillColor: Color(0xfff3f3f4),
                                   filled: true))
@@ -643,7 +648,8 @@ class _Add_ProductState extends State<Add_Product> {
                                   ),
                                 ),
                             onChanged: (item) {
-                              categorySelect.add(item.id);
+                              categories = [];
+                              categories.add(item.id.toString());
                             },
                             // onFind: (text) {
                             //
@@ -892,7 +898,7 @@ class _Add_ProductState extends State<Add_Product> {
                             titleStyle: TextStyle(fontSize: 20),
                             selectedItem: ProdCountry(
                                 countryName: 'Select Product Country'),
-                            label: "ProdCountry",
+                            label: "Product Country",
                             showSearchBox: false,
                             isUnderLine: false),
                       ),
@@ -979,6 +985,87 @@ class _Add_ProductState extends State<Add_Product> {
                       ),
                     ),
                     Container(
+                      padding: const EdgeInsets.all(6.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 4, top: 4),
+                        child: FindDropdown<Transmission>(
+                            items: transmissions,
+                            // onFind: (f) async {
+                            //   search.run(() {
+                            //     setState(() {
+                            //       filteredcarmodels_data = carmodels
+                            //           .where((u) =>
+                            //       (u.carmodel
+                            //           .toLowerCase()
+                            //           .contains(f
+                            //           .toLowerCase())))
+                            //           .toList();
+                            //     });
+                            //   });
+                            //   return filteredcarmodels_data;
+                            // } ,
+                            dropdownBuilder: (context, selectedText) => Align(
+                                alignment: Alignment.topRight,
+                                child: Container(
+                                  height: 50,
+                                  width: ScreenUtil.getWidth(context) / 1.1,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                        color: themeColor.getColor(), width: 2),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      AutoSizeText(
+                                        selectedText.transmissionName,
+                                        minFontSize: 8,
+                                        maxLines: 1,
+                                        //overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            color: themeColor.getColor(),
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                )),
+                            dropdownItemBuilder: (context, item, isSelected) =>
+                                Padding(
+                                  padding: const EdgeInsets.all(12),
+                                  child: Text(
+                                    item.transmissionName,
+                                    style: TextStyle(
+                                        color: isSelected
+                                            ? themeColor.getColor()
+                                            : Color(0xFF5D6A78),
+                                        fontSize: isSelected ? 20 : 17,
+                                        fontWeight: isSelected
+                                            ? FontWeight.w600
+                                            : FontWeight.w600),
+                                  ),
+                                ),
+                            onChanged: (item) {
+                              transmission_id.text = item.id.toString();
+                            },
+                            // onFind: (text) {
+                            //
+                            // },
+                            labelStyle: TextStyle(fontSize: 20),
+                            titleStyle: TextStyle(fontSize: 20),
+                            selectedItem: Transmission(
+                                transmissionName: 'Select transmission'),
+                            label: "Transmissions",
+                            showSearchBox: false,
+                            isUnderLine: false),
+                      ),
+                    ),
+                    Container(
                       margin: EdgeInsets.symmetric(vertical: 10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1060,10 +1147,10 @@ class _Add_ProductState extends State<Add_Product> {
                             setState(() => loading = true);
                             API(context).post("add/products", {
                               "name": namecontroler.text,
-                              "categories": "[1, 2]",
+                              "categories": "${categories}",
                               "car_made_id": car_made_id_controler.text,
                               "car_model_id": car_model_id_Controler.text,
-                              "transmission_id ": '1',
+                              "transmission_id": transmission_id.text,
                               "year_id": year_idcontroler.text,
                               "part_category_id":
                                   part_category_id_controller.text,
@@ -1213,6 +1300,17 @@ class _Add_ProductState extends State<Add_Product> {
       if (value != null) {
         setState(() {
           _manufacturers = Manufacturer_model.fromJson(value).data;
+        });
+      }
+      getAllTransmission();
+    });
+  }
+
+  Future<void> getAllTransmission() async {
+    API(context).get('transmissions-list').then((value) {
+      if (value != null) {
+        setState(() {
+          transmissions = Transmissions.fromJson(value).data;
         });
       }
     });

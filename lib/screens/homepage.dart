@@ -13,12 +13,12 @@ import 'package:trkar_vendor/utils/service/API.dart';
 import 'package:trkar_vendor/widget/commons/default_button.dart';
 import 'package:trkar_vendor/widget/hidden_menu.dart';
 
-class Home extends StatefulWidget {
+class HomeMobile extends StatefulWidget {
   @override
-  _HomeState createState() => _HomeState();
+  _HomeMobileState createState() => _HomeMobileState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeMobileState extends State<HomeMobile> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   List<double> data = [];
   List<String> labels = [];

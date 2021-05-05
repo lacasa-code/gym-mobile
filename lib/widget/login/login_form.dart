@@ -112,7 +112,7 @@ class _LoginFormState extends State<LoginForm> {
                         prefs.setString("token", user['token']);
                         prefs.setInt("user_id", user['id']);
                         themeColor.setLogin(true);
-                        Nav.routeReplacement(context, Home());
+                        Nav.routeReplacement(context, HomeMobile());
                       }
                     });
                   }

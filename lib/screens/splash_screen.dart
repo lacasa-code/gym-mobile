@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:trkar_vendor/screens/homepage.dart';
+import 'package:trkar_vendor/screens/home.dart';
 import 'package:trkar_vendor/screens/login.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/navigator.dart';
@@ -52,7 +52,6 @@ class _SplashScreenState extends State<SplashScreen>
                   'assets/images/logo.png',
                   fit: BoxFit.contain,
                   color: themeColor.getColor(),
-
                 ),
               ),
               Text(
