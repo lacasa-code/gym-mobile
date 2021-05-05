@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:trkar_vendor/screens/homepage.dart';
+import 'package:trkar_vendor/screens/home.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/navigator.dart';
@@ -112,7 +112,7 @@ class _LoginFormState extends State<LoginForm> {
                         prefs.setString("token", user['token']);
                         prefs.setInt("user_id", user['id']);
                         themeColor.setLogin(true);
-                        Nav.routeReplacement(context, HomeMobile());
+                        Nav.routeReplacement(context, Home());
                       }
                     });
                   }

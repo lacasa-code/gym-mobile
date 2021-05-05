@@ -193,7 +193,7 @@ class _Edit_profileState extends State<Edit_profile> {
                                   return getTransrlate(context, 'password') +
                                       ' < 8';
                                 } else if (!value.contains(new RegExp(
-                                    r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"))) {
+                                    r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$'))) {
                                   return "one Uppercase, One Lowercase, One Number and one Special Character";
                                 } else if (value !=
                                     confirempasswordController.text) {
