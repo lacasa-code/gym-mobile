@@ -40,6 +40,7 @@ class Product {
   int storeId;
   int manufacturer_id;
   int prodcountry_id;
+  int transmission_id;
   int quantity;
   String serialNumber;
 
@@ -57,6 +58,7 @@ class Product {
       this.photo,
       this.vendorId,
       this.manufacturer_id,
+      this.transmission_id,
       this.prodcountry_id,
       this.storeId,
       this.quantity,
@@ -69,6 +71,7 @@ class Product {
     price = json['price'];
     discount = json['discount'];
     manufacturer_id = json['manufacturer_id'];
+    transmission_id = json['transmission_id'];
     prodcountry_id = json['prodcountry_id'];
     createdAt = json['created_at'];
     carMadeId = json['car_made_id'];
@@ -101,6 +104,7 @@ class Product {
     data['car_model_id'] = this.carModelId;
     data['year_id'] = this.yearId;
     data['part_category_id'] = this.partCategoryId;
+    data['transmission_id'] = this.transmission_id;
     data['vendor_id'] = this.vendorId;
     data['store_id'] = this.storeId;
     data['quantity'] = this.quantity;

@@ -29,9 +29,9 @@ class _Edit_profileState extends State<Edit_profile> {
     confirempasswordController = TextEditingController();
     emailController = TextEditingController();
     SharedPreferences.getInstance().then((pref) => {
-   namecontroler.text=pref.getString('user_name'),
-   emailController.text=pref.getString('user_email'),
-    });
+          namecontroler.text = pref.getString('user_name'),
+          emailController.text = pref.getString('user_email'),
+        });
 
     super.initState();
   }
@@ -112,7 +112,6 @@ class _Edit_profileState extends State<Edit_profile> {
                             border: InputBorder.none,
                             fillColor: Color(0xfff3f3f4),
                             filled: true)),
-
                     SizedBox(
                       height: 20,
                     ),
@@ -193,6 +192,9 @@ class _Edit_profileState extends State<Edit_profile> {
                                 } else if (value.length < 8) {
                                   return getTransrlate(context, 'password') +
                                       ' < 8';
+                                } else if (!value.contains(new RegExp(
+                                    r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"))) {
+                                  return "one Uppercase, One Lowercase, One Number and one Special Character";
                                 } else if (value !=
                                     confirempasswordController.text) {
                                   return getTransrlate(
@@ -270,7 +272,8 @@ class _Edit_profileState extends State<Edit_profile> {
                                   setState(() => loading = true);
                                   API(context).post("change/password", {
                                     "password": passwordController.text,
-                                    "password_confirmation": confirempasswordController.text,
+                                    "password_confirmation":
+                                        confirempasswordController.text,
                                   }).then((value) {
                                     if (value != null) {
                                       setState(() {

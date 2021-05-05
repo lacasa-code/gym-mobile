@@ -16,6 +16,7 @@ import 'package:trkar_vendor/model/prod_country.dart';
 import 'package:trkar_vendor/model/products_model.dart';
 import 'package:trkar_vendor/model/store_model.dart';
 import 'package:trkar_vendor/model/tags_model.dart';
+import 'package:trkar_vendor/model/transmissions.dart';
 import 'package:trkar_vendor/model/year.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/SerachLoading.dart';
@@ -49,6 +50,7 @@ class _Edit_ProductState extends State<Edit_Product> {
   List<Carmodel> filteredcarmodels_data = List();
   List<CarMade> filteredCarMades_data = List();
   List<Manufacturer> _manufacturers;
+  List<Transmission> transmissions;
   List<ProdCountry> _prodcountries;
   TextEditingController serialcontroler, namecontroler, description;
   TextEditingController car_made_id_controler,
@@ -59,6 +61,7 @@ class _Edit_ProductState extends State<Edit_Product> {
       price_controller,
       tagscontroler,
       discountcontroler,
+      transmission_id,
       manufacturer_id,
       prodcountry_id,
       quantityController;
@@ -110,6 +113,8 @@ class _Edit_ProductState extends State<Edit_Product> {
         TextEditingController(text: widget.product.manufacturer_id.toString());
     prodcountry_id =
         TextEditingController(text: widget.product.prodcountry_id.toString());
+    transmission_id =
+        TextEditingController(text: widget.product.transmission_id.toString());
 
     super.initState();
   }
@@ -986,93 +991,106 @@ class _Edit_ProductState extends State<Edit_Product> {
                     ),
                     _prodcountries == null
                         ? Container()
-                        :  Container(
-                      padding: const EdgeInsets.all(6.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 4, top: 4),
-                        child: FindDropdown<ProdCountry>(
-                            items: _prodcountries,
-                            // onFind: (f) async {
-                            //   search.run(() {
-                            //     setState(() {
-                            //       filteredcarmodels_data = carmodels
-                            //           .where((u) =>
-                            //       (u.carmodel
-                            //           .toLowerCase()
-                            //           .contains(f
-                            //           .toLowerCase())))
-                            //           .toList();
-                            //     });
-                            //   });
-                            //   return filteredcarmodels_data;
-                            // } ,
-                            dropdownBuilder: (context, selectedText) => Align(
-                                alignment: Alignment.topRight,
-                                child: Container(
-                                  height: 50,
-                                  width: ScreenUtil.getWidth(context) / 1.1,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(
-                                        color: themeColor.getColor(), width: 2),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      AutoSizeText(
-                                        selectedText==null?" ":   selectedText.countryName,
-                                        minFontSize: 8,
-                                        maxLines: 1,
-                                        //overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                            color: themeColor.getColor(),
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
+                        : Container(
+                            padding: const EdgeInsets.all(6.0),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: 4, top: 4),
+                              child: FindDropdown<ProdCountry>(
+                                  items: _prodcountries,
+                                  // onFind: (f) async {
+                                  //   search.run(() {
+                                  //     setState(() {
+                                  //       filteredcarmodels_data = carmodels
+                                  //           .where((u) =>
+                                  //       (u.carmodel
+                                  //           .toLowerCase()
+                                  //           .contains(f
+                                  //           .toLowerCase())))
+                                  //           .toList();
+                                  //     });
+                                  //   });
+                                  //   return filteredcarmodels_data;
+                                  // } ,
+                                  dropdownBuilder: (context, selectedText) =>
+                                      Align(
+                                          alignment: Alignment.topRight,
+                                          child: Container(
+                                            height: 50,
+                                            width:
+                                                ScreenUtil.getWidth(context) /
+                                                    1.1,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              border: Border.all(
+                                                  color: themeColor.getColor(),
+                                                  width: 2),
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                AutoSizeText(
+                                                  selectedText == null
+                                                      ? " "
+                                                      : selectedText
+                                                          .countryName,
+                                                  minFontSize: 8,
+                                                  maxLines: 1,
+                                                  //overflow: TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                      color:
+                                                          themeColor.getColor(),
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ],
+                                            ),
+                                          )),
+                                  dropdownItemBuilder: (context, item,
+                                          isSelected) =>
+                                      Padding(
+                                        padding: const EdgeInsets.all(12),
+                                        child: Text(
+                                          item.countryName,
+                                          style: TextStyle(
+                                              color: isSelected
+                                                  ? themeColor.getColor()
+                                                  : Color(0xFF5D6A78),
+                                              fontSize: isSelected ? 20 : 17,
+                                              fontWeight: isSelected
+                                                  ? FontWeight.w600
+                                                  : FontWeight.w600),
+                                        ),
                                       ),
-                                    ],
-                                  ),
-                                )),
-                            dropdownItemBuilder: (context, item, isSelected) =>
-                                Padding(
-                                  padding: const EdgeInsets.all(12),
-                                  child: Text(
-                                    item.countryName,
-                                    style: TextStyle(
-                                        color: isSelected
-                                            ? themeColor.getColor()
-                                            : Color(0xFF5D6A78),
-                                        fontSize: isSelected ? 20 : 17,
-                                        fontWeight: isSelected
-                                            ? FontWeight.w600
-                                            : FontWeight.w600),
-                                  ),
-                                ),
-                            onChanged: (item) {
-                              prodcountry_id.text = item.id.toString();
-                            },
-                            // onFind: (text) {
-                            //
-                            // },
-                            labelStyle: TextStyle(fontSize: 20),
-                            titleStyle: TextStyle(fontSize: 20),
-                            selectedItem: _prodcountries.isNotEmpty
-                                ? _prodcountries
-                                    .where((element) =>
-                                        element.id ==
-                                        widget.product.prodcountry_id)
-                                    .first
-                                : ProdCountry(
-                                    countryName: 'Select Product Country'),
-                            label: "ProdCountry",
-                            showSearchBox: false,
-                            isUnderLine: false),
-                      ),
-                    ),
+                                  onChanged: (item) {
+                                    prodcountry_id.text = item.id.toString();
+                                  },
+                                  // onFind: (text) {
+                                  //
+                                  // },
+                                  labelStyle: TextStyle(fontSize: 20),
+                                  titleStyle: TextStyle(fontSize: 20),
+                                  selectedItem: _prodcountries.isNotEmpty
+                                      ? _prodcountries
+                                          .where((element) =>
+                                              element.id ==
+                                              widget.product.prodcountry_id)
+                                          .first
+                                      : ProdCountry(
+                                          countryName:
+                                              'Select Product Country'),
+                                  label: "ProdCountry",
+                                  showSearchBox: false,
+                                  isUnderLine: false),
+                            ),
+                          ),
                     Text(
                       "Manufacturers",
                       style:
@@ -1080,93 +1098,213 @@ class _Edit_ProductState extends State<Edit_Product> {
                     ),
                     _manufacturers == null
                         ? Container()
-                        :   Container(
-                      padding: const EdgeInsets.all(6.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 4, top: 4),
-                        child: FindDropdown<Manufacturer>(
-                            items: _manufacturers,
-                            // onFind: (f) async {
-                            //   search.run(() {
-                            //     setState(() {
-                            //       filteredcarmodels_data = carmodels
-                            //           .where((u) =>
-                            //       (u.carmodel
-                            //           .toLowerCase()
-                            //           .contains(f
-                            //           .toLowerCase())))
-                            //           .toList();
-                            //     });
-                            //   });
-                            //   return filteredcarmodels_data;
-                            // } ,
-                            dropdownBuilder: (context, selectedText) => Align(
-                                alignment: Alignment.topRight,
-                                child: Container(
-                                  height: 50,
-                                  width: ScreenUtil.getWidth(context) / 1.1,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(
-                                        color: themeColor.getColor(), width: 2),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      AutoSizeText(
-                                        selectedText==null?" ": selectedText.manufacturerName,
-                                        minFontSize: 8,
-                                        maxLines: 1,
-                                        //overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                            color: themeColor.getColor(),
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
+                        : Container(
+                            padding: const EdgeInsets.all(6.0),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: 4, top: 4),
+                              child: FindDropdown<Manufacturer>(
+                                  items: _manufacturers,
+                                  // onFind: (f) async {
+                                  //   search.run(() {
+                                  //     setState(() {
+                                  //       filteredcarmodels_data = carmodels
+                                  //           .where((u) =>
+                                  //       (u.carmodel
+                                  //           .toLowerCase()
+                                  //           .contains(f
+                                  //           .toLowerCase())))
+                                  //           .toList();
+                                  //     });
+                                  //   });
+                                  //   return filteredcarmodels_data;
+                                  // } ,
+                                  dropdownBuilder: (context, selectedText) =>
+                                      Align(
+                                          alignment: Alignment.topRight,
+                                          child: Container(
+                                            height: 50,
+                                            width:
+                                                ScreenUtil.getWidth(context) /
+                                                    1.1,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              border: Border.all(
+                                                  color: themeColor.getColor(),
+                                                  width: 2),
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                AutoSizeText(
+                                                  selectedText == null
+                                                      ? " "
+                                                      : selectedText
+                                                          .manufacturerName,
+                                                  minFontSize: 8,
+                                                  maxLines: 1,
+                                                  //overflow: TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                      color:
+                                                          themeColor.getColor(),
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ],
+                                            ),
+                                          )),
+                                  dropdownItemBuilder: (context, item,
+                                          isSelected) =>
+                                      Padding(
+                                        padding: const EdgeInsets.all(12),
+                                        child: Text(
+                                          item.manufacturerName,
+                                          style: TextStyle(
+                                              color: isSelected
+                                                  ? themeColor.getColor()
+                                                  : Color(0xFF5D6A78),
+                                              fontSize: isSelected ? 20 : 17,
+                                              fontWeight: isSelected
+                                                  ? FontWeight.w600
+                                                  : FontWeight.w600),
+                                        ),
                                       ),
-                                    ],
-                                  ),
-                                )),
-                            dropdownItemBuilder: (context, item, isSelected) =>
-                                Padding(
-                                  padding: const EdgeInsets.all(12),
-                                  child: Text(
-                                    item.manufacturerName,
-                                    style: TextStyle(
-                                        color: isSelected
-                                            ? themeColor.getColor()
-                                            : Color(0xFF5D6A78),
-                                        fontSize: isSelected ? 20 : 17,
-                                        fontWeight: isSelected
-                                            ? FontWeight.w600
-                                            : FontWeight.w600),
-                                  ),
-                                ),
-                            onChanged: (item) {
-                              manufacturer_id.text = item.id.toString();
-                            },
-                            // onFind: (text) {
-                            //
-                            // },
-                            labelStyle: TextStyle(fontSize: 20),
-                            titleStyle: TextStyle(fontSize: 20),
-                            selectedItem: _manufacturers.isNotEmpty
-                                ? _manufacturers
-                                    .where((element) =>
-                                        element.id ==
-                                        widget.product.manufacturer_id)
-                                    .first
-                                : Manufacturer(
-                                    manufacturerName: 'Select manufacturer'),
-                            label: "manufacturer",
-                            showSearchBox: false,
-                            isUnderLine: false),
-                      ),
+                                  onChanged: (item) {
+                                    manufacturer_id.text = item.id.toString();
+                                  },
+                                  // onFind: (text) {
+                                  //
+                                  // },
+                                  labelStyle: TextStyle(fontSize: 20),
+                                  titleStyle: TextStyle(fontSize: 20),
+                                  selectedItem: _manufacturers.isNotEmpty
+                                      ? _manufacturers
+                                          .where((element) =>
+                                              element.id ==
+                                              widget.product.manufacturer_id)
+                                          .first
+                                      : Manufacturer(
+                                          manufacturerName:
+                                              'Select manufacturer'),
+                                  label: "manufacturer",
+                                  showSearchBox: false,
+                                  isUnderLine: false),
+                            ),
+                          ),
+                    Text(
+                      "Transmission",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                     ),
+                    transmissions == null
+                        ? Container()
+                        : Container(
+                            padding: const EdgeInsets.all(6.0),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: 4, top: 4),
+                              child: FindDropdown<Transmission>(
+                                  items: transmissions,
+                                  // onFind: (f) async {
+                                  //   search.run(() {
+                                  //     setState(() {
+                                  //       filteredcarmodels_data = carmodels
+                                  //           .where((u) =>
+                                  //       (u.carmodel
+                                  //           .toLowerCase()
+                                  //           .contains(f
+                                  //           .toLowerCase())))
+                                  //           .toList();
+                                  //     });
+                                  //   });
+                                  //   return filteredcarmodels_data;
+                                  // } ,
+                                  dropdownBuilder: (context, selectedText) =>
+                                      Align(
+                                          alignment: Alignment.topRight,
+                                          child: Container(
+                                            height: 50,
+                                            width:
+                                                ScreenUtil.getWidth(context) /
+                                                    1.1,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              border: Border.all(
+                                                  color: themeColor.getColor(),
+                                                  width: 2),
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                AutoSizeText(
+                                                  selectedText == null
+                                                      ? " "
+                                                      : selectedText
+                                                          .transmissionName,
+                                                  minFontSize: 8,
+                                                  maxLines: 1,
+                                                  //overflow: TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                      color:
+                                                          themeColor.getColor(),
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ],
+                                            ),
+                                          )),
+                                  dropdownItemBuilder: (context, item,
+                                          isSelected) =>
+                                      Padding(
+                                        padding: const EdgeInsets.all(12),
+                                        child: Text(
+                                          item.transmissionName,
+                                          style: TextStyle(
+                                              color: isSelected
+                                                  ? themeColor.getColor()
+                                                  : Color(0xFF5D6A78),
+                                              fontSize: isSelected ? 20 : 17,
+                                              fontWeight: isSelected
+                                                  ? FontWeight.w600
+                                                  : FontWeight.w600),
+                                        ),
+                                      ),
+                                  onChanged: (item) {
+                                    transmission_id.text = item.id.toString();
+                                  },
+                                  // onFind: (text) {
+                                  //
+                                  // },
+                                  labelStyle: TextStyle(fontSize: 20),
+                                  titleStyle: TextStyle(fontSize: 20),
+                                  selectedItem: transmissions.isNotEmpty
+                                      ? transmissions
+                                          .where((element) =>
+                                              element.id ==
+                                              widget.product.transmission_id)
+                                          .first
+                                      : Transmission(
+                                          transmissionName:
+                                              'Select Transmission'),
+                                  label: "Transmissions",
+                                  showSearchBox: false,
+                                  isUnderLine: false),
+                            ),
+                          ),
                     Container(
                       margin: EdgeInsets.symmetric(vertical: 10),
                       child: Column(
@@ -1259,6 +1397,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                                   part_category_id_controller.text,
                               // "photo": photos.map((v) => v).toList(),
 
+                              "transmission_id": transmission_id.text,
                               "discount": discountcontroler.text,
                               "price": price_controller.text,
                               "description": description.text,
@@ -1404,6 +1543,17 @@ class _Edit_ProductState extends State<Edit_Product> {
       if (value != null) {
         setState(() {
           _manufacturers = Manufacturer_model.fromJson(value).data;
+        });
+      }
+      getAllTransmission();
+    });
+  }
+
+  Future<void> getAllTransmission() async {
+    API(context).get('transmissions-list').then((value) {
+      if (value != null) {
+        setState(() {
+          transmissions = Transmissions.fromJson(value).data;
         });
       }
     });
