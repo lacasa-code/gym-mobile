@@ -34,28 +34,35 @@ class ItemHiddenMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      margin: EdgeInsets.only(bottom: 15.0, left: 24),
+      margin: EdgeInsets.only(bottom: 10.0,top: 10.0, left: 24),
       child: InkWell(
         onTap: onTap,
-        child: Row(
-          children: <Widget>[
-            Container(width: 32, child: icon),
-            SizedBox(
-              width: 16,
-            ),
-            Expanded(
-              child: Text(
-                name,
-                style: (this.baseStyle ??
+        child: Column(
+          children: [
+            Row(
+              children: <Widget>[
+                Container(width: 32, child: icon),
+                SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: Text(
+                    name,
+                    style: (this.baseStyle ??
                         TextStyle(color: Colors.grey, fontSize: 14.0))
-                    .merge(this.selected
+                        .merge(this.selected
                         ? this.selectedStyle ??
-                            TextStyle(
-                                color: Colors.white, fontSize: 14)
+                        TextStyle(
+                            color: Colors.black, fontSize: 14)
                         : TextStyle(
-                            color: Colors.white, fontSize: 14)),
-              ),
-            )
+                        color: Colors.black, fontSize: 14)),
+                  ),
+                ),
+                onTap==null?Container():Icon(Icons.arrow_forward_ios,color: Colors.black26,size: 20,)
+              ],
+            ),
+            SizedBox(height: 10,),
+            Container(height: 1,color: Colors.black12,)
           ],
         ),
       ),

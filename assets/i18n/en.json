@@ -52,7 +52,7 @@
   "ThankYou": "Thank You",
   "NewPassword": "New Password",
   "ConfirmPassword": "Confirm Password",
-  "LostPassword": "LostPassword",
+  "LostPassword": "Lost Password ?",
   "passwordinvalid": "password Invalid",
   "invalidemail": "Please enter a valid email",
   "PasswordShorter": "Password should be minimum 7 characters",

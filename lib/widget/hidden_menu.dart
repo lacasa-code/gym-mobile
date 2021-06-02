@@ -49,44 +49,50 @@ class _HiddenMenuState extends State<HiddenMenu> {
   Widget build(BuildContext context) {
     final themeColor = Provider.of<Provider_control>(context);
     return Container(
-      color: themeColor.getColor(),
+      color: Colors.white,
+      height: ScreenUtil.getHeight(context),
       child: SingleChildScrollView(
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
             SizedBox(
-              height: ScreenUtil.getHeight(context) / 10,
+              height: 50,
             ),
-            Padding(
-              padding: const EdgeInsets.all(12),
-              child: ListTile(
-                title: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    AutoSizeText(
-                      //  getTransrlate(context, 'welcome'),
-                      am_pm == 'AM'
-                          ? getTransrlate(context, 'good_morning')
-                          : getTransrlate(context, 'good_night'),
-                      style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    AutoSizeText(
-                      name == null ? getTransrlate(context, 'gust') : name,
-                      style: TextStyle(
-                          fontSize: 17,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w400),
-                    )
-                  ],
+            Container(
+              color: themeColor.getColor(),
+              height: 70,
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            //scaffoldKey.currentState.openEndDrawer();
+                            Navigator.pop(context);
+                          },
+                          icon: Icon(
+                            Icons.close,size: 35,
+                            color: Colors.white,
+                          )),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: Image.asset(
+                          "assets/images/logo.png",
+                          width: ScreenUtil.getWidth(context) / 4,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
+            SizedBox(
+              height:  10,
+            ),
             Container(
-              padding: const EdgeInsets.only(right: 16, left: 16),
+              padding: const EdgeInsets.only(right: 16, left: 16,top: 10),
               child: NotificationListener<OverscrollIndicatorNotification>(
                 onNotification: (scroll) {
                   scroll.disallowGlow();
@@ -94,178 +100,155 @@ class _HiddenMenuState extends State<HiddenMenu> {
                 },
                 child: Column(
                   children: <Widget>[
-                    InkWell(
+                    ItemHiddenMenu(
                       onTap: () {
                         Nav.route(context, Staff());
-                      },
-                      child: ItemHiddenMenu(
-                        icon: Icon(
-                          Icons.supervised_user_circle,
-                          size: 25,
-                          color: Colors.white.withOpacity(0.8),
-                        ),
-                        name: getTransrlate(context, 'staff'),
-                        baseStyle: TextStyle(
-                            color: Colors.white.withOpacity(0.6),
-                            fontSize: 19.0,
-                            fontWeight: FontWeight.w800),
-                        colorLineSelected: Colors.orange,
+                      },                        icon: Icon(
+                        Icons.supervised_user_circle,
+                        size: 25,
+                        color: Colors.orange.withOpacity(0.8),
                       ),
+                      name: getTransrlate(context, 'staff'),
+                      baseStyle: TextStyle(
+                          color: Colors.black.withOpacity(0.6),
+                          fontSize: 19.0,
+                          fontWeight: FontWeight.w800),
+                      colorLineSelected: Colors.orange,
                     ),
                     InkWell(
-                      onTap: () {
-                        Nav.route(context, Stores());
-                      },
+
                       child: ItemHiddenMenu(
+                        onTap: () {
+                          Nav.route(context, Stores());
+                        },
                         icon: Icon(
                           Icons.store,
                           size: 25,
-                          color: Colors.white.withOpacity(0.8),
+                          color: Colors.orange.withOpacity(0.8),
                         ),
                         name: getTransrlate(context, 'stores'),
                         baseStyle: TextStyle(
                             color: Colors.white.withOpacity(0.6),
                             fontSize: 19.0,
                             fontWeight: FontWeight.w800),
-                        colorLineSelected: Colors.orange,
+                        colorLineSelected: Colors.black,
                       ),
                     ),
-                    InkWell(
-                      onTap: () {
-                        Nav.route(context, Products());
-                      },
-                      child: ItemHiddenMenu(
-                        icon: Icon(
-                          Icons.shopping_bag,
-                          size: 25,
-                          color: Colors.white.withOpacity(0.8),
-                        ),
-                        name: getTransrlate(context, 'product'),
-                        baseStyle: TextStyle(
-                            color: Colors.white.withOpacity(0.6),
-                            fontSize: 19.0,
-                            fontWeight: FontWeight.w800),
-                        colorLineSelected: Colors.orange,
-                      ),
-                    ),
-                    InkWell(
+                    ItemHiddenMenu(
                       onTap: () {
                         Nav.route(context, Orders());
                       },
-                      child: ItemHiddenMenu(
-                        icon: Icon(
-                          Icons.shopping_cart,
-                          size: 25,
-                          color: Colors.white.withOpacity(0.8),
-                        ),
-                        name: getTransrlate(context, 'Myorders'),
-                        baseStyle: TextStyle(
-                            color: Colors.white.withOpacity(0.6),
-                            fontSize: 19.0,
-                            fontWeight: FontWeight.w800),
-                        colorLineSelected: Colors.orange,
+                      icon: Icon(
+                        Icons.shopping_cart,
+                        size: 25,
+                        color: Colors.orange.withOpacity(0.8),
                       ),
+                      name: getTransrlate(context, 'Myorders'),
+                      baseStyle: TextStyle(
+                          color: Colors.black.withOpacity(0.6),
+                          fontSize: 19.0,
+                          fontWeight: FontWeight.w800),
+                      colorLineSelected: Colors.orange,
                     ),
-                    InkWell(
+                    ItemHiddenMenu(
+                      onTap: () {
+                        Nav.route(context, Products());
+                      },
+                      icon: Icon(
+                        Icons.shopping_bag,
+                        size: 25,
+                        color: Colors.orange.withOpacity(0.8),
+                      ),
+                      name: getTransrlate(context, 'product'),
+                      baseStyle: TextStyle(
+                          color: Colors.black.withOpacity(0.6),
+                          fontSize: 19.0,
+                          fontWeight: FontWeight.w800),
+                      colorLineSelected: Colors.orange,
+                    ),
+                    ItemHiddenMenu(
                       onTap: () {
                         Nav.route(context, Invoices());
                       },
-                      child: ItemHiddenMenu(
-                        icon: Icon(
-                          Icons.assignment_sharp,
-                          size: 25,
-                          color: Colors.white.withOpacity(0.8),
-                        ),
-                        name: getTransrlate(context, 'invoices'),
-                        baseStyle: TextStyle(
-                            color: Colors.white.withOpacity(0.6),
-                            fontSize: 19.0,
-                            fontWeight: FontWeight.w800),
-                        colorLineSelected: Colors.orange,
+                      icon: Icon(
+                        Icons.assignment_sharp,
+                        size: 25,
+                        color: Colors.orange.withOpacity(0.8),
                       ),
+                      name: getTransrlate(context, 'invoices'),
+                      baseStyle: TextStyle(
+                          color: Colors.white.withOpacity(0.6),
+                          fontSize: 19.0,
+                          fontWeight: FontWeight.w800),
+                      colorLineSelected: Colors.orange,
                     ),
-                    InkWell(
+                    ItemHiddenMenu(
                       onTap: () {
                         Nav.route(context, Tickets());
                       },
-                      child: ItemHiddenMenu(
-                        icon: Icon(
-                          Icons.message,
-                          size: 25,
-                          color: Colors.white.withOpacity(0.8),
-                        ),
-                        name: getTransrlate(context, 'ticket'),
-                        baseStyle: TextStyle(
-                            color: Colors.white.withOpacity(0.6),
-                            fontSize: 19.0,
-                            fontWeight: FontWeight.w800),
-                        colorLineSelected: Colors.orange,
+                      icon: Icon(
+                        Icons.message,
+                        size: 25,
+                        color: Colors.orange.withOpacity(0.8),
                       ),
+                      name: getTransrlate(context, 'ticket'),
+                      baseStyle: TextStyle(
+                          color: Colors.white.withOpacity(0.6),
+                          fontSize: 19.0,
+                          fontWeight: FontWeight.w800),
+                      colorLineSelected: Colors.orange,
                     ),
-                    Container(
-                        height: 28,
-                        margin: EdgeInsets.only(left: 24, right: 48),
-                        child: Divider(
-                          color: Colors.white.withOpacity(0.5),
-                        )),
-                    InkWell(
+                    ItemHiddenMenu(
                       onTap: () {
                         Nav.route(context, Edit_profile());
                       },
-                      child: ItemHiddenMenu(
-                        icon: Icon(
-                          Icons.person,
-                          size: 25,
-                          color: Colors.white.withOpacity(0.8),
-                        ),
-                        name: getTransrlate(context, 'ProfileSettings'),
-                        baseStyle: TextStyle(
-                            color: Colors.white.withOpacity(0.6),
-                            fontSize: 19.0,
-                            fontWeight: FontWeight.w800),
-                        colorLineSelected: Colors.orange,
+                      icon: Icon(
+                        Icons.person,
+                        size: 25,
+                        color: Colors.orange.withOpacity(0.8),
                       ),
+                      name: getTransrlate(context, 'ProfileSettings'),
+                      baseStyle: TextStyle(
+                          color: Colors.white.withOpacity(0.6),
+                          fontSize: 19.0,
+                          fontWeight: FontWeight.w800),
+                      colorLineSelected: Colors.orange,
                     ),
-                    InkWell(
-                      onTap: () {},
-                      child: ItemHiddenMenu(
-                        icon: Icon(
-                          Icons.call,
-                          size: 25,
-                          color: Colors.white.withOpacity(0.8),
-                        ),
-                        name: getTransrlate(context, 'contact'),
-                        baseStyle: TextStyle(
-                            color: Colors.white.withOpacity(0.6),
-                            fontSize: 19.0,
-                            fontWeight: FontWeight.w800),
-                        colorLineSelected: Colors.orange,
+                    ItemHiddenMenu(
+                      icon: Icon(
+                        Icons.call,
+                        size: 25,
+                        color: Colors.orange.withOpacity(0.8),
                       ),
+                      name: getTransrlate(context, 'contact'),
+                      baseStyle: TextStyle(
+                          color: Colors.white.withOpacity(0.6),
+                          fontSize: 19.0,
+                          fontWeight: FontWeight.w800),
+                      colorLineSelected: Colors.orange,
                     ),
-                    InkWell(
+                    ItemHiddenMenu(
                       onTap: () {
                         Nav.route(context, FaqPage());
                       },
-                      child: ItemHiddenMenu(
-                        icon: Icon(
-                          Icons.info_outline,
-                          size: 25,
-                          color: Colors.white.withOpacity(0.8),
-                        ),
-                        name: getTransrlate(context, 'FAQ'),
-                        baseStyle: TextStyle(
-                            color: Colors.white.withOpacity(0.6),
-                            fontSize: 19.0,
-                            fontWeight: FontWeight.w800),
-                        colorLineSelected: Colors.orange,
+                      icon: Icon(
+                        Icons.info_outline,
+                        size: 25,
+                        color: Colors.orange.withOpacity(0.8),
                       ),
+                      name: getTransrlate(context, 'FAQ'),
+                      baseStyle: TextStyle(
+                          color: Colors.orange.withOpacity(0.6),
+                          fontSize: 19.0,
+                          fontWeight: FontWeight.w800),
+                      colorLineSelected: Colors.orange,
                     ),
-                    InkWell(
+                    ItemHiddenMenu(
                       onTap: () async {
                         if (themeColor.isLogin) {
                           themeColor.setLogin(false);
                           final SharedPreferences prefs =
-                              await SharedPreferences.getInstance();
+                          await SharedPreferences.getInstance();
                           API(context).post('logout', {});
                           prefs.clear();
                           Nav.routeReplacement(context, LoginPage());
@@ -273,21 +256,19 @@ class _HiddenMenuState extends State<HiddenMenu> {
                           Nav.route(context, LoginPage());
                         }
                       },
-                      child: ItemHiddenMenu(
-                        icon: Icon(
-                          Icons.exit_to_app,
-                          size: 19,
-                          color: Colors.white.withOpacity(0.8),
-                        ),
-                        name: themeColor.isLogin
-                            ? getTransrlate(context, 'Logout')
-                            : getTransrlate(context, 'login'),
-                        baseStyle: TextStyle(
-                            color: Colors.white.withOpacity(0.6),
-                            fontSize: 19.0,
-                            fontWeight: FontWeight.w800),
-                        colorLineSelected: Colors.orange,
+                      icon: Icon(
+                        Icons.exit_to_app,
+                        size: 19,
+                        color: Colors.orange.withOpacity(0.8),
                       ),
+                      name: themeColor.isLogin
+                          ? getTransrlate(context, 'Logout')
+                          : getTransrlate(context, 'login'),
+                      baseStyle: TextStyle(
+                          color: Colors.white.withOpacity(0.6),
+                          fontSize: 19.0,
+                          fontWeight: FontWeight.w800),
+                      colorLineSelected: Colors.orange,
                     ),
                     Container(
                       child:
@@ -315,7 +296,7 @@ class _HiddenMenuState extends State<HiddenMenu> {
                                 icon: Icon(
                                   Icons.language,
                                   size: 25,
-                                  color: Colors.white.withOpacity(0.8),
+                                  color: Colors.orange.withOpacity(0.8),
                                 ),
                                 name: Provider.of<Provider_control>(context)
                                             .local ==
@@ -345,7 +326,7 @@ class _HiddenMenuState extends State<HiddenMenu> {
                   getTransrlate(context, 'version') + ' 1.0.0',
                   style: TextStyle(
                       fontSize: 16,
-                      color: Colors.white60,
+                      color: Colors.black26,
                       fontWeight: FontWeight.bold),
                 ),
               ),

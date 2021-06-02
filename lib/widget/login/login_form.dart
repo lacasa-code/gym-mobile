@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trkar_vendor/screens/home.dart';
+import 'package:trkar_vendor/screens/lost_password.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/navigator.dart';
@@ -20,15 +21,15 @@ class _LoginFormState extends State<LoginForm> {
   Model_login model = Model_login();
   bool passwordVisible = false;
   String CountryNo = '';
-
   @override
   void initState() {
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final themeColor = Provider.of<Provider_control>(context);
+    final  themeColor = Provider.of<Provider_control>(context);
 
     return Container(
       padding: EdgeInsets.only(top: 24, right: 42, left: 42),
@@ -37,14 +38,15 @@ class _LoginFormState extends State<LoginForm> {
         child: Column(
           children: <Widget>[
             MyTextFormField(
+              textStyle:  TextStyle(color: Colors.white,fontSize: 16),
               intialLabel: '',
               Keyboard_Type: TextInputType.emailAddress,
-              labelText: getTransrlate(context, 'Email'),
-              hintText: getTransrlate(context, 'Email'),
+              labelText: getTransrlate(context, 'mail'),
+              hintText: getTransrlate(context, 'mail'),
               isPhone: true,
               validator: (String value) {
                 if (value.isEmpty) {
-                  return getTransrlate(context, 'Email');
+                  return getTransrlate(context, 'mail');
                 } else if (!RegExp(
                         r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
                     .hasMatch(value)) {
@@ -58,9 +60,12 @@ class _LoginFormState extends State<LoginForm> {
               },
             ),
             MyTextFormField(
+              textStyle:  TextStyle(color: Colors.white,fontSize: 16),
+
               intialLabel: '',
               labelText: getTransrlate(context, 'password'),
               hintText: getTransrlate(context, 'password'),
+
               suffixIcon: IconButton(
                 icon: Icon(
                   // Based on passwordVisible state choose the icon
@@ -87,14 +92,14 @@ class _LoginFormState extends State<LoginForm> {
               },
             ),
             Container(
-              height: 42,
+              height: 50,
               width: ScreenUtil.getWidth(context),
-              margin: EdgeInsets.only(top: 32, bottom: 12),
+              margin: EdgeInsets.only(top: 48, bottom: 12),
               child: FlatButton(
                 shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(8.0),
+                  borderRadius: new BorderRadius.circular(1.0),
                 ),
-                color: themeColor.getColor(),
+                color: Colors.orange,
                 onPressed: () async {
                   if (_formKey.currentState.validate()) {
                     _formKey.currentState.save();
@@ -127,9 +132,33 @@ class _LoginFormState extends State<LoginForm> {
                 ),
               ),
             ),
+            Container(
+              height: 50,
+              width: ScreenUtil.getWidth(context),
+              margin: EdgeInsets.only(top: 12, bottom: 12),
+              child: FlatButton(
+                shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(1.0),
+                  side: BorderSide(color: Colors.orange)
+                ),
+                color: Colors.white,
+                onPressed: () async {
+                  Nav.route(context, LostPassword());
+                },
+                child: Text(
+                  getTransrlate(context, 'LostPassword'),
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.orange,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
+
 }

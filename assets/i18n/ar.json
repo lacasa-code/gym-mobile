@@ -43,7 +43,7 @@
   "Comment": "تعليق",
   "Countroy": "الدولة",
   "Content": "المحتوى",
-  "welcome": "هلا ",
+  "welcome": "أهلا بك ، ",
 
 
 
@@ -81,7 +81,7 @@
 
   "NewPassword": "كلمة المرور الجديدة",
   "ConfirmPassword": "تأكيد كلمة المرور",
-  "LostPassword": "نسيت كلمة المرور",
+  "LostPassword": "نسيت كلمة المرور ؟",
   "ThankYou": "شكرا لك",
   "Notification": "الاشعارات",
   "AllowNotification": "السماح بالاشعارات",

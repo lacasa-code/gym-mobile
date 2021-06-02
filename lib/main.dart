@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:provider/provider.dart';
-import 'package:trkar_vendor/screens/splash_screen.dart';
+import 'package:trkar_vendor/screens/login.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/local/AppLocalizations.dart';
 
@@ -78,8 +78,9 @@ class _MyAppState extends State<MyApp> {
         return supportedLocales.first;
       },
       supportedLocales: [
-        Locale("en", ""),
         Locale("ar", ""),
+        Locale("en", ""),
+
       ],
       theme: ThemeData(
         pageTransitionsTheme: PageTransitionsTheme(builders: {
@@ -92,7 +93,7 @@ class _MyAppState extends State<MyApp> {
           behavior: SnackBarBehavior.floating,
         ),
       ),
-      home: SplashScreen(),
+      home: LoginPage(),
     );
   }
 }
