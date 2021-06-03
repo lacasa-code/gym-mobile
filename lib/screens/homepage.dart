@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chart_components/bar_chart_component.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_grid/responsive_grid.dart';
@@ -176,11 +177,12 @@ class _HomeMobileState extends State<HomeMobile> {
                                     child: Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
-                                        Icon(
-                                          Icons.money,
+                                        SvgPicture.asset(
+                                          'assets/icons/Bell.svg',
+                                          width: 18,height: 18,
                                           color: Colors.green,
-                                          size: 18,
                                         ),
                                         SizedBox(
                                           width: 3,
@@ -354,10 +356,11 @@ class _HomeMobileState extends State<HomeMobile> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Icon(
-                                          CupertinoIcons.question_circle,
+                                        SvgPicture.asset(
+                                          'assets/icons/Question mark.svg',
+                                           width: 18,height: 18,
                                           color: Colors.blue,
-                                          size: 18,
+
                                         ),
                                         SizedBox(
                                           width: 3,

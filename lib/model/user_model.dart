@@ -38,7 +38,7 @@ class User {
   String _email;
   int _addedById;
   Role _roles;
-
+bool isSelect=false;
   int get id => _id;
   String get name => _name;
   String get email => _email;

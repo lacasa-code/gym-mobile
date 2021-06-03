@@ -4,7 +4,6 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
-import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/navigator.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
@@ -19,9 +18,16 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   Provider_control themeColor;
+  String Token;
   @override
   void initState() {
+    SharedPreferences.getInstance().then((value) {
+      setState(() {
+        Token=value.getString('token');
+      });
+    });
     _auth();
+
     super.initState();
   }
   @override
@@ -46,33 +52,30 @@ class _LoginPageState extends State<LoginPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: ScreenUtil.getHeight(context)/5,),
+                SizedBox(height: ScreenUtil.getHeight(context)/10,),
                 Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 35),
-                    child: Column(
-                      children: [
-                        Image.asset(
-                          'assets/images/splashscreen-trkar-logo-white.gif',
-                          width: ScreenUtil.getWidth(context) / 1.7,
-                          fit: BoxFit.contain,
-                         // color: themeColor.getColor(),
-                        ),
-                        Container(
-                          width: ScreenUtil.getWidth(context) / 2,
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        'assets/images/splashscreen-trkar-logo-white.gif',
+                        width: ScreenUtil.getWidth(context) / 1.7,
+                        fit: BoxFit.contain,
+                       // color: themeColor.getColor(),
+                      ),
+                      Container(
+                        width: ScreenUtil.getWidth(context) / 2,
 
-                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Text('vendor',style: TextStyle(color: Colors.white),),
-                              Text('البائع',style: TextStyle(color: Colors.white),),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
+                        child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text('vendor',style: TextStyle(color: Colors.white),),
+                            Text('البائع',style: TextStyle(color: Colors.white),),
+                          ],
+                        ),
+                      )
+                    ],
                   ),
                 ),
-                LoginForm()
+               LoginForm()
               ],
             ),
           ),

@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,6 +9,7 @@ import 'package:trkar_vendor/main.dart';
 import 'package:trkar_vendor/screens/Orders.dart';
 import 'package:trkar_vendor/screens/edit_profile.dart';
 import 'package:trkar_vendor/screens/faq.dart';
+import 'package:trkar_vendor/screens/home.dart';
 import 'package:trkar_vendor/screens/invoices.dart';
 import 'package:trkar_vendor/screens/login.dart';
 import 'package:trkar_vendor/screens/product.dart';
@@ -73,7 +75,8 @@ class _HiddenMenuState extends State<HiddenMenu> {
                             Navigator.pop(context);
                           },
                           icon: Icon(
-                            Icons.close,size: 35,
+                            Icons.close,
+                            size: 35,
                             color: Colors.white,
                           )),
                       Padding(
@@ -89,10 +92,10 @@ class _HiddenMenuState extends State<HiddenMenu> {
               ),
             ),
             SizedBox(
-              height:  10,
+              height: 10,
             ),
             Container(
-              padding: const EdgeInsets.only(right: 16, left: 16,top: 10),
+              padding: const EdgeInsets.only(right: 16, left: 16, top: 10),
               child: NotificationListener<OverscrollIndicatorNotification>(
                 onNotification: (scroll) {
                   scroll.disallowGlow();
@@ -102,8 +105,26 @@ class _HiddenMenuState extends State<HiddenMenu> {
                   children: <Widget>[
                     ItemHiddenMenu(
                       onTap: () {
-                        Nav.route(context, Staff());
-                      },                        icon: Icon(
+                        Nav.routeReplacement(context, Home());
+                      },
+                      icon: SvgPicture.asset(
+                        "assets/icons/homescreen.svg",
+                        height: 40,
+                        width: 40,
+                        color: Colors.orange.withOpacity(0.8),
+                      ),
+                      name: getTransrlate(context, 'HomePage'),
+                      baseStyle: TextStyle(
+                          color: Colors.black.withOpacity(0.6),
+                          fontSize: 19.0,
+                          fontWeight: FontWeight.w800),
+                      colorLineSelected: Colors.orange,
+                    ),
+                    ItemHiddenMenu(
+                      onTap: () {
+                        Nav.routeReplacement(context, Staff());
+                      },
+                      icon: Icon(
                         Icons.supervised_user_circle,
                         size: 25,
                         color: Colors.orange.withOpacity(0.8),
@@ -115,28 +136,25 @@ class _HiddenMenuState extends State<HiddenMenu> {
                           fontWeight: FontWeight.w800),
                       colorLineSelected: Colors.orange,
                     ),
-                    InkWell(
-
-                      child: ItemHiddenMenu(
-                        onTap: () {
-                          Nav.route(context, Stores());
-                        },
-                        icon: Icon(
-                          Icons.store,
-                          size: 25,
-                          color: Colors.orange.withOpacity(0.8),
-                        ),
-                        name: getTransrlate(context, 'stores'),
-                        baseStyle: TextStyle(
-                            color: Colors.white.withOpacity(0.6),
-                            fontSize: 19.0,
-                            fontWeight: FontWeight.w800),
-                        colorLineSelected: Colors.black,
+                    ItemHiddenMenu(
+                      onTap: () {
+                        Nav.routeReplacement(context, Stores());
+                      },
+                      icon: Icon(
+                        Icons.store,
+                        size: 25,
+                        color: Colors.orange.withOpacity(0.8),
                       ),
+                      name: getTransrlate(context, 'stores'),
+                      baseStyle: TextStyle(
+                          color: Colors.white.withOpacity(0.6),
+                          fontSize: 19.0,
+                          fontWeight: FontWeight.w800),
+                      colorLineSelected: Colors.black,
                     ),
                     ItemHiddenMenu(
                       onTap: () {
-                        Nav.route(context, Orders());
+                        Nav.routeReplacement(context, Orders());
                       },
                       icon: Icon(
                         Icons.shopping_cart,
@@ -152,7 +170,7 @@ class _HiddenMenuState extends State<HiddenMenu> {
                     ),
                     ItemHiddenMenu(
                       onTap: () {
-                        Nav.route(context, Products());
+                        Nav.routeReplacement(context, Products());
                       },
                       icon: Icon(
                         Icons.shopping_bag,
@@ -168,7 +186,7 @@ class _HiddenMenuState extends State<HiddenMenu> {
                     ),
                     ItemHiddenMenu(
                       onTap: () {
-                        Nav.route(context, Invoices());
+                        Nav.routeReplacement(context, Invoices());
                       },
                       icon: Icon(
                         Icons.assignment_sharp,
@@ -184,7 +202,7 @@ class _HiddenMenuState extends State<HiddenMenu> {
                     ),
                     ItemHiddenMenu(
                       onTap: () {
-                        Nav.route(context, Tickets());
+                        Nav.routeReplacement(context, Tickets());
                       },
                       icon: Icon(
                         Icons.message,
@@ -200,7 +218,7 @@ class _HiddenMenuState extends State<HiddenMenu> {
                     ),
                     ItemHiddenMenu(
                       onTap: () {
-                        Nav.route(context, Edit_profile());
+                        Nav.routeReplacement(context, Edit_profile());
                       },
                       icon: Icon(
                         Icons.person,
@@ -229,7 +247,7 @@ class _HiddenMenuState extends State<HiddenMenu> {
                     ),
                     ItemHiddenMenu(
                       onTap: () {
-                        Nav.route(context, FaqPage());
+                        Nav.routeReplacement(context, FaqPage());
                       },
                       icon: Icon(
                         Icons.info_outline,
@@ -248,7 +266,7 @@ class _HiddenMenuState extends State<HiddenMenu> {
                         if (themeColor.isLogin) {
                           themeColor.setLogin(false);
                           final SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
+                              await SharedPreferences.getInstance();
                           API(context).post('logout', {});
                           prefs.clear();
                           Nav.routeReplacement(context, LoginPage());
