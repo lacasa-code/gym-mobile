@@ -597,14 +597,14 @@ class _HomeMobileState extends State<HomeMobile> {
       data =
           basic_report.periodDetails.map((e) => e.reports.totalSale).toList();
       labels = basic_report.periodDetails
-          .map((e) => DateFormat('yyyy-MM-dd').format(DateTime.parse(e.day)))
+          .map((e) => e.dayName)
           .toList();
     });
   }
 
   void get_report(String to, String from) {
     API(context).post(
-        'fetch/basic/report', {"from": "$from", "to": "$to"}).then((value) {
+        'vendor/day/month/filter', {"from": "$from", "to": "$to"}).then((value) {
       if (value != null) {
         setState(() {
           basic_report = Basic_report.fromJson(value);

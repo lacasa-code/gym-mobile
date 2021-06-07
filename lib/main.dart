@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trkar_vendor/screens/login.dart';
+import 'package:trkar_vendor/screens/onboarding_page.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/local/AppLocalizations.dart';
 
@@ -43,7 +45,7 @@ class _MyAppState extends State<MyApp> {
   Locale _locale;
   final GlobalKey<NavigatorState> navigatorKey =
       new GlobalKey<NavigatorState>();
-
+bool onboard=false;
   void setlocal(Locale locale) {
     setState(() {
       _locale = locale;
@@ -52,6 +54,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
+   SharedPreferences.getInstance().then((value) => onboard=value.getBool("onboard")??false);
     super.initState();
   }
 
@@ -93,7 +96,7 @@ class _MyAppState extends State<MyApp> {
           behavior: SnackBarBehavior.floating,
         ),
       ),
-      home: LoginPage(),
+      home:onboard?OnboardingPage(): LoginPage(),
     );
   }
 }

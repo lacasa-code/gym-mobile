@@ -8,6 +8,7 @@
   },
   "gust": "Gust",
   "Empty": "No found product !",
+  "store": "Store",
 
   "good_morning": "Good Morning",
   "good_night": "Good Night",
@@ -61,7 +62,7 @@
   "passwordNotChanged": "password Not Changed",
   "AllowNotification": "Allow Notification",
   "Order": "Order",
-  "search": " search . .",
+  "search": "  search  .  . ",
   "ProfileSettings": "Profile Settings",
   "FAQ": "F A Q",
 

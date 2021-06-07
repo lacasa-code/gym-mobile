@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/store_model.dart';
 import 'package:trkar_vendor/screens/add_store.dart';
@@ -14,6 +15,8 @@ import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
 import 'package:trkar_vendor/widget/ResultOverlay.dart';
+import 'package:trkar_vendor/widget/SearchOverlay.dart';
+import 'package:trkar_vendor/widget/Sort.dart';
 import 'package:trkar_vendor/widget/stores/store_item.dart';
 
 class Stores extends StatefulWidget {
@@ -24,32 +27,59 @@ class Stores extends StatefulWidget {
 class _StoresState extends State<Stores> {
   List<Store> stores;
   List<Store> filteredStores;
+  List<int> selectStores = [];
+
   final debouncer = Search(milliseconds: 1000);
   AutoCompleteTextField searchTextField;
   GlobalKey<AutoCompleteTextFieldState<Store>> key = new GlobalKey();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  bool isSelect = false;
 
   @override
   void initState() {
     getAllStore();
     super.initState();
   }
-
   @override
   Widget build(BuildContext context) {
     final themeColor = Provider.of<Provider_control>(context);
-
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
-        title: Text(getTransrlate(context, 'stores')),
-        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(
+            Icons.menu,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            _scaffoldKey.currentState.openDrawer();
+          },
+        ),
+        title: Row(
+          children: [
+            SvgPicture.asset(
+              'assets/icons/store.svg',
+              color: Colors.white,
+              height: 25,
+              width: 25,
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Text(getTransrlate(context, 'store')),
+          ],
+        ),
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(top: 20, right: 10, left: 10),
-            child: InkWell(
-                onTap: () {
-                  _navigate_add_hell(context);
-                },
-                child: Text(getTransrlate(context, 'addStore'))),
+          IconButton(
+            icon: Icon(
+              Icons.search,
+              color: Colors.white,
+            ),
+            onPressed: (){
+              showDialog(
+                context: context,
+                builder: (_) => SearchOverlay(),
+              );},
           )
         ],
         backgroundColor: themeColor.getColor(),
@@ -84,6 +114,169 @@ class _StoresState extends State<Stores> {
               : SingleChildScrollView(
                   child: Column(
                     children: [
+                      isSelect
+                          ? Container(
+                        height: 50,
+                        color: Colors.black12,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Row(
+                              children: [
+                                Text('تم اختيار '),
+                                Text('( ${selectStores.length} )'),
+                              ],
+                            ),
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  isSelect = true;
+                                });
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.check,
+                                    color: Colors.black45,
+                                    size: 25,
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text('اختر الكل')
+                                ],
+                              ),
+                              // color: Color(0xffE4E4E4),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                print(selectStores.toString());
+                                API(context).post("users/mass/delete", {
+                                  "ids": selectStores.toString()
+                                }).then((value) {
+                                  if (value != null) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (_) => ResultOverlay(
+                                        value.containsKey('errors')
+                                            ? "${value['errors']}"
+                                            : 'تم حذف العامل بنجاح',
+                                      ),
+                                    );
+                                  }
+                                  getAllStore();
+                                });
+                              },
+                              child: Row(
+                                children: [
+                                  Text('حذف'),
+                                  Icon(
+                                    CupertinoIcons.delete,
+                                    size: 20,
+                                  )
+                                ],
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  isSelect = false;
+                                });
+                              },
+                              icon: Icon(
+                                Icons.close,
+                                size: 30,
+                                color: Colors.black54,
+                              ),
+                            )
+                          ],
+                        ),
+                      )
+                          : Container(
+                        height: 50,
+                        color: Colors.black12,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text('${stores.length} عضو'),
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  isSelect
+                                      ? isSelect = false
+                                      : isSelect = true;
+                                });
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.check_box,
+                                    color: Colors.black45,
+                                    size: 25,
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text('اختيار')
+                                ],
+                              ),
+                              // color: Color(0xffE4E4E4),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                // showDialog(
+                                //     context: context,
+                                //     builder: (_) => Filterdialog());
+                              },
+                              child: Row(
+                                children: [
+                                  Text('تصفية'),
+                                  Icon(
+                                    Icons.keyboard_arrow_down,
+                                    size: 20,
+                                  )
+                                ],
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (_) => Sortdialog())
+                                    .then((val) {
+                                  print(val);
+                                  API(context)
+                                      .get('users?sort_type=${val}')
+                                      .then((value) {
+                                    if (value != null) {
+                                      if (value['status_code'] == 200) {
+                                        setState(() {
+                                          filteredStores = stores =
+                                              Store_model.fromJson(value).data;
+                                        });
+                                      } else {
+                                        showDialog(
+                                            context: context,
+                                            builder: (_) => ResultOverlay(
+                                                value['message']));
+                                      }
+                                    }
+                                  });
+                                });
+                              },
+                              child: Row(
+                                children: [
+                                  Text('ترتيب'),
+                                  Icon(
+                                    Icons.keyboard_arrow_down,
+                                    size: 20,
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
                       Row(
                         children: <Widget>[
                           SizedBox(
