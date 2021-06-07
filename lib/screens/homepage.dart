@@ -243,7 +243,7 @@ class _HomeMobileState extends State<HomeMobile> {
                                               "طلبات قيد المعاملة",
                                               style: TextStyle(
                                                   color: Colors.orange,
-                                                  fontSize: 14,
+                                                  fontSize: 11,
                                                   fontWeight: FontWeight.bold),
                                             ),
                                             Text("${basic_report.totalOrders}",
@@ -284,7 +284,7 @@ class _HomeMobileState extends State<HomeMobile> {
                                                 "إجمالي المبيعات",
                                                 minFontSize: 10,
                                                 maxLines: 1,
-                                                maxFontSize: 15,
+                                                maxFontSize: 14,
                                                 style: TextStyle(
                                                     color: Colors.lightGreen,
                                                     fontWeight:
