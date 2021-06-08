@@ -26,7 +26,7 @@ class Staff extends StatefulWidget {
 }
 
 class _StaffState extends State<Staff> {
-  List<User> stores;
+  List<User> staff;
   List<int> selectStores = [];
   List<User> filteredStores;
   final debouncer = Search(milliseconds: 1000);
@@ -109,7 +109,7 @@ class _StaffState extends State<Staff> {
               )),
         ),
       ),
-      body: stores == null
+      body: staff == null
           ? Container(
               height: ScreenUtil.getHeight(context) / 3,
               child: Center(
@@ -117,7 +117,7 @@ class _StaffState extends State<Staff> {
                 valueColor:
                     AlwaysStoppedAnimation<Color>(themeColor.getColor()),
               )))
-          : stores.isEmpty
+          : staff.isEmpty
               ? Center(
                   child: Container(
                     child: Column(
@@ -223,7 +223,7 @@ class _StaffState extends State<Staff> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: [
-                                  Text('${stores.length} عضو'),
+                                  Text('${staff.length} عضو'),
                                   InkWell(
                                     onTap: () {
                                       setState(() {
@@ -276,7 +276,7 @@ class _StaffState extends State<Staff> {
                                           if (value != null) {
                                             if (value['status_code'] == 200) {
                                               setState(() {
-                                                filteredStores = stores =
+                                                filteredStores = staff =
                                                     User_model.fromJson(value)
                                                         .data;
                                               });
@@ -382,7 +382,7 @@ class _StaffState extends State<Staff> {
                               ],
                             ),
                             ListView.builder(
-                              itemCount: filteredStores == null && stores.isEmpty
+                              itemCount: filteredStores == null && staff.isEmpty
                                   ? 0
                                   : filteredStores.length,
                               shrinkWrap: true,
@@ -425,7 +425,7 @@ class _StaffState extends State<Staff> {
                                               child:  InkWell(
                                                 onTap: (){
                                                   API(context)
-                                                      .Delete("users/${stores[index].id}")
+                                                      .Delete("users/${staff[index].id}")
                                                       .then((value) {
                                                     if (value != null) {
                                                       showDialog(
@@ -530,7 +530,7 @@ class _StaffState extends State<Staff> {
     API(context).get('users').then((value) {
       if (value != null) {
         setState(() {
-          filteredStores = stores = User_model.fromJson(value).data;
+          filteredStores = staff = User_model.fromJson(value).data;
         });
       }
     });

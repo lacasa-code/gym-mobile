@@ -31,6 +31,7 @@ class Product {
   String price;
   String discount;
   String createdAt;
+  bool isSelect=false;
   int carMadeId;
   int carModelId;
   List<Photo> photo;

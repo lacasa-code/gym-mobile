@@ -105,7 +105,7 @@ class _User_itemState extends State<User_item> {
                   ),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 15,
                 ),
               ],
             ),

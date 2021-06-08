@@ -1,241 +1,228 @@
-/// data : [{"id":1,"user_id":1,"order_number":20000000,"order_total":"1977797.00","expired":0,"approved":1,"paid":null,"status":1,"orderStatus":"pending","orderDetails":[{"id":1,"order_id":1,"product_id":1,"store_id":3,"vendor_id":1,"product_name":"first product","product_serial":"DEDXYLizcO","store_name":"thirdstore","vendor_name":"first vendor","quantity":2,"price":10,"discount":1,"total":19.8,"approved":1},{"id":2,"order_id":1,"product_id":19,"store_id":2,"vendor_id":1,"product_name":"zzzzzzzzz","product_serial":"sasasd","store_name":"updated store h","vendor_name":"first vendor","quantity":2,"price":111111,"discount":11,"total":197777.58,"approved":1}]},{"id":2,"user_id":3,"order_number":20000001,"order_total":"110.00","expired":0,"approved":1,"paid":null,"status":1,"orderStatus":"pending","orderDetails":[{"id":3,"order_id":2,"product_id":8,"store_id":3,"vendor_id":2,"product_name":"adddd","product_serial":"dsd5q5","store_name":"thirdstore","vendor_name":"second  vendor","quantity":4,"price":20,"discount":0,"total":80,"approved":1},{"id":4,"order_id":2,"product_id":19,"store_id":3,"vendor_id":2,"product_name":"zzzzzzzzz","product_serial":"sasasd","store_name":"thirdstore","vendor_name":"second  vendor","quantity":3,"price":10,"discount":0,"total":30,"approved":1}]},{"id":3,"user_id":4,"order_number":20000002,"order_total":"280.00","expired":0,"approved":1,"paid":null,"status":1,"orderStatus":"pending","orderDetails":[{"id":6,"order_id":3,"product_id":19,"store_id":3,"vendor_id":2,"product_name":"zzzzzzzzz","product_serial":"sasasd","store_name":"thirdstore","vendor_name":"second  vendor","quantity":5,"price":20,"discount":0,"total":100,"approved":1},{"id":7,"order_id":3,"product_id":8,"store_id":3,"vendor_id":2,"product_name":"adddd","product_serial":"dsd5q5","store_name":"thirdstore","vendor_name":"second  vendor","quantity":6,"price":30,"discount":0,"total":180,"approved":1}]},{"id":4,"user_id":4,"order_number":20000003,"order_total":"300.00","expired":0,"approved":1,"paid":null,"status":1,"orderStatus":"pending","orderDetails":[{"id":8,"order_id":4,"product_id":18,"store_id":3,"vendor_id":3,"product_name":"Mercedes 2010","product_serial":"MB-10","store_name":"thirdstore","vendor_name":"third vendor","quantity":1,"price":10,"discount":0,"total":10,"approved":1},{"id":10,"order_id":4,"product_id":7,"store_id":3,"vendor_id":3,"product_name":"Lancer","product_serial":"LN-SHK92","store_name":"thirdstore","vendor_name":"third vendor","quantity":3,"price":30,"discount":0,"total":90,"approved":1},{"id":11,"order_id":4,"product_id":8,"store_id":3,"vendor_id":3,"product_name":"adddd","product_serial":"dsd5q5","store_name":"thirdstore","vendor_name":"third vendor","quantity":4,"price":40,"discount":0,"total":160,"approved":1}]},{"id":5,"user_id":3,"order_number":20000004,"order_total":"50.00","expired":0,"approved":1,"paid":null,"status":1,"orderStatus":"pending","orderDetails":[{"id":12,"order_id":5,"product_id":18,"store_id":3,"vendor_id":3,"product_name":"Mercedes 2010","product_serial":"MB-10","store_name":"thirdstore","vendor_name":"third vendor","quantity":1,"price":10,"discount":0,"total":10,"approved":1},{"id":13,"order_id":5,"product_id":19,"store_id":3,"vendor_id":2,"product_name":"zzzzzzzzz","product_serial":"sasasd","store_name":"thirdstore","vendor_name":"second  vendor","quantity":2,"price":20,"discount":0,"total":40,"approved":1}]},{"id":6,"user_id":3,"order_number":20000005,"order_total":"250.00","expired":0,"approved":1,"paid":null,"status":4,"orderStatus":"cancelled","orderDetails":[{"id":14,"order_id":6,"product_id":7,"store_id":3,"vendor_id":2,"product_name":"Lancer","product_serial":"LN-SHK92","store_name":"thirdstore","vendor_name":"second  vendor","quantity":3,"price":30,"discount":0,"total":90,"approved":1},{"id":15,"order_id":6,"product_id":8,"store_id":3,"vendor_id":3,"product_name":"adddd","product_serial":"dsd5q5","store_name":"thirdstore","vendor_name":"third vendor","quantity":4,"price":40,"discount":0,"total":160,"approved":1}]},{"id":7,"user_id":3,"order_number":20000006,"order_total":"80.00","expired":0,"approved":1,"paid":null,"status":1,"orderStatus":"pending","orderDetails":[{"id":16,"order_id":7,"product_id":18,"store_id":3,"vendor_id":2,"product_name":"Mercedes 2010","product_serial":"MB-10","store_name":"thirdstore","vendor_name":"second  vendor","quantity":4,"price":20,"discount":0,"total":80,"approved":1}]},{"id":8,"user_id":3,"order_number":20000007,"order_total":"300.00","expired":0,"approved":1,"paid":null,"status":4,"orderStatus":"cancelled","orderDetails":[{"id":17,"order_id":8,"product_id":19,"store_id":3,"vendor_id":2,"product_name":"zzzzzzzzz","product_serial":"sasasd","store_name":"thirdstore","vendor_name":"second  vendor","quantity":5,"price":60,"discount":0,"total":300,"approved":1}]},{"id":9,"user_id":3,"order_number":20000008,"order_total":"8000.00","expired":0,"approved":1,"paid":null,"status":1,"orderStatus":"pending","orderDetails":[{"id":18,"order_id":9,"product_id":18,"store_id":3,"vendor_id":3,"product_name":"Mercedes 2010","product_serial":"MB-10","store_name":"thirdstore","vendor_name":"third vendor","quantity":4,"price":2000,"discount":0,"total":8000,"approved":1}]},{"id":10,"user_id":3,"order_number":20000009,"order_total":"5000.00","expired":0,"approved":1,"paid":null,"status":1,"orderStatus":"pending","orderDetails":[{"id":19,"order_id":10,"product_id":19,"store_id":3,"vendor_id":3,"product_name":"zzzzzzzzz","product_serial":"sasasd","store_name":"thirdstore","vendor_name":"third vendor","quantity":5,"price":1000,"discount":0,"total":5000,"approved":1}]}]
-/// total : 12
-
 class Orders_model {
-  List<Order> _data;
-  int _total;
+  int statusCode;
+  String message;
+  List<Order> data;
+  int total;
 
-  List<Order> get data => _data;
-  int get total => _total;
+  Orders_model({this.statusCode, this.message, this.data, this.total});
 
-  Orders_model({List<Order> data, int total}) {
-    _data = data;
-    _total = total;
-  }
-
-  Orders_model.fromJson(dynamic json) {
-    if (json["data"] != null) {
-      _data = [];
-      json["data"].forEach((v) {
-        _data.add(Order.fromJson(v));
+  Orders_model.fromJson(Map<String, dynamic> json) {
+    statusCode = json['status_code'];
+    message = json['message'];
+    if (json['data'] != null) {
+      data = new List<Order>();
+      json['data'].forEach((v) {
+        data.add(new Order.fromJson(v));
       });
     }
-    _total = json["total"];
+    total = json['total'];
   }
 
   Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
-    if (_data != null) {
-      map["data"] = _data.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['status_code'] = this.statusCode;
+    data['message'] = this.message;
+    if (this.data != null) {
+      data['data'] = this.data.map((v) => v.toJson()).toList();
     }
-    map["total"] = _total;
-    return map;
+    data['total'] = this.total;
+    return data;
   }
 }
-
-/// id : 1
-/// user_id : 1
-/// order_number : 20000000
-/// order_total : "1977797.00"
-/// expired : 0
-/// approved : 1
-/// paid : null
-/// status : 1
-/// orderStatus : "pending"
-/// orderDetails : [{"id":1,"order_id":1,"product_id":1,"store_id":3,"vendor_id":1,"product_name":"first product","product_serial":"DEDXYLizcO","store_name":"thirdstore","vendor_name":"first vendor","quantity":2,"price":10,"discount":1,"total":19.8,"approved":1},{"id":2,"order_id":1,"product_id":19,"store_id":2,"vendor_id":1,"product_name":"zzzzzzzzz","product_serial":"sasasd","store_name":"updated store h","vendor_name":"first vendor","quantity":2,"price":111111,"discount":11,"total":197777.58,"approved":1}]
 
 class Order {
-  int _id;
-  int _userId;
-  int _orderNumber;
-  String _orderTotal;
-  int _expired;
-  int _approved;
-  dynamic _paid;
-  int _status;
-  String _orderStatus;
-  List<OrderDetails> _orderDetails;
-
-  int get id => _id;
-  int get userId => _userId;
-  int get orderNumber => _orderNumber;
-  String get orderTotal => _orderTotal;
-  int get expired => _expired;
-  int get approved => _approved;
-  dynamic get paid => _paid;
-  int get status => _status;
-  String get orderStatus => _orderStatus;
-  List<OrderDetails> get orderDetails => _orderDetails;
+  int id;
+  int userId;
+  int orderNumber;
+  String orderTotal;
+  int expired;
+  int approved;
+  String paid;
+  int status;
+  String createdAt;
+  String orderStatus;
+  List<OrderDetails> orderDetails;
 
   Order(
-      {int id,
-      int userId,
-      int orderNumber,
-      String orderTotal,
-      int expired,
-      int approved,
-      dynamic paid,
-      int status,
-      String orderStatus,
-      List<OrderDetails> orderDetails}) {
-    _id = id;
-    _userId = userId;
-    _orderNumber = orderNumber;
-    _orderTotal = orderTotal;
-    _expired = expired;
-    _approved = approved;
-    _paid = paid;
-    _status = status;
-    _orderStatus = orderStatus;
-    _orderDetails = orderDetails;
-  }
+      {this.id,
+        this.userId,
+        this.orderNumber,
+        this.orderTotal,
+        this.expired,
+        this.approved,
+        this.paid,
+        this.status,
+        this.createdAt,
+        this.orderStatus,
+        this.orderDetails});
 
-  Order.fromJson(dynamic json) {
-    _id = json["id"];
-    _userId = json["user_id"];
-    _orderNumber = json["order_number"];
-    _orderTotal = json["order_total"].toString();
-    _expired = json["expired"];
-    _approved = json["approved"];
-    _paid = json["paid"];
-    _status = json["status"];
-    _orderStatus = json["orderStatus"];
-    if (json["orderDetails"] != null) {
-      _orderDetails = [];
-      json["orderDetails"].forEach((v) {
-        _orderDetails.add(OrderDetails.fromJson(v));
+  Order.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    userId = json['user_id'];
+    orderNumber = json['order_number'];
+    orderTotal = (json['order_total'].round()).toString();
+    expired = json['expired'];
+    approved = json['approved'];
+    paid = json['paid'].toString();
+    status = json['status'];
+    createdAt = json['created_at'];
+    orderStatus = json['orderStatus'];
+    if (json['orderDetails'] != null) {
+      orderDetails = new List<OrderDetails>();
+      json['orderDetails'].forEach((v) {
+        orderDetails.add(new OrderDetails.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
-    map["id"] = _id;
-    map["user_id"] = _userId;
-    map["order_number"] = _orderNumber;
-    map["order_total"] = _orderTotal;
-    map["expired"] = _expired;
-    map["approved"] = _approved;
-    map["paid"] = _paid;
-    map["status"] = _status;
-    map["orderStatus"] = _orderStatus;
-    if (_orderDetails != null) {
-      map["orderDetails"] = _orderDetails.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['user_id'] = this.userId;
+    data['order_number'] = this.orderNumber;
+    data['order_total'] = this.orderTotal;
+    data['expired'] = this.expired;
+    data['approved'] = this.approved;
+    data['paid'] = this.paid;
+    data['status'] = this.status;
+    data['created_at'] = this.createdAt;
+    data['orderStatus'] = this.orderStatus;
+    if (this.orderDetails != null) {
+      data['orderDetails'] = this.orderDetails.map((v) => v.toJson()).toList();
     }
-    return map;
+    return data;
   }
 }
 
-/// id : 1
-/// order_id : 1
-/// product_id : 1
-/// store_id : 3
-/// vendor_id : 1
-/// product_name : "first product"
-/// product_serial : "DEDXYLizcO"
-/// store_name : "thirdstore"
-/// vendor_name : "first vendor"
-/// quantity : 2
-/// price : 10
-/// discount : 1
-/// total : 19.8
-/// approved : 1
-
 class OrderDetails {
-  int _id;
-  int _orderId;
-  int _productId;
-  int _storeId;
-  int _vendorId;
-  String _productName;
-  String _productSerial;
-  String _storeName;
-  String _vendorName;
-  int _quantity;
-  int _price;
-  int _discount;
-  String _total;
-  int _approved;
-
-  int get id => _id;
-  int get orderId => _orderId;
-  int get productId => _productId;
-  int get storeId => _storeId;
-  int get vendorId => _vendorId;
-  String get productName => _productName;
-  String get productSerial => _productSerial;
-  String get storeName => _storeName;
-  String get vendorName => _vendorName;
-  int get quantity => _quantity;
-  int get price => _price;
-  int get discount => _discount;
-  String get total => _total;
-  int get approved => _approved;
+  int id;
+  int orderId;
+  int productId;
+  int storeId;
+  int vendorId;
+  String productName;
+  List<Photo> photo;
+  String productSerial;
+  String storeName;
+  String vendorName;
+  int quantity;
+  String price;
+  int discount;
+  String total;
+  int approved;
+  String createdAt;
 
   OrderDetails(
-      {int id,
-      int orderId,
-      int productId,
-      int storeId,
-      int vendorId,
-      String productName,
-      String productSerial,
-      String storeName,
-      String vendorName,
-      int quantity,
-      int price,
-      int discount,
-      String total,
-      int approved}) {
-    _id = id;
-    _orderId = orderId;
-    _productId = productId;
-    _storeId = storeId;
-    _vendorId = vendorId;
-    _productName = productName;
-    _productSerial = productSerial;
-    _storeName = storeName;
-    _vendorName = vendorName;
-    _quantity = quantity;
-    _price = price;
-    _discount = discount;
-    _total = total;
-    _approved = approved;
-  }
+      {this.id,
+        this.orderId,
+        this.productId,
+        this.storeId,
+        this.vendorId,
+        this.productName,
+        this.photo,
+        this.productSerial,
+        this.storeName,
+        this.vendorName,
+        this.quantity,
+        this.price,
+        this.discount,
+        this.total,
+        this.approved,
+        this.createdAt});
 
-  OrderDetails.fromJson(dynamic json) {
-    _id = json["id"];
-    _orderId = json["order_id"];
-    _productId = json["product_id"];
-    _storeId = json["store_id"];
-    _vendorId = json["vendor_id"];
-    _productName = json["product_name"];
-    _productSerial = json["product_serial"];
-    _storeName = json["store_name"];
-    _vendorName = json["vendor_name"];
-    _quantity = json["quantity"];
-    _price = json["price"];
-    _discount = json["discount"];
-    _total = json["total"].toString();
-    _approved = json["approved"];
+  OrderDetails.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    orderId = json['order_id'];
+    productId = json['product_id'];
+    storeId = json['store_id'];
+    vendorId = json['vendor_id'];
+    productName = json['product_name'];
+    if (json['photo'] != null) {
+      photo = new List<Photo>();
+      json['photo'].forEach((v) {
+        photo.add(new Photo.fromJson(v));
+      });
+    }
+    productSerial = json['product_serial'];
+    storeName = json['store_name'];
+    vendorName = json['vendor_name'];
+    quantity = json['quantity'];
+    price = json['price'].toString();
+    discount = json['discount'];
+    total = json['total'].toString();
+    approved = json['approved'];
+    createdAt = json['created_at'];
   }
 
   Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
-    map["id"] = _id;
-    map["order_id"] = _orderId;
-    map["product_id"] = _productId;
-    map["store_id"] = _storeId;
-    map["vendor_id"] = _vendorId;
-    map["product_name"] = _productName;
-    map["product_serial"] = _productSerial;
-    map["store_name"] = _storeName;
-    map["vendor_name"] = _vendorName;
-    map["quantity"] = _quantity;
-    map["price"] = _price;
-    map["discount"] = _discount;
-    map["total"] = _total;
-    map["approved"] = _approved;
-    return map;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['order_id'] = this.orderId;
+    data['product_id'] = this.productId;
+    data['store_id'] = this.storeId;
+    data['vendor_id'] = this.vendorId;
+    data['product_name'] = this.productName;
+    if (this.photo != null) {
+      data['photo'] = this.photo.map((v) => v.toJson()).toList();
+    }
+    data['product_serial'] = this.productSerial;
+    data['store_name'] = this.storeName;
+    data['vendor_name'] = this.vendorName;
+    data['quantity'] = this.quantity;
+    data['price'] = this.price;
+    data['discount'] = this.discount;
+    data['total'] = this.total;
+    data['approved'] = this.approved;
+    data['created_at'] = this.createdAt;
+    return data;
+  }
+}
+
+class Photo {
+  int id;
+  int orderColumn;
+  String createdAt;
+  String updatedAt;
+  String image;
+  String url;
+  String fullurl;
+  String thumbnail;
+  String preview;
+
+  Photo(
+      {this.id,
+        this.orderColumn,
+        this.createdAt,
+        this.updatedAt,
+        this.image,
+        this.url,
+        this.fullurl,
+        this.thumbnail,
+        this.preview});
+
+  Photo.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    orderColumn = json['order_column'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    image = json['image'];
+    url = json['url'];
+    fullurl = json['fullurl'];
+    thumbnail = json['thumbnail'];
+    preview = json['preview'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['order_column'] = this.orderColumn;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    data['image'] = this.image;
+    data['url'] = this.url;
+    data['fullurl'] = this.fullurl;
+    data['thumbnail'] = this.thumbnail;
+    data['preview'] = this.preview;
+    return data;
   }
 }

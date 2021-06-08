@@ -3,14 +3,20 @@ import 'dart:async';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/orders_model.dart';
+import 'package:trkar_vendor/screens/orderdetails.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/SerachLoading.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
+import 'package:trkar_vendor/utils/navigator.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
 import 'package:trkar_vendor/widget/ResultOverlay.dart';
+import 'package:trkar_vendor/widget/SearchOverlay.dart';
+import 'package:trkar_vendor/widget/Sort.dart';
+import 'package:trkar_vendor/widget/hidden_menu.dart';
 import 'package:trkar_vendor/widget/stores/Order_item.dart';
 
 class Orders extends StatefulWidget {
@@ -19,13 +25,16 @@ class Orders extends StatefulWidget {
 }
 
 class _OrdersState extends State<Orders> {
-  List<Order> stores;
-  List<Order> filteredStores;
+  List<Order> orders;
+  List<Order> filteredOrders;
   final debouncer = Search(milliseconds: 1000);
   AutoCompleteTextField searchTextField;
   GlobalKey<AutoCompleteTextFieldState<Order>> key = new GlobalKey();
   ScrollController _scrollController = new ScrollController();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   int i = 2;
+
   @override
   void initState() {
     _scrollController.addListener(() {
@@ -43,12 +52,47 @@ class _OrdersState extends State<Orders> {
     final themeColor = Provider.of<Provider_control>(context);
 
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
-        title: Text("Orders"),
-        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(
+            Icons.menu,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            _scaffoldKey.currentState.openDrawer();
+          },
+        ),
+        title: Row(
+          children: [
+            SvgPicture.asset(
+              'assets/icons/orders.svg',
+              color: Colors.white,
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Text(getTransrlate(context, 'Myorders')),
+          ],
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.search,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (_) => SearchOverlay(),
+              );
+            },
+          )
+        ],
         backgroundColor: themeColor.getColor(),
       ),
-      body: stores == null
+      drawer: HiddenMenu(),
+      body: orders == null
           ? Container(
               height: ScreenUtil.getHeight(context) / 3,
               child: Center(
@@ -56,7 +100,7 @@ class _OrdersState extends State<Orders> {
                 valueColor:
                     AlwaysStoppedAnimation<Color>(themeColor.getColor()),
               )))
-          : stores.isEmpty
+          : orders.isEmpty
               ? Center(
                   child: Container(
                     child: Column(
@@ -79,175 +123,290 @@ class _OrdersState extends State<Orders> {
                   controller: _scrollController,
                   child: Column(
                     children: [
-                      Row(
-                        children: <Widget>[
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Expanded(
-                            child: Container(
-                              padding: EdgeInsets.only(bottom: 4),
-                              height: 72,
-                              child: searchTextField =
-                                  AutoCompleteTextField<Order>(
-                                key: key,
-                                clearOnSubmit: false,
-                                suggestions: filteredStores,
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 16.0),
-                                decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: getTransrlate(context, 'search'),
-                                    hintStyle: TextStyle(
-                                      fontSize: 13,
-                                      color: Color(0xFF5D6A78),
-                                      fontWeight: FontWeight.w400,
-                                    )),
-                                itemFilter: (item, query) {
-                                  return item.orderNumber
-                                      .toString()
-                                      .toLowerCase()
-                                      .startsWith(query.toLowerCase());
-                                },
-                                itemSorter: (a, b) {
-                                  return a.orderNumber.compareTo(b.orderNumber);
-                                },
-                                itemSubmitted: (item) {
-                                  setState(() {
-                                    searchTextField.textField.controller.text =
-                                        item.orderNumber.toString();
-                                  });
-                                  debouncer.run(() {
-                                    setState(() {
-                                      filteredStores = stores
-                                          .where((u) =>
-                                              (u.orderNumber
-                                                  .toString()
-                                                  .toLowerCase()
-                                                  .contains(searchTextField
-                                                      .textField.controller.text
-                                                      .toLowerCase())) ||
-                                              (u.orderTotal
-                                                  .toString()
-                                                  .toLowerCase()
-                                                  .contains(searchTextField
-                                                      .textField.controller.text
-                                                      .toLowerCase())))
-                                          .toList();
-                                    });
-                                  });
-                                },
-                                textChanged: (string) {
-                                  debouncer.run(() {
-                                    setState(() {
-                                      filteredStores = stores
-                                          .where((u) =>
-                                              (u.orderNumber
-                                                  .toString()
-                                                  .toLowerCase()
-                                                  .contains(
-                                                      string.toLowerCase())) ||
-                                              (u.orderTotal
-                                                  .toString()
-                                                  .toLowerCase()
-                                                  .contains(
-                                                      string.toLowerCase())))
-                                          .toList();
-                                    });
-                                  });
-                                },
-                                itemBuilder: (context, item) {
-                                  // ui for the autocompelete row
-                                  return row(item);
-                                },
+                      Container(
+                        height: 50,
+                        color: Colors.black12,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text('${orders.length} طلبات'),
+                            SizedBox(
+                              width: 100,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                // showDialog(
+                                //     context: context,
+                                //     builder: (_) => Filterdialog());
+                              },
+                              child: Row(
+                                children: [
+                                  Text('تصفية'),
+                                  Icon(
+                                    Icons.keyboard_arrow_down,
+                                    size: 20,
+                                  )
+                                ],
                               ),
                             ),
-                          ),
-                        ],
+                            InkWell(
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (_) => Sortdialog()).then((val) {
+                                  print(val);
+                                  API(context)
+                                      .get('users?sort_type=${val}')
+                                      .then((value) {
+                                    if (value != null) {
+                                      if (value['status_code'] == 200) {
+                                        setState(() {
+                                          filteredOrders = orders =
+                                              Orders_model.fromJson(value).data;
+                                        });
+                                      } else {
+                                        showDialog(
+                                            context: context,
+                                            builder: (_) => ResultOverlay(
+                                                value['message']));
+                                      }
+                                    }
+                                  });
+                                });
+                              },
+                              child: Row(
+                                children: [
+                                  Text('ترتيب'),
+                                  Icon(
+                                    Icons.keyboard_arrow_down,
+                                    size: 20,
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                       ListView.builder(
-                        itemCount: filteredStores == null && stores.isEmpty
+                        itemCount: filteredOrders == null && orders.isEmpty
                             ? 0
-                            : filteredStores.length,
+                            : filteredOrders.length,
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (BuildContext context, int index) {
-                          return Column(
-                            children: [
-                              OrderItem(
-                                orders_model: filteredStores[index],
-                                themeColor: themeColor,
-                              ),
-                              filteredStores[index].orderStatus != 'pending'
-                                  ? Container()
-                                  : Row(
+                          return InkWell(
+                            onTap: () {
+                              Nav.route(
+                                  context,
+                                  Order_information(
+                                    orders: filteredOrders,
+                                    orders_model: filteredOrders[index],
+                                  ));
+                            },
+                            child: Container(
+                              color: index.isOdd
+                                  ? Color(0xffF6F6F6)
+                                  : Colors.white,
+                              child: Column(
+                                children: [
+                                  OrderItem(
+                                    orders_model: filteredOrders[index],
+                                    themeColor: themeColor,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 40, left: 16),
+                                    child: Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
-                                        FlatButton(
-                                          color: Colors.green,
-                                          padding: EdgeInsets.all(4),
-                                          onPressed: () {
-                                            API(context).post(
-                                                'vendor/approve/orders', {
-                                              "status": "1",
-                                              "order_id":
-                                                  filteredStores[index].id
-                                            }).then((value) {
-                                              if (value != null) {
-                                                showDialog(
-                                                  context: context,
-                                                  builder: (_) => ResultOverlay(
-                                                    value.containsKey('message')
-                                                        ? value['message']
-                                                        : 'Done',
-                                                  ),
-                                                );
-                                                getAllStore();
-                                              }
-                                            });
-                                          },
-                                          child: Text(
-                                            'Accept',
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold),
+                                        Text(
+                                          ' ${getTransrlate(context, 'totalOrder')} : ${filteredOrders[index].orderTotal} ${getTransrlate(context, 'Currency')} ',
+                                          style: TextStyle(
+                                            fontSize: 13,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w600,
                                           ),
                                         ),
-                                        FlatButton(
-                                          color: Colors.red,
-                                          padding: EdgeInsets.all(4),
-                                          onPressed: () {
-                                            API(context).post(
-                                                'vendor/cancel/order', {
-                                              "order_id":
-                                                  filteredStores[index].id
-                                            }).then((value) {
-                                              if (value != null) {
-                                                showDialog(
-                                                  context: context,
-                                                  builder: (_) => ResultOverlay(
-                                                    value.containsKey('message')
-                                                        ? value['message']
-                                                        : 'Done',
+                                        filteredOrders[index].orderStatus !=
+                                                'pending'
+                                            ? Container(
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: <Widget>[
+                                                    Text(
+                                                      getTransrlate(context,
+                                                          'OrderState'),
+                                                      style: TextStyle(
+                                                        fontSize: 13,
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    Container(
+                                                      width: 80,
+                                                      padding:
+                                                          EdgeInsets.all(3),
+                                                      decoration: BoxDecoration(
+                                                          border: Border.all(
+                                                              width: 1,
+                                                              color: isPassed(
+                                                                  filteredOrders[
+                                                                          index]
+                                                                      .orderStatus
+                                                                      .toString()))),
+                                                      child: Center(
+                                                        child: Text(
+                                                          '${filteredOrders[index].orderStatus}',
+                                                          maxLines: 1,
+                                                          style: TextStyle(
+                                                            fontSize: 13,
+                                                            color: isPassed(
+                                                                filteredOrders[
+                                                                        index]
+                                                                    .orderStatus
+                                                                    .toString()),
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
+                                            : Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
+                                                children: [
+                                                  FlatButton(
+                                                    padding: EdgeInsets.all(4),
+                                                    onPressed: () {
+                                                      API(context).post(
+                                                          'vendor/approve/orders',
+                                                          {
+                                                            "status": "1",
+                                                            "order_id":
+                                                                filteredOrders[
+                                                                        index]
+                                                                    .id
+                                                          }).then((value) {
+                                                        if (value != null) {
+                                                          showDialog(
+                                                            context: context,
+                                                            builder: (_) =>
+                                                                ResultOverlay(
+                                                              value.containsKey(
+                                                                      'message')
+                                                                  ? value[
+                                                                      'message']
+                                                                  : 'Done',
+                                                            ),
+                                                          );
+                                                          getAllStore();
+                                                        }
+                                                      });
+                                                    },
+                                                    child: Row(
+                                                      children: [
+                                                        Icon(
+                                                            Icons
+                                                                .check_circle_outline,
+                                                            color: Colors
+                                                                .lightGreen),
+                                                        SizedBox(
+                                                          width: 5,
+                                                        ),
+                                                        Text(
+                                                          'قبول',
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .lightGreen,
+                                                              fontSize: 15,
+                                                              decoration:
+                                                                  TextDecoration
+                                                                      .underline,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
-                                                );
-                                              }
-                                              getAllStore();
-                                            });
-                                          },
-                                          child: Text(
-                                            'Cancel',
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ),
+                                                  FlatButton(
+                                                    padding: EdgeInsets.all(4),
+                                                    onPressed: () {
+                                                      API(context).post(
+                                                          'vendor/cancel/order',
+                                                          {
+                                                            "order_id":
+                                                                filteredOrders[
+                                                                        index]
+                                                                    .id
+                                                          }).then((value) {
+                                                        if (value != null) {
+                                                          showDialog(
+                                                            context: context,
+                                                            builder: (_) =>
+                                                                ResultOverlay(
+                                                              value.containsKey(
+                                                                      'message')
+                                                                  ? value[
+                                                                      'message']
+                                                                  : 'Done',
+                                                            ),
+                                                          );
+                                                        }
+                                                        getAllStore();
+                                                      });
+                                                    },
+                                                    child: Row(
+                                                      children: [
+                                                        Icon(
+                                                            CupertinoIcons
+                                                                .clear_circled,
+                                                            size: 25,
+                                                            color: Colors.red),
+                                                        SizedBox(
+                                                          width: 5,
+                                                        ),
+                                                        Text(
+                                                          'رفض',
+                                                          style: TextStyle(
+                                                              color: Colors.red,
+                                                              fontSize: 15,
+                                                              decoration:
+                                                                  TextDecoration
+                                                                      .underline,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                       ],
                                     ),
-                            ],
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Container(
+                                    height: 1,
+                                    color: Colors.black12,
+                                  )
+                                ],
+                              ),
+                            ),
                           );
                         },
                       ),
@@ -258,17 +417,36 @@ class _OrdersState extends State<Orders> {
   }
 
   Future<void> getAllStore() async {
-    // ordered_by   >>> created_at
-    // sort_type  >>> desc
     API(context)
         .get('show/orders?ordered_by=created_at&sort_type=desc')
         .then((value) {
       if (value != null) {
         setState(() {
-          filteredStores = stores = Orders_model.fromJson(value).data;
+          filteredOrders = orders = Orders_model.fromJson(value).data;
         });
       }
     });
+  }
+
+  Color isPassed(String value) {
+    switch (value) {
+      case 'inprogress':
+        return Colors.amber;
+        break;
+      case 'pending':
+        return Colors.green;
+        break;
+      case 'cancelled due to expiration':
+        return Colors.deepPurpleAccent;
+        break;
+      case '5':
+        return Colors.greenAccent;
+      case 'cancelled':
+        return Colors.red;
+        break;
+      default:
+        return Colors.blue;
+    }
   }
 
   void pageFetch() {
@@ -276,8 +454,8 @@ class _OrdersState extends State<Orders> {
         .get('show/orders?page=${i++}&ordered_by=created_at&sort_type=desc')
         .then((value) {
       setState(() {
-        stores.addAll(Orders_model.fromJson(value).data);
-        filteredStores.addAll(Orders_model.fromJson(value).data);
+        orders.addAll(Orders_model.fromJson(value).data);
+        filteredOrders.addAll(Orders_model.fromJson(value).data);
       });
     });
   }

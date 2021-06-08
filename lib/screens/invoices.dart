@@ -1,16 +1,25 @@
 import 'dart:async';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:trkar_vendor/model/invoices.dart';
+import 'package:trkar_vendor/model/orders_model.dart';
+import 'package:trkar_vendor/screens/orderdetails.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/SerachLoading.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
+import 'package:trkar_vendor/utils/navigator.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
-import 'package:trkar_vendor/widget/stores/Invoice_item.dart';
+import 'package:trkar_vendor/widget/ResultOverlay.dart';
+import 'package:trkar_vendor/widget/SearchOverlay.dart';
+import 'package:trkar_vendor/widget/Sort.dart';
+import 'package:trkar_vendor/widget/hidden_menu.dart';
+import 'package:trkar_vendor/widget/stores/Order_item.dart';
 
 class Invoices extends StatefulWidget {
   @override
@@ -18,14 +27,24 @@ class Invoices extends StatefulWidget {
 }
 
 class _InvoicesState extends State<Invoices> {
-  List<Invoice> stores;
-  List<Invoice> filteredStores;
+  List<Order> orders;
+  List<Order> filteredOrders;
   final debouncer = Search(milliseconds: 1000);
   AutoCompleteTextField searchTextField;
-  GlobalKey<AutoCompleteTextFieldState<Invoice>> key = new GlobalKey();
+  GlobalKey<AutoCompleteTextFieldState<Order>> key = new GlobalKey();
+  ScrollController _scrollController = new ScrollController();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  int i = 2;
 
   @override
   void initState() {
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        pageFetch();
+      }
+    });
     getAllStore();
     super.initState();
   }
@@ -35,169 +54,275 @@ class _InvoicesState extends State<Invoices> {
     final themeColor = Provider.of<Provider_control>(context);
 
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
-        title: Text("Invoices"),
-        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(
+            Icons.menu,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            _scaffoldKey.currentState.openDrawer();
+          },
+        ),
+        title: Row(
+          children: [
+            SvgPicture.asset(
+              'assets/icons/invoices.svg',
+              color: Colors.white,
+              height: 25,
+              width: 25,
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Text(getTransrlate(context, 'invoices')),
+          ],
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.search,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (_) => SearchOverlay(),
+              );
+            },
+          )
+        ],
         backgroundColor: themeColor.getColor(),
       ),
-      body: stores == null
+      drawer: HiddenMenu(),
+      body: orders == null
           ? Container(
-              height: ScreenUtil.getHeight(context) / 3,
-              child: Center(
-                  child: CircularProgressIndicator(
+          height: ScreenUtil.getHeight(context) / 3,
+          child: Center(
+              child: CircularProgressIndicator(
                 valueColor:
-                    AlwaysStoppedAnimation<Color>(themeColor.getColor()),
+                AlwaysStoppedAnimation<Color>(themeColor.getColor()),
               )))
-          : stores.isEmpty
-              ? Center(
-                  child: Container(
-                    child: Column(
+          : orders.isEmpty
+          ? Center(
+        child: Container(
+          child: Column(
+            children: [
+              SizedBox(height: 20),
+              Icon(Icons.check_box_outline_blank_sharp),
+              SizedBox(height: 20),
+              Text(
+                'no invoices found ',
+                style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.grey,
+                    fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+        ),
+      )
+          : SingleChildScrollView(
+        controller: _scrollController,
+        child: Column(
+          children: [
+            Container(
+              height: 50,
+              color: Colors.black12,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text('${orders.length} فواتير '),
+                  SizedBox(
+                    width: 100,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      // showDialog(
+                      //     context: context,
+                      //     builder: (_) => Filterdialog());
+                    },
+                    child: Row(
                       children: [
-                        SizedBox(height: 20),
-                        Icon(Icons.check_box_outline_blank_sharp),
-                        SizedBox(height: 20),
-                        Text(
-                          'no stores found ',
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.grey,
-                              fontWeight: FontWeight.bold),
-                        ),
+                        Text('تصفية'),
+                        Icon(
+                          Icons.keyboard_arrow_down,
+                          size: 20,
+                        )
                       ],
                     ),
                   ),
-                )
-              : SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Row(
-                        children: <Widget>[
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Expanded(
-                            child: Container(
-                              padding: EdgeInsets.only(bottom: 4),
-                              height: 72,
-                              child: searchTextField =
-                                  AutoCompleteTextField<Invoice>(
-                                key: key,
-                                clearOnSubmit: false,
-                                suggestions: filteredStores,
+                  InkWell(
+                    onTap: () {
+                      showDialog(
+                          context: context,
+                          builder: (_) => Sortdialog()).then((val) {
+                        print(val);
+                        API(context)
+                            .get('users?sort_type=${val}')
+                            .then((value) {
+                          if (value != null) {
+                            if (value['status_code'] == 200) {
+                              setState(() {
+                                filteredOrders = orders =
+                                    Orders_model.fromJson(value).data;
+                              });
+                            } else {
+                              showDialog(
+                                  context: context,
+                                  builder: (_) => ResultOverlay(
+                                      value['message']));
+                            }
+                          }
+                        });
+                      });
+                    },
+                    child: Row(
+                      children: [
+                        Text('ترتيب'),
+                        Icon(
+                          Icons.keyboard_arrow_down,
+                          size: 20,
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+            ListView.builder(
+              itemCount: filteredOrders == null && orders.isEmpty
+                  ? 0
+                  : filteredOrders.length,
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemBuilder: (BuildContext context, int index) {
+                return InkWell(
+                  onTap: () {
+                    Nav.route(
+                        context,
+                        Order_information(
+                          orders: filteredOrders,
+                          orders_model: filteredOrders[index],
+                        ));
+                  },
+                  child: Container(
+                    color: index.isOdd
+                        ? Color(0xffF6F6F6)
+                        : Colors.white,
+                    child: Column(
+                      children: [
+                        OrderItem(
+                          orders_model: filteredOrders[index],
+                          themeColor: themeColor,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              right: 40, left: 16),
+                          child: Row(
+                            mainAxisAlignment:
+                            MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                ' ${getTransrlate(context, 'totalOrder')} : ${filteredOrders[index].orderTotal} ${getTransrlate(context, 'Currency')} ',
                                 style: TextStyle(
-                                    color: Colors.black, fontSize: 16.0),
-                                decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: getTransrlate(context, 'search'),
-                                    hintStyle: TextStyle(
-                                      fontSize: 13,
-                                      color: Color(0xFF5D6A78),
-                                      fontWeight: FontWeight.w400,
-                                    )),
-                                itemFilter: (item, query) {
-                                  return item.invoiceNumber
-                                      .toString()
-                                      .toLowerCase()
-                                      .startsWith(query.toLowerCase());
-                                },
-                                itemSorter: (a, b) {
-                                  return a.invoiceNumber
-                                      .compareTo(b.invoiceNumber);
-                                },
-                                itemSubmitted: (item) {
-                                  setState(() {
-                                    searchTextField.textField.controller.text =
-                                        item.invoiceNumber.toString();
-                                  });
-                                  debouncer.run(() {
-                                    setState(() {
-                                      filteredStores = stores
-                                          .where((u) =>
-                                              (u.invoiceNumber
-                                                  .toString()
-                                                  .toLowerCase()
-                                                  .contains(searchTextField
-                                                      .textField.controller.text
-                                                      .toLowerCase())) ||
-                                              (u.invoiceNumber
-                                                  .toString()
-                                                  .toLowerCase()
-                                                  .contains(searchTextField
-                                                      .textField.controller.text
-                                                      .toLowerCase())))
-                                          .toList();
-                                    });
-                                  });
-                                },
-                                textChanged: (string) {
-                                  debouncer.run(() {
-                                    setState(() {
-                                      filteredStores = stores
-                                          .where((u) =>
-                                              (u.invoiceNumber
-                                                  .toString()
-                                                  .toLowerCase()
-                                                  .contains(
-                                                      string.toLowerCase())) ||
-                                              (u.invoiceTotal
-                                                  .toString()
-                                                  .toLowerCase()
-                                                  .contains(
-                                                      string.toLowerCase())))
-                                          .toList();
-                                    });
-                                  });
-                                },
-                                itemBuilder: (context, item) {
-                                  // ui for the autocompelete row
-                                  return row(item);
-                                },
+                                  fontSize: 13,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                            ),
+                              AutoSizeText(
+                                DateFormat('yyyy-MM-dd')
+                                    .format(DateTime.parse(filteredOrders[index].createdAt)),
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                maxLines: 2,
+                                minFontSize: 11,
+                              ),
+
+                            ],
                           ),
-                        ],
-                      ),
-                      ListView.builder(
-                        itemCount: filteredStores == null && stores.isEmpty
-                            ? 0
-                            : filteredStores.length,
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemBuilder: (BuildContext context, int index) {
-                          return Invoice_item(
-                            hall_model: filteredStores[index],
-                          );
-                        },
-                      ),
-                    ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          height: 1,
+                          color: Colors.black12,
+                        )
+                      ],
+                    ),
                   ),
-                ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 
   Future<void> getAllStore() async {
-    API(context).get('show/invoices').then((value) {
+    API(context)
+        .get('show/orders?ordered_by=created_at&sort_type=desc')
+        .then((value) {
       if (value != null) {
         setState(() {
-          filteredStores = stores = Invoices_model.fromJson(value).data;
+          filteredOrders = orders = Orders_model.fromJson(value).data;
         });
       }
     });
   }
 
-  Widget row(Invoice productModel) {
+  Color isPassed(String value) {
+    switch (value) {
+      case 'inprogress':
+        return Colors.amber;
+        break;
+      case 'pending':
+        return Colors.green;
+        break;
+      case 'cancelled due to expiration':
+        return Colors.deepPurpleAccent;
+        break;
+      case '5':
+        return Colors.greenAccent;
+      case 'cancelled':
+        return Colors.red;
+        break;
+      default:
+        return Colors.blue;
+    }
+  }
+
+  void pageFetch() {
+    API(context)
+        .get('show/orders?page=${i++}&ordered_by=created_at&sort_type=desc')
+        .then((value) {
+      setState(() {
+        orders.addAll(Orders_model.fromJson(value).data);
+        filteredOrders.addAll(Orders_model.fromJson(value).data);
+      });
+    });
+  }
+
+  Widget row(Order productModel) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text(
-          productModel.invoiceNumber.toString(),
+          productModel.orderNumber.toString(),
           style: TextStyle(fontSize: 16.0),
         ),
         SizedBox(
           width: 10.0,
         ),
         Text(
-          productModel.invoiceTotal.toString(),
+          productModel.orderTotal.toString(),
         ),
       ],
     );

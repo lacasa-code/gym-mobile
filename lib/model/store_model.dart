@@ -65,6 +65,7 @@ class Store {
   dynamic _deletedAt;
   String _vendorName;
   Vendor _vendor;
+  bool isSelect=false;
 
   int get id => _id;
   String get name => _name;

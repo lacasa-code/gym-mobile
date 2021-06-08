@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import 'package:trkar_vendor/model/products_model.dart';
@@ -13,6 +14,9 @@ import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
 import 'package:trkar_vendor/widget/ResultOverlay.dart';
+import 'package:trkar_vendor/widget/SearchOverlay.dart';
+import 'package:trkar_vendor/widget/Sort.dart';
+import 'package:trkar_vendor/widget/hidden_menu.dart';
 import 'package:trkar_vendor/widget/products/product_item.dart';
 
 class Products extends StatefulWidget {
@@ -22,6 +26,9 @@ class Products extends StatefulWidget {
 
 class _ProductsState extends State<Products> {
   List<Product> products;
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  bool isSelect = false;
+  List<int> selectProduct = [];
 
   @override
   void initState() {
@@ -33,20 +40,71 @@ class _ProductsState extends State<Products> {
   Widget build(BuildContext context) {
     final themeColor = Provider.of<Provider_control>(context);
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
-        title: Text(getTransrlate(context, 'product')),
-        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(
+            Icons.menu,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            _scaffoldKey.currentState.openDrawer();
+          },
+        ),
+        title: Row(
+          children: [
+            SvgPicture.asset(
+              'assets/icons/ic_shopping_cart_bottom.svg',
+              height: 30,
+              width: 30,
+              color: Colors.white,
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Text(getTransrlate(context, 'product')),
+          ],
+        ),
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(top: 20, right: 10, left: 10),
-            child: InkWell(
-                onTap: () {
-                  _navigate_add_hell(context);
-                },
-                child: Text(getTransrlate(context, 'addProduct'))),
+          IconButton(
+            icon: Icon(
+              Icons.search,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (_) => SearchOverlay(),
+              );
+            },
           )
         ],
         backgroundColor: themeColor.getColor(),
+      ),
+      drawer: HiddenMenu(),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(right: 50),
+        child: Align(
+          alignment: Alignment.bottomRight,
+          child: FlatButton(
+              color: Colors.orange,
+              onPressed: () {
+                _navigate_add_hell(context);
+              },
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.add,
+                    color: Colors.white,
+                  ),
+                  Text(
+                    getTransrlate(context, 'addProduct'),
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ],
+              )),
+        ),
       ),
       body: products == null
           ? Container(
@@ -76,122 +134,245 @@ class _ProductsState extends State<Products> {
                   ),
                 )
               : SingleChildScrollView(
-                  child: Container(
-                    height: ScreenUtil.getHeight(context)-80 ,
-                    width: ScreenUtil.getWidth(context) ,
-                    child: ResponsiveGridList(
-                      desiredItemWidth: ScreenUtil.getWidth(context)/2.2,
-                      minSpacing: 10,
-                      children: products.map((product) =>  Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Color(0xffeeeeee),
-                            borderRadius: BorderRadius.circular(15),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  offset: Offset(0, 0),
-                                  blurRadius: 3)
-                            ],
-                          ),
-                          child: Column(
-                            children: [
-                              Product_item(
-                                hall_model: product,
-                              ),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
+                  child: Column(
+                    children: [
+                      isSelect
+                          ? Container(
+                              height: 50,
+                              color: Colors.black12,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: [
-                                  InkWell(
-                                    onTap: () {
-                                      _navigate_edit_hell(
-                                          context, product);
-                                    },
-                                    child: Container(
-                                      padding: EdgeInsets.all(2),
-                                      margin: EdgeInsets.all(2),
-                                      decoration: BoxDecoration(
-                                          color: Colors.green,
-                                          borderRadius:
-                                          BorderRadius.circular(10),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color:
-                                              Colors.grey.withOpacity(.2),
-                                              blurRadius:
-                                              6.0, // soften the shadow
-                                              spreadRadius:
-                                              0.0, //extend the shadow
-                                              offset: Offset(
-                                                0.0, // Move to right 10  horizontally
-                                                1.0, // Move to bottom 10 Vertically
-                                              ),
-                                            )
-                                          ]),
-                                      width: ScreenUtil.getWidth(context) / 6,
-                                      child: Center(
-                                        child: AutoSizeText(
-                                          'Edit',
-                                          minFontSize: 10,
-                                          maxFontSize: 20,
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                          maxLines: 1,
-                                        ),
-                                      ),
-                                    ),
+                                  Row(
+                                    children: [
+                                      Text('تم اختيار '),
+                                      Text('( ${selectProduct.length} )'),
+                                    ],
                                   ),
                                   InkWell(
                                     onTap: () {
-                                      Delete_Products(product.id);
+                                      setState(() {
+                                        isSelect = true;
+                                      });
                                     },
-                                    child: Container(
-                                      padding: EdgeInsets.all(2),
-                                      margin: EdgeInsets.all(2),
-                                      decoration: BoxDecoration(
-                                          color: Colors.red,
-                                          borderRadius:
-                                          BorderRadius.circular(10),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color:
-                                              Colors.grey.withOpacity(.2),
-                                              blurRadius:
-                                              6.0, // soften the shadow
-                                              spreadRadius:
-                                              0.0, //extend the shadow
-                                              offset: Offset(
-                                                0.0, // Move to right 10  horizontally
-                                                1.0, // Move to bottom 10 Vertically
-                                              ),
-                                            )
-                                          ]),
-                                      width: ScreenUtil.getWidth(context) / 6,
-                                      child: Center(
-                                        child: AutoSizeText(
-                                          'Delete',
-                                          minFontSize: 10,
-                                          maxFontSize: 20,
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                          maxLines: 1,
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.check,
+                                          color: Colors.black45,
+                                          size: 25,
                                         ),
-                                      ),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Text('اختر الكل')
+                                      ],
+                                    ),
+                                    // color: Color(0xffE4E4E4),
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      print(selectProduct.toString());
+                                      API(context).post("users/mass/delete", {
+                                        "ids": selectProduct.toString()
+                                      }).then((value) {
+                                        if (value != null) {
+                                          showDialog(
+                                            context: context,
+                                            builder: (_) => ResultOverlay(
+                                              value.containsKey('errors')
+                                                  ? "${value['errors']}"
+                                                  : 'تم حذف العامل بنجاح',
+                                            ),
+                                          );
+                                        }
+                                        getProducts();
+                                      });
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Text('حذف'),
+                                        Icon(
+                                          CupertinoIcons.delete,
+                                          size: 20,
+                                        )
+                                      ],
                                     ),
                                   ),
+                                  IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        isSelect = false;
+                                      });
+                                    },
+                                    icon: Icon(
+                                      Icons.close,
+                                      size: 30,
+                                      color: Colors.black54,
+                                    ),
+                                  )
                                 ],
                               ),
-                            ],
-                          ),
-                        ),
-                      )).toList(),
-                    ),
+                            )
+                          : Container(
+                              height: 50,
+                              color: Colors.black12,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Text('${products.length} منتج '),
+                                  InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        isSelect
+                                            ? isSelect = false
+                                            : isSelect = true;
+                                      });
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.check_box,
+                                          color: Colors.black45,
+                                          size: 25,
+                                        ),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Text('اختيار')
+                                      ],
+                                    ),
+                                    // color: Color(0xffE4E4E4),
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      // showDialog(
+                                      //     context: context,
+                                      //     builder: (_) => Filterdialog());
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Text('تصفية'),
+                                        Icon(
+                                          Icons.keyboard_arrow_down,
+                                          size: 20,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      showDialog(
+                                              context: context,
+                                              builder: (_) => Sortdialog())
+                                          .then((val) {
+                                        print(val);
+                                        API(context)
+                                            .get('users?sort_type=${val}')
+                                            .then((value) {
+                                          if (value != null) {
+                                            if (value['status_code'] == 200) {
+                                              setState(() {
+                                                products =
+                                                    Products_model.fromJson(
+                                                            value)
+                                                        .product;
+                                              });
+                                            } else {
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (_) => ResultOverlay(
+                                                      value['message']));
+                                            }
+                                          }
+                                        });
+                                      });
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Text('ترتيب'),
+                                        Icon(
+                                          Icons.keyboard_arrow_down,
+                                          size: 20,
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                      ListView.builder(
+                          itemCount: products == null && products.isEmpty
+                              ? 0
+                              : products.length,
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (BuildContext context, int index) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 8,horizontal: 16),
+                              child: Stack(
+                                children: [
+                                  Product_item(
+                                    hall_model: products[index],
+                                    isSelect: isSelect,selectStores: selectProduct,
+                                  ),
+                                  Positioned(
+                                      left: 20,
+                                      top: 20,
+                                      child: PopupMenuButton<int>(
+                                        itemBuilder: (context) => [
+                                          PopupMenuItem(
+                                            value: 1,
+                                            child: InkWell(
+                                              onTap: (){
+                                                _navigate_edit_hell(
+                                                    context, products[index]);
+                                              },
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                                children: [
+                                                  Text("تعديل"),
+                                                  Icon(
+                                                    Icons.edit_outlined,
+                                                    color: Colors.black54,
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          PopupMenuItem(
+                                            value: 2,
+                                            child:  InkWell(
+                                              onTap: (){
+                                                Delete_Products(products[index].id);
+
+                                              },
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                                children: [
+                                                  Text("حذف"),
+                                                  Icon(
+                                                    CupertinoIcons.delete,
+                                                    color: Colors.black54,
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      )
+
+                                  ),
+
+                                ],
+                              ),
+                            );
+                          }),
+                    ],
                   ),
                 ),
     );

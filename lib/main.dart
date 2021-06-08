@@ -95,6 +95,10 @@ bool onboard=false;
           backgroundColor: themeColor.getColor(),
           behavior: SnackBarBehavior.floating,
         ),
+        colorScheme: ColorScheme.fromSwatch(
+            primarySwatch: Colors.lightGreen,
+
+        ),
       ),
       home:onboard?OnboardingPage(): LoginPage(),
     );

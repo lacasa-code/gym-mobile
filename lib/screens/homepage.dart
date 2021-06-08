@@ -39,7 +39,7 @@ class _HomeMobileState extends State<HomeMobile> {
   String name;
 
   Future<void> _selectDatefrom(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
+    final DateTime picked =  await showDatePicker(
         context: context,
         initialDate: date,
         firstDate: DateTime(2015, 8),
@@ -445,7 +445,7 @@ class _HomeMobileState extends State<HomeMobile> {
                               ],
                             ),
                           ),
-                    Padding(
+                    labels.isEmpty?Container():Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
                         height: ScreenUtil.getHeight(context) / 4,

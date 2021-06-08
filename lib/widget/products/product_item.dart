@@ -1,61 +1,115 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:trkar_vendor/model/products_model.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 
-class Product_item extends StatelessWidget {
-  Product_item({Key key, this.hall_model}) : super(key: key);
+class Product_item extends StatefulWidget {
+  Product_item({Key key, this.hall_model, this.selectStores, this.isSelect})
+      : super(key: key);
   final Product hall_model;
+  List<int> selectStores;
+  bool isSelect = false;
 
+  @override
+  _Product_itemState createState() => _Product_itemState();
+}
+
+class _Product_itemState extends State<Product_item> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: ScreenUtil.getWidth(context) - 20,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          ClipRRect(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(15), topRight: Radius.circular(15)),
-            child: Image.network(
-              "${hall_model.photo.isNotEmpty ? hall_model.photo[0].image : 'https://d3a1v57rabk2hm.cloudfront.net/outerbanksbox/betterman_mobile-copy-42/images/product_placeholder.jpg?ts=1608776387&host=www.outerbanksbox.com'}",
-              height: ScreenUtil.getHeight(context) / 6,
-              width: ScreenUtil.getWidth(context),
-              fit: BoxFit.cover,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(3),
-            child: Container(
-              width: ScreenUtil.getWidth(context) / 3,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  AutoSizeText(
-                    hall_model.name,
-                    minFontSize: 10,
-                    style: TextStyle(
-                      color: Color(0xFF5D6A78),
-                      fontWeight: FontWeight.bold,
-                    ),
-                    maxLines: 1,
-                  ),
-                  hall_model.price == null
-                      ? Container()
-                      : AutoSizeText(
-                          'price :' + hall_model.price.toString(),
-                          minFontSize: 8,
-                          maxFontSize: 14,
-                          style: TextStyle(
-                            color: Color(0xFF5D6A78),
-                            fontWeight: FontWeight.w300,
-                          ),
-                          maxLines: 1,
-                        ),
-                ],
+      width: ScreenUtil.getWidth(context),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              offset: Offset(0, 0),
+              blurRadius: 3)
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Stack(
+            children: [
+              CachedNetworkImage(
+                imageUrl:
+                "${widget.hall_model.photo.isNotEmpty ? widget.hall_model.photo[0].image : ''}",
+                height: ScreenUtil.getHeight(context) / 6,
+                width: ScreenUtil.getWidth(context)/5,
+                fit: BoxFit.contain,
               ),
-            ),
+              widget.isSelect
+                  ? Container(
+                color: Colors.white,
+                    child: Checkbox(
+                        activeColor: Colors.orange,
+                        value: widget.hall_model.isSelect,
+                        onChanged: (bool value) {
+                          setState(() {
+                            widget.hall_model.isSelect = value;
+                          });
+                          !widget.hall_model.isSelect
+                              ? widget.selectStores
+                                  .remove(widget.hall_model.id)
+                              : widget.selectStores
+                                  .add(widget.hall_model.id);
+                        }),
+                  )
+                  : Container(),
+            ],
+          ),
+          SizedBox(width: 10,),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 10,
+              ),
+              AutoSizeText(
+                widget.hall_model.name,
+                minFontSize: 10,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+                maxLines: 1,
+              ),
+              Text(
+                "السعر :  ${widget.hall_model.price}",
+                maxLines: 1,
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14),
+              ),
+              AutoSizeText(
+                'التقييم  : 3.5/5',
+                minFontSize: 10,
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              AutoSizeText(
+                '${widget.hall_model.description}',
+                minFontSize: 10,
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+            ],
           ),
         ],
       ),

@@ -17,6 +17,7 @@ import 'package:trkar_vendor/utils/service/API.dart';
 import 'package:trkar_vendor/widget/ResultOverlay.dart';
 import 'package:trkar_vendor/widget/SearchOverlay.dart';
 import 'package:trkar_vendor/widget/Sort.dart';
+import 'package:trkar_vendor/widget/hidden_menu.dart';
 import 'package:trkar_vendor/widget/stores/store_item.dart';
 
 class Stores extends StatefulWidget {
@@ -45,6 +46,7 @@ class _StoresState extends State<Stores> {
     final themeColor = Provider.of<Provider_control>(context);
     return Scaffold(
       key: _scaffoldKey,
+      drawer: HiddenMenu(),
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(
@@ -277,81 +279,81 @@ class _StoresState extends State<Stores> {
                           ],
                         ),
                       ),
-                      Row(
-                        children: <Widget>[
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Expanded(
-                            child: Container(
-                              padding: EdgeInsets.only(bottom: 4),
-                              height: 72,
-                              child: searchTextField =
-                                  AutoCompleteTextField<Store>(
-                                key: key,
-                                clearOnSubmit: false,
-                                suggestions: filteredStores,
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 16.0),
-                                decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: getTransrlate(context, 'search'),
-                                    hintStyle: TextStyle(
-                                      fontSize: 13,
-                                      color: Color(0xFF5D6A78),
-                                      fontWeight: FontWeight.w400,
-                                    )),
-                                itemFilter: (item, query) {
-                                  return item.name
-                                      .toLowerCase()
-                                      .startsWith(query.toLowerCase());
-                                },
-                                itemSorter: (a, b) {
-                                  return a.name.compareTo(b.name);
-                                },
-                                itemSubmitted: (item) {
-                                  setState(() {
-                                    searchTextField.textField.controller.text =
-                                        item.name;
-                                  });
-                                  debouncer.run(() {
-                                    setState(() {
-                                      filteredStores = stores
-                                          .where((u) =>
-                                              (u.name.toLowerCase().contains(
-                                                  searchTextField
-                                                      .textField.controller.text
-                                                      .toLowerCase())) ||
-                                              (u.address.toLowerCase().contains(
-                                                  searchTextField
-                                                      .textField.controller.text
-                                                      .toLowerCase())))
-                                          .toList();
-                                    });
-                                  });
-                                },
-                                textChanged: (string) {
-                                  debouncer.run(() {
-                                    setState(() {
-                                      filteredStores = stores
-                                          .where((u) =>
-                                              (u.name.toLowerCase().contains(
-                                                  string.toLowerCase())) ||
-                                              (u.address.toLowerCase().contains(
-                                                  string.toLowerCase())))
-                                          .toList();
-                                    });
-                                  });
-                                },
-                                itemBuilder: (context, item) {
-                                  // ui for the autocompelete row
-                                  return row(item);
-                                },
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                      // Row(
+                      //   children: <Widget>[
+                      //     SizedBox(
+                      //       width: 8,
+                      //     ),
+                      //     Expanded(
+                      //       child: Container(
+                      //         padding: EdgeInsets.only(bottom: 4),
+                      //         height: 72,
+                      //         child: searchTextField =
+                      //             AutoCompleteTextField<Store>(
+                      //           key: key,
+                      //           clearOnSubmit: false,
+                      //           suggestions: filteredStores,
+                      //           style: TextStyle(
+                      //               color: Colors.black, fontSize: 16.0),
+                      //           decoration: InputDecoration(
+                      //               border: InputBorder.none,
+                      //               hintText: getTransrlate(context, 'search'),
+                      //               hintStyle: TextStyle(
+                      //                 fontSize: 13,
+                      //                 color: Color(0xFF5D6A78),
+                      //                 fontWeight: FontWeight.w400,
+                      //               )),
+                      //           itemFilter: (item, query) {
+                      //             return item.name
+                      //                 .toLowerCase()
+                      //                 .startsWith(query.toLowerCase());
+                      //           },
+                      //           itemSorter: (a, b) {
+                      //             return a.name.compareTo(b.name);
+                      //           },
+                      //           itemSubmitted: (item) {
+                      //             setState(() {
+                      //               searchTextField.textField.controller.text =
+                      //                   item.name;
+                      //             });
+                      //             debouncer.run(() {
+                      //               setState(() {
+                      //                 filteredStores = stores
+                      //                     .where((u) =>
+                      //                         (u.name.toLowerCase().contains(
+                      //                             searchTextField
+                      //                                 .textField.controller.text
+                      //                                 .toLowerCase())) ||
+                      //                         (u.address.toLowerCase().contains(
+                      //                             searchTextField
+                      //                                 .textField.controller.text
+                      //                                 .toLowerCase())))
+                      //                     .toList();
+                      //               });
+                      //             });
+                      //           },
+                      //           textChanged: (string) {
+                      //             debouncer.run(() {
+                      //               setState(() {
+                      //                 filteredStores = stores
+                      //                     .where((u) =>
+                      //                         (u.name.toLowerCase().contains(
+                      //                             string.toLowerCase())) ||
+                      //                         (u.address.toLowerCase().contains(
+                      //                             string.toLowerCase())))
+                      //                     .toList();
+                      //               });
+                      //             });
+                      //           },
+                      //           itemBuilder: (context, item) {
+                      //             // ui for the autocompelete row
+                      //             return row(item);
+                      //           },
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
                       ListView.builder(
                         itemCount: filteredStores == null && stores.isEmpty
                             ? 0
@@ -359,106 +361,116 @@ class _StoresState extends State<Stores> {
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (BuildContext context, int index) {
-                          return Row(
+                          return Stack(
                             children: [
                               Stores_item(
                                 hall_model: filteredStores[index],
+                                isSelect: isSelect,
+                                selectStores: selectStores,
                               ),
-                              Column(
-                                children: [
-                                  InkWell(
-                                    onTap: () {
-                                      _navigate_edit_hell(
-                                          context, filteredStores[index]);
-                                    },
-                                    child: Container(
-                                      padding: EdgeInsets.all(6),
-                                      margin: EdgeInsets.all(6),
-                                      decoration: BoxDecoration(
-                                          color: Colors.green,
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color:
-                                                  Colors.grey.withOpacity(.2),
-                                              blurRadius:
-                                                  6.0, // soften the shadow
-                                              spreadRadius:
-                                                  0.0, //extend the shadow
-                                              offset: Offset(
-                                                0.0, // Move to right 10  horizontally
-                                                1.0, // Move to bottom 10 Vertically
-                                              ),
-                                            )
-                                          ]),
-                                      width: ScreenUtil.getWidth(context) / 4,
-                                      child: Center(
-                                        child: AutoSizeText(
-                                          'Edit',
-                                          minFontSize: 10,
-                                          maxFontSize: 20,
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
+                              Positioned(
+                                  left: 40,
+                                  top: 20,
+                                  child: PopupMenuButton<int>(
+                                    itemBuilder: (context) => [
+                                      PopupMenuItem(
+                                        value: 1,
+                                        child: InkWell(
+                                          onTap: (){
+                                            _navigate_edit_hell(
+                                                context, filteredStores[index]);
+                                          },
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                            children: [
+                                              Text("تعديل"),
+                                              Icon(
+                                                Icons.edit_outlined,
+                                                color: Colors.black54,
+                                              )
+                                            ],
                                           ),
-                                          maxLines: 1,
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                  InkWell(
-                                    onTap: () {
-                                      API(context)
-                                          .Delete("stores/${stores[index].id}")
-                                          .then((value) {
-                                        showDialog(
-                                          context: context,
-                                          builder: (_) => ResultOverlay(
-                                            "${value['errors'] ?? 'تم حذف المتجر بنجاح'}",
+                                      PopupMenuItem(
+                                        value: 2,
+                                        child:  InkWell(
+                                          onTap: (){
+                                            API(context)
+                                                .Delete("stores/${stores[index].id}")
+                                                .then((value) {
+                                              showDialog(
+                                                context: context,
+                                                builder: (_) => ResultOverlay(
+                                                  "${value['errors'] ?? 'تم حذف المتجر بنجاح'}",
+                                                ),
+                                              );
+                                              getAllStore();
+                                            });
+                                          },
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                            children: [
+                                              Text("حذف"),
+                                              Icon(
+                                                CupertinoIcons.delete,
+                                                color: Colors.black54,
+                                              )
+                                            ],
                                           ),
-                                        );
-                                        getAllStore();
-                                      });
-                                    },
-                                    child: Container(
-                                      padding: EdgeInsets.all(6),
-                                      margin: EdgeInsets.all(6),
-                                      decoration: BoxDecoration(
-                                          color: Colors.red,
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color:
-                                                  Colors.grey.withOpacity(.2),
-                                              blurRadius:
-                                                  6.0, // soften the shadow
-                                              spreadRadius:
-                                                  0.0, //extend the shadow
-                                              offset: Offset(
-                                                0.0, // Move to right 10  horizontally
-                                                1.0, // Move to bottom 10 Vertically
-                                              ),
-                                            )
-                                          ]),
-                                      width: ScreenUtil.getWidth(context) / 4,
-                                      child: Center(
-                                        child: AutoSizeText(
-                                          'Delete',
-                                          minFontSize: 10,
-                                          maxFontSize: 20,
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                          maxLines: 1,
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                ],
+                                    ],
+                                  )
+                                // DropdownButton<String>(
+                                //   //  value: dropdownValue,
+                                //   icon: Container(
+                                //     child: Icon(Icons.more_vert),
+                                //   ),
+                                //   iconSize: 24,
+                                //   elevation: 16,
+                                //   style: const TextStyle(
+                                //       color: Colors.deepPurple),
+                                //   underline: Container(
+                                //     color: Colors.deepPurpleAccent,
+                                //   ),
+                                //   onChanged: (String newValue) {
+                                //     if (newValue == "Edit") {
+                                //       _navigate_edit_hell(
+                                //           context, filteredStores[index]);
+                                //     } else {
+                                //       API(context)
+                                //           .Delete("users/${stores[index].id}")
+                                //           .then((value) {
+                                //         if (value != null) {
+                                //           showDialog(
+                                //             context: context,
+                                //             builder: (_) => ResultOverlay(
+                                //               value.containsKey('errors')
+                                //                   ? "${value['errors']}"
+                                //                   : 'تم حذف العامل بنجاح',
+                                //             ),
+                                //           );
+                                //         }
+                                //         getAllStore();
+                                //       });
+                                //     }
+                                //   },
+                                //   items: <String>[
+                                //     'Edit',
+                                //     'Delete',
+                                //   ].map<DropdownMenuItem<String>>(
+                                //       (String value) {
+                                //     return DropdownMenuItem<String>(
+                                //       value: value,
+                                //       child: Text(value),
+                                //     );
+                                //   }).toList(),
+                                // ),
                               ),
+
                             ],
                           );
                         },

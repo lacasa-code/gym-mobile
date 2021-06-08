@@ -1,6 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/orders_model.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
@@ -19,117 +21,89 @@ class OrderItem extends StatelessWidget {
 
     return Container(
       margin: EdgeInsets.only(top: 8, left: 16, bottom: 8, right: 16),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-                color: Colors.grey[200],
-                blurRadius: 5.0,
-                spreadRadius: 1,
-                offset: Offset(0.0, 1)),
-          ]),
       width: ScreenUtil.getWidth(context) / 1.25,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: <Widget>[
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                AutoSizeText(
-                  getTransrlate(context, 'OrderNO') +
-                      ' : ${orders_model.orderNumber}',
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: Color(0xFF5D6A78),
-                    fontWeight: FontWeight.w300,
-                  ),
-                  maxLines: 2,
-                  minFontSize: 11,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              AutoSizeText(
+                DateFormat('yyyy-MM-dd')
+                    .format(DateTime.parse(orders_model.createdAt)),
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w600,
                 ),
-                SizedBox(
-                  height: 2,
-                ),
-                Text(
-                  getTransrlate(context, 'totalOrder') +
-                      ' : ' +
-                      orders_model.orderTotal,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: Color(0xFF5D6A78),
-                    fontWeight: FontWeight.w300,
-                  ),
-                ),
-                Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        getTransrlate(context, 'OrderState') +
-                            ' : ${orders_model.orderStatus}',
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: Color(0xFF5D6A78),
-                          fontWeight: FontWeight.w300,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            Divider(),
-            Container(
-              margin: EdgeInsets.only(left: 8, right: 8),
-              child: ExpandablePanel(
-//                  hasIcon: true,
-//                  iconColor: themeColor.getColor(),
-//                  headerAlignment: ExpandablePanelHeaderAlignment.center,
-//                  iconPlacement: ExpandablePanelIconPlacement.right,
-                header: Text(
-                  getTransrlate(context, 'OrderContent'),
-                  style: TextStyle(color: Color(0xFF5D6A78), fontSize: 12),
-                ),
-                expanded: Container(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: orders_model.orderDetails.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Padding(
-                        padding: EdgeInsets.only(right: 7, left: 10, top: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Text(
-                              orders_model.orderDetails[index].productName,
-                              style: TextStyle(
-                                  color: themeColor.getColor(),
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15),
-                            ),
-                            Text(
-                              orders_model.orderDetails[index].quantity
-                                      .toString() +
-                                  ' × ' +
-                                  orders_model.orderDetails[index].price
-                                      .toString(),
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 15),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
+                maxLines: 2,
+                minFontSize: 11,
               ),
-            ),
-          ],
-        ),
+              AutoSizeText(
+                getTransrlate(context, 'OrderNO') +
+                    ' : ${orders_model.orderNumber}',
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w600,
+                ),
+                maxLines: 2,
+                minFontSize: 11,
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 2,
+          ),
+          ListView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: orders_model.orderDetails.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Padding(
+                padding: EdgeInsets.only(right: 7, left: 10, top: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(3.0),
+                          child: CachedNetworkImage(
+                            imageUrl:
+                                orders_model.orderDetails[index].photo.isEmpty
+                                    ? ""
+                                    : orders_model
+                                        .orderDetails[index].photo[0].image,
+                            width: 25,
+                            height: 25,
+                          ),
+                        ),
+                        Container(
+                          width: ScreenUtil.getWidth(context) / 2,
+                          child: Text(
+                            orders_model.orderDetails[index].productName,
+                            style: TextStyle(
+                                color: themeColor.getColor(),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Text(
+                      orders_model.orderDetails[index].quantity.toString() +
+                          ' × ',
+                      style: TextStyle(color: Colors.black54, fontSize: 15),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ],
       ),
     );
   }

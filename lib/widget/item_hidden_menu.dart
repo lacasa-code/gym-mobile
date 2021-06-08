@@ -32,14 +32,14 @@ class ItemHiddenMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      margin: EdgeInsets.only(bottom: 10.0,top: 10.0, left: 24),
-      child: InkWell(
-        onTap: onTap,
-        child: Column(
-          children: [
-            Row(
+    return Column(
+      children: [
+        Container(
+          width: double.infinity,
+          margin: EdgeInsets.only(bottom: 5.0,top: 5.0, left: 24, right: 24),
+          child: InkWell(
+            onTap: onTap,
+            child: Row(
               children: <Widget>[
                 Container(width: 32, child: icon),
                 SizedBox(
@@ -61,11 +61,11 @@ class ItemHiddenMenu extends StatelessWidget {
                 onTap==null?Container():Icon(Icons.arrow_forward_ios,color: Colors.black26,size: 20,)
               ],
             ),
-            SizedBox(height: 10,),
-            Container(height: 1,color: Colors.black12,)
-          ],
+          ),
         ),
-      ),
+        SizedBox(height: 5,),
+        Container(height: 1,color: Colors.black12,)
+      ],
     );
   }
 }

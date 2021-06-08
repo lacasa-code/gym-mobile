@@ -95,7 +95,7 @@ class _HiddenMenuState extends State<HiddenMenu> {
               height: 10,
             ),
             Container(
-              padding: const EdgeInsets.only(right: 16, left: 16, top: 10),
+              padding: const EdgeInsets.only(right: 1, left: 1, top: 10),
               child: NotificationListener<OverscrollIndicatorNotification>(
                 onNotification: (scroll) {
                   scroll.disallowGlow();
@@ -109,9 +109,9 @@ class _HiddenMenuState extends State<HiddenMenu> {
                       },
                       icon: SvgPicture.asset(
                         "assets/icons/homescreen.svg",
-                        height: 40,
-                        width: 40,
-                        color: Colors.orange.withOpacity(0.8),
+                        height: 30,
+                        width: 30,
+                        color: Colors.orange,
                       ),
                       name: getTransrlate(context, 'HomePage'),
                       baseStyle: TextStyle(
@@ -124,10 +124,11 @@ class _HiddenMenuState extends State<HiddenMenu> {
                       onTap: () {
                         Nav.routeReplacement(context, Staff());
                       },
-                      icon: Icon(
-                        Icons.supervised_user_circle,
-                        size: 25,
-                        color: Colors.orange.withOpacity(0.8),
+                      icon: SvgPicture.asset(
+                        "assets/icons/staff.svg",
+                        height: 30,
+                        width: 30,
+                        color: Colors.orange,
                       ),
                       name: getTransrlate(context, 'staff'),
                       baseStyle: TextStyle(
@@ -140,10 +141,11 @@ class _HiddenMenuState extends State<HiddenMenu> {
                       onTap: () {
                         Nav.routeReplacement(context, Stores());
                       },
-                      icon: Icon(
-                        Icons.store,
-                        size: 25,
-                        color: Colors.orange.withOpacity(0.8),
+                      icon: SvgPicture.asset(
+                        "assets/icons/store.svg",
+                        height: 30,
+                        width: 30,
+                        color: Colors.orange,
                       ),
                       name: getTransrlate(context, 'stores'),
                       baseStyle: TextStyle(
@@ -156,10 +158,11 @@ class _HiddenMenuState extends State<HiddenMenu> {
                       onTap: () {
                         Nav.routeReplacement(context, Orders());
                       },
-                      icon: Icon(
-                        Icons.shopping_cart,
-                        size: 25,
-                        color: Colors.orange.withOpacity(0.8),
+                      icon: SvgPicture.asset(
+                        "assets/icons/orders.svg",
+                        height: 30,
+                        width: 30,
+                        color: Colors.orange,
                       ),
                       name: getTransrlate(context, 'Myorders'),
                       baseStyle: TextStyle(
@@ -172,10 +175,11 @@ class _HiddenMenuState extends State<HiddenMenu> {
                       onTap: () {
                         Nav.routeReplacement(context, Products());
                       },
-                      icon: Icon(
-                        Icons.shopping_bag,
-                        size: 25,
-                        color: Colors.orange.withOpacity(0.8),
+                      icon: SvgPicture.asset(
+                        "assets/icons/products.svg",
+                        height: 30,
+                        width: 30,
+                        color: Colors.orange,
                       ),
                       name: getTransrlate(context, 'product'),
                       baseStyle: TextStyle(
@@ -188,10 +192,11 @@ class _HiddenMenuState extends State<HiddenMenu> {
                       onTap: () {
                         Nav.routeReplacement(context, Invoices());
                       },
-                      icon: Icon(
-                        Icons.assignment_sharp,
-                        size: 25,
-                        color: Colors.orange.withOpacity(0.8),
+                      icon: SvgPicture.asset(
+                        "assets/icons/invoices.svg",
+                        height: 30,
+                        width: 30,
+                        color: Colors.orange,
                       ),
                       name: getTransrlate(context, 'invoices'),
                       baseStyle: TextStyle(
@@ -204,10 +209,11 @@ class _HiddenMenuState extends State<HiddenMenu> {
                       onTap: () {
                         Nav.routeReplacement(context, Tickets());
                       },
-                      icon: Icon(
-                        Icons.message,
-                        size: 25,
-                        color: Colors.orange.withOpacity(0.8),
+                      icon: SvgPicture.asset(
+                        "assets/icons/tickets.svg",
+                        height: 30,
+                        width: 30,
+                        color: Colors.orange,
                       ),
                       name: getTransrlate(context, 'ticket'),
                       baseStyle: TextStyle(
@@ -220,10 +226,11 @@ class _HiddenMenuState extends State<HiddenMenu> {
                       onTap: () {
                         Nav.routeReplacement(context, Edit_profile());
                       },
-                      icon: Icon(
-                        Icons.person,
-                        size: 25,
-                        color: Colors.orange.withOpacity(0.8),
+                      icon: SvgPicture.asset(
+                        "assets/icons/account.svg",
+                        height: 30,
+                        width: 30,
+                        color: Colors.orange,
                       ),
                       name: getTransrlate(context, 'ProfileSettings'),
                       baseStyle: TextStyle(
@@ -232,11 +239,58 @@ class _HiddenMenuState extends State<HiddenMenu> {
                           fontWeight: FontWeight.w800),
                       colorLineSelected: Colors.orange,
                     ),
+                    Container(
+                      child:
+                      NotificationListener<OverscrollIndicatorNotification>(
+                        onNotification: (scroll) {
+                          scroll.disallowGlow();
+                          return false;
+                        },
+                        child: ListView(
+                          shrinkWrap: true,
+                          padding: EdgeInsets.all(0.0),
+                          children: <Widget>[
+                            InkWell(
+                              onTap: () async {
+                                await themeColor.local == 'ar'
+                                    ? themeColor.setLocal('en')
+                                    : themeColor.setLocal('ar');
+                                MyApp.setlocal(
+                                    context, Locale(themeColor.getlocal(), ''));
+                                SharedPreferences.getInstance().then((prefs) {
+                                  prefs.setString('local', themeColor.local);
+                                });
+                              },
+                              child: ItemHiddenMenu(
+                                icon: SvgPicture.asset(
+                                  "assets/icons/globe (1).svg",
+                                  height: 25,
+                                  width: 25,
+                                  color: Colors.orange,
+                                ),
+                                name: Provider.of<Provider_control>(context)
+                                    .local ==
+                                    'ar'
+                                    ? 'English'
+                                    : 'عربى',
+                                baseStyle: TextStyle(
+                                    color: Colors.white.withOpacity(0.6),
+                                    fontSize: 19.0,
+                                    fontWeight: FontWeight.w800),
+                                colorLineSelected: Colors.orange,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+
                     ItemHiddenMenu(
-                      icon: Icon(
-                        Icons.call,
-                        size: 25,
-                        color: Colors.orange.withOpacity(0.8),
+                      icon: SvgPicture.asset(
+                        "assets/icons/Call.svg",
+                        height: 30,
+                        width: 30,
+                        color: Colors.orange,
                       ),
                       name: getTransrlate(context, 'contact'),
                       baseStyle: TextStyle(
@@ -249,10 +303,11 @@ class _HiddenMenuState extends State<HiddenMenu> {
                       onTap: () {
                         Nav.routeReplacement(context, FaqPage());
                       },
-                      icon: Icon(
-                        Icons.info_outline,
-                        size: 25,
-                        color: Colors.orange.withOpacity(0.8),
+                      icon: SvgPicture.asset(
+                        "assets/icons/faq.svg",
+                        height: 30,
+                        width: 30,
+                        color: Colors.orange,
                       ),
                       name: getTransrlate(context, 'FAQ'),
                       baseStyle: TextStyle(
@@ -274,10 +329,11 @@ class _HiddenMenuState extends State<HiddenMenu> {
                           Nav.route(context, LoginPage());
                         }
                       },
-                      icon: Icon(
-                        Icons.exit_to_app,
-                        size: 19,
-                        color: Colors.orange.withOpacity(0.8),
+                      icon: SvgPicture.asset(
+                        "assets/icons/Log out.svg",
+                        height: 30,
+                        width: 30,
+                        color: Colors.orange,
                       ),
                       name: themeColor.isLogin
                           ? getTransrlate(context, 'Logout')
@@ -287,50 +343,6 @@ class _HiddenMenuState extends State<HiddenMenu> {
                           fontSize: 19.0,
                           fontWeight: FontWeight.w800),
                       colorLineSelected: Colors.orange,
-                    ),
-                    Container(
-                      child:
-                          NotificationListener<OverscrollIndicatorNotification>(
-                        onNotification: (scroll) {
-                          scroll.disallowGlow();
-                          return false;
-                        },
-                        child: ListView(
-                          shrinkWrap: true,
-                          padding: EdgeInsets.all(0.0),
-                          children: <Widget>[
-                            InkWell(
-                              onTap: () async {
-                                await themeColor.local == 'ar'
-                                    ? themeColor.setLocal('en')
-                                    : themeColor.setLocal('ar');
-                                MyApp.setlocal(
-                                    context, Locale(themeColor.getlocal(), ''));
-                                SharedPreferences.getInstance().then((prefs) {
-                                  prefs.setString('local', themeColor.local);
-                                });
-                              },
-                              child: ItemHiddenMenu(
-                                icon: Icon(
-                                  Icons.language,
-                                  size: 25,
-                                  color: Colors.orange.withOpacity(0.8),
-                                ),
-                                name: Provider.of<Provider_control>(context)
-                                            .local ==
-                                        'ar'
-                                    ? 'English'
-                                    : 'عربى',
-                                baseStyle: TextStyle(
-                                    color: Colors.white.withOpacity(0.6),
-                                    fontSize: 19.0,
-                                    fontWeight: FontWeight.w800),
-                                colorLineSelected: Colors.orange,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
                     ),
                   ],
                 ),
