@@ -1,98 +1,110 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/invoices.dart';
+import 'package:trkar_vendor/model/orders_model.dart';
+import 'package:trkar_vendor/utils/Provider/provider.dart';
+import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 
-class Invoice_item extends StatelessWidget {
-  Invoice_item({Key key, this.hall_model}) : super(key: key);
-  final Invoice hall_model;
+class InvoiceItem extends StatelessWidget {
+  final Invoice orders_model;
+
+  InvoiceItem({Key key, this.orders_model, Provider_control themeColor})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(12.0),
-      child: Container(
-        width: ScreenUtil.getWidth(context) / 1.7,
-        decoration: BoxDecoration(
-          color: Color(0xffeeeeee),
-          borderRadius: BorderRadius.circular(15),
-          boxShadow: [
-            BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                offset: Offset(0, 0),
-                blurRadius: 3)
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(5),
-              child: Container(
-                width: ScreenUtil.getWidth(context) / 2.2,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: 10,
-                    ),
-                    AutoSizeText(
-                      hall_model.invoiceNumber.toString(),
-                      minFontSize: 10,
-                      style: TextStyle(
-                        color: Color(0xFF5D6A78),
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      maxLines: 1,
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    AutoSizeText(
-                      'Invoice Total : ${hall_model.invoiceTotal}',
-                      minFontSize: 10,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Color(0xFF5D6A78),
-                        fontWeight: FontWeight.w300,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    AutoSizeText(
-                      'Status : ${hall_model.status}',
-                      minFontSize: 10,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Color(0xFF5D6A78),
-                        fontWeight: FontWeight.w300,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    hall_model.vendorName == null
-                        ? Container()
-                        : AutoSizeText(
-                            'Vendor Name :' + hall_model.vendorName.toString(),
-                            minFontSize: 8,
-                            maxFontSize: 14,
-                            style: TextStyle(
-                              color: Color(0xFF5D6A78),
-                              fontWeight: FontWeight.w300,
-                            ),
-                            maxLines: 1,
-                          ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                  ],
+    final themeColor = Provider.of<Provider_control>(context);
+
+    return Container(
+      margin: EdgeInsets.only(top: 8, left: 16, bottom: 8, right: 16),
+      width: ScreenUtil.getWidth(context) / 1.25,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              AutoSizeText(
+                DateFormat('yyyy-MM-dd')
+                    .format(DateTime.parse(orders_model.createdAt)),
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w600,
                 ),
+                maxLines: 2,
+                minFontSize: 11,
               ),
-            ),
-          ],
-        ),
+              AutoSizeText(
+                getTransrlate(context, 'OrderNO') +
+                    ' : ${orders_model.orderNumber}',
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w600,
+                ),
+                maxLines: 2,
+                minFontSize: 11,
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 2,
+          ),
+          // ListView.builder(
+          //   shrinkWrap: true,
+          //   physics: NeverScrollableScrollPhysics(),
+          //   itemCount: orders_model.orderDetails.length,
+          //   itemBuilder: (BuildContext context, int index) {
+          //     return Padding(
+          //       padding: EdgeInsets.only(right: 7, left: 10, top: 10),
+          //       child: Row(
+          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //         mainAxisSize: MainAxisSize.min,
+          //         children: <Widget>[
+          //           Row(
+          //             children: [
+          //               Padding(
+          //                 padding: const EdgeInsets.all(3.0),
+          //                 child: CachedNetworkImage(
+          //                   imageUrl:
+          //                   orders_model.orderDetails[index].photo.isEmpty
+          //                       ? ""
+          //                       : orders_model
+          //                       .orderDetails[index].photo[0].image,
+          //                   width: 25,
+          //                   height: 25,
+          //                 ),
+          //               ),
+          //               Container(
+          //                 width: ScreenUtil.getWidth(context) / 2,
+          //                 child: Text(
+          //                   orders_model.orderDetails[index].productName,
+          //                   style: TextStyle(
+          //                       color: themeColor.getColor(),
+          //                       fontWeight: FontWeight.bold,
+          //                       fontSize: 15),
+          //                 ),
+          //               ),
+          //             ],
+          //           ),
+          //           Text(
+          //             orders_model.orderDetails[index].quantity.toString() +
+          //                 ' × ',
+          //             style: TextStyle(color: Colors.black54, fontSize: 15),
+          //           ),
+          //         ],
+          //       ),
+          //     );
+          //   },
+          // ),
+        ],
       ),
     );
   }

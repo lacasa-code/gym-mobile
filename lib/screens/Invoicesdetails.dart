@@ -5,24 +5,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:trkar_vendor/model/invoices.dart';
 import 'package:trkar_vendor/model/orders_model.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
+import 'package:trkar_vendor/widget/ResultOverlay.dart';
 
-class Order_information extends StatefulWidget {
-  Order_information({Key key, this.orders_model, this.orders})
+class Invoices_information extends StatefulWidget {
+  Invoices_information({Key key, this.orders_model, this.orders})
       : super(key: key);
 
-  final Order orders_model;
-   List<Order> orders;
+  final Invoice orders_model;
+   List<Invoice> orders;
 
   @override
-  _Order_informationState createState() => _Order_informationState();
+  _Invoices_informationState createState() => _Invoices_informationState();
 }
 
-class _Order_informationState extends State<Order_information> {
+class _Invoices_informationState extends State<Invoices_information> {
   @override
   Widget build(BuildContext context) {
     final themeColor = Provider.of<Provider_control>(context);
@@ -183,7 +185,7 @@ class _Order_informationState extends State<Order_information> {
                                   minFontSize: 11,
                                 ),
                                 AutoSizeText(
-                                  "${widget.orders_model.orderDetails[index].total} ${getTransrlate(context, 'Currency')}",
+                                  "${widget.orders_model.invoiceTotal[index]} ${getTransrlate(context, 'Currency')}",
                                   maxLines: 2,
                                   style: TextStyle(
                                       fontSize: 14,
@@ -203,7 +205,7 @@ class _Order_informationState extends State<Order_information> {
                   Align(
                     alignment: Alignment.bottomLeft,
                     child: Text(
-                      ' ${getTransrlate(context, 'totalOrder')} : ${widget.orders_model.orderTotal} ${getTransrlate(context, 'Currency')} ',
+                      ' ${getTransrlate(context, 'totalOrder')} : ${widget.orders_model.invoiceTotal} ${getTransrlate(context, 'Currency')} ',
                       style: TextStyle(
                         fontSize: 13,
                         color: Colors.black,
@@ -244,15 +246,4 @@ class _Order_informationState extends State<Order_information> {
     }
   }
 
-  Future<void> getAllStore() async {
-    API(context)
-        .get('show/orders?ordered_by=created_at&sort_type=desc')
-        .then((value) {
-      if (value != null) {
-        setState(() {
-          widget.orders = Orders_model.fromJson(value).data;
-        });
-      }
-    });
-  }
 }

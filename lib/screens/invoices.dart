@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:trkar_vendor/model/invoices.dart';
 import 'package:trkar_vendor/model/orders_model.dart';
 import 'package:trkar_vendor/screens/orderdetails.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
@@ -21,14 +22,16 @@ import 'package:trkar_vendor/widget/Sort.dart';
 import 'package:trkar_vendor/widget/hidden_menu.dart';
 import 'package:trkar_vendor/widget/stores/Order_item.dart';
 
+import 'Invoicesdetails.dart';
+
 class Invoices extends StatefulWidget {
   @override
   _InvoicesState createState() => _InvoicesState();
 }
 
 class _InvoicesState extends State<Invoices> {
-  List<Order> orders;
-  List<Order> filteredOrders;
+  List<Invoice> orders;
+  List<Invoice> filteredOrders;
   final debouncer = Search(milliseconds: 1000);
   AutoCompleteTextField searchTextField;
   GlobalKey<AutoCompleteTextFieldState<Order>> key = new GlobalKey();
@@ -166,7 +169,7 @@ class _InvoicesState extends State<Invoices> {
                             if (value['status_code'] == 200) {
                               setState(() {
                                 filteredOrders = orders =
-                                    Orders_model.fromJson(value).data;
+                                    Invoices_model.fromJson(value).data;
                               });
                             } else {
                               showDialog(
@@ -202,7 +205,7 @@ class _InvoicesState extends State<Invoices> {
                   onTap: () {
                     Nav.route(
                         context,
-                        Order_information(
+                        Invoices_information(
                           orders: filteredOrders,
                           orders_model: filteredOrders[index],
                         ));
@@ -225,7 +228,7 @@ class _InvoicesState extends State<Invoices> {
                             MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                ' ${getTransrlate(context, 'totalOrder')} : ${filteredOrders[index].orderTotal} ${getTransrlate(context, 'Currency')} ',
+                                ' ${getTransrlate(context, 'totalOrder')} : ${filteredOrders[index].invoiceTotal} ${getTransrlate(context, 'Currency')} ',
                                 style: TextStyle(
                                   fontSize: 13,
                                   color: Colors.black,
@@ -268,11 +271,11 @@ class _InvoicesState extends State<Invoices> {
 
   Future<void> getAllStore() async {
     API(context)
-        .get('show/orders?ordered_by=created_at&sort_type=desc')
+        .get('show/invoices')
         .then((value) {
       if (value != null) {
         setState(() {
-          filteredOrders = orders = Orders_model.fromJson(value).data;
+          filteredOrders = orders = Invoices_model.fromJson(value).data;
         });
       }
     });
@@ -301,11 +304,11 @@ class _InvoicesState extends State<Invoices> {
 
   void pageFetch() {
     API(context)
-        .get('show/orders?page=${i++}&ordered_by=created_at&sort_type=desc')
+        .get('show/invoices?page=${i++}&ordered_by=created_at&sort_type=desc')
         .then((value) {
       setState(() {
-        orders.addAll(Orders_model.fromJson(value).data);
-        filteredOrders.addAll(Orders_model.fromJson(value).data);
+        orders.addAll(Invoices_model.fromJson(value).data);
+        filteredOrders.addAll(Invoices_model.fromJson(value).data);
       });
     });
   }

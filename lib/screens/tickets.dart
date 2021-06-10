@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/tickets_model.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
@@ -10,6 +11,7 @@ import 'package:trkar_vendor/utils/SerachLoading.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
+import 'package:trkar_vendor/widget/SearchOverlay.dart';
 import 'package:trkar_vendor/widget/stores/Ticket_item.dart';
 
 class Tickets extends StatefulWidget {
@@ -23,7 +25,8 @@ class _TicketsState extends State<Tickets> {
   final debouncer = Search(milliseconds: 1000);
   AutoCompleteTextField searchTextField;
   GlobalKey<AutoCompleteTextFieldState<Ticket>> key = new GlobalKey();
-
+  ScrollController _scrollController = new ScrollController();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   void initState() {
     getAllStore();
@@ -36,8 +39,43 @@ class _TicketsState extends State<Tickets> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Invoices"),
-        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(
+            Icons.menu,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            _scaffoldKey.currentState.openDrawer();
+          },
+        ),
+        title: Row(
+          children: [
+            SvgPicture.asset(
+              'assets/icons/tickets.svg',
+              color: Colors.white,
+              height: 25,
+              width: 25,
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Text(getTransrlate(context, 'ticket')),
+          ],
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.search,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (_) => SearchOverlay(),
+              );
+            },
+          )
+        ],
         backgroundColor: themeColor.getColor(),
       ),
       body: stores == null
