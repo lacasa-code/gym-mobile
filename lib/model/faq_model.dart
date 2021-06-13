@@ -1,96 +1,84 @@
-/// status_code : 200
-/// message : "success"
-/// data : [{"id":1,"question":"first question ?","answer":"first answer","created_at":"2021-03-18 07:08:10"},{"id":23,"question":"New Question","answer":"React Client-Side Answer","created_at":"2021-03-18 18:29:24"},{"id":32,"question":"ei wq oeiwqoio","answer":"odopeoqwpe","created_at":"2021-03-21 10:53:47"},{"id":33,"question":"What day is today?","answer":"Thursday","created_at":"2021-04-01 08:26:42"}]
-/// total : 4
-
 class Faq_model {
-  int _statusCode;
-  String _message;
-  List<Faq> _data;
-  int _total;
+  int statusCode;
+  String message;
+  List<Faq> data;
+  int total;
 
-  int get statusCode => _statusCode;
-  String get message => _message;
-  List<Faq> get data => _data;
-  int get total => _total;
+  Faq_model({this.statusCode, this.message, this.data, this.total});
 
-  Faq_model({
-      int statusCode, 
-      String message, 
-      List<Faq> data,
-      int total}){
-    _statusCode = statusCode;
-    _message = message;
-    _data = data;
-    _total = total;
-}
-
-  Faq_model.fromJson(dynamic json) {
-    _statusCode = json["status_code"];
-    _message = json["message"];
-    if (json["data"] != null) {
-      _data = [];
-      json["data"].forEach((v) {
-        _data.add(Faq.fromJson(v));
+  Faq_model.fromJson(Map<String, dynamic> json) {
+    statusCode = json['status_code'];
+    message = json['message'];
+    if (json['data'] != null) {
+      data = new List<Faq>();
+      json['data'].forEach((v) {
+        data.add(new Faq.fromJson(v));
       });
     }
-    _total = json["total"];
+    total = json['total'];
   }
 
   Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
-    map["status_code"] = _statusCode;
-    map["message"] = _message;
-    if (_data != null) {
-      map["data"] = _data.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['status_code'] = this.statusCode;
+    data['message'] = this.message;
+    if (this.data != null) {
+      data['data'] = this.data.map((v) => v.toJson()).toList();
     }
-    map["total"] = _total;
-    return map;
+    data['total'] = this.total;
+    return data;
   }
-
 }
-
-/// id : 1
-/// question : "first question ?"
-/// answer : "first answer"
-/// created_at : "2021-03-18 07:08:10"
 
 class Faq {
-  int _id;
-  String _question;
-  String _answer;
-  String _createdAt;
+  int id;
+  int userId;
+  int productId;
+  int vendorId;
+  String bodyQuestion;
+  String answer;
+  String lang;
+  String createdAt;
+  String updatedAt;
+  String deletedAt;
 
-  int get id => _id;
-  String get question => _question;
-  String get answer => _answer;
-  String get createdAt => _createdAt;
+  Faq(
+      {this.id,
+        this.userId,
+        this.productId,
+        this.vendorId,
+        this.bodyQuestion,
+        this.answer,
+        this.lang,
+        this.createdAt,
+        this.updatedAt,
+        this.deletedAt});
 
-  Faq({
-      int id, 
-      String question, 
-      String answer, 
-      String createdAt}){
-    _id = id;
-    _question = question;
-    _answer = answer;
-    _createdAt = createdAt;
-}
-
-  Faq.fromJson(dynamic json) {
-    _id = json["id"];
-    _question = json["question"];
-    _answer = json["answer"];
-    _createdAt = json["created_at"];
+  Faq.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    userId = json['user_id'];
+    productId = json['product_id'];
+    vendorId = json['vendor_id'];
+    bodyQuestion = json['body_question'];
+    answer = json['answer'];
+    lang = json['lang'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    deletedAt = json['deleted_at'];
   }
 
   Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
-    map["id"] = _id;
-    map["question"] = _question;
-    map["answer"] = _answer;
-    map["created_at"] = _createdAt;
-    return map;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['user_id'] = this.userId;
+    data['product_id'] = this.productId;
+    data['vendor_id'] = this.vendorId;
+    data['body_question'] = this.bodyQuestion;
+    data['answer'] = this.answer;
+    data['lang'] = this.lang;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    data['deleted_at'] = this.deletedAt;
+    return data;
   }
-
 }

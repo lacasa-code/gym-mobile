@@ -45,6 +45,7 @@ class ItemHiddenMenu extends StatelessWidget {
                 SizedBox(
                   width: 10,
                 ),
+
                 Expanded(
                   child: Text(
                     name,

@@ -6,12 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/tickets_model.dart';
+import 'package:trkar_vendor/screens/ticketsdetails.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/SerachLoading.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
+import 'package:trkar_vendor/utils/navigator.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
 import 'package:trkar_vendor/widget/SearchOverlay.dart';
+import 'package:trkar_vendor/widget/Sort.dart';
+import 'package:trkar_vendor/widget/hidden_menu.dart';
 import 'package:trkar_vendor/widget/stores/Ticket_item.dart';
 
 class Tickets extends StatefulWidget {
@@ -38,6 +42,8 @@ class _TicketsState extends State<Tickets> {
     final themeColor = Provider.of<Provider_control>(context);
 
     return Scaffold(
+      key: _scaffoldKey,
+     drawer: HiddenMenu(),
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(
@@ -108,92 +114,54 @@ class _TicketsState extends State<Tickets> {
               : SingleChildScrollView(
                   child: Column(
                     children: [
-                      Row(
-                        children: <Widget>[
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Expanded(
-                            child: Container(
-                              padding: EdgeInsets.only(bottom: 4),
-                              height: 72,
-                              child: searchTextField =
-                                  AutoCompleteTextField<Ticket>(
-                                key: key,
-                                clearOnSubmit: false,
-                                suggestions: filteredStores,
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 16.0),
-                                decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: getTransrlate(context, 'search'),
-                                    hintStyle: TextStyle(
-                                      fontSize: 13,
-                                      color: Color(0xFF5D6A78),
-                                      fontWeight: FontWeight.w400,
-                                    )),
-                                itemFilter: (item, query) {
-                                  return item.title
-                                      .toString()
-                                      .toLowerCase()
-                                      .startsWith(query.toLowerCase());
-                                },
-                                itemSorter: (a, b) {
-                                  return a.categoryName
-                                      .compareTo(b.categoryName);
-                                },
-                                itemSubmitted: (item) {
-                                  setState(() {
-                                    searchTextField.textField.controller.text =
-                                        item.title.toString();
-                                  });
-                                  debouncer.run(() {
-                                    setState(() {
-                                      filteredStores = stores
-                                          .where((u) =>
-                                              (u.title
-                                                  .toString()
-                                                  .toLowerCase()
-                                                  .contains(searchTextField
-                                                      .textField.controller.text
-                                                      .toLowerCase())) ||
-                                              (u.title
-                                                  .toString()
-                                                  .toLowerCase()
-                                                  .contains(searchTextField
-                                                      .textField.controller.text
-                                                      .toLowerCase())))
-                                          .toList();
-                                    });
-                                  });
-                                },
-                                textChanged: (string) {
-                                  debouncer.run(() {
-                                    setState(() {
-                                      filteredStores = stores
-                                          .where((u) =>
-                                              (u.title
-                                                  .toString()
-                                                  .toLowerCase()
-                                                  .contains(
-                                                      string.toLowerCase())) ||
-                                              (u.title
-                                                  .toString()
-                                                  .toLowerCase()
-                                                  .contains(
-                                                      string.toLowerCase())))
-                                          .toList();
-                                    });
-                                  });
-                                },
-                                itemBuilder: (context, item) {
-                                  // ui for the autocompelete row
-                                  return row(item);
-                                },
+                      Container(
+                        height: 50,
+                        color: Colors.black12,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text('${stores.length<=1?'${stores.length} شكوى':stores.length<=2?' شكوتين':'${stores.length} شكاوى'}'),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                // showDialog(
+                                //     context: context,
+                                //     builder: (_) => Filterdialog());
+                              },
+                              child: Row(
+                                children: [
+                                  Text('تصفية'),
+                                  Icon(
+                                    Icons.keyboard_arrow_down,
+                                    size: 20,
+                                  )
+                                ],
                               ),
                             ),
-                          ),
-                        ],
+                            InkWell(
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (_) => Sortdialog())
+                                    .then((val) {
+                                  print(val);
+
+                                });
+                              },
+                              child: Row(
+                                children: [
+                                  Text('ترتيب'),
+                                  Icon(
+                                    Icons.keyboard_arrow_down,
+                                    size: 20,
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                       ListView.builder(
                         itemCount: filteredStores == null && stores.isEmpty
@@ -202,8 +170,13 @@ class _TicketsState extends State<Tickets> {
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (BuildContext context, int index) {
-                          return Ticket_item(
-                            hall_model: filteredStores[index],
+                          return InkWell(
+                            onTap: (){
+                              Nav.route(context, tickets_information(orders_model: filteredStores[index],));
+                            },
+                            child: Ticket_item(
+                              hall_model: filteredStores[index],
+                            ),
                           );
                         },
                       ),

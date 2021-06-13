@@ -20,6 +20,7 @@ import 'package:trkar_vendor/widget/ResultOverlay.dart';
 import 'package:trkar_vendor/widget/SearchOverlay.dart';
 import 'package:trkar_vendor/widget/Sort.dart';
 import 'package:trkar_vendor/widget/hidden_menu.dart';
+import 'package:trkar_vendor/widget/stores/Invoice_item.dart';
 import 'package:trkar_vendor/widget/stores/Order_item.dart';
 
 import 'Invoicesdetails.dart';
@@ -216,7 +217,7 @@ class _InvoicesState extends State<Invoices> {
                         : Colors.white,
                     child: Column(
                       children: [
-                        OrderItem(
+                        InvoiceItem(
                           orders_model: filteredOrders[index],
                           themeColor: themeColor,
                         ),

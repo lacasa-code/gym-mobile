@@ -1,87 +1,230 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:trkar_vendor/model/tickets_model.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 
 class Ticket_item extends StatelessWidget {
   Ticket_item({Key key, this.hall_model}) : super(key: key);
   final Ticket hall_model;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(12.0),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Container(
         width: ScreenUtil.getWidth(context) / 1.7,
-        decoration: BoxDecoration(
-          color: Color(0xffeeeeee),
-          borderRadius: BorderRadius.circular(15),
-          boxShadow: [
-            BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                offset: Offset(0, 0),
-                blurRadius: 3)
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(5),
-              child: Container(
-                width: ScreenUtil.getWidth(context) / 2.2,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+        child: Padding(
+          padding: const EdgeInsets.all(5),
+          child: Container(
+            width: ScreenUtil.getWidth(context) / 2.2,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SizedBox(
-                      height: 10,
+                    Row(
+                      children: [
+                        AutoSizeText(
+                          'نوع الشكوى : ',
+                          minFontSize: 10,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          maxLines: 1,
+                        ),
+                        AutoSizeText(hall_model.priority,
+                            minFontSize: 10,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            )),
+                      ],
                     ),
+                    Row(
+                      children: [
+                        AutoSizeText(
+                          'حالة الشكوى : ',
+                          minFontSize: 10,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          maxLines: 1,
+                        ),
+                        AutoSizeText(hall_model.status,
+                            minFontSize: 10,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            )),
+                      ],
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
                     AutoSizeText(
-                      hall_model.title.toString(),
+                      'الرسالة : ',
                       minFontSize: 10,
                       style: TextStyle(
-                        color: Color(0xFF5D6A78),
+                        color: Colors.black,
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                       maxLines: 1,
                     ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    AutoSizeText(
-                      '${hall_model.categoryName}',
-                      minFontSize: 10,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Color(0xFF5D6A78),
-                        fontWeight: FontWeight.w300,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    hall_model.vendorName == null
-                        ? Container()
-                        : AutoSizeText(
-                            'Vendor Name :' + hall_model.vendorName.toString(),
-                            minFontSize: 8,
-                            maxFontSize: 14,
-                            style: TextStyle(
-                              color: Color(0xFF5D6A78),
-                              fontWeight: FontWeight.w300,
-                            ),
-                            maxLines: 1,
+                    AutoSizeText(hall_model.message,
+                        minFontSize: 10,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        )),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        AutoSizeText(
+                          'رقم الطلب : ',
+                          minFontSize: 10,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
                           ),
-                    SizedBox(
-                      height: 10,
+                          maxLines: 1,
+                        ),
+                        AutoSizeText(hall_model.orderNumber.toString(),
+                            minFontSize: 10,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            )),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        AutoSizeText(
+                          'تاريخ الطلب : ',
+                          minFontSize: 10,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          maxLines: 1,
+                        ),
+                        AutoSizeText(
+                            DateFormat('yyyy-MM-dd').format(
+                                DateTime.parse(hall_model.orderCreatedAt)),
+                            minFontSize: 10,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            )),
+                      ],
                     ),
                   ],
                 ),
-              ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        AutoSizeText(
+                          'حالة الطلب : ',
+                          minFontSize: 10,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          maxLines: 1,
+                        ),
+                        Container(
+                          margin: EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                              border:
+                                  Border.all(width: 1, color:isPassed(hall_model.status))),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                            child: AutoSizeText(hall_model.status,
+                                minFontSize: 10,
+                                style: TextStyle(
+                                  color: isPassed(hall_model.status),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                )),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        AutoSizeText(
+                          'تاريخ الاستلام : 12-3-2021',
+                          minFontSize: 10,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          maxLines: 1,
+                        ),
+                        AutoSizeText("",
+                            minFontSize: 10,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            )),
+                      ],
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  height: 2,
+                  color: Colors.black12,
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
+  }
+
+  Color isPassed(String value) {
+    switch (value) {
+      case 'progress':
+        return Colors.amber;
+        break;
+      case 'open':
+        return Colors.lightGreen;
+        break;
+      case 'close':
+        return Colors.red;
+        break;
+      default:
+        return Colors.blue;
+    }
   }
 }

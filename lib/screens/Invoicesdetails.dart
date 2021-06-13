@@ -78,19 +78,19 @@ class _Invoices_informationState extends State<Invoices_information> {
                     maxLines: 2,
                     minFontSize: 11,
                   ),
-                  AutoSizeText(
-                    getTransrlate(context, 'paymentMethod') +
-                            ' :' +
-                            widget.orders_model.paid ??
-                        'عند الاستلام',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    maxLines: 2,
-                    minFontSize: 11,
-                  ),
+                  // AutoSizeText(
+                  //   getTransrlate(context, 'paymentMethod') +
+                  //           ' :' +
+                  //           widget.orders_model.paid ??
+                  //       'عند الاستلام',
+                  //   style: TextStyle(
+                  //     fontSize: 16,
+                  //     color: Colors.black,
+                  //     fontWeight: FontWeight.w600,
+                  //   ),
+                  //   maxLines: 2,
+                  //   minFontSize: 11,
+                  // ),
                   AutoSizeText(
                     getTransrlate(context, 'addressShipping') + " : ",
                     style: TextStyle(
@@ -131,76 +131,76 @@ class _Invoices_informationState extends State<Invoices_information> {
                     maxLines: 5,
                     minFontSize: 11,
                   ),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: widget.orders_model.orderDetails.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Padding(
-                        padding: EdgeInsets.only(
-                          right: 7,
-                          left: 10,
-                          top: 10,
-                        ),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(3.0),
-                                  child: CachedNetworkImage(
-                                    imageUrl: widget.orders_model
-                                            .orderDetails[index].photo.isEmpty
-                                        ? ""
-                                        : widget.orders_model
-                                            .orderDetails[index].photo[0].image,
-                                    width: 25,
-                                    height: 25,
-                                  ),
-                                ),
-                                Container(
-                                  width: ScreenUtil.getWidth(context) / 2,
-                                  child: Text(
-                                    widget.orders_model.orderDetails[index]
-                                        .productName,
-                                    style: TextStyle(
-                                        color: themeColor.getColor(),
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 15),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                AutoSizeText(
-                                  " كمية : ${widget.orders_model.orderDetails[index].quantity}",
-                                  maxLines: 2,
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.black),
-                                  minFontSize: 11,
-                                ),
-                                AutoSizeText(
-                                  "${widget.orders_model.invoiceTotal[index]} ${getTransrlate(context, 'Currency')}",
-                                  maxLines: 2,
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.black),
-                                  minFontSize: 11,
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 10),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
+                  // ListView.builder(
+                  //   shrinkWrap: true,
+                  //   physics: NeverScrollableScrollPhysics(),
+                  //   itemCount: widget.orders_model.orderDetails.length,
+                  //   itemBuilder: (BuildContext context, int index) {
+                  //     return Padding(
+                  //       padding: EdgeInsets.only(
+                  //         right: 7,
+                  //         left: 10,
+                  //         top: 10,
+                  //       ),
+                  //       child: Column(
+                  //         children: [
+                  //           Row(
+                  //             children: [
+                  //               Padding(
+                  //                 padding: const EdgeInsets.all(3.0),
+                  //                 child: CachedNetworkImage(
+                  //                   imageUrl: widget.orders_model
+                  //                           .orderDetails[index].photo.isEmpty
+                  //                       ? ""
+                  //                       : widget.orders_model
+                  //                           .orderDetails[index].photo[0].image,
+                  //                   width: 25,
+                  //                   height: 25,
+                  //                 ),
+                  //               ),
+                  //               Container(
+                  //                 width: ScreenUtil.getWidth(context) / 2,
+                  //                 child: Text(
+                  //                   widget.orders_model.orderDetails[index]
+                  //                       .productName,
+                  //                   style: TextStyle(
+                  //                       color: themeColor.getColor(),
+                  //                       fontWeight: FontWeight.bold,
+                  //                       fontSize: 15),
+                  //                 ),
+                  //               ),
+                  //             ],
+                  //           ),
+                  //           SizedBox(height: 10),
+                  //           Row(
+                  //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //             children: [
+                  //               AutoSizeText(
+                  //                 " كمية : ${widget.orders_model.orderDetails[index].quantity}",
+                  //                 maxLines: 2,
+                  //                 style: TextStyle(
+                  //                     fontSize: 14,
+                  //                     fontWeight: FontWeight.w600,
+                  //                     color: Colors.black),
+                  //                 minFontSize: 11,
+                  //               ),
+                  //               AutoSizeText(
+                  //                 "${widget.orders_model.invoiceTotal[index]} ${getTransrlate(context, 'Currency')}",
+                  //                 maxLines: 2,
+                  //                 style: TextStyle(
+                  //                     fontSize: 14,
+                  //                     fontWeight: FontWeight.w600,
+                  //                     color: Colors.black),
+                  //                 minFontSize: 11,
+                  //               ),
+                  //             ],
+                  //           ),
+                  //           SizedBox(height: 10),
+                  //         ],
+                  //       ),
+                  //     );
+                  //   },
+                  // ),
                   SizedBox(height: 10),
                   Align(
                     alignment: Alignment.bottomLeft,
