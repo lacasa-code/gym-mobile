@@ -86,6 +86,30 @@ class _StoresState extends State<Stores> {
         ],
         backgroundColor: themeColor.getColor(),
       ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(right: 50),
+        child: Align(
+          alignment: Alignment.bottomRight,
+          child: FlatButton(
+              color: Colors.orange,
+              onPressed: () {
+                _navigate_add_store(context);
+              },
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.add,
+                    color: Colors.white,
+                  ),
+                  Text(
+                    getTransrlate(context, 'addStore'),
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ],
+              )),
+        ),
+      ),
       body: stores == null
           ? Container(
               height: ScreenUtil.getHeight(context) / 3,
@@ -481,7 +505,7 @@ class _StoresState extends State<Stores> {
     );
   }
 
-  _navigate_add_hell(BuildContext context) async {
+  _navigate_add_store(BuildContext context) async {
     await Navigator.push(
         context, MaterialPageRoute(builder: (context) => add_Store()));
     Timer(Duration(seconds: 3), () => getAllStore());
@@ -489,7 +513,7 @@ class _StoresState extends State<Stores> {
 
   _navigate_edit_hell(BuildContext context, Store hall) async {
     await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => edit_Store(hall)));
+        context, MaterialPageRoute(builder: (context) => Edit_Store(hall)));
     Timer(Duration(seconds: 3), () => getAllStore());
   }
 

@@ -33,30 +33,31 @@ class User_model {
 /// roles : [{"id":2,"title":"User","added_by_id":1,"pivot":{"user_id":4,"role_id":2}}]
 
 class User {
-  int _id;
-  String _name;
-  String _email;
+  int id;
+  String name;
+  String email;
+  String password;
+  String passwordConfirmation;
   int _addedById;
+  int rolesid;
   Role _roles;
 bool isSelect=false;
-  int get id => _id;
-  String get name => _name;
-  String get email => _email;
+
   int get addedById => _addedById;
   Role get roles => _roles;
 
   User({int id, String name, String email, int addedById, Role roles}) {
-    _id = id;
-    _name = name;
-    _email = email;
+    id = id;
+    name = name;
+    email = email;
     _addedById = addedById;
     _roles = roles;
   }
 
   User.fromJson(dynamic json) {
-    _id = json["id"];
-    _name = json["name"];
-    _email = json["email"];
+    id = json["id"];
+    name = json["name"];
+    email = json["email"];
     _addedById = json["added_by_id"];
     if (json["roles"] != null) {
       _roles = Role.fromJson(json["roles"]);

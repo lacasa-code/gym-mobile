@@ -30,7 +30,10 @@
   },
   "welcome": " Welcome ",
   "addProduct": "Add Product",
-  "addStore": "Add Store",
+  "Moderator": "Moderator",
+  "ModeratorPhone": "Moderator Phone",
+  "moderatorAltPhone": "Moderator Phone 2",
+
   "Select": "Select Now",
   "am": "AM",
   "pm": "PM",
@@ -129,6 +132,7 @@
   "totalShipping": "Total Shipping",
   "staff": "Staff",
   "addstaff": "Add staff",
+  "addStore": "Add Store",
 
   "totaldiscount": "Total discount",
   "total": "Total",

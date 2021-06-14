@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:geocoder/model.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -13,17 +14,18 @@ import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
 import 'package:trkar_vendor/widget/ResultOverlay.dart';
+import 'package:trkar_vendor/widget/commons/custom_textfield.dart';
 
-class edit_Store extends StatefulWidget {
+class Edit_Store extends StatefulWidget {
   Store store;
 
-  edit_Store(this.store);
+  Edit_Store(this.store);
 
   @override
-  _edit_StoreState createState() => _edit_StoreState();
+  _Edit_StoreState createState() => _Edit_StoreState();
 }
 
-class _edit_StoreState extends State<edit_Store> {
+class _Edit_StoreState extends State<Edit_Store> {
   bool loading = false;
   final _formKey = GlobalKey<FormState>();
   Completer<GoogleMapController> _controller = Completer();
@@ -33,28 +35,9 @@ class _edit_StoreState extends State<edit_Store> {
     target: LatLng(31.2060916, 29.9187),
     zoom: 14.4746,
   );
-  double lat = 31.2060916, long = 29.9187;
-  TextEditingController moderatorNameController,
-      namecontroler,
-      moderatorPhoneController;
-  TextEditingController moderatorPhoneAltController, AddressController;
-
   @override
   void initState() {
-    cameraPosition= CameraPosition(
-      target: LatLng(double.parse(widget.store.lat),double.parse(widget.store.long)),
-      zoom: 14.4746,
-    );
-    lat = double.parse(widget.store.lat);
-    long = double.parse(widget.store.long);
-    moderatorNameController =
-        TextEditingController(text: widget.store.moderatorName);
-    namecontroler = TextEditingController(text: widget.store.name);
-    moderatorPhoneAltController =
-        TextEditingController(text: widget.store.moderatorAltPhone);
-    moderatorPhoneController =
-        TextEditingController(text: widget.store.moderatorPhone);
-    AddressController = TextEditingController(text: widget.store.address);
+
     super.initState();
   }
 
@@ -63,287 +46,265 @@ class _edit_StoreState extends State<edit_Store> {
     final themeColor = Provider.of<Provider_control>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Edit Store"),
-        centerTitle: true,
+        title: Row(
+          children: [
+            SvgPicture.asset(
+              'assets/icons/store.svg',
+              color: Colors.white,
+              height: 25,
+              width: 25,
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Text(getTransrlate(context, 'store')),
+          ],
+        ),
         backgroundColor: themeColor.getColor(),
       ),
-      body: Stack(
+      body: Column(
         children: [
-          Container(
-            width: ScreenUtil.getWidth(context),
-            height: ScreenUtil.getHeight(context),
-          ),
-          Column(
-            children: [
-              Container(
-                height: ScreenUtil.getHeight(context) / 3.5,
-                child: MapPicker(
-                  // pass icon widget
-                  iconWidget: Icon(
-                    Icons.location_pin,
-                    size: 50,
-                  ),
-                  //add map picker controller
-                  mapPickerController: mapPickerController,
-                  child: GoogleMap(
-                    zoomControlsEnabled: true,
-                    // hide location button
-                    myLocationButtonEnabled: true,
-                    mapType: MapType.normal,
-                    //  camera position
-                    initialCameraPosition: cameraPosition,
-                    onMapCreated: (GoogleMapController controller) {
-                      _controller.complete(controller);
-                    },
-                    onCameraMoveStarted: () {
-                      // notify map is moving
-                      mapPickerController.mapMoving();
-                    },
-                    onCameraMove: (cameraPosition) {
-                      this.cameraPosition = cameraPosition;
-                    },
-                    onCameraIdle: () async {
-                      // notify map stopped moving
-                      mapPickerController.mapFinishedMoving();
-                      //get address name from camera position
-                      lat = cameraPosition.target.latitude;
-                      long = cameraPosition.target.longitude;
-                      List<Address> addresses = await Geocoder.local
-                          .findAddressesFromCoordinates(Coordinates(
-                          cameraPosition.target.latitude,
-                          cameraPosition.target.longitude));
-                      // update the ui with the address
-                      AddressController.text =
-                      '${addresses.first?.addressLine ?? ''}';
-                    },
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.all(25),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "name",
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            TextFormField(
-                                controller: namecontroler,
-                                keyboardType: TextInputType.text,
-                                validator: (String value) {
-                                  if (value.isEmpty) {
-                                    return getTransrlate(context, 'name');
-                                  } else if (value.length < 4) {
-                                    return getTransrlate(context, 'name') + ' < 4';
-                                  }
-                                  _formKey.currentState.save();
-
-                                  return null;
-                                },
-                                decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    fillColor: Color(0xfff3f3f4),
-                                    filled: true)),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              "Moderator Name",
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            TextFormField(
-                                controller: moderatorNameController,
-                                keyboardType: TextInputType.text,
-                                decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    fillColor: Color(0xfff3f3f4),
-                                    filled: true),
-                                validator: (String value) {
-                                  if (value.isEmpty) {
-                                    return "moderator name";
-                                  } else if (value.length < 5) {
-                                    return "moderator name" + ' < 4';
-                                  }
-                                  _formKey.currentState.save();
-
-                                  return null;
-                                }),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Container(
-                              margin: EdgeInsets.symmetric(vertical: 10),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    "Moderator Phone",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold, fontSize: 15),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  TextFormField(
-                                      controller: moderatorPhoneController,
-                                      keyboardType: TextInputType.phone,
-                                      decoration: InputDecoration(
-                                          border: InputBorder.none,
-                                          fillColor: Color(0xfff3f3f4),
-                                          filled: true),
-                                      validator: (String value) {
-                                        if (value.isEmpty) {
-                                          return "moderator Phone";
-                                        } else if (value.length < 8) {
-                                          return "moderator Phone" + ' <8';
-                                        }
-                                        _formKey.currentState.save();
-
-                                        return null;
-                                      })
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Container(
-                              margin: EdgeInsets.symmetric(vertical: 10),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    "Moderator Phone Alternative",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold, fontSize: 15),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  TextFormField(
-                                      controller: moderatorPhoneAltController,
-                                      keyboardType: TextInputType.phone,
-                                      decoration: InputDecoration(
-                                          border: InputBorder.none,
-                                          fillColor: Color(0xfff3f3f4),
-                                          filled: true),
-                                      validator: (String value) {
-                                        if (value.length > 0 && value.length < 8) {
-                                          return "Moderator Phone Alternative" + ' < 8';
-                                        }
-                                        _formKey.currentState.save();
-
-                                        return null;
-                                      })
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Container(
-                              margin: EdgeInsets.symmetric(vertical: 10),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    "Address",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold, fontSize: 15),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  TextFormField(
-                                      controller: AddressController,
-                                      keyboardType: TextInputType.text,
-                                      validator: (String value) {
-                                        if (value.isEmpty) {
-                                          return getTransrlate(context, 'counter');
-                                        } else if (value.length < 2) {
-                                          return getTransrlate(context, 'counter');
-                                        }
-                                        _formKey.currentState.save();
-
-                                        return null;
-                                      },
-                                      decoration: InputDecoration(
-                                          border: InputBorder.none,
-                                          fillColor: Color(0xfff3f3f4),
-                                          filled: true))
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Center(
-                              child: FlatButton(
-                                color: themeColor.getColor(),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    'Save',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 22,
-                                    ),
-                                  ),
-                                ),
-                                onPressed: () async {
-                                  if (_formKey.currentState.validate()) {
-                                    _formKey.currentState.save();
-                                    setState(() => loading = true);
-                                    API(context).post("update/stores/${widget.store.id}", Store(name: namecontroler.text,address:AddressController.text,lat: lat.toString(),long: long.toString(),
-                                        moderatorName: moderatorNameController.text,moderatorPhone: moderatorPhoneController.text,moderatorAltPhone: moderatorPhoneAltController.text ).toJson()).then((value) {
-                                      setState(() {
-                                        loading = false;
-                                      });
-                                      if (value.containsKey('errors')) {
-                                        showDialog(
-                                          context: context,
-                                          builder: (_) => ResultOverlay(
-                                            value['errors'].toString(),
-                                          ),
-                                        );
-                                      } else {
-                                        Navigator.pop(context);
-                                        showDialog(
-                                          context: context,
-                                          builder: (_) => ResultOverlay(
-                                            'تم تعديل المتجر بنجاح',
-                                          ),
-                                        );
-                                      }
-                                    });
-                                  }
-                                },
-                              ),
-                            ),
-                          ],
+          Expanded(
+            child: Container(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(25),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        MyTextFormField(
+                          intialLabel: widget.store.name ?? ' ',
+                          Keyboard_Type: TextInputType.name,
+                          labelText: getTransrlate(context, 'name'),
+                          hintText: getTransrlate(context, 'name'),
+                          isPhone: true,
+                          enabled: true,
+                          validator: (String value) {
+                            if (value.isEmpty) {
+                              return getTransrlate(context, 'name');
+                            }
+                            _formKey.currentState.save();
+                            return null;
+                          },
+                          onSaved: (String value) {
+                            widget.store.name = value;
+                          },
                         ),
-                      ),
+                        MyTextFormField(
+                          intialLabel: widget.store.moderatorName ?? ' ',
+                          Keyboard_Type: TextInputType.name,
+                          labelText: getTransrlate(context, 'Moderator'),
+                          hintText: getTransrlate(context, 'Moderator'),
+                          isPhone: true,
+                          enabled: true,
+                          validator: (String value) {
+                            if (value.isEmpty) {
+                              return getTransrlate(context, 'Moderator');
+                            }
+                            _formKey.currentState.save();
+                            return null;
+                          },
+                          onSaved: (String value) {
+                            widget.store.moderatorName = value;
+                          },
+                        ),
+                        MyTextFormField(
+                          intialLabel: widget.store.moderatorPhone ?? ' ',
+                          Keyboard_Type: TextInputType.phone,
+                          labelText: getTransrlate(context, 'ModeratorPhone'),
+                          hintText: getTransrlate(context, 'ModeratorPhone'),
+                          isPhone: true,
+                          enabled: true,
+                          validator: (String value) {
+                            if (value.length<=8) {
+                              return getTransrlate(context, 'ModeratorPhone');
+                            }
+                            _formKey.currentState.save();
+                            return null;
+                          },
+                          onSaved: (String value) {
+                            widget.store.moderatorPhone = value;
+                          },
+                        ),
+                        MyTextFormField(
+                          intialLabel: widget.store.moderatorAltPhone ?? ' ',
+                          Keyboard_Type: TextInputType.phone,
+                          labelText: getTransrlate(context, 'ModeratorPhone'),
+                          hintText: getTransrlate(context, 'ModeratorPhone'),
+                          isPhone: true,
+                          enabled: true,
+                          validator: (String value) {
+                            if (value.isEmpty) {
+                              return getTransrlate(context, 'ModeratorPhone');
+                            }
+                            _formKey.currentState.save();
+                            return null;
+                          },
+                          onSaved: (String value) {
+                            widget.store.moderatorAltPhone = value;
+                          },
+                        ),
+                        MyTextFormField(
+                          intialLabel: widget.store.address ?? ' ',
+                          Keyboard_Type: TextInputType.text,
+                          labelText: getTransrlate(context, 'address'),
+                          hintText: getTransrlate(context, 'address'),
+                          enabled: true,
+                          validator: (String value) {
+                            if (value.isEmpty) {
+                              return getTransrlate(context, 'address');
+                            }
+                            _formKey.currentState.save();
+                            return null;
+                          },
+                          onSaved: (String value) {
+                            widget.store.address = value;
+                          },
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
+                          height: ScreenUtil.getHeight(context) / 5,
+                          child: MapPicker(
+                            // pass icon widget
+                            iconWidget: Icon(
+                              Icons.location_pin,
+                              size: 50,
+                            ),
+                            //add map picker controller
+                            mapPickerController: mapPickerController,
+                            child: GoogleMap(
+                              zoomControlsEnabled: true,
+                              // hide location button
+                              myLocationButtonEnabled: true,
+                              mapType: MapType.normal,
+                              //  camera position
+                              initialCameraPosition: cameraPosition,
+                              onMapCreated: (GoogleMapController controller) {
+                                _controller.complete(controller);
+                              },
+                              onCameraMoveStarted: () {
+                                // notify map is moving
+                                mapPickerController.mapMoving();
+                              },
+                              onCameraMove: (cameraPosition) {
+                                this.cameraPosition = cameraPosition;
+                              },
+                              onCameraIdle: () async {
+                                // notify map stopped moving
+                                mapPickerController.mapFinishedMoving();
+                                //get address name from camera position
+                                widget.store.lat = cameraPosition.target.latitude.toString();
+                                widget.store.long = cameraPosition.target.longitude.toString();
+                                List<Address> addresses = await Geocoder.local
+                                    .findAddressesFromCoordinates(Coordinates(
+                                    cameraPosition.target.latitude,
+                                    cameraPosition.target.longitude));
+                                // update the ui with the address
+                                widget.store.address =
+                                '${addresses.first?.addressLine ?? ''}';
+                              },
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                      ],
                     ),
                   ),
                 ),
               ),
-            ],
+            ),
           ),
+          Container(
+            height: 100,
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black12.withOpacity(0.5),
+                    offset: Offset(0, 0),
+                    blurRadius: 1)
+              ],
+            ),
+            child: Container(
+              color: Colors.white,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  FlatButton(
+                      minWidth: ScreenUtil.getWidth(context) / 2.5,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(1),
+                          side: BorderSide(
+                              color: Colors.orange, width: 1)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          getTransrlate(context, 'save'),
+                          style: TextStyle(
+                            color: Colors.orange,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      onPressed: () async {
+                        if (_formKey.currentState.validate()) {
+                          _formKey.currentState.save();
+                          setState(() => loading = true);
+
+                          API(context)
+                              .post(
+                              "update/stores/${widget.store.id}",
+                              widget.store.toJson())
+                              .then((value) {
+                            setState(() {
+                              loading = false;
+                            });
+                            if (value.containsKey('errors')) {
+                              showDialog(
+                                context: context,
+                                builder: (_) => ResultOverlay(
+                                  value['errors'].toString(),
+                                ),
+                              );
+                            } else {
+                              Navigator.pop(context);
+                              showDialog(
+                                context: context,
+                                builder: (_) => ResultOverlay(
+                                  'تم تعديل المتجر بنجاح',
+                                ),
+                              );
+                            }
+                          });
+                        }
+                      }),
+                  FlatButton(
+                      minWidth: ScreenUtil.getWidth(context) / 2.5,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(1),
+                          side:
+                          BorderSide(color: Colors.grey, width: 1)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          getTransrlate(context, 'close'),
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      onPressed: () async {
+                        Navigator.pop(context);
+                      }),
+                ],
+              ),
+            ),
+          ),
+
         ],
       ),
     );

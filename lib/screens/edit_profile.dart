@@ -26,7 +26,7 @@ class _Edit_profileState extends State<Edit_profile> {
   final FocusNode myFocusNode = FocusNode();
   bool _isLoading = false;
   bool loading = false;
-  User userModal;
+  UserInfo userModal;
   String password;
   final _formKey = GlobalKey<FormState>();
   TextEditingController passwordController,

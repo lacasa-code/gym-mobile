@@ -18,13 +18,13 @@ class UserInformation {
 
 class Data {
   String status;
-  User user;
+  UserInfo user;
 
   Data({this.status, this.user});
 
   Data.fromJson(Map<String, dynamic> json) {
     status = json['status'];
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    user = json['user'] != null ? new UserInfo.fromJson(json['user']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -37,7 +37,7 @@ class Data {
   }
 }
 
-class User {
+class UserInfo {
   int id;
   String name;
   String email;
@@ -58,7 +58,7 @@ class User {
   String passwordConfirmation;
   List<Roles> roles;
 
-  User(
+  UserInfo(
       {this.id,
         this.name,
         this.email,
@@ -76,7 +76,7 @@ class User {
         this.facebookAvatar,
         this.roles});
 
-  User.fromJson(Map<String, dynamic> json) {
+  UserInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     email = json['email'];
@@ -117,9 +117,8 @@ class User {
     data['gender'] = this.gender;
     data['facebook_id'] = this.facebookId;
     data['facebook_avatar'] = this.facebookAvatar;
-    if (this.roles != null) {
-      data['roles'] = this.roles.map((v) => v.toJson()).toList();
-    }
+    data['roles'] = this.rolesid;
+
     return data;
   }
 }

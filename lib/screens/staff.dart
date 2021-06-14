@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/user_model.dart';
 import 'package:trkar_vendor/screens/add_staff.dart';
+import 'package:trkar_vendor/screens/edit_staf.dart';
 import 'package:trkar_vendor/screens/edit_staff.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/SerachLoading.dart';
@@ -269,24 +270,22 @@ class _StaffState extends State<Staff> {
                                               builder: (_) => Sortdialog())
                                           .then((val) {
                                         print(val);
-                                        API(context)
-                                            .get('users?sort_type=${val}')
-                                            .then((value) {
-                                          if (value != null) {
-                                            if (value['status_code'] == 200) {
-                                              setState(() {
-                                                filteredStores = staff =
-                                                    User_model.fromJson(value)
-                                                        .data;
-                                              });
-                                            } else {
-                                              showDialog(
-                                                  context: context,
-                                                  builder: (_) => ResultOverlay(
-                                                      value['message']));
+                                        if(val!=null){
+                                          API(context)
+                                              .get('users?sort_type=${val}')
+                                              .then((value) {
+                                            if (value != null) {
+                                              if (value['status_code'] == 200) {
+                                                setState(() {
+                                                  filteredStores = staff =
+                                                      User_model.fromJson(value)
+                                                          .data;
+                                                });
+                                              } else {
+                                              }
                                             }
-                                          }
-                                        });
+                                          });
+                                        }
                                       });
                                     },
                                     child: Row(
@@ -521,7 +520,7 @@ class _StaffState extends State<Staff> {
 
   _navigate_edit_hell(BuildContext context, User hall) async {
     await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => Edit_Staff(hall)));
+        context, MaterialPageRoute(builder: (context) => EditStaff(hall)));
     Timer(Duration(seconds: 3), () => getAllStore());
   }
 

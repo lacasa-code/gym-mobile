@@ -67,6 +67,10 @@ class Store {
   Vendor _vendor;
   bool isSelect=false;
 
+  set id(int value) {
+    _id = value;
+  }
+
   int get id => _id;
   String get name => _name;
   String get address => _address;
@@ -146,6 +150,62 @@ class Store {
       map["moderator_alt_phone"] = moderatorAltPhone;
     }
     return map;
+  }
+
+  set name(String value) {
+    _name = value;
+  }
+
+  set address(String value) {
+    _address = value;
+  }
+
+  set lat(String value) {
+    _lat = value;
+  }
+
+  set long(String value) {
+    _long = value;
+  }
+
+  set vendorId(int value) {
+    _vendorId = value;
+  }
+
+  set moderatorName(String value) {
+    _moderatorName = value;
+  }
+
+  set moderatorPhone(String value) {
+    _moderatorPhone = value;
+  }
+
+  set moderatorAltPhone(String value) {
+    _moderatorAltPhone = value;
+  }
+
+  set status(int value) {
+    _status = value;
+  }
+
+  set createdAt(String value) {
+    _createdAt = value;
+  }
+
+  set updatedAt(String value) {
+    _updatedAt = value;
+  }
+
+  set deletedAt(dynamic value) {
+    _deletedAt = value;
+  }
+
+  set vendorName(String value) {
+    _vendorName = value;
+  }
+
+  set vendor(Vendor value) {
+    _vendor = value;
   }
 }
 
