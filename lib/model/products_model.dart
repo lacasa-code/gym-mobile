@@ -36,6 +36,7 @@ class Product {
   int carModelId;
   List<Photo> photo;
   int yearId;
+  int CategoryId;
   int partCategoryId;
   int vendorId;
   int storeId;

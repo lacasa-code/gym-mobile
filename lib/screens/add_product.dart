@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/car_made.dart';
@@ -12,6 +14,7 @@ import 'package:trkar_vendor/model/category.dart';
 import 'package:trkar_vendor/model/manufacturer_model.dart';
 import 'package:trkar_vendor/model/part__category.dart';
 import 'package:trkar_vendor/model/prod_country.dart';
+import 'package:trkar_vendor/model/products_model.dart';
 import 'package:trkar_vendor/model/store_model.dart';
 import 'package:trkar_vendor/model/tags_model.dart';
 import 'package:trkar_vendor/model/transmissions.dart';
@@ -22,6 +25,8 @@ import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
 import 'package:trkar_vendor/widget/ResultOverlay.dart';
+import 'package:trkar_vendor/widget/SearchOverlay.dart';
+import 'package:trkar_vendor/widget/commons/custom_textfield.dart';
 import 'package:trkar_vendor/widget/commons/drop_down_menu/find_dropdown.dart';
 
 class Add_Product extends StatefulWidget {
@@ -30,6 +35,7 @@ class Add_Product extends StatefulWidget {
 }
 
 class _Add_ProductState extends State<Add_Product> {
+  Product product = Product();
   bool loading = false;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
@@ -46,20 +52,6 @@ class _Add_ProductState extends State<Add_Product> {
   List<Manufacturer> _manufacturers;
   List<ProdCountry> _prodcountries;
   List<Transmission> transmissions;
-
-  TextEditingController serialcontroler, namecontroler, description;
-  TextEditingController car_made_id_controler,
-      car_model_id_Controler,
-      part_category_id_controller,
-      year_idcontroler,
-      transmission_id,
-      store_id,
-      price_controller,
-      tagscontroler,
-      discountcontroler,
-      manufacturer_id,
-      prodcountry_id,
-      quantityController;
 
   DateTime selectedDate = DateTime.now();
   String SelectDate = ' ';
@@ -88,26 +80,6 @@ class _Add_ProductState extends State<Add_Product> {
   @override
   void initState() {
     getAllCareMade();
-    serialcontroler = TextEditingController();
-    transmission_id = TextEditingController();
-    namecontroler = TextEditingController();
-    car_made_id_controler = TextEditingController();
-    car_model_id_Controler = TextEditingController();
-    part_category_id_controller = TextEditingController();
-    description = TextEditingController();
-    discountcontroler = TextEditingController();
-    store_id = TextEditingController();
-    price_controller = TextEditingController();
-    tagscontroler = TextEditingController();
-    year_idcontroler = TextEditingController();
-    serialcontroler = TextEditingController();
-    namecontroler = TextEditingController();
-    car_made_id_controler = TextEditingController();
-    car_model_id_Controler = TextEditingController();
-    quantityController = TextEditingController();
-    manufacturer_id = TextEditingController();
-    prodcountry_id = TextEditingController();
-
     super.initState();
   }
 
@@ -117,8 +89,34 @@ class _Add_ProductState extends State<Add_Product> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        title: Text("Add Product"),
-        centerTitle: true,
+        title: Row(
+          children: [
+            SvgPicture.asset(
+              'assets/icons/ic_shopping_cart_bottom.svg',
+              height: 30,
+              width: 30,
+              color: Colors.white,
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Text(getTransrlate(context, 'product')),
+          ],
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.search,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (_) => SearchOverlay(),
+              );
+            },
+          )
+        ],
         backgroundColor: themeColor.getColor(),
       ),
       body: Stack(
@@ -135,970 +133,1033 @@ class _Add_ProductState extends State<Add_Product> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "name",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                    MyTextFormField(
+                      intialLabel: product.name ?? ' ',
+                      Keyboard_Type: TextInputType.name,
+                      labelText: getTransrlate(context, 'name'),
+                      hintText: getTransrlate(context, 'name'),
+                      isPhone: true,
+                      enabled: true,
+                      validator: (String value) {
+                        if (value.isEmpty) {
+                          return getTransrlate(context, 'name');
+                        }
+                        _formKey.currentState.save();
+                        return null;
+                      },
+                      onSaved: (String value) {
+                        product.name = value;
+                      },
                     ),
-                    SizedBox(
-                      height: 10,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          children: [
+                            Text(
+                              "الفئة الرئيسية",
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 16),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            _category == null
+                                ? Container()
+                                : Container(
+                                    height: ScreenUtil.getWidth(context) / 2.5,
+                                    child: DropdownSearch<Categories>(
+                                        showSearchBox: false,
+                                        showClearButton: false,
+                                        label: "   ",
+                                        validator: (Categories item) {
+                                          if (item == null) {
+                                            return "Required field";
+                                          } else
+                                            return null;
+                                        },
+                                        items: _category,
+                                        //  onFind: (String filter) => getData(filter),
+                                        itemAsString: (Categories u) => u.name,
+                                        onChanged: (Categories data) =>
+                                            product.CategoryId = data.id),
+                                  ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Text(
+                              "الفئة الرئيسية",
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 16),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            _category == null
+                                ? Container()
+                                : Container(
+                                    height: ScreenUtil.getWidth(context) / 2.5,
+                                    child: DropdownSearch<Categories>(
+                                        showSearchBox: false,
+                                        showClearButton: false,
+                                        label: "   ",
+                                        validator: (Categories item) {
+                                          if (item == null) {
+                                            return "Required field";
+                                          } else
+                                            return null;
+                                        },
+                                        items: _category,
+                                        //  onFind: (String filter) => getData(filter),
+                                        itemAsString: (Categories u) => u.name,
+                                        onChanged: (Categories data) =>
+                                            product.CategoryId = data.id),
+                                  ),
+                          ],
+                        ),
+                      ],
                     ),
-                    TextFormField(
-                        controller: namecontroler,
-                        keyboardType: TextInputType.text,
-                        validator: (String value) {
-                          if (value.isEmpty) {
-                            return getTransrlate(context, 'name');
-                          } else if (value.length < 3) {
-                            return getTransrlate(context, 'name') + ' < 2';
-                          }
-                          _formKey.currentState.save();
 
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            fillColor: Color(0xfff3f3f4),
-                            filled: true)),
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            "Serial number",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 15),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          TextFormField(
-                              controller: serialcontroler,
-                              keyboardType: TextInputType.number,
-                              validator: (String value) {
-                                if (value.isEmpty) {
-                                  return getTransrlate(context, 'counter');
-                                } else if (value.length < 2) {
-                                  return getTransrlate(context, 'counter');
-                                }
-                                _formKey.currentState.save();
-
-                                return null;
-                              },
-                              decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  fillColor: Color(0xfff3f3f4),
-                                  filled: true))
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            "Quantity",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 15),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          TextFormField(
-                              controller: quantityController,
-                              keyboardType: TextInputType.number,
-                              validator: (String value) {
-                                if (value.isEmpty) {
-                                  return getTransrlate(context, 'counter');
-                                } else if (value.length < 2) {
-                                  return getTransrlate(context, 'counter');
-                                }
-                                _formKey.currentState.save();
-
-                                return null;
-                              },
-                              decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  fillColor: Color(0xfff3f3f4),
-                                  filled: true))
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      "Price",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    TextField(
-                        controller: price_controller,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            fillColor: Color(0xfff3f3f4),
-                            filled: true)),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            "Discount",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 15),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          TextField(
-                              controller: discountcontroler,
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                  suffix: Text('%'),
-                                  border: InputBorder.none,
-                                  fillColor: Color(0xfff3f3f4),
-                                  filled: true))
-                        ],
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(6.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 4, top: 4),
-                        child: FindDropdown<CarMade>(
-                            items: CarMades,
-                            dropdownBuilder: (context, selectedText) => Align(
-                                alignment: Alignment.topRight,
-                                child: Container(
-                                  height: 50,
-                                  width: ScreenUtil.getWidth(context) / 1.1,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(
-                                        color: themeColor.getColor(), width: 2),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      AutoSizeText(
-                                        selectedText.carMade,
-                                        minFontSize: 8,
-                                        maxLines: 1,
-                                        //overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                            color: themeColor.getColor(),
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                )),
-                            dropdownItemBuilder: (context, item, isSelected) =>
-                                Padding(
-                                  padding: const EdgeInsets.all(12),
-                                  child: Text(
-                                    item.carMade,
-                                    style: TextStyle(
-                                        color: isSelected
-                                            ? themeColor.getColor()
-                                            : Color(0xFF5D6A78),
-                                        fontSize: isSelected ? 20 : 17,
-                                        fontWeight: isSelected
-                                            ? FontWeight.w600
-                                            : FontWeight.w600),
-                                  ),
-                                ),
-                            onChanged: (item) {
-                              car_made_id_controler.text = item.id.toString();
-                              getAllCareModel(item.id);
-                            },
-                            labelStyle: TextStyle(fontSize: 20),
-                            selectedItem: CarMade(carMade: 'Select Car Made'),
-                            titleStyle: TextStyle(fontSize: 20),
-                            label: "Car Made",
-                            showSearchBox: false,
-                            isUnderLine: false),
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(6.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 4, top: 4),
-                        child: FindDropdown<Carmodel>(
-                            items: carmodels,
-                            // onFind: (f) async {
-                            //   search.run(() {
-                            //     setState(() {
-                            //       filteredcarmodels_data = carmodels
-                            //           .where((u) =>
-                            //       (u.carmodel
-                            //           .toLowerCase()
-                            //           .contains(f
-                            //           .toLowerCase())))
-                            //           .toList();
-                            //     });
-                            //   });
-                            //   return filteredcarmodels_data;
-                            // } ,
-                            dropdownBuilder: (context, selectedText) => Align(
-                                alignment: Alignment.topRight,
-                                child: Container(
-                                  height: 50,
-                                  width: ScreenUtil.getWidth(context) / 1.1,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(
-                                        color: themeColor.getColor(), width: 2),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      AutoSizeText(
-                                        selectedText.carmodel,
-                                        minFontSize: 8,
-                                        maxLines: 1,
-                                        //overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                            color: themeColor.getColor(),
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                )),
-                            dropdownItemBuilder: (context, item, isSelected) =>
-                                Padding(
-                                  padding: const EdgeInsets.all(12),
-                                  child: Text(
-                                    item.carmodel,
-                                    style: TextStyle(
-                                        color: isSelected
-                                            ? themeColor.getColor()
-                                            : Color(0xFF5D6A78),
-                                        fontSize: isSelected ? 20 : 17,
-                                        fontWeight: isSelected
-                                            ? FontWeight.w600
-                                            : FontWeight.w600),
-                                  ),
-                                ),
-                            onChanged: (item) {
-                              car_model_id_Controler.text = item.id.toString();
-                            },
-                            // onFind: (text) {
-                            //
-                            // },
-                            labelStyle: TextStyle(fontSize: 20),
-                            titleStyle: TextStyle(fontSize: 20),
-                            selectedItem:
-                                Carmodel(carmodel: 'Select Car model'),
-                            label: "Car Model",
-                            showSearchBox: false,
-                            isUnderLine: false),
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(6.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 4, top: 4),
-                        child: FindDropdown<Part_Category>(
-                            items: part_Categories,
-                            // onFind: (f) async {
-                            //   search.run(() {
-                            //     setState(() {
-                            //       filteredcarmodels_data = carmodels
-                            //           .where((u) =>
-                            //       (u.carmodel
-                            //           .toLowerCase()
-                            //           .contains(f
-                            //           .toLowerCase())))
-                            //           .toList();
-                            //     });
-                            //   });
-                            //   return filteredcarmodels_data;
-                            // } ,
-                            dropdownBuilder: (context, selectedText) => Align(
-                                alignment: Alignment.topRight,
-                                child: Container(
-                                  height: 50,
-                                  width: ScreenUtil.getWidth(context) / 1.1,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(
-                                        color: themeColor.getColor(), width: 2),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      AutoSizeText(
-                                        selectedText.categoryName,
-                                        minFontSize: 8,
-                                        maxLines: 1,
-                                        //overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                            color: themeColor.getColor(),
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                )),
-                            dropdownItemBuilder: (context, item, isSelected) =>
-                                Padding(
-                                  padding: const EdgeInsets.all(12),
-                                  child: Text(
-                                    item.categoryName,
-                                    style: TextStyle(
-                                        color: isSelected
-                                            ? themeColor.getColor()
-                                            : Color(0xFF5D6A78),
-                                        fontSize: isSelected ? 20 : 17,
-                                        fontWeight: isSelected
-                                            ? FontWeight.w600
-                                            : FontWeight.w600),
-                                  ),
-                                ),
-                            onChanged: (item) {
-                              part_category_id_controller.text =
-                                  item.id.toString();
-                            },
-                            // onFind: (text) {
-                            //
-                            // },
-                            labelStyle: TextStyle(fontSize: 20),
-                            titleStyle: TextStyle(fontSize: 20),
-                            selectedItem: Part_Category(
-                                categoryName: 'Select Part Category'),
-                            label: "part",
-                            showSearchBox: false,
-                            isUnderLine: false),
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(6.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 4, top: 4),
-                        child: FindDropdown<Year>(
-                            items: years,
-                            // onFind: (f) async {
-                            //   search.run(() {
-                            //     setState(() {
-                            //       filteredcarmodels_data = carmodels
-                            //           .where((u) =>
-                            //       (u.carmodel
-                            //           .toLowerCase()
-                            //           .contains(f
-                            //           .toLowerCase())))
-                            //           .toList();
-                            //     });
-                            //   });
-                            //   return filteredcarmodels_data;
-                            // } ,
-                            dropdownBuilder: (context, selectedText) => Align(
-                                alignment: Alignment.topRight,
-                                child: Container(
-                                  height: 50,
-                                  width: ScreenUtil.getWidth(context) / 1.1,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(
-                                        color: themeColor.getColor(), width: 2),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      AutoSizeText(
-                                        selectedText.year,
-                                        minFontSize: 8,
-                                        maxLines: 1,
-                                        //overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                            color: themeColor.getColor(),
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                )),
-                            dropdownItemBuilder: (context, item, isSelected) =>
-                                Padding(
-                                  padding: const EdgeInsets.all(12),
-                                  child: Text(
-                                    item.year,
-                                    style: TextStyle(
-                                        color: isSelected
-                                            ? themeColor.getColor()
-                                            : Color(0xFF5D6A78),
-                                        fontSize: isSelected ? 20 : 17,
-                                        fontWeight: isSelected
-                                            ? FontWeight.w600
-                                            : FontWeight.w600),
-                                  ),
-                                ),
-                            onChanged: (item) {
-                              year_idcontroler.text = item.id.toString();
-                            },
-                            // onFind: (text) {
-                            //
-                            // },
-                            labelStyle: TextStyle(fontSize: 20),
-                            titleStyle: TextStyle(fontSize: 20),
-                            selectedItem: Year(year: 'Select Year'),
-                            label: "Year",
-                            showSearchBox: false,
-                            isUnderLine: false),
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(6.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 4, top: 4),
-                        child: FindDropdown<Categories>(
-                            items: _category,
-                            // onFind: (f) async {
-                            //   search.run(() {
-                            //     setState(() {
-                            //       filteredcarmodels_data = carmodels
-                            //           .where((u) =>
-                            //       (u.carmodel
-                            //           .toLowerCase()
-                            //           .contains(f
-                            //           .toLowerCase())))
-                            //           .toList();
-                            //     });
-                            //   });
-                            //   return filteredcarmodels_data;
-                            // } ,
-                            dropdownBuilder: (context, selectedText) => Align(
-                                alignment: Alignment.topRight,
-                                child: Container(
-                                  height: 50,
-                                  width: ScreenUtil.getWidth(context) / 1.1,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(
-                                        color: themeColor.getColor(), width: 2),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      AutoSizeText(
-                                        selectedText.name,
-                                        minFontSize: 8,
-                                        maxLines: 1,
-                                        //overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                            color: themeColor.getColor(),
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                )),
-                            dropdownItemBuilder: (context, item, isSelected) =>
-                                Padding(
-                                  padding: const EdgeInsets.all(12),
-                                  child: Text(
-                                    item.name,
-                                    style: TextStyle(
-                                        color: isSelected
-                                            ? themeColor.getColor()
-                                            : Color(0xFF5D6A78),
-                                        fontSize: isSelected ? 20 : 17,
-                                        fontWeight: isSelected
-                                            ? FontWeight.w600
-                                            : FontWeight.w600),
-                                  ),
-                                ),
-                            onChanged: (item) {
-                              categories = [];
-                              categories.add(item.id.toString());
-                            },
-                            // onFind: (text) {
-                            //
-                            // },
-                            labelStyle: TextStyle(fontSize: 20),
-                            titleStyle: TextStyle(fontSize: 20),
-                            selectedItem: Categories(name: 'Categories'),
-                            label: "Categories",
-                            showSearchBox: false,
-                            isUnderLine: false),
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(6.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 4, top: 4),
-                        child: FindDropdown<Store>(
-                            items: _store,
-                            // onFind: (f) async {
-                            //   search.run(() {
-                            //     setState(() {
-                            //       filteredcarmodels_data = carmodels
-                            //           .where((u) =>
-                            //       (u.carmodel
-                            //           .toLowerCase()
-                            //           .contains(f
-                            //           .toLowerCase())))
-                            //           .toList();
-                            //     });
-                            //   });
-                            //   return filteredcarmodels_data;
-                            // } ,
-                            dropdownBuilder: (context, selectedText) => Align(
-                                alignment: Alignment.topRight,
-                                child: Container(
-                                  height: 50,
-                                  width: ScreenUtil.getWidth(context) / 1.1,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(
-                                        color: themeColor.getColor(), width: 2),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      AutoSizeText(
-                                        selectedText.name,
-                                        minFontSize: 8,
-                                        maxLines: 1,
-                                        //overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                            color: themeColor.getColor(),
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                )),
-                            dropdownItemBuilder: (context, item, isSelected) =>
-                                Padding(
-                                  padding: const EdgeInsets.all(12),
-                                  child: Text(
-                                    item.name,
-                                    style: TextStyle(
-                                        color: isSelected
-                                            ? themeColor.getColor()
-                                            : Color(0xFF5D6A78),
-                                        fontSize: isSelected ? 20 : 17,
-                                        fontWeight: isSelected
-                                            ? FontWeight.w600
-                                            : FontWeight.w600),
-                                  ),
-                                ),
-                            onChanged: (item) {
-                              store_id.text = item.id.toString();
-                            },
-                            // onFind: (text) {
-                            //
-                            // },
-                            labelStyle: TextStyle(fontSize: 20),
-                            titleStyle: TextStyle(fontSize: 20),
-                            selectedItem: Store(name: 'Stores'),
-                            label: "Stores",
-                            showSearchBox: false,
-                            isUnderLine: false),
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(6.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 4, top: 4),
-                        child: FindDropdown<Tag>(
-                            items: _tags,
-                            // onFind: (f) async {
-                            //   search.run(() {
-                            //     setState(() {
-                            //       filteredcarmodels_data = carmodels
-                            //           .where((u) =>
-                            //       (u.carmodel
-                            //           .toLowerCase()
-                            //           .contains(f
-                            //           .toLowerCase())))
-                            //           .toList();
-                            //     });
-                            //   });
-                            //   return filteredcarmodels_data;
-                            // } ,
-                            dropdownBuilder: (context, selectedText) => Align(
-                                alignment: Alignment.topRight,
-                                child: Container(
-                                  height: 50,
-                                  width: ScreenUtil.getWidth(context) / 1.1,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(
-                                        color: themeColor.getColor(), width: 2),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      AutoSizeText(
-                                        selectedText.name,
-                                        minFontSize: 8,
-                                        maxLines: 1,
-                                        //overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                            color: themeColor.getColor(),
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                )),
-                            dropdownItemBuilder: (context, item, isSelected) =>
-                                Padding(
-                                  padding: const EdgeInsets.all(12),
-                                  child: Text(
-                                    item.name,
-                                    style: TextStyle(
-                                        color: isSelected
-                                            ? themeColor.getColor()
-                                            : Color(0xFF5D6A78),
-                                        fontSize: isSelected ? 20 : 17,
-                                        fontWeight: isSelected
-                                            ? FontWeight.w600
-                                            : FontWeight.w600),
-                                  ),
-                                ),
-                            onChanged: (item) {
-                              tagscontroler.text = item.name.toString();
-                            },
-                            // onFind: (text) {
-                            //
-                            // },
-                            labelStyle: TextStyle(fontSize: 20),
-                            titleStyle: TextStyle(fontSize: 20),
-                            selectedItem: Tag(name: 'Select Tags'),
-                            label: "Tag",
-                            showSearchBox: false,
-                            isUnderLine: false),
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(6.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 4, top: 4),
-                        child: FindDropdown<ProdCountry>(
-                            items: _prodcountries,
-                            // onFind: (f) async {
-                            //   search.run(() {
-                            //     setState(() {
-                            //       filteredcarmodels_data = carmodels
-                            //           .where((u) =>
-                            //       (u.carmodel
-                            //           .toLowerCase()
-                            //           .contains(f
-                            //           .toLowerCase())))
-                            //           .toList();
-                            //     });
-                            //   });
-                            //   return filteredcarmodels_data;
-                            // } ,
-                            dropdownBuilder: (context, selectedText) => Align(
-                                alignment: Alignment.topRight,
-                                child: Container(
-                                  height: 50,
-                                  width: ScreenUtil.getWidth(context) / 1.1,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(
-                                        color: themeColor.getColor(), width: 2),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      AutoSizeText(
-                                        selectedText.countryName,
-                                        minFontSize: 8,
-                                        maxLines: 1,
-                                        //overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                            color: themeColor.getColor(),
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                )),
-                            dropdownItemBuilder: (context, item, isSelected) =>
-                                Padding(
-                                  padding: const EdgeInsets.all(12),
-                                  child: Text(
-                                    item.countryName,
-                                    style: TextStyle(
-                                        color: isSelected
-                                            ? themeColor.getColor()
-                                            : Color(0xFF5D6A78),
-                                        fontSize: isSelected ? 20 : 17,
-                                        fontWeight: isSelected
-                                            ? FontWeight.w600
-                                            : FontWeight.w600),
-                                  ),
-                                ),
-                            onChanged: (item) {
-                              prodcountry_id.text = item.id.toString();
-                            },
-                            // onFind: (text) {
-                            //
-                            // },
-                            labelStyle: TextStyle(fontSize: 20),
-                            titleStyle: TextStyle(fontSize: 20),
-                            selectedItem: ProdCountry(
-                                countryName: 'Select Product Country'),
-                            label: "Product Country",
-                            showSearchBox: false,
-                            isUnderLine: false),
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(6.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 4, top: 4),
-                        child: FindDropdown<Manufacturer>(
-                            items: _manufacturers,
-                            // onFind: (f) async {
-                            //   search.run(() {
-                            //     setState(() {
-                            //       filteredcarmodels_data = carmodels
-                            //           .where((u) =>
-                            //       (u.carmodel
-                            //           .toLowerCase()
-                            //           .contains(f
-                            //           .toLowerCase())))
-                            //           .toList();
-                            //     });
-                            //   });
-                            //   return filteredcarmodels_data;
-                            // } ,
-                            dropdownBuilder: (context, selectedText) => Align(
-                                alignment: Alignment.topRight,
-                                child: Container(
-                                  height: 50,
-                                  width: ScreenUtil.getWidth(context) / 1.1,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(
-                                        color: themeColor.getColor(), width: 2),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      AutoSizeText(
-                                        selectedText.manufacturerName,
-                                        minFontSize: 8,
-                                        maxLines: 1,
-                                        //overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                            color: themeColor.getColor(),
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                )),
-                            dropdownItemBuilder: (context, item, isSelected) =>
-                                Padding(
-                                  padding: const EdgeInsets.all(12),
-                                  child: Text(
-                                    item.manufacturerName,
-                                    style: TextStyle(
-                                        color: isSelected
-                                            ? themeColor.getColor()
-                                            : Color(0xFF5D6A78),
-                                        fontSize: isSelected ? 20 : 17,
-                                        fontWeight: isSelected
-                                            ? FontWeight.w600
-                                            : FontWeight.w600),
-                                  ),
-                                ),
-                            onChanged: (item) {
-                              manufacturer_id.text = item.id.toString();
-                            },
-                            // onFind: (text) {
-                            //
-                            // },
-                            labelStyle: TextStyle(fontSize: 20),
-                            titleStyle: TextStyle(fontSize: 20),
-                            selectedItem: Manufacturer(
-                                manufacturerName: 'Select manufacturer'),
-                            label: "manufacturer",
-                            showSearchBox: false,
-                            isUnderLine: false),
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(6.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 4, top: 4),
-                        child: FindDropdown<Transmission>(
-                            items: transmissions,
-                            // onFind: (f) async {
-                            //   search.run(() {
-                            //     setState(() {
-                            //       filteredcarmodels_data = carmodels
-                            //           .where((u) =>
-                            //       (u.carmodel
-                            //           .toLowerCase()
-                            //           .contains(f
-                            //           .toLowerCase())))
-                            //           .toList();
-                            //     });
-                            //   });
-                            //   return filteredcarmodels_data;
-                            // } ,
-                            dropdownBuilder: (context, selectedText) => Align(
-                                alignment: Alignment.topRight,
-                                child: Container(
-                                  height: 50,
-                                  width: ScreenUtil.getWidth(context) / 1.1,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(
-                                        color: themeColor.getColor(), width: 2),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      AutoSizeText(
-                                        selectedText.transmissionName,
-                                        minFontSize: 8,
-                                        maxLines: 1,
-                                        //overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                            color: themeColor.getColor(),
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                )),
-                            dropdownItemBuilder: (context, item, isSelected) =>
-                                Padding(
-                                  padding: const EdgeInsets.all(12),
-                                  child: Text(
-                                    item.transmissionName,
-                                    style: TextStyle(
-                                        color: isSelected
-                                            ? themeColor.getColor()
-                                            : Color(0xFF5D6A78),
-                                        fontSize: isSelected ? 20 : 17,
-                                        fontWeight: isSelected
-                                            ? FontWeight.w600
-                                            : FontWeight.w600),
-                                  ),
-                                ),
-                            onChanged: (item) {
-                              transmission_id.text = item.id.toString();
-                            },
-                            // onFind: (text) {
-                            //
-                            // },
-                            labelStyle: TextStyle(fontSize: 20),
-                            titleStyle: TextStyle(fontSize: 20),
-                            selectedItem: Transmission(
-                                transmissionName: 'Select transmission'),
-                            label: "Transmissions",
-                            showSearchBox: false,
-                            isUnderLine: false),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            "Description",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 15),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          TextFormField(
-                            controller: description,
-                            keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
-                                border: InputBorder.none,
-                                fillColor: Color(0xfff3f3f4),
-                                filled: true),
-                            validator: (String value) {
-                              if (value.isEmpty) {
-                                return "description";
-                              } else if (value.length < 5) {
-                                return "description" + ' < 5';
-                              }
-                              _formKey.currentState.save();
-
-                              return null;
-                            },
-                          )
-                        ],
-                      ),
-                    ),
+                    // Container(
+                    //   margin: EdgeInsets.symmetric(vertical: 10),
+                    //   child: Column(
+                    //     crossAxisAlignment: CrossAxisAlignment.start,
+                    //     children: <Widget>[
+                    //       Text(
+                    //         "Serial number",
+                    //         style: TextStyle(
+                    //             fontWeight: FontWeight.bold, fontSize: 15),
+                    //       ),
+                    //       SizedBox(
+                    //         height: 10,
+                    //       ),
+                    //       TextFormField(
+                    //           controller: serialcontroler,
+                    //           keyboardType: TextInputType.number,
+                    //           validator: (String value) {
+                    //             if (value.isEmpty) {
+                    //               return getTransrlate(context, 'counter');
+                    //             } else if (value.length < 2) {
+                    //               return getTransrlate(context, 'counter');
+                    //             }
+                    //             _formKey.currentState.save();
+                    //
+                    //             return null;
+                    //           },
+                    //           decoration: InputDecoration(
+                    //               border: InputBorder.none,
+                    //               fillColor: Color(0xfff3f3f4),
+                    //               filled: true))
+                    //     ],
+                    //   ),
+                    // ),
+                    // SizedBox(
+                    //   height: 10,
+                    // ),
+                    // Container(
+                    //   margin: EdgeInsets.symmetric(vertical: 10),
+                    //   child: Column(
+                    //     crossAxisAlignment: CrossAxisAlignment.start,
+                    //     children: <Widget>[
+                    //       Text(
+                    //         "Quantity",
+                    //         style: TextStyle(
+                    //             fontWeight: FontWeight.bold, fontSize: 15),
+                    //       ),
+                    //       SizedBox(
+                    //         height: 10,
+                    //       ),
+                    //       TextFormField(
+                    //           controller: quantityController,
+                    //           keyboardType: TextInputType.number,
+                    //           validator: (String value) {
+                    //             if (value.isEmpty) {
+                    //               return getTransrlate(context, 'counter');
+                    //             } else if (value.length < 2) {
+                    //               return getTransrlate(context, 'counter');
+                    //             }
+                    //             _formKey.currentState.save();
+                    //
+                    //             return null;
+                    //           },
+                    //           decoration: InputDecoration(
+                    //               border: InputBorder.none,
+                    //               fillColor: Color(0xfff3f3f4),
+                    //               filled: true))
+                    //     ],
+                    //   ),
+                    // ),
+                    // SizedBox(
+                    //   height: 10,
+                    // ),
+                    // Text(
+                    //   "Price",
+                    //   style:
+                    //       TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                    // ),
+                    // SizedBox(
+                    //   height: 10,
+                    // ),
+                    // TextField(
+                    //     controller: price_controller,
+                    //     keyboardType: TextInputType.number,
+                    //     decoration: InputDecoration(
+                    //         border: InputBorder.none,
+                    //         fillColor: Color(0xfff3f3f4),
+                    //         filled: true)),
+                    // SizedBox(
+                    //   height: 10,
+                    // ),
+                    // Container(
+                    //   margin: EdgeInsets.symmetric(vertical: 10),
+                    //   child: Column(
+                    //     crossAxisAlignment: CrossAxisAlignment.start,
+                    //     children: <Widget>[
+                    //       Text(
+                    //         "Discount",
+                    //         style: TextStyle(
+                    //             fontWeight: FontWeight.bold, fontSize: 15),
+                    //       ),
+                    //       SizedBox(
+                    //         height: 10,
+                    //       ),
+                    //       TextField(
+                    //           controller: discountcontroler,
+                    //           keyboardType: TextInputType.number,
+                    //           decoration: InputDecoration(
+                    //               suffix: Text('%'),
+                    //               border: InputBorder.none,
+                    //               fillColor: Color(0xfff3f3f4),
+                    //               filled: true))
+                    //     ],
+                    //   ),
+                    // ),
+                    // Container(
+                    //   padding: const EdgeInsets.all(6.0),
+                    //   decoration: BoxDecoration(
+                    //     color: Colors.white,
+                    //     borderRadius: BorderRadius.all(Radius.circular(10)),
+                    //   ),
+                    //   child: Padding(
+                    //     padding: const EdgeInsets.only(bottom: 4, top: 4),
+                    //     child: FindDropdown<CarMade>(
+                    //         items: CarMades,
+                    //         dropdownBuilder: (context, selectedText) => Align(
+                    //             alignment: Alignment.topRight,
+                    //             child: Container(
+                    //               height: 50,
+                    //               width: ScreenUtil.getWidth(context) / 1.1,
+                    //               decoration: BoxDecoration(
+                    //                 borderRadius: BorderRadius.circular(10),
+                    //                 border: Border.all(
+                    //                     color: themeColor.getColor(), width: 2),
+                    //               ),
+                    //               child: Row(
+                    //                 mainAxisAlignment:
+                    //                     MainAxisAlignment.spaceEvenly,
+                    //                 children: [
+                    //                   AutoSizeText(
+                    //                     selectedText.carMade,
+                    //                     minFontSize: 8,
+                    //                     maxLines: 1,
+                    //                     //overflow: TextOverflow.ellipsis,
+                    //                     style: TextStyle(
+                    //                         color: themeColor.getColor(),
+                    //                         fontSize: 18,
+                    //                         fontWeight: FontWeight.bold),
+                    //                   ),
+                    //                 ],
+                    //               ),
+                    //             )),
+                    //         dropdownItemBuilder: (context, item, isSelected) =>
+                    //             Padding(
+                    //               padding: const EdgeInsets.all(12),
+                    //               child: Text(
+                    //                 item.carMade,
+                    //                 style: TextStyle(
+                    //                     color: isSelected
+                    //                         ? themeColor.getColor()
+                    //                         : Color(0xFF5D6A78),
+                    //                     fontSize: isSelected ? 20 : 17,
+                    //                     fontWeight: isSelected
+                    //                         ? FontWeight.w600
+                    //                         : FontWeight.w600),
+                    //               ),
+                    //             ),
+                    //         onChanged: (item) {
+                    //           car_made_id_controler.text = item.id.toString();
+                    //           getAllCareModel(item.id);
+                    //         },
+                    //         labelStyle: TextStyle(fontSize: 20),
+                    //         selectedItem: CarMade(carMade: 'Select Car Made'),
+                    //         titleStyle: TextStyle(fontSize: 20),
+                    //         label: "Car Made",
+                    //         showSearchBox: false,
+                    //         isUnderLine: false),
+                    //   ),
+                    // ),
+                    // Container(
+                    //   padding: const EdgeInsets.all(6.0),
+                    //   decoration: BoxDecoration(
+                    //     color: Colors.white,
+                    //     borderRadius: BorderRadius.all(Radius.circular(10)),
+                    //   ),
+                    //   child: Padding(
+                    //     padding: const EdgeInsets.only(bottom: 4, top: 4),
+                    //     child: FindDropdown<Carmodel>(
+                    //         items: carmodels,
+                    //         // onFind: (f) async {
+                    //         //   search.run(() {
+                    //         //     setState(() {
+                    //         //       filteredcarmodels_data = carmodels
+                    //         //           .where((u) =>
+                    //         //       (u.carmodel
+                    //         //           .toLowerCase()
+                    //         //           .contains(f
+                    //         //           .toLowerCase())))
+                    //         //           .toList();
+                    //         //     });
+                    //         //   });
+                    //         //   return filteredcarmodels_data;
+                    //         // } ,
+                    //         dropdownBuilder: (context, selectedText) => Align(
+                    //             alignment: Alignment.topRight,
+                    //             child: Container(
+                    //               height: 50,
+                    //               width: ScreenUtil.getWidth(context) / 1.1,
+                    //               decoration: BoxDecoration(
+                    //                 borderRadius: BorderRadius.circular(10),
+                    //                 border: Border.all(
+                    //                     color: themeColor.getColor(), width: 2),
+                    //               ),
+                    //               child: Row(
+                    //                 mainAxisAlignment:
+                    //                     MainAxisAlignment.spaceEvenly,
+                    //                 children: [
+                    //                   AutoSizeText(
+                    //                     selectedText.carmodel,
+                    //                     minFontSize: 8,
+                    //                     maxLines: 1,
+                    //                     //overflow: TextOverflow.ellipsis,
+                    //                     style: TextStyle(
+                    //                         color: themeColor.getColor(),
+                    //                         fontSize: 18,
+                    //                         fontWeight: FontWeight.bold),
+                    //                   ),
+                    //                 ],
+                    //               ),
+                    //             )),
+                    //         dropdownItemBuilder: (context, item, isSelected) =>
+                    //             Padding(
+                    //               padding: const EdgeInsets.all(12),
+                    //               child: Text(
+                    //                 item.carmodel,
+                    //                 style: TextStyle(
+                    //                     color: isSelected
+                    //                         ? themeColor.getColor()
+                    //                         : Color(0xFF5D6A78),
+                    //                     fontSize: isSelected ? 20 : 17,
+                    //                     fontWeight: isSelected
+                    //                         ? FontWeight.w600
+                    //                         : FontWeight.w600),
+                    //               ),
+                    //             ),
+                    //         onChanged: (item) {
+                    //           car_model_id_Controler.text = item.id.toString();
+                    //         },
+                    //         // onFind: (text) {
+                    //         //
+                    //         // },
+                    //         labelStyle: TextStyle(fontSize: 20),
+                    //         titleStyle: TextStyle(fontSize: 20),
+                    //         selectedItem:
+                    //             Carmodel(carmodel: 'Select Car model'),
+                    //         label: "Car Model",
+                    //         showSearchBox: false,
+                    //         isUnderLine: false),
+                    //   ),
+                    // ),
+                    // Container(
+                    //   padding: const EdgeInsets.all(6.0),
+                    //   decoration: BoxDecoration(
+                    //     color: Colors.white,
+                    //     borderRadius: BorderRadius.all(Radius.circular(10)),
+                    //   ),
+                    //   child: Padding(
+                    //     padding: const EdgeInsets.only(bottom: 4, top: 4),
+                    //     child: FindDropdown<Part_Category>(
+                    //         items: part_Categories,
+                    //         // onFind: (f) async {
+                    //         //   search.run(() {
+                    //         //     setState(() {
+                    //         //       filteredcarmodels_data = carmodels
+                    //         //           .where((u) =>
+                    //         //       (u.carmodel
+                    //         //           .toLowerCase()
+                    //         //           .contains(f
+                    //         //           .toLowerCase())))
+                    //         //           .toList();
+                    //         //     });
+                    //         //   });
+                    //         //   return filteredcarmodels_data;
+                    //         // } ,
+                    //         dropdownBuilder: (context, selectedText) => Align(
+                    //             alignment: Alignment.topRight,
+                    //             child: Container(
+                    //               height: 50,
+                    //               width: ScreenUtil.getWidth(context) / 1.1,
+                    //               decoration: BoxDecoration(
+                    //                 borderRadius: BorderRadius.circular(10),
+                    //                 border: Border.all(
+                    //                     color: themeColor.getColor(), width: 2),
+                    //               ),
+                    //               child: Row(
+                    //                 mainAxisAlignment:
+                    //                     MainAxisAlignment.spaceEvenly,
+                    //                 children: [
+                    //                   AutoSizeText(
+                    //                     selectedText.categoryName,
+                    //                     minFontSize: 8,
+                    //                     maxLines: 1,
+                    //                     //overflow: TextOverflow.ellipsis,
+                    //                     style: TextStyle(
+                    //                         color: themeColor.getColor(),
+                    //                         fontSize: 18,
+                    //                         fontWeight: FontWeight.bold),
+                    //                   ),
+                    //                 ],
+                    //               ),
+                    //             )),
+                    //         dropdownItemBuilder: (context, item, isSelected) =>
+                    //             Padding(
+                    //               padding: const EdgeInsets.all(12),
+                    //               child: Text(
+                    //                 item.categoryName,
+                    //                 style: TextStyle(
+                    //                     color: isSelected
+                    //                         ? themeColor.getColor()
+                    //                         : Color(0xFF5D6A78),
+                    //                     fontSize: isSelected ? 20 : 17,
+                    //                     fontWeight: isSelected
+                    //                         ? FontWeight.w600
+                    //                         : FontWeight.w600),
+                    //               ),
+                    //             ),
+                    //         onChanged: (item) {
+                    //           part_category_id_controller.text =
+                    //               item.id.toString();
+                    //         },
+                    //         // onFind: (text) {
+                    //         //
+                    //         // },
+                    //         labelStyle: TextStyle(fontSize: 20),
+                    //         titleStyle: TextStyle(fontSize: 20),
+                    //         selectedItem: Part_Category(
+                    //             categoryName: 'Select Part Category'),
+                    //         label: "part",
+                    //         showSearchBox: false,
+                    //         isUnderLine: false),
+                    //   ),
+                    // ),
+                    // Container(
+                    //   padding: const EdgeInsets.all(6.0),
+                    //   decoration: BoxDecoration(
+                    //     color: Colors.white,
+                    //     borderRadius: BorderRadius.all(Radius.circular(10)),
+                    //   ),
+                    //   child: Padding(
+                    //     padding: const EdgeInsets.only(bottom: 4, top: 4),
+                    //     child: FindDropdown<Year>(
+                    //         items: years,
+                    //         // onFind: (f) async {
+                    //         //   search.run(() {
+                    //         //     setState(() {
+                    //         //       filteredcarmodels_data = carmodels
+                    //         //           .where((u) =>
+                    //         //       (u.carmodel
+                    //         //           .toLowerCase()
+                    //         //           .contains(f
+                    //         //           .toLowerCase())))
+                    //         //           .toList();
+                    //         //     });
+                    //         //   });
+                    //         //   return filteredcarmodels_data;
+                    //         // } ,
+                    //         dropdownBuilder: (context, selectedText) => Align(
+                    //             alignment: Alignment.topRight,
+                    //             child: Container(
+                    //               height: 50,
+                    //               width: ScreenUtil.getWidth(context) / 1.1,
+                    //               decoration: BoxDecoration(
+                    //                 borderRadius: BorderRadius.circular(10),
+                    //                 border: Border.all(
+                    //                     color: themeColor.getColor(), width: 2),
+                    //               ),
+                    //               child: Row(
+                    //                 mainAxisAlignment:
+                    //                     MainAxisAlignment.spaceEvenly,
+                    //                 children: [
+                    //                   AutoSizeText(
+                    //                     selectedText.year,
+                    //                     minFontSize: 8,
+                    //                     maxLines: 1,
+                    //                     //overflow: TextOverflow.ellipsis,
+                    //                     style: TextStyle(
+                    //                         color: themeColor.getColor(),
+                    //                         fontSize: 18,
+                    //                         fontWeight: FontWeight.bold),
+                    //                   ),
+                    //                 ],
+                    //               ),
+                    //             )),
+                    //         dropdownItemBuilder: (context, item, isSelected) =>
+                    //             Padding(
+                    //               padding: const EdgeInsets.all(12),
+                    //               child: Text(
+                    //                 item.year,
+                    //                 style: TextStyle(
+                    //                     color: isSelected
+                    //                         ? themeColor.getColor()
+                    //                         : Color(0xFF5D6A78),
+                    //                     fontSize: isSelected ? 20 : 17,
+                    //                     fontWeight: isSelected
+                    //                         ? FontWeight.w600
+                    //                         : FontWeight.w600),
+                    //               ),
+                    //             ),
+                    //         onChanged: (item) {
+                    //           year_idcontroler.text = item.id.toString();
+                    //         },
+                    //         // onFind: (text) {
+                    //         //
+                    //         // },
+                    //         labelStyle: TextStyle(fontSize: 20),
+                    //         titleStyle: TextStyle(fontSize: 20),
+                    //         selectedItem: Year(year: 'Select Year'),
+                    //         label: "Year",
+                    //         showSearchBox: false,
+                    //         isUnderLine: false),
+                    //   ),
+                    // ),
+                    // Container(
+                    //   padding: const EdgeInsets.all(6.0),
+                    //   decoration: BoxDecoration(
+                    //     color: Colors.white,
+                    //     borderRadius: BorderRadius.all(Radius.circular(10)),
+                    //   ),
+                    //   child: Padding(
+                    //     padding: const EdgeInsets.only(bottom: 4, top: 4),
+                    //     child: FindDropdown<Categories>(
+                    //         items: _category,
+                    //         // onFind: (f) async {
+                    //         //   search.run(() {
+                    //         //     setState(() {
+                    //         //       filteredcarmodels_data = carmodels
+                    //         //           .where((u) =>
+                    //         //       (u.carmodel
+                    //         //           .toLowerCase()
+                    //         //           .contains(f
+                    //         //           .toLowerCase())))
+                    //         //           .toList();
+                    //         //     });
+                    //         //   });
+                    //         //   return filteredcarmodels_data;
+                    //         // } ,
+                    //         dropdownBuilder: (context, selectedText) => Align(
+                    //             alignment: Alignment.topRight,
+                    //             child: Container(
+                    //               height: 50,
+                    //               width: ScreenUtil.getWidth(context) / 1.1,
+                    //               decoration: BoxDecoration(
+                    //                 borderRadius: BorderRadius.circular(10),
+                    //                 border: Border.all(
+                    //                     color: themeColor.getColor(), width: 2),
+                    //               ),
+                    //               child: Row(
+                    //                 mainAxisAlignment:
+                    //                     MainAxisAlignment.spaceEvenly,
+                    //                 children: [
+                    //                   AutoSizeText(
+                    //                     selectedText.name,
+                    //                     minFontSize: 8,
+                    //                     maxLines: 1,
+                    //                     //overflow: TextOverflow.ellipsis,
+                    //                     style: TextStyle(
+                    //                         color: themeColor.getColor(),
+                    //                         fontSize: 18,
+                    //                         fontWeight: FontWeight.bold),
+                    //                   ),
+                    //                 ],
+                    //               ),
+                    //             )),
+                    //         dropdownItemBuilder: (context, item, isSelected) =>
+                    //             Padding(
+                    //               padding: const EdgeInsets.all(12),
+                    //               child: Text(
+                    //                 item.name,
+                    //                 style: TextStyle(
+                    //                     color: isSelected
+                    //                         ? themeColor.getColor()
+                    //                         : Color(0xFF5D6A78),
+                    //                     fontSize: isSelected ? 20 : 17,
+                    //                     fontWeight: isSelected
+                    //                         ? FontWeight.w600
+                    //                         : FontWeight.w600),
+                    //               ),
+                    //             ),
+                    //         onChanged: (item) {
+                    //           categories = [];
+                    //           categories.add(item.id.toString());
+                    //         },
+                    //         // onFind: (text) {
+                    //         //
+                    //         // },
+                    //         labelStyle: TextStyle(fontSize: 20),
+                    //         titleStyle: TextStyle(fontSize: 20),
+                    //         selectedItem: Categories(name: 'Categories'),
+                    //         label: "Categories",
+                    //         showSearchBox: false,
+                    //         isUnderLine: false),
+                    //   ),
+                    // ),
+                    // Container(
+                    //   padding: const EdgeInsets.all(6.0),
+                    //   decoration: BoxDecoration(
+                    //     color: Colors.white,
+                    //     borderRadius: BorderRadius.all(Radius.circular(10)),
+                    //   ),
+                    //   child: Padding(
+                    //     padding: const EdgeInsets.only(bottom: 4, top: 4),
+                    //     child: FindDropdown<Store>(
+                    //         items: _store,
+                    //         // onFind: (f) async {
+                    //         //   search.run(() {
+                    //         //     setState(() {
+                    //         //       filteredcarmodels_data = carmodels
+                    //         //           .where((u) =>
+                    //         //       (u.carmodel
+                    //         //           .toLowerCase()
+                    //         //           .contains(f
+                    //         //           .toLowerCase())))
+                    //         //           .toList();
+                    //         //     });
+                    //         //   });
+                    //         //   return filteredcarmodels_data;
+                    //         // } ,
+                    //         dropdownBuilder: (context, selectedText) => Align(
+                    //             alignment: Alignment.topRight,
+                    //             child: Container(
+                    //               height: 50,
+                    //               width: ScreenUtil.getWidth(context) / 1.1,
+                    //               decoration: BoxDecoration(
+                    //                 borderRadius: BorderRadius.circular(10),
+                    //                 border: Border.all(
+                    //                     color: themeColor.getColor(), width: 2),
+                    //               ),
+                    //               child: Row(
+                    //                 mainAxisAlignment:
+                    //                     MainAxisAlignment.spaceEvenly,
+                    //                 children: [
+                    //                   AutoSizeText(
+                    //                     selectedText.name,
+                    //                     minFontSize: 8,
+                    //                     maxLines: 1,
+                    //                     //overflow: TextOverflow.ellipsis,
+                    //                     style: TextStyle(
+                    //                         color: themeColor.getColor(),
+                    //                         fontSize: 18,
+                    //                         fontWeight: FontWeight.bold),
+                    //                   ),
+                    //                 ],
+                    //               ),
+                    //             )),
+                    //         dropdownItemBuilder: (context, item, isSelected) =>
+                    //             Padding(
+                    //               padding: const EdgeInsets.all(12),
+                    //               child: Text(
+                    //                 item.name,
+                    //                 style: TextStyle(
+                    //                     color: isSelected
+                    //                         ? themeColor.getColor()
+                    //                         : Color(0xFF5D6A78),
+                    //                     fontSize: isSelected ? 20 : 17,
+                    //                     fontWeight: isSelected
+                    //                         ? FontWeight.w600
+                    //                         : FontWeight.w600),
+                    //               ),
+                    //             ),
+                    //         onChanged: (item) {
+                    //           store_id.text = item.id.toString();
+                    //         },
+                    //         // onFind: (text) {
+                    //         //
+                    //         // },
+                    //         labelStyle: TextStyle(fontSize: 20),
+                    //         titleStyle: TextStyle(fontSize: 20),
+                    //         selectedItem: Store(name: 'Stores'),
+                    //         label: "Stores",
+                    //         showSearchBox: false,
+                    //         isUnderLine: false),
+                    //   ),
+                    // ),
+                    // Container(
+                    //   padding: const EdgeInsets.all(6.0),
+                    //   decoration: BoxDecoration(
+                    //     color: Colors.white,
+                    //     borderRadius: BorderRadius.all(Radius.circular(10)),
+                    //   ),
+                    //   child: Padding(
+                    //     padding: const EdgeInsets.only(bottom: 4, top: 4),
+                    //     child: FindDropdown<Tag>(
+                    //         items: _tags,
+                    //         // onFind: (f) async {
+                    //         //   search.run(() {
+                    //         //     setState(() {
+                    //         //       filteredcarmodels_data = carmodels
+                    //         //           .where((u) =>
+                    //         //       (u.carmodel
+                    //         //           .toLowerCase()
+                    //         //           .contains(f
+                    //         //           .toLowerCase())))
+                    //         //           .toList();
+                    //         //     });
+                    //         //   });
+                    //         //   return filteredcarmodels_data;
+                    //         // } ,
+                    //         dropdownBuilder: (context, selectedText) => Align(
+                    //             alignment: Alignment.topRight,
+                    //             child: Container(
+                    //               height: 50,
+                    //               width: ScreenUtil.getWidth(context) / 1.1,
+                    //               decoration: BoxDecoration(
+                    //                 borderRadius: BorderRadius.circular(10),
+                    //                 border: Border.all(
+                    //                     color: themeColor.getColor(), width: 2),
+                    //               ),
+                    //               child: Row(
+                    //                 mainAxisAlignment:
+                    //                     MainAxisAlignment.spaceEvenly,
+                    //                 children: [
+                    //                   AutoSizeText(
+                    //                     selectedText.name,
+                    //                     minFontSize: 8,
+                    //                     maxLines: 1,
+                    //                     //overflow: TextOverflow.ellipsis,
+                    //                     style: TextStyle(
+                    //                         color: themeColor.getColor(),
+                    //                         fontSize: 18,
+                    //                         fontWeight: FontWeight.bold),
+                    //                   ),
+                    //                 ],
+                    //               ),
+                    //             )),
+                    //         dropdownItemBuilder: (context, item, isSelected) =>
+                    //             Padding(
+                    //               padding: const EdgeInsets.all(12),
+                    //               child: Text(
+                    //                 item.name,
+                    //                 style: TextStyle(
+                    //                     color: isSelected
+                    //                         ? themeColor.getColor()
+                    //                         : Color(0xFF5D6A78),
+                    //                     fontSize: isSelected ? 20 : 17,
+                    //                     fontWeight: isSelected
+                    //                         ? FontWeight.w600
+                    //                         : FontWeight.w600),
+                    //               ),
+                    //             ),
+                    //         onChanged: (item) {
+                    //           tagscontroler.text = item.name.toString();
+                    //         },
+                    //         // onFind: (text) {
+                    //         //
+                    //         // },
+                    //         labelStyle: TextStyle(fontSize: 20),
+                    //         titleStyle: TextStyle(fontSize: 20),
+                    //         selectedItem: Tag(name: 'Select Tags'),
+                    //         label: "Tag",
+                    //         showSearchBox: false,
+                    //         isUnderLine: false),
+                    //   ),
+                    // ),
+                    // Container(
+                    //   padding: const EdgeInsets.all(6.0),
+                    //   decoration: BoxDecoration(
+                    //     color: Colors.white,
+                    //     borderRadius: BorderRadius.all(Radius.circular(10)),
+                    //   ),
+                    //   child: Padding(
+                    //     padding: const EdgeInsets.only(bottom: 4, top: 4),
+                    //     child: FindDropdown<ProdCountry>(
+                    //         items: _prodcountries,
+                    //         // onFind: (f) async {
+                    //         //   search.run(() {
+                    //         //     setState(() {
+                    //         //       filteredcarmodels_data = carmodels
+                    //         //           .where((u) =>
+                    //         //       (u.carmodel
+                    //         //           .toLowerCase()
+                    //         //           .contains(f
+                    //         //           .toLowerCase())))
+                    //         //           .toList();
+                    //         //     });
+                    //         //   });
+                    //         //   return filteredcarmodels_data;
+                    //         // } ,
+                    //         dropdownBuilder: (context, selectedText) => Align(
+                    //             alignment: Alignment.topRight,
+                    //             child: Container(
+                    //               height: 50,
+                    //               width: ScreenUtil.getWidth(context) / 1.1,
+                    //               decoration: BoxDecoration(
+                    //                 borderRadius: BorderRadius.circular(10),
+                    //                 border: Border.all(
+                    //                     color: themeColor.getColor(), width: 2),
+                    //               ),
+                    //               child: Row(
+                    //                 mainAxisAlignment:
+                    //                     MainAxisAlignment.spaceEvenly,
+                    //                 children: [
+                    //                   AutoSizeText(
+                    //                     selectedText.countryName,
+                    //                     minFontSize: 8,
+                    //                     maxLines: 1,
+                    //                     //overflow: TextOverflow.ellipsis,
+                    //                     style: TextStyle(
+                    //                         color: themeColor.getColor(),
+                    //                         fontSize: 18,
+                    //                         fontWeight: FontWeight.bold),
+                    //                   ),
+                    //                 ],
+                    //               ),
+                    //             )),
+                    //         dropdownItemBuilder: (context, item, isSelected) =>
+                    //             Padding(
+                    //               padding: const EdgeInsets.all(12),
+                    //               child: Text(
+                    //                 item.countryName,
+                    //                 style: TextStyle(
+                    //                     color: isSelected
+                    //                         ? themeColor.getColor()
+                    //                         : Color(0xFF5D6A78),
+                    //                     fontSize: isSelected ? 20 : 17,
+                    //                     fontWeight: isSelected
+                    //                         ? FontWeight.w600
+                    //                         : FontWeight.w600),
+                    //               ),
+                    //             ),
+                    //         onChanged: (item) {
+                    //           prodcountry_id.text = item.id.toString();
+                    //         },
+                    //         // onFind: (text) {
+                    //         //
+                    //         // },
+                    //         labelStyle: TextStyle(fontSize: 20),
+                    //         titleStyle: TextStyle(fontSize: 20),
+                    //         selectedItem: ProdCountry(
+                    //             countryName: 'Select Product Country'),
+                    //         label: "Product Country",
+                    //         showSearchBox: false,
+                    //         isUnderLine: false),
+                    //   ),
+                    // ),
+                    // Container(
+                    //   padding: const EdgeInsets.all(6.0),
+                    //   decoration: BoxDecoration(
+                    //     color: Colors.white,
+                    //     borderRadius: BorderRadius.all(Radius.circular(10)),
+                    //   ),
+                    //   child: Padding(
+                    //     padding: const EdgeInsets.only(bottom: 4, top: 4),
+                    //     child: FindDropdown<Manufacturer>(
+                    //         items: _manufacturers,
+                    //         // onFind: (f) async {
+                    //         //   search.run(() {
+                    //         //     setState(() {
+                    //         //       filteredcarmodels_data = carmodels
+                    //         //           .where((u) =>
+                    //         //       (u.carmodel
+                    //         //           .toLowerCase()
+                    //         //           .contains(f
+                    //         //           .toLowerCase())))
+                    //         //           .toList();
+                    //         //     });
+                    //         //   });
+                    //         //   return filteredcarmodels_data;
+                    //         // } ,
+                    //         dropdownBuilder: (context, selectedText) => Align(
+                    //             alignment: Alignment.topRight,
+                    //             child: Container(
+                    //               height: 50,
+                    //               width: ScreenUtil.getWidth(context) / 1.1,
+                    //               decoration: BoxDecoration(
+                    //                 borderRadius: BorderRadius.circular(10),
+                    //                 border: Border.all(
+                    //                     color: themeColor.getColor(), width: 2),
+                    //               ),
+                    //               child: Row(
+                    //                 mainAxisAlignment:
+                    //                     MainAxisAlignment.spaceEvenly,
+                    //                 children: [
+                    //                   AutoSizeText(
+                    //                     selectedText.manufacturerName,
+                    //                     minFontSize: 8,
+                    //                     maxLines: 1,
+                    //                     //overflow: TextOverflow.ellipsis,
+                    //                     style: TextStyle(
+                    //                         color: themeColor.getColor(),
+                    //                         fontSize: 18,
+                    //                         fontWeight: FontWeight.bold),
+                    //                   ),
+                    //                 ],
+                    //               ),
+                    //             )),
+                    //         dropdownItemBuilder: (context, item, isSelected) =>
+                    //             Padding(
+                    //               padding: const EdgeInsets.all(12),
+                    //               child: Text(
+                    //                 item.manufacturerName,
+                    //                 style: TextStyle(
+                    //                     color: isSelected
+                    //                         ? themeColor.getColor()
+                    //                         : Color(0xFF5D6A78),
+                    //                     fontSize: isSelected ? 20 : 17,
+                    //                     fontWeight: isSelected
+                    //                         ? FontWeight.w600
+                    //                         : FontWeight.w600),
+                    //               ),
+                    //             ),
+                    //         onChanged: (item) {
+                    //           manufacturer_id.text = item.id.toString();
+                    //         },
+                    //         // onFind: (text) {
+                    //         //
+                    //         // },
+                    //         labelStyle: TextStyle(fontSize: 20),
+                    //         titleStyle: TextStyle(fontSize: 20),
+                    //         selectedItem: Manufacturer(
+                    //             manufacturerName: 'Select manufacturer'),
+                    //         label: "manufacturer",
+                    //         showSearchBox: false,
+                    //         isUnderLine: false),
+                    //   ),
+                    // ),
+                    // Container(
+                    //   padding: const EdgeInsets.all(6.0),
+                    //   decoration: BoxDecoration(
+                    //     color: Colors.white,
+                    //     borderRadius: BorderRadius.all(Radius.circular(10)),
+                    //   ),
+                    //   child: Padding(
+                    //     padding: const EdgeInsets.only(bottom: 4, top: 4),
+                    //     child: FindDropdown<Transmission>(
+                    //         items: transmissions,
+                    //         // onFind: (f) async {
+                    //         //   search.run(() {
+                    //         //     setState(() {
+                    //         //       filteredcarmodels_data = carmodels
+                    //         //           .where((u) =>
+                    //         //       (u.carmodel
+                    //         //           .toLowerCase()
+                    //         //           .contains(f
+                    //         //           .toLowerCase())))
+                    //         //           .toList();
+                    //         //     });
+                    //         //   });
+                    //         //   return filteredcarmodels_data;
+                    //         // } ,
+                    //         dropdownBuilder: (context, selectedText) => Align(
+                    //             alignment: Alignment.topRight,
+                    //             child: Container(
+                    //               height: 50,
+                    //               width: ScreenUtil.getWidth(context) / 1.1,
+                    //               decoration: BoxDecoration(
+                    //                 borderRadius: BorderRadius.circular(10),
+                    //                 border: Border.all(
+                    //                     color: themeColor.getColor(), width: 2),
+                    //               ),
+                    //               child: Row(
+                    //                 mainAxisAlignment:
+                    //                     MainAxisAlignment.spaceEvenly,
+                    //                 children: [
+                    //                   AutoSizeText(
+                    //                     selectedText.transmissionName,
+                    //                     minFontSize: 8,
+                    //                     maxLines: 1,
+                    //                     //overflow: TextOverflow.ellipsis,
+                    //                     style: TextStyle(
+                    //                         color: themeColor.getColor(),
+                    //                         fontSize: 18,
+                    //                         fontWeight: FontWeight.bold),
+                    //                   ),
+                    //                 ],
+                    //               ),
+                    //             )),
+                    //         dropdownItemBuilder: (context, item, isSelected) =>
+                    //             Padding(
+                    //               padding: const EdgeInsets.all(12),
+                    //               child: Text(
+                    //                 item.transmissionName,
+                    //                 style: TextStyle(
+                    //                     color: isSelected
+                    //                         ? themeColor.getColor()
+                    //                         : Color(0xFF5D6A78),
+                    //                     fontSize: isSelected ? 20 : 17,
+                    //                     fontWeight: isSelected
+                    //                         ? FontWeight.w600
+                    //                         : FontWeight.w600),
+                    //               ),
+                    //             ),
+                    //         onChanged: (item) {
+                    //           transmission_id.text = item.id.toString();
+                    //         },
+                    //         // onFind: (text) {
+                    //         //
+                    //         // },
+                    //         labelStyle: TextStyle(fontSize: 20),
+                    //         titleStyle: TextStyle(fontSize: 20),
+                    //         selectedItem: Transmission(
+                    //             transmissionName: 'Select transmission'),
+                    //         label: "Transmissions",
+                    //         showSearchBox: false,
+                    //         isUnderLine: false),
+                    //   ),
+                    // ),
+                    // Container(
+                    //   margin: EdgeInsets.symmetric(vertical: 10),
+                    //   child: Column(
+                    //     crossAxisAlignment: CrossAxisAlignment.start,
+                    //     children: <Widget>[
+                    //       Text(
+                    //         "Description",
+                    //         style: TextStyle(
+                    //             fontWeight: FontWeight.bold, fontSize: 15),
+                    //       ),
+                    //       SizedBox(
+                    //         height: 10,
+                    //       ),
+                    //       TextFormField(
+                    //         controller: description,
+                    //         keyboardType: TextInputType.text,
+                    //         decoration: InputDecoration(
+                    //             border: InputBorder.none,
+                    //             fillColor: Color(0xfff3f3f4),
+                    //             filled: true),
+                    //         validator: (String value) {
+                    //           if (value.isEmpty) {
+                    //             return "description";
+                    //           } else if (value.length < 5) {
+                    //             return "description" + ' < 5';
+                    //           }
+                    //           _formKey.currentState.save();
+                    //
+                    //           return null;
+                    //         },
+                    //       )
+                    //     ],
+                    //   ),
+                    // ),
                     InkWell(
                       child: ClipRRect(
                         borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -1145,26 +1206,9 @@ class _Add_ProductState extends State<Add_Product> {
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
                             setState(() => loading = true);
-                            API(context).post("add/products", {
-                              "name": namecontroler.text,
-                              "categories": "${categories}",
-                              "car_made_id": car_made_id_controler.text,
-                              "car_model_id": car_model_id_Controler.text,
-                              "transmission_id": transmission_id.text,
-                              "year_id": year_idcontroler.text,
-                              "part_category_id":
-                                  part_category_id_controller.text,
-                              "photo": photos.map((v) => v).toList(),
-                              "discount": discountcontroler.text,
-                              "price": price_controller.text,
-                              "description": description.text,
-                              "store_id": store_id.text,
-                              "quantity": quantityController.text,
-                              "serial_number": serialcontroler.text,
-                              "tags": tagscontroler.text,
-                              "manufacturer_id": manufacturer_id.text,
-                              "prodcountry_id": prodcountry_id.text,
-                            }).then((value) {
+                            API(context)
+                                .post("add/products", product.toJson())
+                                .then((value) {
                               if (value != null) {
                                 setState(() {
                                   loading = false;
