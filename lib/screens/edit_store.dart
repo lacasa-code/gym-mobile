@@ -103,6 +103,7 @@ class _Edit_StoreState extends State<Edit_Store> {
                             if (value.isEmpty) {
                               return getTransrlate(context, 'Moderator');
                             }
+                            
                             _formKey.currentState.save();
                             return null;
                           },
