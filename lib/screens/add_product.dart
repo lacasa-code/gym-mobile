@@ -480,8 +480,21 @@ class _Add_ProductState extends State<Add_Product> {
                                 onChanged: (ProdCountry data) =>
                                     product.prodcountry_id = data.id),
                           ),
+                    SizedBox(
+                      height: 10,
+                    ),
+
+                    Text(
+                      "الكلمات المفتاحية",
+                      style: TextStyle(color: Colors.black, fontSize: 16),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    _generateTags(),
                     TypeAheadField(
                       hideOnLoading: true,
+
                       hideOnEmpty: true,
                       getImmediateSuggestions: false,
                       onSuggestionSelected: (val) {
@@ -497,7 +510,7 @@ class _Add_ProductState extends State<Add_Product> {
 //                return ;
                       },
                     ),
-                    _generateTags(),
+
 // Container(
                     //   margin: EdgeInsets.symmetric(vertical: 10),
                     //   child: Column(
@@ -1463,55 +1476,82 @@ class _Add_ProductState extends State<Add_Product> {
                     SizedBox(
                       height: 10,
                     ),
-                    Center(
-                      child: FlatButton(
-                        color: themeColor.getColor(),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            'Save',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          FlatButton(
+                            minWidth: ScreenUtil.getWidth(context) / 2.5,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(1),
+                                side: BorderSide(
+                                    color: Colors.orange, width: 1)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                'Save',
+                                style: TextStyle(
+                                  color: Colors.orange,
+                                  fontSize: 14,
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                        onPressed: () async {
-                          if (_formKey.currentState.validate()) {
-                            _formKey.currentState.save();
-                            setState(() => loading = true);
-                            API(context)
-                                .post("add/products", product.toJson())
-                                .then((value) {
-                              if (value != null) {
-                                setState(() {
-                                  loading = false;
-                                });
-                                print(value.containsKey('errors'));
-                                if (value.containsKey('errors')) {
-                                  showDialog(
-                                    context: context,
-                                    builder: (_) => ResultOverlay(
-                                      value['errors'].toString(),
-                                    ),
-                                  );
-                                } else {
-                                  Navigator.pop(context);
+                            onPressed: () async {
+                              if (_formKey.currentState.validate()) {
+                                _formKey.currentState.save();
+                                setState(() => loading = true);
+                                API(context)
+                                    .post("add/products", product.toJson())
+                                    .then((value) {
+                                  if (value != null) {
+                                    setState(() {
+                                      loading = false;
+                                    });
+                                    print(value.containsKey('errors'));
+                                    if (value.containsKey('errors')) {
+                                      showDialog(
+                                        context: context,
+                                        builder: (_) => ResultOverlay(
+                                          value['errors'].toString(),
+                                        ),
+                                      );
+                                    } else {
+                                      Navigator.pop(context);
 
-                                  showDialog(
-                                    context: context,
-                                    builder: (_) => ResultOverlay(
-                                      'Done',
-                                    ),
-                                  );
-                                }
+                                      showDialog(
+                                        context: context,
+                                        builder: (_) => ResultOverlay(
+                                          'Done',
+                                        ),
+                                      );
+                                    }
+                                  }
+                                });
                               }
-                            });
-                          }
-                        },
+                            },
+                          ),
+                          FlatButton(
+                              minWidth: ScreenUtil.getWidth(context) / 2.5,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(1),
+                                  side:
+                                  BorderSide(color: Colors.grey, width: 1)),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  getTransrlate(context, 'close'),
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+                              onPressed: () async {
+                                Navigator.pop(context);
+                              }),
+
+                        ],
                       ),
                     ),
                   ],
@@ -1660,7 +1700,7 @@ class _Add_ProductState extends State<Add_Product> {
             index: index,
             title: _tagSelect[index],
             color: Colors.blue,
-            activeColor: Colors.red,
+            activeColor: Colors.black26,
             onPressed: (Item item) {
               print('pressed');
             },
