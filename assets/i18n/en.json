@@ -40,14 +40,12 @@
   "anyTime": "Any Time",
   "SelectDate": "Select Date",
   "SelectTime": "Select Time",
-
-
-
-
+  "description": "description",
 
   "registration": "No regestration Please Login !",
   "haveanaccount": "Do you have an account?",
   "New": "New",
+  "id": "No id",
 
   "showAll": "Show all",
   "price": "Price",

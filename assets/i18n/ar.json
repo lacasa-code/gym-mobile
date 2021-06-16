@@ -33,6 +33,8 @@
   "Moderator": "المدير",
   "ModeratorPhone": "رقم جوال المدير",
   "moderatorAltPhone": "رقم جوال المدير 2",
+  "description": "الوصف",
+  "id": "رقم id",
 
   "OrderNote": "ملاحظات",
   "OrderHint": "برجاء ادخال ملاحظاتك",

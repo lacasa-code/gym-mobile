@@ -46,6 +46,8 @@ dependencies:
   multi_select_flutter: ^4.0.0
   responsive_builder: ^0.4.1
   dropdown_search: ^0.6.3
+  flutter_tags: "^0.4.9+1"
+  flutter_typeahead:
 
 dev_dependencies:
   flutter_test:

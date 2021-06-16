@@ -42,6 +42,7 @@ class Product {
   int storeId;
   int manufacturer_id;
   int prodcountry_id;
+  int cartype_id;
   int transmission_id;
   int quantity;
   String serialNumber;
@@ -63,6 +64,7 @@ class Product {
       this.transmission_id,
       this.prodcountry_id,
       this.storeId,
+      this.cartype_id,
       this.quantity,
       this.serialNumber});
 
@@ -77,6 +79,7 @@ class Product {
     prodcountry_id = json['prodcountry_id'];
     createdAt = json['created_at'];
     carMadeId = json['car_made_id'];
+    cartype_id = json['producttype_id'];
     carModelId = json['car_model_id'];
 
       if (json['photo'] != null) {

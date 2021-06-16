@@ -1,14 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_tags/flutter_tags.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/car_made.dart';
+import 'package:trkar_vendor/model/car_types.dart';
 import 'package:trkar_vendor/model/carmodel.dart';
 import 'package:trkar_vendor/model/category.dart';
 import 'package:trkar_vendor/model/manufacturer_model.dart';
@@ -44,6 +45,7 @@ class _Add_ProductState extends State<Add_Product> {
   List<Year> years;
   List<Store> _store;
   List<Tag> _tags;
+  List<String> _tagSelect=[];
   List<Categories> _category;
   List<String> categories;
   List<Part_Category> part_Categories;
@@ -52,6 +54,7 @@ class _Add_ProductState extends State<Add_Product> {
   List<Manufacturer> _manufacturers;
   List<ProdCountry> _prodcountries;
   List<Transmission> transmissions;
+  List<CarType> cartypes;
 
   DateTime selectedDate = DateTime.now();
   String SelectDate = ' ';
@@ -151,10 +154,14 @@ class _Add_ProductState extends State<Add_Product> {
                         product.name = value;
                       },
                     ),
+                    SizedBox(
+                      height: 5,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               "الفئة الرئيسية",
@@ -167,7 +174,7 @@ class _Add_ProductState extends State<Add_Product> {
                             _category == null
                                 ? Container()
                                 : Container(
-                                    height: ScreenUtil.getWidth(context) / 2.5,
+                                    width: ScreenUtil.getWidth(context) / 2.5,
                                     child: DropdownSearch<Categories>(
                                         showSearchBox: false,
                                         showClearButton: false,
@@ -187,41 +194,311 @@ class _Add_ProductState extends State<Add_Product> {
                           ],
                         ),
                         Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "الفئة الرئيسية",
+                              "الفئة الفرعية",
                               style:
                                   TextStyle(color: Colors.black, fontSize: 16),
                             ),
                             SizedBox(
                               height: 10,
                             ),
-                            _category == null
+                            part_Categories == null
                                 ? Container()
                                 : Container(
-                                    height: ScreenUtil.getWidth(context) / 2.5,
-                                    child: DropdownSearch<Categories>(
+                                    width: ScreenUtil.getWidth(context) / 2.5,
+                                    child: DropdownSearch<Part_Category>(
                                         showSearchBox: false,
                                         showClearButton: false,
                                         label: "   ",
-                                        validator: (Categories item) {
+                                        validator: (Part_Category item) {
                                           if (item == null) {
                                             return "Required field";
                                           } else
                                             return null;
                                         },
-                                        items: _category,
+                                        items: part_Categories,
                                         //  onFind: (String filter) => getData(filter),
-                                        itemAsString: (Categories u) => u.name,
-                                        onChanged: (Categories data) =>
-                                            product.CategoryId = data.id),
+                                        itemAsString: (Part_Category u) => u.categoryName,
+                                        onChanged: (Part_Category data) =>
+                                            product.partCategoryId = data.id),
                                   ),
                           ],
                         ),
                       ],
                     ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "المركبة",
+                      style: TextStyle(color: Colors.black, fontSize: 16),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        transmissions == null
+                            ? Container()
+                            : Container(
+                                width: ScreenUtil.getWidth(context) / 2.5,
+                                child: DropdownSearch<Transmission>(
+                                    showSearchBox: false,
+                                    showClearButton: false,
+                                    label: " نوع المركبة",
+                                    validator: (Transmission item) {
+                                      if (item == null) {
+                                        return "Required field";
+                                      } else
+                                        return null;
+                                    },
+                                    items: transmissions,
+                                    //  onFind: (String filter) => getData(filter),
+                                    itemAsString: (Transmission u) => u.transmissionName,
+                                    onChanged: (Transmission data) =>
+                                        product.transmission_id = data.id),
+                              ),
+                        CarMades == null
+                            ? Container()
+                            : Container(
+                                width: ScreenUtil.getWidth(context) / 2.5,
+                                child: DropdownSearch<CarMade>(
+                                    showSearchBox: false,
+                                    showClearButton: false,
+                                    label: " ماركة",
+                                    validator: (CarMade item) {
+                                      if (item == null) {
+                                        return "Required field";
+                                      } else
+                                        return null;
+                                    },
+                                    items: CarMades,
+                                    //  onFind: (String filter) => getData(filter),
+                                    itemAsString: (CarMade u) => u.carMade,
+                                    onChanged: (CarMade data) {
+                                      product.carMadeId = data.id;
+                                    getAllCareModel(data.id);}),
+                              ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        carmodels == null
+                            ? Container()
+                            : Container(
+                                width: ScreenUtil.getWidth(context) / 2.5,
+                                child: DropdownSearch<Carmodel>(
+                                    showSearchBox: false,
+                                    showClearButton: false,
+                                    label: " الموديل",
+                                    validator: (Carmodel item) {
+                                      if (item == null) {
+                                        return "Required field";
+                                      } else
+                                        return null;
+                                    },
+                                    items: carmodels,
+                                    //  onFind: (String filter) => getData(filter),
+                                    itemAsString: (Carmodel u) => u.carmodel,
+                                    onChanged: (Carmodel data) =>
+                                        product.carModelId = data.id),
+                              ),
+                        years == null
+                            ? Container()
+                            : Container(
+                                width: ScreenUtil.getWidth(context) / 2.5,
+                                child: DropdownSearch<Year>(
+                                    showSearchBox: false,
+                                    showClearButton: false,
+                                    label: " السنة",
+                                    validator: (Year item) {
+                                      if (item == null) {
+                                        return "Required field";
+                                      } else
+                                        return null;
+                                    },
+                                    items: years,
+                                    //  onFind: (String filter) => getData(filter),
+                                    itemAsString: (Year u) => u.year,
+                                    onChanged: (Year data) =>
+                                        product.yearId = data.id),
+                              ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    cartypes == null
+                        ? Container()
+                        : Container(
+                      child: DropdownSearch<CarType>(
+                          showSearchBox: false,
+                          showClearButton: false,
+                          label: " نوع المركبة",
+                          validator: (CarType item) {
+                            if (item == null) {
+                              return "Required field";
+                            } else
+                              return null;
+                          },
+                          items: cartypes,
+                          //  onFind: (String filter) => getData(filter),
+                          itemAsString: (CarType u) => u.typeName,
+                          onChanged: (CarType data) =>
+                              product.cartype_id = data.id),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
 
-                    // Container(
+                    MyTextFormField(
+                      intialLabel: product.name ?? ' ',
+                      Keyboard_Type: TextInputType.name,
+                      labelText: getTransrlate(context, 'description'),
+                      hintText: getTransrlate(context, 'description'),
+                      isPhone: true,
+                      enabled: true,
+                      validator: (String value) {
+                        if (value.isEmpty) {
+                          return getTransrlate(context, 'description');
+                        }
+                        _formKey.currentState.save();
+                        return null;
+                      },
+                      onSaved: (String value) {
+                        product.description = value;
+                      },
+                    ),
+                    Text(
+                      "المخزن",
+                      style: TextStyle(color: Colors.black, fontSize: 16),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    _store == null
+                        ? Container()
+                        : Container(
+                            child: DropdownSearch<Store>(
+                                showSearchBox: false,
+                                showClearButton: false,
+                                validator: (Store item) {
+                                  if (item == null) {
+                                    return "Required field";
+                                  } else
+                                    return null;
+                                },
+                                items: _store,
+                                //  onFind: (String filter) => getData(filter),
+                                itemAsString: (Store u) => u.name,
+                                onChanged: (Store data) =>
+                                    product.storeId = data.id),
+                          ),
+                    MyTextFormField(
+                      intialLabel: product.name ?? ' ',
+                      Keyboard_Type: TextInputType.name,
+                      labelText: 'السعر',
+                      hintText: 'السعر',
+                      isPhone: true,
+                      enabled: true,
+                      validator: (String value) {
+                        if (value.isEmpty) {
+                          return 'السعر';
+                        }
+                        _formKey.currentState.save();
+                        return null;
+                      },
+                      onSaved: (String value) {
+                        product.price = value;
+                      },
+                    ),
+                    MyTextFormField(
+                      intialLabel: product.quantity ?? ' ',
+                      Keyboard_Type: TextInputType.number,
+                      labelText: "الكمية",
+                      hintText: 'الكمية',
+                      isPhone: true,
+                      enabled: true,
+                      validator: (String value) {
+                        if (value.isEmpty) {
+                          return 'الكمية';
+                        }
+                        _formKey.currentState.save();
+                        return null;
+                      },
+                      onSaved: (String value) {
+                        product.quantity = int.parse(value);
+                      },
+                    ),
+                    MyTextFormField(
+                      intialLabel: product.quantity ?? ' ',
+                      Keyboard_Type: TextInputType.number,
+                      labelText: "الخصم",
+                      hintText: 'الخصم',
+                      isPhone: true,
+                      enabled: true,
+                      validator: (String value) {
+                        if (value.isEmpty) {
+                          return 'الخصم';
+                        }
+                        _formKey.currentState.save();
+                        return null;
+                      },
+                      onSaved: (String value) {
+                        product.discount = value;
+                      },
+                    ),
+                    Text(
+                      "بلد المنشأ",
+                      style: TextStyle(color: Colors.black, fontSize: 16),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    _prodcountries== null
+                        ? Container()
+                        : Container(
+                            child: DropdownSearch<ProdCountry>(
+                                showSearchBox: false,
+                                showClearButton: false,
+                                validator: (ProdCountry item) {
+                                  if (item == null) {
+                                    return "Required field";
+                                  } else
+                                    return null;
+                                },
+                                items: _prodcountries,
+                                //  onFind: (String filter) => getData(filter),
+                                itemAsString: (ProdCountry u) => u.countryName,
+                                onChanged: (ProdCountry data) =>
+                                    product.prodcountry_id = data.id),
+                          ),
+                    TypeAheadField(
+                      hideOnLoading: true,
+                      hideOnEmpty: true,
+                      getImmediateSuggestions: false,
+                      onSuggestionSelected: (val) {
+                        _onSuggestionSelected(val);
+                      },
+                      itemBuilder: (context, suggestion) {
+                        return ListTile(
+                          title: Text(suggestion.name,),
+                        );
+                      },
+                      suggestionsCallback: (val) {
+                        return _sugestionList(tags: _tags, suggestion: val,);
+//                return ;
+                      },
+                    ),
+                    _generateTags(),
+// Container(
                     //   margin: EdgeInsets.symmetric(vertical: 10),
                     //   child: Column(
                     //     crossAxisAlignment: CrossAxisAlignment.start,
@@ -1358,5 +1635,89 @@ class _Add_ProductState extends State<Add_Product> {
         });
       }
     });
+    getAllType();
+  }
+  Future<void> getAllType() async {
+    API(context).get('car/types/list').then((value) {
+      if (value != null) {
+        setState(() {
+          cartypes = CarTypes.fromJson(value).data;
+        });
+      }
+    });
+  }
+  _generateTags() {
+    return _tagSelect.isEmpty ?
+    Container()
+        :
+    Container(
+      alignment: Alignment.topLeft,
+      child: Tags(
+        alignment: WrapAlignment.center,
+        itemCount: _tagSelect.length,
+        itemBuilder: (index) {
+          return ItemTags(
+            index: index,
+            title: _tagSelect[index],
+            color: Colors.blue,
+            activeColor: Colors.red,
+            onPressed: (Item item) {
+              print('pressed');
+            },
+            highlightColor: Colors.transparent,
+            splashColor: Colors.transparent,
+            elevation: 0.0,
+            borderRadius: BorderRadius.all(Radius.circular(7.0)),
+//                textColor: ,
+            textColor: Colors.white,
+            textActiveColor: Colors.white,
+            removeButton: ItemTagsRemoveButton(
+                color: Colors.black,
+                backgroundColor: Colors.transparent,
+                size: 14,
+                onRemoved: () {
+                  _onSuggestionRemoved(_tagSelect[index]);
+                  return true;
+                }),
+            textOverflow: TextOverflow.ellipsis,
+          );
+        },
+      ),
+    );
+  }
+  _onSuggestionSelected(Tag value) {
+    if(value !=null) {
+      final String isAlreadyInSelectedList = _tagSelect.firstWhere((text)=> text==value,orElse: () {return null;});
+
+      if(isAlreadyInSelectedList ==null) {
+        setState(() {
+          _tagSelect.add(value.name);
+          _tags.remove(value);
+        });
+      }
+    }
+  }
+
+  _onSuggestionRemoved(String value) {
+    final Tag exist = _tags.firstWhere((text) => text.name==value,orElse: (){return null;});
+
+    final String exists = _tagSelect.firstWhere((text) => text==value,orElse: () {return null;});
+    if(exists !=null) {
+      setState(() {
+        _tagSelect.remove(value);
+        _tags.add(exist);
+      });
+    }
+  }
+  _sugestionList({@required List<Tag> tags , @required String suggestion}) {
+    List<Tag> modifiedList = [];
+    modifiedList.addAll(tags);
+    modifiedList.retainWhere((text) => text.name.toLowerCase().contains(suggestion.toLowerCase()));
+    if(suggestion.length >=2) {
+      return modifiedList;
+    }
+    else {
+      return null;
+    }
   }
 }

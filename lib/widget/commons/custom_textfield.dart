@@ -39,7 +39,6 @@ class MyTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -60,9 +59,9 @@ class MyTextFormField extends StatelessWidget {
                 ),
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(1.0),
+                borderRadius: BorderRadius.circular(5.0),
                 borderSide: BorderSide(
-                  color: Colors.black12,
+                  color: Colors.grey,
                   width: 1.0,
                 ),
               ),
