@@ -1,3 +1,7 @@
+import 'package:dio/dio.dart';
+import 'package:multi_image_picker/multi_image_picker.dart';
+import 'package:trkar_vendor/model/tags_model.dart';
+
 class Products_model {
   List<Product> product;
   int total;
@@ -35,6 +39,8 @@ class Product {
   int carMadeId;
   int carModelId;
   List<Photo> photo;
+  List<Asset> photos;
+  List<Tag> tags;
   int yearId;
   int CategoryId;
   int partCategoryId;
@@ -99,21 +105,34 @@ class Product {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
     data['name'] = this.name;
     data['description'] = this.description;
     data['price'] = this.price;
     data['discount'] = this.discount;
-    data['created_at'] = this.createdAt;
     data['car_made_id'] = this.carMadeId;
+    data['category_id'] = this.CategoryId;
     data['car_model_id'] = this.carModelId;
     data['year_id'] = this.yearId;
     data['part_category_id'] = this.partCategoryId;
+    data['cartype_id'] = this.cartype_id;
+    data['prodcountry_id'] = this.prodcountry_id;
+    data['producttype_id'] = this.cartype_id;
+    data['manufacturer_id'] = this.manufacturer_id;
     data['transmission_id'] = this.transmission_id;
-    data['vendor_id'] = this.vendorId;
     data['store_id'] = this.storeId;
     data['quantity'] = this.quantity;
     data['serial_number'] = this.serialNumber;
+    if (this.tags != null) {
+      data['tags'] = this.tags.map((v) => v.id).toList().toString();
+    }
+    // if (this.photos != null) {
+    //   data['photo[]'] = this.photos.map((v) async {
+    //     for (var file in photos) {
+    //       return await MultipartFile.fromFile(file.identifier);
+    //     }
+    //   }).toList();
+    // }
+
     return data;
   }
 }
