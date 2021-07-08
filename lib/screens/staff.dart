@@ -94,18 +94,21 @@ class _StaffState extends State<Staff> {
               onPressed: () {
                 _navigate_add_hell(context);
               },
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.add,
-                    color: Colors.white,
-                  ),
-                  Text(
-                    getTransrlate(context, 'addstaff'),
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ],
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.add,
+                      color: Colors.white,
+                    ),
+                    Text(
+                      getTransrlate(context, 'addstaff'),
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ],
+                ),
               )),
         ),
       ),

@@ -58,7 +58,7 @@ class _HiddenMenuState extends State<HiddenMenu> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
             SizedBox(
-              height: 50,
+              height: 30,
             ),
             Container(
               color: themeColor.getColor(),

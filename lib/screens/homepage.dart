@@ -106,6 +106,9 @@ class _HomeMobileState extends State<HomeMobile> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(
+                height: 5,
+              ),
               AutoSizeText(
                 "${getTransrlate(context, 'welcome')}  ${name == null ? ' ' : name}",
                 style: TextStyle(
@@ -138,7 +141,7 @@ class _HomeMobileState extends State<HomeMobile> {
                               SizedBox(
                                 width: 5,
                               ),
-                              Text(" من : ${_fromcontroller.text}"),
+                              Text(" من : ${_fromcontroller.text}",style: TextStyle(fontSize: 14),),
                             ],
                           ),
                         ),
@@ -155,7 +158,7 @@ class _HomeMobileState extends State<HomeMobile> {
                               SizedBox(
                                 width: 5,
                               ),
-                              Text(" إلى : ${_tocontroller.text}"),
+                              Text(" إلى : ${_tocontroller.text}",style: TextStyle(fontSize: 14)),
                             ],
                           ),
                         ),

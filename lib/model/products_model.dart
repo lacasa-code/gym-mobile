@@ -48,7 +48,7 @@ class Product {
   int storeId;
   int manufacturer_id;
   int prodcountry_id;
-  int cartype_id;
+  dynamic cartype_id;
   int transmission_id;
   int quantity;
   String serialNumber;
@@ -79,13 +79,13 @@ class Product {
     name = json['name'];
     description = json['description'];
     price = json['price'];
-    discount = json['discount'];
+    discount = json['discount'].toString();
     manufacturer_id = json['manufacturer_id'];
     transmission_id = json['transmission_id'];
     prodcountry_id = json['prodcountry_id'];
     createdAt = json['created_at'];
     carMadeId = json['car_made_id'];
-    cartype_id = json['producttype_id'];
+    cartype_id = json['producttype_id'].toString();
     carModelId = json['car_model_id'];
 
       if (json['photo'] != null) {

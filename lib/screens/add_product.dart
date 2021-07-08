@@ -199,13 +199,22 @@ class _Add_ProductState extends State<Add_Product> {
                           height: 10,
                         ),
                         _category == null
-                            ? Container()
+                            ? Container(
+                          width: ScreenUtil.getWidth(context) / 2.5,
+                          child: DropdownSearch<String>(
+                              showSearchBox: false,
+                              showClearButton: false,
+                              label: " ",
+                              items: [''],enabled: false,
+                              //  onFind: (String filter) => getData(filter),
+                         ),
+                            )
                             : Container(
                                 width: ScreenUtil.getWidth(context) / 2.5,
                                 child: DropdownSearch<Categories>(
                                     showSearchBox: false,
                                     showClearButton: false,
-                                    label: "   ",
+                                    label: " ",
                                     validator: (Categories item) {
                                       if (item == null) {
                                         return "Required field";
@@ -231,7 +240,16 @@ class _Add_ProductState extends State<Add_Product> {
                           height: 10,
                         ),
                         part_Categories == null
-                            ? Container()
+                            ? Container(
+                          width: ScreenUtil.getWidth(context) / 2.5,
+                          child: DropdownSearch<String>(
+                            showSearchBox: false,
+                            showClearButton: false,
+                            label: " ",
+                            items: [''],enabled: false,
+                            //  onFind: (String filter) => getData(filter),
+                          ),
+                        )
                             : Container(
                                 width: ScreenUtil.getWidth(context) / 2.5,
                                 child: DropdownSearch<Part_Category>(
@@ -269,7 +287,16 @@ class _Add_ProductState extends State<Add_Product> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     transmissions == null
-                        ? Container()
+                        ? Container(
+                      width: ScreenUtil.getWidth(context) / 2.5,
+                      child: DropdownSearch<String>(
+                        showSearchBox: false,
+                        showClearButton: false,
+                        label: " ",
+                        items: [''],enabled: false,
+                        //  onFind: (String filter) => getData(filter),
+                      ),
+                    )
                         : Container(
                             width: ScreenUtil.getWidth(context) / 2.5,
                             child: DropdownSearch<Transmission>(
@@ -290,7 +317,16 @@ class _Add_ProductState extends State<Add_Product> {
                                     product.transmission_id = data.id),
                           ),
                     CarMades == null
-                        ? Container()
+                        ? Container(
+                      width: ScreenUtil.getWidth(context) / 2.5,
+                      child: DropdownSearch<String>(
+                        showSearchBox: false,
+                        showClearButton: false,
+                        label: " ",
+                        items: [''],enabled: false,
+                        //  onFind: (String filter) => getData(filter),
+                      ),
+                    )
                         : Container(
                             width: ScreenUtil.getWidth(context) / 2.5,
                             child: DropdownSearch<CarMade>(
@@ -320,7 +356,16 @@ class _Add_ProductState extends State<Add_Product> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     carmodels == null
-                        ? Container()
+                        ? Container(
+                      width: ScreenUtil.getWidth(context) / 2.5,
+                      child: DropdownSearch<String>(
+                        showSearchBox: false,
+                        showClearButton: false,
+                        label: " ",
+                        items: [''],enabled: false,
+                        //  onFind: (String filter) => getData(filter),
+                      ),
+                    )
                         : Container(
                             width: ScreenUtil.getWidth(context) / 2.5,
                             child: DropdownSearch<Carmodel>(
@@ -340,7 +385,16 @@ class _Add_ProductState extends State<Add_Product> {
                                     product.carModelId = data.id),
                           ),
                     years == null
-                        ? Container()
+                        ? Container(
+                      width: ScreenUtil.getWidth(context) / 2.5,
+                      child: DropdownSearch<String>(
+                        showSearchBox: false,
+                        showClearButton: false,
+                        label: " ",
+                        items: [''],enabled: false,
+                        //  onFind: (String filter) => getData(filter),
+                      ),
+                    )
                         : Container(
                             width: ScreenUtil.getWidth(context) / 2.5,
                             child: DropdownSearch<Year>(
@@ -365,7 +419,15 @@ class _Add_ProductState extends State<Add_Product> {
                   height: 10,
                 ),
                 cartypes == null
-                    ? Container()
+                    ? Container(
+                  child: DropdownSearch<String>(
+                    showSearchBox: false,
+                    showClearButton: false,
+                    label: " ",
+                    items: [''],enabled: false,
+                    //  onFind: (String filter) => getData(filter),
+                  ),
+                )
                     : Container(
                         child: DropdownSearch<CarType>(
                             showSearchBox: false,
@@ -381,7 +443,7 @@ class _Add_ProductState extends State<Add_Product> {
                             //  onFind: (String filter) => getData(filter),
                             itemAsString: (CarType u) => u.typeName,
                             onChanged: (CarType data) =>
-                                product.cartype_id = data.id),
+                                product.cartype_id = data.id.toString()),
                       ),
                 SizedBox(
                   height: 10,
@@ -389,7 +451,16 @@ class _Add_ProductState extends State<Add_Product> {
                   height: 10,
                 ),
                 _manufacturers == null
-                    ? Container()
+                    ? Container(
+                  width: ScreenUtil.getWidth(context) / 2.5,
+                  child: DropdownSearch<String>(
+                    showSearchBox: false,
+                    showClearButton: false,
+                    label: " ",
+                    items: [''],enabled: false,
+                    //  onFind: (String filter) => getData(filter),
+                  ),
+                )
                     : Container(
                         child: DropdownSearch<Manufacturer>(
                             showSearchBox: false,
@@ -456,7 +527,15 @@ class _Add_ProductState extends State<Add_Product> {
                   height: 10,
                 ),
                 _store == null
-                    ? Container()
+                    ? Container(
+                  child: DropdownSearch<String>(
+                    showSearchBox: false,
+                    showClearButton: false,
+                    label: " ",
+                    items: [''],enabled: false,
+                    //  onFind: (String filter) => getData(filter),
+                  ),
+                )
                     : Container(
                         child: DropdownSearch<Store>(
                             showSearchBox: false,

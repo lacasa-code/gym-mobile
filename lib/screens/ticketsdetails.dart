@@ -113,13 +113,16 @@ class _tickets_informationState extends State<tickets_information> {
                     ),
                     maxLines: 1,
                   ),
-                  AutoSizeText(widget.orders_model.message,
-                      minFontSize: 10,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      )),
+                  Container(
+                    width: ScreenUtil.getWidth(context)/1.5,
+                    child: AutoSizeText(widget.orders_model.message,
+                        minFontSize: 10,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        )),
+                  ),
                 ],
               ),
               Row(

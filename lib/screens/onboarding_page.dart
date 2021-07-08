@@ -98,180 +98,178 @@ class _OnboardingPageState extends State<OnboardingPage> {
   }) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 25),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            _currentPage == 2
-                ? Container(
-                    child: Align(
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            'assets/images/logo.png',
-                            width: ScreenUtil.getWidth(context) / 1.7,
-                            fit: BoxFit.contain,
-                            // color: themeColor.getColor(),
-                          ),
-                          Container(
-                            width: ScreenUtil.getWidth(context) / 2,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Text(
-                                  'vendor',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                Text(
-                                  'البائع',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: ScreenUtil.getHeight(context) / 8,
-                          ),
-                          Container(
-                            height: 50,
-                            width: ScreenUtil.getWidth(context) / 1.4,
-                            child: FlatButton(
-                              color: Colors.orange,
-                              onPressed: () {
-                                Nav.routeReplacement(context, LoginPage());
-                              },
-                              child: Text(
-                                "دخول التطبيق",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: ScreenUtil.getHeight(context) / 25,
-                          ),
-                          Container(
-                            height: 50,
-                            width: ScreenUtil.getWidth(context) / 1.4,
-                            child: FlatButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(1),
-                                  side:
-                                      BorderSide(color: Colors.orange, width: 2)),
-                              color: Colors.white,
-                              onPressed: () {
-                                Nav.routeReplacement(context, LoginPage());
-                              },
-                              child: Text(
-                                "سجل كبائع",
-                                style: TextStyle(
-                                    color: Colors.orange,
-                                    fontWeight: FontWeight.w700),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
-                : Container(),
-            _currentPage == 2
-                ? Container()
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text(
-                        title,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 20,
-                            height: 2.0,
-                            fontWeight: FontWeight.w800,
-                            color: Colors.white),
-                      ),
-                      SizedBox(height: 32),
-                      Image.asset(
-                        image,
-                        fit: BoxFit.fill,
-                        height: ScreenUtil.getHeight(context) / 20,
-                      ),
-                    ],
-                  ),
-            SizedBox(height: 32),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: AutoSizeText(
-                body,
-                minFontSize: 30,
-                maxFontSize: 35,
-                maxLines: 3,
-                textAlign: TextAlign.center,
-                style: TextStyle(fontWeight: FontWeight.w600, color: Colors.white),
-              ),
-            ),
-            SizedBox(height: 32),
-
-            _currentPage != 2
-                ? Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        FlatButton(
-                          onPressed: () {
-                            _pageController.animateToPage(2,
-                                duration: Duration(milliseconds: 400),
-                                curve: Curves.linear);
-                            setState(() {});
-                            Nav.routeReplacement(context, LoginPage());
-                          },
-                          splashColor: Colors.blue[50],
-                          child: Text(
-                            'تخطى',
-                            style: TextStyle(color: Colors.blueGrey),
-                          ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          _currentPage == 2
+              ? Container(
+                  child: Align(
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          'assets/images/logo.png',
+                          width: ScreenUtil.getWidth(context) / 1.7,
+                          fit: BoxFit.contain,
+                          // color: themeColor.getColor(),
                         ),
                         Container(
-                          child: Row(children: [
-                            for (int i = 0; i < _totalPages; i++)
-                              i == _currentPage
-                                  ? _buildPageIndicator(true)
-                                  : _buildPageIndicator(false)
-                          ]),
-                        ),
-                        FlatButton(
-                          onPressed: () {
-                            _pageController.animateToPage(_currentPage + 1,
-                                duration: Duration(milliseconds: 400),
-                                curve: Curves.linear);
-                            setState(() {});
-                          },
-                          splashColor: Colors.blue[50],
-                          child: Text(
-                            'التالى',
-                            style: TextStyle(color: Colors.orange),
+                          width: ScreenUtil.getWidth(context) / 2,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text(
+                                'vendor',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              Text(
+                                'البائع',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ],
                           ),
-                        )
+                        ),
+                        SizedBox(
+                          height: ScreenUtil.getHeight(context) / 8,
+                        ),
+                        Container(
+                          height: 50,
+                          width: ScreenUtil.getWidth(context) / 1.4,
+                          child: FlatButton(
+                            color: Colors.orange,
+                            onPressed: () {
+                              Nav.routeReplacement(context, LoginPage());
+                            },
+                            child: Text(
+                              "دخول التطبيق",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: ScreenUtil.getHeight(context) / 25,
+                        ),
+                        Container(
+                          height: 50,
+                          width: ScreenUtil.getWidth(context) / 1.4,
+                          child: FlatButton(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(1),
+                                side:
+                                    BorderSide(color: Colors.orange, width: 2)),
+                            color: Colors.white,
+                            onPressed: () {
+                              Nav.routeReplacement(context, LoginPage());
+                            },
+                            child: Text(
+                              "سجل كبائع",
+                              style: TextStyle(
+                                  color: Colors.orange,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
-                  )
-                : Container(
-                    child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
+                  ),
+                )
+              : Container(),
+          _currentPage == 2
+              ? Container()
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      title,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 20,
+                          height: 2.0,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.white),
+                    ),
+                    SizedBox(height: 32),
+                    Image.asset(
+                      image,
+                      fit: BoxFit.fill,
+                      height: ScreenUtil.getHeight(context) / 20,
+                    ),
+                  ],
+                ),
+          SizedBox(height: 32),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: AutoSizeText(
+              body,
+              minFontSize: 30,
+              maxFontSize: 35,
+              maxLines: 3,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontWeight: FontWeight.w600, color: Colors.white),
+            ),
+          ),
+          SizedBox(height: 32),
+
+          _currentPage != 2
+              ? Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      FlatButton(
+                        onPressed: () {
+                          _pageController.animateToPage(2,
+                              duration: Duration(milliseconds: 400),
+                              curve: Curves.linear);
+                          setState(() {});
+                          Nav.routeReplacement(context, LoginPage());
+                        },
+                        splashColor: Colors.blue[50],
+                        child: Text(
+                          'تخطى',
+                          style: TextStyle(color: Colors.blueGrey),
+                        ),
+                      ),
+                      Container(
+                        child: Row(children: [
                           for (int i = 0; i < _totalPages; i++)
                             i == _currentPage
                                 ? _buildPageIndicator(true)
                                 : _buildPageIndicator(false)
                         ]),
+                      ),
+                      FlatButton(
+                        onPressed: () {
+                          _pageController.animateToPage(_currentPage + 1,
+                              duration: Duration(milliseconds: 400),
+                              curve: Curves.linear);
+                          setState(() {});
+                        },
+                        splashColor: Colors.blue[50],
+                        child: Text(
+                          'التالى',
+                          style: TextStyle(color: Colors.orange),
+                        ),
+                      )
+                    ],
                   ),
-            SizedBox(
-              height: ScreenUtil.getHeight(context) / 25,
-            )
-          ],
-        ),
+                )
+              : Container(
+                  child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        for (int i = 0; i < _totalPages; i++)
+                          i == _currentPage
+                              ? _buildPageIndicator(true)
+                              : _buildPageIndicator(false)
+                      ]),
+                ),
+          SizedBox(
+            height: ScreenUtil.getHeight(context) / 25,
+          )
+        ],
       ),
     );
   }

@@ -68,101 +68,103 @@ class _FaqPageState extends State<FaqPage> {
       body: faq == null
           ? Center(child: CircularProgressIndicator())
           : Container(
-              child: Column(
-                children: [
-                  Container(
-                    height: 50,
-                    color: Colors.black12,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Text('${faq.length<=1?'${faq.length} سؤال':faq.length<=2?' سؤالين':'${faq.length} أسئلة'}'),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            // showDialog(
-                            //     context: context,
-                            //     builder: (_) => Filterdialog());
-                          },
-                          child: Row(
-                            children: [
-                              Text('تصفية'),
-                              Icon(
-                                Icons.keyboard_arrow_down,
-                                size: 20,
-                              )
-                            ],
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      height: 50,
+                      color: Colors.black12,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text('${faq.length<=1?'${faq.length} سؤال':faq.length<=2?' سؤالين':'${faq.length} أسئلة'}'),
+                          SizedBox(
+                            width: 5,
                           ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            showDialog(
-                                context: context,
-                                builder: (_) => Sortdialog())
-                                .then((val) {
-                              print(val);
-
-                            });
-                          },
-                          child: Row(
-                            children: [
-                              Text('ترتيب'),
-                              Icon(
-                                Icons.keyboard_arrow_down,
-                                size: 20,
-                              )
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  ListView.builder(
-                    itemCount: faq.length,
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (BuildContext context, int index) {
-                      return InkWell(
-                         onTap: (){
-                           Nav.route(context, faq_information(orders_model: faq[index],));
-                         },
-                        child: Container(
-                            padding: EdgeInsets.all(16.0),
-                            color:index.isEven ?Colors.white:Color(0xffF6F6F6),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                          InkWell(
+                            onTap: () {
+                              // showDialog(
+                              //     context: context,
+                              //     builder: (_) => Filterdialog());
+                            },
+                            child: Row(
                               children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(" صاحب السؤال:${faq[index].userId??''}",
-                                        style: TextStyle(
-                                            color: Colors.black, fontSize: 12)),
-                                    Text(" تاريخ السؤال:${DateFormat('yyyy-MM-dd').format(DateTime.parse(faq[index].createdAt))}",
-                                        style: TextStyle(
-                                            color: Colors.black, fontSize: 12)),
-                                  ],
-                                ),
-                                Text(" السؤال:${faq[index].bodyQuestion??''}",
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 12)),
-                                Text(" المنتج:${faq[index].productId??''}",
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 12)),
-                                Text(" الحالة :${faq[index].answer??''}",
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 12)),
-
-
+                                Text('تصفية'),
+                                Icon(
+                                  Icons.keyboard_arrow_down,
+                                  size: 20,
+                                )
                               ],
-                            )),
-                      );
-                    },
-                  ),
-                ],
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (_) => Sortdialog())
+                                  .then((val) {
+                                print(val);
+
+                              });
+                            },
+                            child: Row(
+                              children: [
+                                Text('ترتيب'),
+                                Icon(
+                                  Icons.keyboard_arrow_down,
+                                  size: 20,
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    ListView.builder(
+                      itemCount: faq.length,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (BuildContext context, int index) {
+                        return InkWell(
+                           onTap: (){
+                             Nav.route(context, faq_information(orders_model: faq[index],));
+                           },
+                          child: Container(
+                              padding: EdgeInsets.all(16.0),
+                              color:index.isEven ?Colors.white:Color(0xffF6F6F6),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(" صاحب السؤال:${faq[index].userId??''}",
+                                          style: TextStyle(
+                                              color: Colors.black, fontSize: 12)),
+                                      Text(" تاريخ السؤال:${DateFormat('yyyy-MM-dd').format(DateTime.parse(faq[index].createdAt))}",
+                                          style: TextStyle(
+                                              color: Colors.black, fontSize: 12)),
+                                    ],
+                                  ),
+                                  Text(" السؤال:${faq[index].bodyQuestion??''}",
+                                      style: TextStyle(
+                                          color: Colors.black, fontSize: 12)),
+                                  Text(" المنتج:${faq[index].productId??''}",
+                                      style: TextStyle(
+                                          color: Colors.black, fontSize: 12)),
+                                  Text(" الحالة :${faq[index].answer??''}",
+                                      style: TextStyle(
+                                          color: Colors.black, fontSize: 12)),
+
+
+                                ],
+                              )),
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
     );

@@ -418,7 +418,7 @@ class _OrdersState extends State<Orders> {
 
   Future<void> getAllStore() async {
     API(context)
-        .get('show/orders?ordered_by=created_at&sort_type=desc')
+        .post('show/orders?ordered_by=created_at&sort_type=desc',{})
         .then((value) {
       if (value != null) {
         setState(() {

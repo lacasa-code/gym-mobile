@@ -95,18 +95,21 @@ class _StoresState extends State<Stores> {
               onPressed: () {
                 _navigate_add_store(context);
               },
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.add,
-                    color: Colors.white,
-                  ),
-                  Text(
-                    getTransrlate(context, 'addStore'),
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ],
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.add,
+                      color: Colors.white,
+                    ),
+                    Text(
+                      getTransrlate(context, 'addStore'),
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ],
+                ),
               )),
         ),
       ),

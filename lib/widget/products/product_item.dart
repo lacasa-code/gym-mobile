@@ -70,15 +70,18 @@ class _Product_itemState extends State<Product_item> {
               SizedBox(
                 height: 10,
               ),
-              AutoSizeText(
-                widget.hall_model.name,
-                minFontSize: 10,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+              Container(
+                width: ScreenUtil.getWidth(context)/1.7,
+                child: AutoSizeText(
+                  widget.hall_model.name,
+                  minFontSize: 10,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  maxLines: 1,
                 ),
-                maxLines: 1,
               ),
               Text(
                 "السعر :  ${widget.hall_model.price}",
@@ -97,13 +100,17 @@ class _Product_itemState extends State<Product_item> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              AutoSizeText(
-                '${widget.hall_model.description}',
-                minFontSize: 10,
-                style: TextStyle(
-                  fontSize: 13,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
+              Container(
+                width: ScreenUtil.getWidth(context)/1.5,
+
+                child: AutoSizeText(
+                  '${widget.hall_model.description}',
+                  minFontSize: 10,maxLines: 3,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
               ),
               SizedBox(

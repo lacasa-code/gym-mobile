@@ -26,7 +26,6 @@ class _LoginPageState extends State<LoginPage> {
         Token=value.getString('token');
       });
     });
-    _auth();
 
     super.initState();
   }
@@ -57,13 +56,13 @@ class _LoginPageState extends State<LoginPage> {
                   child: Column(
                     children: [
                       Image.asset(
-                        'assets/images/splashscreen-trkar-logo-white.gif',
+                        'assets/images/logo.png',
                         width: ScreenUtil.getWidth(context) / 1.7,
                         fit: BoxFit.contain,
                        // color: themeColor.getColor(),
                       ),
                       Container(
-                        width: ScreenUtil.getWidth(context) / 2,
+                        width: ScreenUtil.getWidth(context) / 1.5,
 
                         child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
@@ -81,22 +80,6 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ));
   }
-  void _auth() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    API(context).post('token/data', {}).then((value) {
-      if (value != null) {
-        var user = value['data']['user'];
-        prefs.setString("user_email", user['email']);
-        prefs.setString("user_name", user['name']);
-        prefs.setInt("user_id", user['id']);
-        themeColor.setLogin(true);
-        Nav.routeReplacement(context, Home());
-      } else {
-        themeColor.setLogin(false);
-        //Nav.routeReplacement(context, LoginPage());
-      }
-    });
-  }
 
 }

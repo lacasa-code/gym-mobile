@@ -64,7 +64,6 @@ class Order {
     expired = json['expired'];
     approved = json['approved'];
     paid = json['paid'].toString();
-    status = json['status'];
     createdAt = json['created_at'];
     orderStatus = json['orderStatus'];
     if (json['orderDetails'] != null) {

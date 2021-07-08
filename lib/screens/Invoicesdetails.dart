@@ -39,7 +39,7 @@ class _Invoices_informationState extends State<Invoices_information> {
             SizedBox(
               width: 10,
             ),
-            Text(getTransrlate(context, 'OrderDetails')),
+            Text(getTransrlate(context, 'invoices')),
           ],
         ),
         backgroundColor: themeColor.getColor(),

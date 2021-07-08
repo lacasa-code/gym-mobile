@@ -31,7 +31,7 @@ class Ticket_item extends StatelessWidget {
                           minFontSize: 10,
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 16,
+                            fontSize: 13,
                             fontWeight: FontWeight.bold,
                           ),
                           maxLines: 1,
@@ -40,7 +40,7 @@ class Ticket_item extends StatelessWidget {
                             minFontSize: 10,
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 16,
+                              fontSize: 13,
                               fontWeight: FontWeight.w600,
                             )),
                       ],
@@ -52,7 +52,7 @@ class Ticket_item extends StatelessWidget {
                           minFontSize: 10,
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 16,
+                            fontSize: 13,
                             fontWeight: FontWeight.bold,
                           ),
                           maxLines: 1,
@@ -61,7 +61,7 @@ class Ticket_item extends StatelessWidget {
                             minFontSize: 10,
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 16,
+                              fontSize: 13,
                               fontWeight: FontWeight.w600,
                             )),
                       ],
@@ -75,18 +75,22 @@ class Ticket_item extends StatelessWidget {
                       minFontSize: 10,
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 16,
+                        fontSize: 13,
                         fontWeight: FontWeight.bold,
                       ),
                       maxLines: 1,
                     ),
-                    AutoSizeText(hall_model.message,
-                        minFontSize: 10,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        )),
+                    Container(
+                      width: ScreenUtil.getWidth(context)/1.5,
+                      child: AutoSizeText(hall_model.message,
+                          maxLines: 1,
+                          minFontSize: 12,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                          )),
+                    ),
                   ],
                 ),
                 Row(
@@ -99,7 +103,7 @@ class Ticket_item extends StatelessWidget {
                           minFontSize: 10,
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 16,
+                            fontSize: 13,
                             fontWeight: FontWeight.bold,
                           ),
                           maxLines: 1,
@@ -108,7 +112,7 @@ class Ticket_item extends StatelessWidget {
                             minFontSize: 10,
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 16,
+                              fontSize: 13,
                               fontWeight: FontWeight.w600,
                             )),
                       ],
@@ -120,7 +124,7 @@ class Ticket_item extends StatelessWidget {
                           minFontSize: 10,
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 16,
+                            fontSize: 13,
                             fontWeight: FontWeight.bold,
                           ),
                           maxLines: 1,
@@ -131,7 +135,7 @@ class Ticket_item extends StatelessWidget {
                             minFontSize: 10,
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 16,
+                              fontSize: 13,
                               fontWeight: FontWeight.w600,
                             )),
                       ],
@@ -148,7 +152,7 @@ class Ticket_item extends StatelessWidget {
                           minFontSize: 10,
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 16,
+                            fontSize: 13,
                             fontWeight: FontWeight.bold,
                           ),
                           maxLines: 1,
@@ -164,7 +168,7 @@ class Ticket_item extends StatelessWidget {
                                 minFontSize: 10,
                                 style: TextStyle(
                                   color: isPassed(hall_model.status),
-                                  fontSize: 16,
+                                  fontSize: 13,
                                   fontWeight: FontWeight.w600,
                                 )),
                           ),
@@ -178,7 +182,7 @@ class Ticket_item extends StatelessWidget {
                           minFontSize: 10,
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 16,
+                            fontSize: 13,
                             fontWeight: FontWeight.bold,
                           ),
                           maxLines: 1,
@@ -187,7 +191,7 @@ class Ticket_item extends StatelessWidget {
                             minFontSize: 10,
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 16,
+                              fontSize: 13,
                               fontWeight: FontWeight.w600,
                             )),
                       ],

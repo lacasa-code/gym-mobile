@@ -88,7 +88,7 @@ class OrderItem extends StatelessWidget {
                             style: TextStyle(
                                 color: themeColor.getColor(),
                                 fontWeight: FontWeight.bold,
-                                fontSize: 15),
+                                fontSize: 13),
                           ),
                         ),
                       ],

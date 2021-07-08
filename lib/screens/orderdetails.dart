@@ -102,7 +102,7 @@ class _Order_informationState extends State<Order_information> {
                   AutoSizeText(
                     'محمد حسن مبنى 12 الطابق الثاني مكتب 23 ش الملك عبدالله تبوك المملكة العربية السعودية +9660505521235 ',
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 14,
                       color: Colors.black,
                       fontWeight: FontWeight.w600,
                     ),
