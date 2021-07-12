@@ -91,29 +91,12 @@ class _add_StoreState extends State<add_Store> {
                         ),
                         MyTextFormField(
                           intialLabel: store.moderatorName ?? ' ',
-                          Keyboard_Type: TextInputType.name,
-                          labelText: getTransrlate(context, 'Moderator'),
-                          hintText: getTransrlate(context, 'Moderator'),
-                          isPhone: true,
-                          enabled: true,
-                          validator: (String value) {
-                            if (value.isEmpty) {
-                              return getTransrlate(context, 'Moderator');
-                            }
-                            _formKey.currentState.save();
-                            return null;
-                          },
-                          onSaved: (String value) {
-                            store.moderatorName = value;
-                          },
-                        ),
-                        MyTextFormField(
-                          intialLabel: store.moderatorName ?? ' ',
                           Keyboard_Type: TextInputType.phone,
                           labelText: getTransrlate(context, 'ModeratorPhone'),
                           hintText: getTransrlate(context, 'ModeratorPhone'),
-                          prefix:Text('+966 '),
+                          suffixIcon: Text('  +966 ',textDirection: TextDirection.ltr,),
                           isPhone: true,
+                          textDirection: TextDirection.ltr,
                           enabled: true,
                           validator: (String value) {
                             if (value.length<=8) {
@@ -128,19 +111,12 @@ class _add_StoreState extends State<add_Store> {
                         ),
                         MyTextFormField(
                           intialLabel: store.moderatorAltPhone ?? ' ',
-                          Keyboard_Type: TextInputType.phone,
-                          labelText: getTransrlate(context, 'ModeratorPhone'),
-                          hintText: getTransrlate(context, 'ModeratorPhone'),
-                          prefix:Text('+966 '),
+                          Keyboard_Type: TextInputType.phone,textDirection: TextDirection.ltr,
+                          labelText: getTransrlate(context, 'phone'),
+                          hintText: getTransrlate(context, 'phone'),
+                          suffixIcon: Text('  +966 ',textDirection: TextDirection.ltr,),
                           isPhone: true,
                           enabled: true,
-                          validator: (String value) {
-                            if (value.isEmpty) {
-                              return getTransrlate(context, 'ModeratorPhone');
-                            }
-                            _formKey.currentState.save();
-                            return null;
-                          },
                           onSaved: (String value) {
                             store.moderatorAltPhone = "00966$value";
                           },

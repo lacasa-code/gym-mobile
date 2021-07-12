@@ -80,14 +80,14 @@ class _Stores_itemState extends State<Stores_item> {
                 Row(
                   children: [
                     Text(
-                      "المدير : ",
+                      "رقم الجوال : ",
                       maxLines: 1,
                       style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.w700,
                           fontSize: 13),
                     ),      Text(
-                      "${widget.hall_model.moderatorName}",
+                      "${widget.hall_model.moderatorPhone}",
                       maxLines: 1,
                       style: TextStyle(
                           color: Colors.black,

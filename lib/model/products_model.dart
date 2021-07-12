@@ -34,6 +34,7 @@ class Product {
   String description;
   String price;
   String discount;
+  int qty_reminder;
   String createdAt;
   bool isSelect=false;
   int carMadeId;
@@ -47,6 +48,7 @@ class Product {
   int vendorId;
   int storeId;
   int manufacturer_id;
+  int Main_categoryid;
   int prodcountry_id;
   dynamic cartype_id;
   int transmission_id;
@@ -113,11 +115,15 @@ class Product {
     data['category_id'] = this.CategoryId;
     data['car_model_id'] = this.carModelId;
     data['year_id'] = this.yearId;
+    data['models'] = 'ffffff';
     data['part_category_id'] = this.partCategoryId;
     data['cartype_id'] = this.cartype_id;
+    data['maincategory_id'] = this.CategoryId;
     data['prodcountry_id'] = this.prodcountry_id;
     data['producttype_id'] = this.cartype_id;
+    data['maincategory_id'] = this.Main_categoryid;
     data['manufacturer_id'] = this.manufacturer_id;
+    data['qty_reminder'] = this.qty_reminder;
     data['transmission_id'] = this.transmission_id;
     data['store_id'] = this.storeId;
     data['quantity'] = this.quantity;
