@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -146,5 +147,28 @@ class API {
         return jsonDecode(response.body);
       }
     } catch (e) {} finally {}
+  }
+
+
+  postFile(String url, Map<String, String> body,
+      {File attachment}) async {
+    final full_url =
+    Uri.parse('${GlobalConfiguration().getString('api_base_url')}$url');
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    var headers = {
+      'Authorization': 'Bearer  ${prefs.getString('token')}'
+    }; // remove headers if not wanted
+    var request = http.MultipartRequest(
+        'POST', Uri.parse(full_url.toString())); // your server url
+    request.fields.addAll(body); // any other fields required by your server
+    attachment==null?null:  request.files.add(await http.MultipartFile.fromPath('attachment', '${attachment.path}')); // file you want to upload
+    request.headers.addAll(headers);
+    http.StreamedResponse response = await request.send();
+    //print(await request.files);
+
+    return response.stream.bytesToString().then((value) {
+      print(jsonDecode(value));
+      return jsonDecode(value);
+    } );
   }
 }
