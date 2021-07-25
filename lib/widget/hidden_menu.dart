@@ -1,8 +1,6 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trkar_vendor/main.dart';
@@ -21,6 +19,7 @@ import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/navigator.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
+import 'package:trkar_vendor/utils/url_launcher.dart';
 import 'package:trkar_vendor/widget/item_hidden_menu.dart';
 
 // ignore: must_be_immutable
@@ -33,11 +32,9 @@ class _HiddenMenuState extends State<HiddenMenu> {
   bool isconfiguredListern = false;
   int id;
   String username, name, last, photo;
-  String am_pm;
 
   @override
   void initState() {
-    am_pm = DateFormat('a').format(new DateTime.now());
     SharedPreferences.getInstance().then((prefs) {
       setState(() {
         id = prefs.getInt('user_id');
@@ -122,7 +119,8 @@ class _HiddenMenuState extends State<HiddenMenu> {
                     ),
                     ItemHiddenMenu(
                       onTap: () {
-                        Nav.routeReplacement(context, Staff());
+
+                        Nav.route(context, Staff());
                       },
                       icon: SvgPicture.asset(
                         "assets/icons/staff.svg",
@@ -139,7 +137,7 @@ class _HiddenMenuState extends State<HiddenMenu> {
                     ),
                     ItemHiddenMenu(
                       onTap: () {
-                        Nav.routeReplacement(context, Stores());
+                        Nav.route(context, Stores());
                       },
                       icon: SvgPicture.asset(
                         "assets/icons/store.svg",
@@ -156,7 +154,7 @@ class _HiddenMenuState extends State<HiddenMenu> {
                     ),
                     ItemHiddenMenu(
                       onTap: () {
-                        Nav.routeReplacement(context, Orders());
+                        Nav.route(context, Orders());
                       },
                       icon: SvgPicture.asset(
                         "assets/icons/orders.svg",
@@ -173,7 +171,7 @@ class _HiddenMenuState extends State<HiddenMenu> {
                     ),
                     ItemHiddenMenu(
                       onTap: () {
-                        Nav.routeReplacement(context, Products());
+                        Nav.route(context, Products());
                       },
                       icon: SvgPicture.asset(
                         "assets/icons/products.svg",
@@ -190,7 +188,7 @@ class _HiddenMenuState extends State<HiddenMenu> {
                     ),
                     ItemHiddenMenu(
                       onTap: () {
-                        Nav.routeReplacement(context, Invoices());
+                        Nav.route(context, Invoices());
                       },
                       icon: SvgPicture.asset(
                         "assets/icons/invoices.svg",
@@ -207,7 +205,7 @@ class _HiddenMenuState extends State<HiddenMenu> {
                     ),
                     ItemHiddenMenu(
                       onTap: () {
-                        Nav.routeReplacement(context, Tickets());
+                        Nav.route(context, Tickets());
                       },
                       icon: SvgPicture.asset(
                         "assets/icons/tickets.svg",
@@ -224,7 +222,7 @@ class _HiddenMenuState extends State<HiddenMenu> {
                     ),
                     ItemHiddenMenu(
                       onTap: () {
-                        Nav.routeReplacement(context, Edit_profile());
+                        Nav.route(context, Edit_profile());
                       },
                       icon: SvgPicture.asset(
                         "assets/icons/account.svg",
@@ -285,23 +283,28 @@ class _HiddenMenuState extends State<HiddenMenu> {
                       ),
                     ),
 
-                    ItemHiddenMenu(
-                      icon: SvgPicture.asset(
-                        "assets/icons/Call.svg",
-                        height: 30,
-                        width: 30,
-                        color: Colors.orange,
+                    InkWell(
+                      onTap: (){
+                        launchURL('tel:+201111511190');
+                      },
+                      child: ItemHiddenMenu(
+                        icon: SvgPicture.asset(
+                          "assets/icons/Call.svg",
+                          height: 30,
+                          width: 30,
+                          color: Colors.orange,
+                        ),
+                        name: getTransrlate(context, 'contact'),
+                        baseStyle: TextStyle(
+                            color: Colors.white.withOpacity(0.6),
+                            fontSize: 19.0,
+                            fontWeight: FontWeight.w800),
+                        colorLineSelected: Colors.orange,
                       ),
-                      name: getTransrlate(context, 'contact'),
-                      baseStyle: TextStyle(
-                          color: Colors.white.withOpacity(0.6),
-                          fontSize: 19.0,
-                          fontWeight: FontWeight.w800),
-                      colorLineSelected: Colors.orange,
                     ),
                     ItemHiddenMenu(
                       onTap: () {
-                        Nav.routeReplacement(context, FaqPage());
+                        Nav.route(context, FaqPage());
                       },
                       icon: SvgPicture.asset(
                         "assets/icons/faq.svg",

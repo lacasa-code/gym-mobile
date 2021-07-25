@@ -52,19 +52,6 @@ class _Edit_ProductState extends State<Edit_Product> {
   List<Manufacturer> _manufacturers;
   List<Transmission> transmissions;
   List<ProdCountry> _prodcountries;
-  TextEditingController serialcontroler, namecontroler, description;
-  TextEditingController car_made_id_controler,
-      car_model_id_Controler,
-      part_category_id_controller,
-      year_idcontroler,
-      store_id,
-      price_controller,
-      tagscontroler,
-      discountcontroler,
-      transmission_id,
-      manufacturer_id,
-      prodcountry_id,
-      quantityController;
 
   DateTime selectedDate = DateTime.now();
   String SelectDate = ' ';
@@ -90,31 +77,9 @@ class _Edit_ProductState extends State<Edit_Product> {
 
   @override
   void initState() {
+    print(widget.product.carMadeId);
     getAllCareMade();
     getAllCareModel(widget.product.carMadeId);
-    namecontroler = TextEditingController(text: widget.product.name);
-    quantityController =
-        TextEditingController(text: widget.product.quantity.toString());
-    price_controller = TextEditingController(text: widget.product.price);
-    discountcontroler = TextEditingController(text: widget.product.discount);
-    description = TextEditingController(text: widget.product.description);
-    serialcontroler = TextEditingController(text: widget.product.serialNumber);
-    car_made_id_controler =
-        TextEditingController(text: widget.product.carMadeId.toString());
-    car_model_id_Controler =
-        TextEditingController(text: widget.product.carModelId.toString());
-    part_category_id_controller =
-        TextEditingController(text: widget.product.partCategoryId.toString());
-    store_id = TextEditingController(text: widget.product.storeId.toString());
-    tagscontroler = TextEditingController(text: widget.product.name);
-    year_idcontroler =
-        TextEditingController(text: widget.product.yearId.toString());
-    manufacturer_id =
-        TextEditingController(text: widget.product.manufacturer_id.toString());
-    prodcountry_id =
-        TextEditingController(text: widget.product.prodcountry_id.toString());
-    transmission_id =
-        TextEditingController(text: widget.product.transmission_id.toString());
 
     super.initState();
   }
@@ -152,7 +117,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                       height: 10,
                     ),
                     TextFormField(
-                        controller: namecontroler,
+                        initialValue: widget.product.name,
                         keyboardType: TextInputType.text,
                         validator: (String value) {
                           if (value.isEmpty) {
@@ -182,7 +147,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                             height: 10,
                           ),
                           TextFormField(
-                              controller: serialcontroler,
+                              initialValue: widget.product.serialNumber,
                               keyboardType: TextInputType.number,
                               validator: (String value) {
                                 if (value.isEmpty) {
@@ -218,7 +183,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                             height: 10,
                           ),
                           TextFormField(
-                              controller: quantityController,
+                              initialValue: widget.product.quantity,
                               keyboardType: TextInputType.number,
                               validator: (String value) {
                                 if (value.isEmpty) {
@@ -248,8 +213,8 @@ class _Edit_ProductState extends State<Edit_Product> {
                     SizedBox(
                       height: 10,
                     ),
-                    TextField(
-                        controller: price_controller,
+                    TextFormField(
+                        initialValue: widget.product.price,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                             border: InputBorder.none,
@@ -271,8 +236,8 @@ class _Edit_ProductState extends State<Edit_Product> {
                           SizedBox(
                             height: 10,
                           ),
-                          TextField(
-                              controller: discountcontroler,
+                          TextFormField(
+                              initialValue: widget.product.discount,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
                                   border: InputBorder.none,
@@ -296,48 +261,53 @@ class _Edit_ProductState extends State<Edit_Product> {
                         padding: const EdgeInsets.only(bottom: 4, top: 4),
                         child: CarMades == null
                             ? Container()
-                            : FindDropdown<CarMade>(
-                                items: CarMades,
-                                dropdownBuilder: (context, selectedText) =>
-                                    selectedText == null
-                                        ? Container()
-                                        : Align(
-                                            alignment: Alignment.topRight,
-                                            child: Container(
-                                              height: 50,
-                                              width:
-                                                  ScreenUtil.getWidth(context) /
+                            : CarMades.isEmpty
+                                ? Container()
+                                : FindDropdown<CarMade>(
+                                    items: CarMades,
+                                    dropdownBuilder: (context, selectedText) =>
+                                        selectedText == null
+                                            ? Container()
+                                            : Align(
+                                                alignment: Alignment.topRight,
+                                                child: Container(
+                                                  height: 50,
+                                                  width: ScreenUtil.getWidth(
+                                                          context) /
                                                       1.1,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                border: Border.all(
-                                                    color:
-                                                        themeColor.getColor(),
-                                                    width: 2),
-                                              ),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
-                                                children: [
-                                                  AutoSizeText(
-                                                    selectedText.carMade,
-                                                    minFontSize: 8,
-                                                    maxLines: 1,
-                                                    //overflow: TextOverflow.ellipsis,
-                                                    style: TextStyle(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    border: Border.all(
                                                         color: themeColor
                                                             .getColor(),
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                            FontWeight.bold),
+                                                        width: 2),
                                                   ),
-                                                ],
-                                              ),
-                                            )),
-                                dropdownItemBuilder:
-                                    (context, item, isSelected) => Padding(
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    children: [
+                                                      AutoSizeText(
+                                                        selectedText.carMade,
+                                                        minFontSize: 8,
+                                                        maxLines: 1,
+                                                        //overflow: TextOverflow.ellipsis,
+                                                        style: TextStyle(
+                                                            color: themeColor
+                                                                .getColor(),
+                                                            fontSize: 18,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )),
+                                    dropdownItemBuilder: (context, item,
+                                            isSelected) =>
+                                        Padding(
                                           padding: const EdgeInsets.all(12),
                                           child: Text(
                                             item.carMade,
@@ -351,129 +321,124 @@ class _Edit_ProductState extends State<Edit_Product> {
                                                     : FontWeight.w600),
                                           ),
                                         ),
-                                onChanged: (item) {
-                                  car_made_id_controler.text =
-                                      item.id.toString();
-                                  getAllCareModel(item.id);
-                                },
-                                labelStyle: TextStyle(fontSize: 20),
-                                selectedItem: CarMades.isNotEmpty
-                                    ? CarMades.where((element) =>
-                                        element.id ==
-                                        widget.product.carMadeId).first
-                                    : CarMade(carMade: 'Car Made'),
-                                titleStyle: TextStyle(fontSize: 20),
-                                label: "Car Made",
-                                showSearchBox: false,
-                                isUnderLine: false),
+                                    onChanged: (item) {
+                                      widget.product.carMadeId =
+                                          item.id.toString();
+                                      getAllCareModel(item.id.toString());
+                                    },
+                                    labelStyle: TextStyle(fontSize: 20),
+                                    selectedItem: CarMades.isNotEmpty
+                                        ? CarMades.where((element) =>
+                                                element.id ==
+                                                widget.product
+                                                    .carMadeId).isNotEmpty
+                                            ? CarMades.where((element) =>
+                                                element.id ==
+                                                widget.product.carMadeId).single
+                                            : CarMade(carMade: 'Car Made')
+                                        : CarMade(carMade: 'Car Made'),
+                                    titleStyle: TextStyle(fontSize: 20),
+                                    label: "Car Made",
+                                    showSearchBox: false,
+                                    isUnderLine: false),
                       ),
-                    ),
-                    Text(
-                      "Car Model",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                     ),
                     carmodels == null
                         ? Container()
-                        : Container(
-                            padding: const EdgeInsets.all(6.0),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.only(bottom: 4, top: 4),
-                              child: FindDropdown<Carmodel>(
-                                  items: carmodels,
-                                  // onFind: (f) async {
-                                  //   search.run(() {
-                                  //     setState(() {
-                                  //       filteredcarmodels_data = carmodels
-                                  //           .where((u) =>
-                                  //       (u.carmodel
-                                  //           .toLowerCase()
-                                  //           .contains(f
-                                  //           .toLowerCase())))
-                                  //           .toList();
-                                  //     });
-                                  //   });
-                                  //   return filteredcarmodels_data;
-                                  // } ,
-                                  dropdownBuilder: (context, selectedText) =>
-                                      selectedText == null
-                                          ? Container()
-                                          : Align(
-                                              alignment: Alignment.topRight,
-                                              child: Container(
-                                                height: 50,
-                                                width: ScreenUtil.getWidth(
-                                                        context) /
-                                                    1.1,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  border: Border.all(
-                                                      color:
-                                                          themeColor.getColor(),
-                                                      width: 2),
-                                                ),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                  children: [
-                                                    AutoSizeText(
-                                                      selectedText.carmodel,
-                                                      minFontSize: 8,
-                                                      maxLines: 1,
-                                                      //overflow: TextOverflow.ellipsis,
-                                                      style: TextStyle(
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Car Model",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 15),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.all(6.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                ),
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.only(bottom: 4, top: 4),
+                                  child: FindDropdown<Carmodel>(
+                                      items: carmodels,
+                                      dropdownBuilder: (context,
+                                              selectedText) =>
+                                          selectedText == null
+                                              ? Container()
+                                              : Align(
+                                                  alignment: Alignment.topRight,
+                                                  child: Container(
+                                                    height: 50,
+                                                    width: ScreenUtil.getWidth(
+                                                            context) /
+                                                        1.1,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      border: Border.all(
                                                           color: themeColor
                                                               .getColor(),
-                                                          fontSize: 18,
-                                                          fontWeight:
-                                                              FontWeight.bold),
+                                                          width: 2),
                                                     ),
-                                                  ],
-                                                ),
-                                              )),
-                                  dropdownItemBuilder: (context, item,
-                                          isSelected) =>
-                                      Padding(
-                                        padding: const EdgeInsets.all(12),
-                                        child: Text(
-                                          item.carmodel,
-                                          style: TextStyle(
-                                              color: isSelected
-                                                  ? themeColor.getColor()
-                                                  : Color(0xFF5D6A78),
-                                              fontSize: isSelected ? 20 : 17,
-                                              fontWeight: isSelected
-                                                  ? FontWeight.w600
-                                                  : FontWeight.w600),
-                                        ),
-                                      ),
-                                  onChanged: (item) {
-                                    car_model_id_Controler.text =
-                                        item.id.toString();
-                                  },
-                                  // onFind: (text) {
-                                  //
-                                  // },
-                                  labelStyle: TextStyle(fontSize: 20),
-                                  titleStyle: TextStyle(fontSize: 20),
-                                  selectedItem: carmodels.isNotEmpty
-                                      ? carmodels
-                                          .where((element) =>
-                                              element.id ==
-                                              widget.product.carModelId)
-                                          .first
-                                      : Carmodel(carmodel: 'Select Car model'),
-                                  label: "Car Model",
-                                  showSearchBox: false,
-                                  isUnderLine: false),
-                            ),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        AutoSizeText(
+                                                          selectedText.carmodel,
+                                                          minFontSize: 8,
+                                                          maxLines: 1,
+                                                          //overflow: TextOverflow.ellipsis,
+                                                          style: TextStyle(
+                                                              color: themeColor
+                                                                  .getColor(),
+                                                              fontSize: 18,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )),
+                                      dropdownItemBuilder: (context, item,
+                                              isSelected) =>
+                                          Padding(
+                                            padding: const EdgeInsets.all(12),
+                                            child: Text(
+                                              item.carmodel,
+                                              style: TextStyle(
+                                                  color: isSelected
+                                                      ? themeColor.getColor()
+                                                      : Color(0xFF5D6A78),
+                                                  fontSize:
+                                                      isSelected ? 20 : 17,
+                                                  fontWeight: isSelected
+                                                      ? FontWeight.w600
+                                                      : FontWeight.w600),
+                                            ),
+                                          ),
+                                      onChanged: (item) {
+                                        widget.product.carModelId =
+                                            item.id.toString();
+                                      },
+                                      // onFind: (text) {
+                                      //
+                                      // },
+                                      labelStyle: TextStyle(fontSize: 20),
+                                      titleStyle: TextStyle(fontSize: 20),
+                                      selectedItem:  Carmodel(carmodel: 'Select Car model'),
+                                      label: "Car Model",
+                                      showSearchBox: false,
+                                      isUnderLine: false),
+                                ),
+                              ),
+                            ],
                           ),
                     Text(
                       "Part Categories",
@@ -562,7 +527,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                                         ),
                                       ),
                                   onChanged: (item) {
-                                    part_category_id_controller.text =
+                                    widget.product.partCategoryId =
                                         item.id.toString();
                                   },
                                   // onFind: (text) {
@@ -570,14 +535,8 @@ class _Edit_ProductState extends State<Edit_Product> {
                                   // },
                                   labelStyle: TextStyle(fontSize: 20),
                                   titleStyle: TextStyle(fontSize: 20),
-                                  selectedItem: part_Categories.isNotEmpty
-                                      ? part_Categories
-                                          .where((element) =>
-                                              element.id ==
-                                              widget.product.partCategoryId)
-                                          .first
-                                      : Part_Category(
-                                          categoryName: 'Select Part Category'),
+                                  selectedItem: Part_Category(
+                                      categoryName: 'Select Part Category'),
                                   label: "part",
                                   showSearchBox: false,
                                   isUnderLine: false),
@@ -670,17 +629,11 @@ class _Edit_ProductState extends State<Edit_Product> {
                                         ),
                                       ),
                                   onChanged: (item) {
-                                    year_idcontroler.text = item.id.toString();
+                                    widget.product.yearId = item.id.toString();
                                   },
                                   labelStyle: TextStyle(fontSize: 20),
                                   titleStyle: TextStyle(fontSize: 20),
-                                  selectedItem: years.isNotEmpty
-                                      ? years
-                                          .where((element) =>
-                                              element.id ==
-                                              widget.product.yearId)
-                                          .first
-                                      : Year(year: 'Select Year'),
+                                  selectedItem: Year(year: 'Select Year'),
                                   label: "Year",
                                   showSearchBox: false,
                                   isUnderLine: false),
@@ -701,20 +654,6 @@ class _Edit_ProductState extends State<Edit_Product> {
                         padding: const EdgeInsets.only(bottom: 4, top: 4),
                         child: FindDropdown<Categories>(
                             items: _category,
-                            // onFind: (f) async {
-                            //   search.run(() {
-                            //     setState(() {
-                            //       filteredcarmodels_data = carmodels
-                            //           .where((u) =>
-                            //       (u.carmodel
-                            //           .toLowerCase()
-                            //           .contains(f
-                            //           .toLowerCase())))
-                            //           .toList();
-                            //     });
-                            //   });
-                            //   return filteredcarmodels_data;
-                            // } ,
                             dropdownBuilder: (context, selectedText) =>
                                 selectedText == null
                                     ? Container()
@@ -773,7 +712,9 @@ class _Edit_ProductState extends State<Edit_Product> {
                             // },
                             labelStyle: TextStyle(fontSize: 20),
                             titleStyle: TextStyle(fontSize: 20),
-                            selectedItem: Categories(name: 'Categories'),
+                            selectedItem:widget.product.category!=null?
+                            widget.product.category:
+                            Categories(name: 'Categories'),
                             label: "Categories",
                             showSearchBox: false,
                             isUnderLine: false),
@@ -866,7 +807,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                                         ),
                                       ),
                                   onChanged: (item) {
-                                    store_id.text = item.id.toString();
+                                    widget.product.storeId = item.id.toString();
                                   },
                                   // onFind: (text) {
                                   //
@@ -971,7 +912,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                                   ),
                                 ),
                             onChanged: (item) {
-                              tagscontroler.text = item.name.toString();
+                              //   widget.product.tags = item.name.toString();
                             },
                             // onFind: (text) {
                             //
@@ -1070,22 +1011,16 @@ class _Edit_ProductState extends State<Edit_Product> {
                                         ),
                                       ),
                                   onChanged: (item) {
-                                    prodcountry_id.text = item.id.toString();
+                                    widget.product.prodcountry_id =
+                                        item.id.toString();
                                   },
                                   // onFind: (text) {
                                   //
                                   // },
                                   labelStyle: TextStyle(fontSize: 20),
                                   titleStyle: TextStyle(fontSize: 20),
-                                  selectedItem: _prodcountries.isNotEmpty
-                                      ? _prodcountries
-                                          .where((element) =>
-                                              element.id ==
-                                              widget.product.prodcountry_id)
-                                          .first
-                                      : ProdCountry(
-                                          countryName:
-                                              'Select Product Country'),
+                                  selectedItem: ProdCountry(
+                                      countryName: 'Select Product Country'),
                                   label: "ProdCountry",
                                   showSearchBox: false,
                                   isUnderLine: false),
@@ -1177,22 +1112,16 @@ class _Edit_ProductState extends State<Edit_Product> {
                                         ),
                                       ),
                                   onChanged: (item) {
-                                    manufacturer_id.text = item.id.toString();
+                                    widget.product.manufacturer_id =
+                                        item.id.toString();
                                   },
                                   // onFind: (text) {
                                   //
                                   // },
                                   labelStyle: TextStyle(fontSize: 20),
                                   titleStyle: TextStyle(fontSize: 20),
-                                  selectedItem: _manufacturers.isNotEmpty
-                                      ? _manufacturers
-                                          .where((element) =>
-                                              element.id ==
-                                              widget.product.manufacturer_id)
-                                          .first
-                                      : Manufacturer(
-                                          manufacturerName:
-                                              'Select manufacturer'),
+                                  selectedItem: Manufacturer(
+                                      manufacturerName: 'Select manufacturer'),
                                   label: "manufacturer",
                                   showSearchBox: false,
                                   isUnderLine: false),
@@ -1284,22 +1213,16 @@ class _Edit_ProductState extends State<Edit_Product> {
                                         ),
                                       ),
                                   onChanged: (item) {
-                                    transmission_id.text = item.id.toString();
+                                    widget.product.transmission_id =
+                                        item.id.toString();
                                   },
                                   // onFind: (text) {
                                   //
                                   // },
                                   labelStyle: TextStyle(fontSize: 20),
                                   titleStyle: TextStyle(fontSize: 20),
-                                  selectedItem: transmissions.isNotEmpty
-                                      ? transmissions
-                                          .where((element) =>
-                                              element.id ==
-                                              widget.product.transmission_id)
-                                          .first
-                                      : Transmission(
-                                          transmissionName:
-                                              'Select Transmission'),
+                                  selectedItem: Transmission(
+                                      transmissionName: 'Select Transmission'),
                                   label: "Transmissions",
                                   showSearchBox: false,
                                   isUnderLine: false),
@@ -1319,7 +1242,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                             height: 10,
                           ),
                           TextFormField(
-                            controller: description,
+                            initialValue: widget.product.description,
                             keyboardType: TextInputType.text,
                             decoration: InputDecoration(
                                 border: InputBorder.none,
@@ -1387,27 +1310,10 @@ class _Edit_ProductState extends State<Edit_Product> {
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
                             setState(() => loading = true);
-                            API(context).post("products/${widget.product.id}", {
-                              "name": namecontroler.text,
-                              "categories": "[1, 2]",
-                              "car_made_id": car_made_id_controler.text,
-                              "car_model_id": car_model_id_Controler.text,
-                              "year_id": year_idcontroler.text,
-                              "part_category_id":
-                                  part_category_id_controller.text,
-                              // "photo": photos.map((v) => v).toList(),
-
-                              "transmission_id": transmission_id.text,
-                              "discount": discountcontroler.text,
-                              "price": price_controller.text,
-                              "description": description.text,
-                              "store_id": store_id.text,
-                              "quantity": quantityController.text,
-                              "serial_number": serialcontroler.text,
-                              "tags": tagscontroler.text,
-                              "manufacturer_id": manufacturer_id.text,
-                              "prodcountry_id": prodcountry_id.text
-                            }).then((value) {
+                            API(context)
+                                .post("products/${widget.product.id}",
+                                    widget.product.toJson())
+                                .then((value) {
                               if (value != null) {
                                 setState(() {
                                   loading = false;
@@ -1456,7 +1362,7 @@ class _Edit_ProductState extends State<Edit_Product> {
     });
   }
 
-  Future<void> getAllCareModel(int id) async {
+  Future<void> getAllCareModel(String id) async {
     API(context).get('car-modelslist/$id').then((value) {
       if (value != null) {
         setState(() {

@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -27,6 +28,8 @@ class _Edit_profileState extends State<Edit_profile> {
   bool _isLoading = false;
   bool loading = false;
   UserInfo userModal;
+  List<String> items = ["male", "female"];
+
   String password;
   final _formKey = GlobalKey<FormState>();
   TextEditingController passwordController,
@@ -268,17 +271,28 @@ class _Edit_profileState extends State<Edit_profile> {
                                   'الجنس',
                                 )),
                             Padding(
-                                padding: EdgeInsets.only(
-                                    left: 25.0, right: 25.0, top: 2.0,bottom: 10),
-                                child: TextFormField(
-                                  initialValue: " ",
-                                  decoration: InputDecoration(),
-                                  enabled: !_status,
-                                  onSaved: (String val) =>
-                                  userModal.gender = val,
-                                  onChanged: (String val) =>
-                                  userModal.gender = val,
-                                )),
+                              padding: EdgeInsets.only(
+                                  left: 25.0,
+                                  right: 25.0,
+                                  top: 10.0,
+                                  bottom: 10),
+                              child: DropdownSearch<String>(
+                                maxHeight: 120,
+                                validator: (String item) {
+                                  if (item == null) {
+                                    return "Required field";
+                                  } else
+                                    return null;
+                                },
+                                items: items,
+                                selectedItem: userModal.gender,
+                                enabled: !_status,
+                                //  onFind: (String filter) => getData(filter),
+                                itemAsString: (String u) => u,
+                                onChanged: (String data) =>
+                                userModal.gender = data,
+                              ),
+                            ),
 
                             _status
                                 ? _getEditIcon()

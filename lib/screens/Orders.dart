@@ -32,6 +32,7 @@ class _OrdersState extends State<Orders> {
   GlobalKey<AutoCompleteTextFieldState<Order>> key = new GlobalKey();
   ScrollController _scrollController = new ScrollController();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  String url="show/orders";
 
   int i = 2;
 
@@ -156,7 +157,7 @@ class _OrdersState extends State<Orders> {
                                     builder: (_) => Sortdialog()).then((val) {
                                   print(val);
                                   API(context)
-                                      .get('users?sort_type=${val}')
+                                      .get('$url?sort_type=${val}')
                                       .then((value) {
                                     if (value != null) {
                                       if (value['status_code'] == 200) {
@@ -418,7 +419,7 @@ class _OrdersState extends State<Orders> {
 
   Future<void> getAllStore() async {
     API(context)
-        .post('show/orders?ordered_by=created_at&sort_type=desc',{})
+        .post('$url?ordered_by=created_at&sort_type=desc',{})
         .then((value) {
       if (value != null) {
         setState(() {

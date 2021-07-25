@@ -29,6 +29,7 @@ class _ProductsState extends State<Products> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   bool isSelect = false;
   List<int> selectProduct = [];
+  String url="products";
 
   @override
   void initState() {
@@ -273,7 +274,7 @@ class _ProductsState extends State<Products> {
                                           .then((val) {
                                         print(val);
                                         API(context)
-                                            .get('users?sort_type=${val}')
+                                            .get('$url?sort_type=${val}')
                                             .then((value) {
                                           if (value != null) {
                                             if (value['status_code'] == 200) {
@@ -394,7 +395,7 @@ class _ProductsState extends State<Products> {
   }
 
   Future<void> getProducts() async {
-    API(context).get('products').then((value) {
+    API(context).get(url).then((value) {
       if (value != null) {
         setState(() {
           products = Products_model.fromJson(value).product;

@@ -2,15 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Sortdialog extends StatefulWidget {
-  const Sortdialog({Key key}) : super(key: key);
-
+   Sortdialog({Key key, this.character}) : super(key: key);
+ String character;
   @override
   _SortdialogState createState() => _SortdialogState();
 }
 
 class _SortdialogState extends State<Sortdialog> {
   List characters=["ASC","DESC"];
-  String _character='ASC';
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -46,7 +46,7 @@ class _SortdialogState extends State<Sortdialog> {
                       icon:
                           Icon(Icons.close, size: 35, color: Color(0xff7B7B7B)),
                       onPressed: () {
-                        Navigator.pop(context,_character);
+                        Navigator.pop(context,widget.character);
                       })
                 ],
               ),
@@ -58,10 +58,10 @@ class _SortdialogState extends State<Sortdialog> {
               title: const Text('من الأعلى'),
               value: characters[0],
               activeColor: Colors.orange,
-              groupValue: _character,
+              groupValue: widget.character,
               onChanged: (String value) {
                 setState(() {
-                    _character = value;
+                  widget.character = value;
                     Navigator.pop(context,value);
 
                 });
@@ -75,10 +75,10 @@ class _SortdialogState extends State<Sortdialog> {
               value: characters[1],
               activeColor: Colors.orange,
 
-              groupValue: _character,
+              groupValue: widget.character,
               onChanged: (String value) {
                 setState(() {
-                    _character = value;
+                  widget.character = value;
                     Navigator.pop(context,value);
                 });
               },

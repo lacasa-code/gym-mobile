@@ -1,5 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_tags/flutter_tags.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
+import 'package:trkar_vendor/model/car_made.dart';
+import 'package:trkar_vendor/model/category.dart';
 import 'package:trkar_vendor/model/tags_model.dart';
 
 class Products_model {
@@ -34,26 +37,30 @@ class Product {
   String description;
   String price;
   String discount;
-  int qty_reminder;
+  String qty_reminder;
   String createdAt;
   bool isSelect=false;
-  int carMadeId;
-  int carModelId;
+  String carMadeId;
+  String carModelId;
   List<Photo> photo;
   List<Asset> photos;
   List<Tag> tags;
-  int yearId;
-  int CategoryId;
-  int partCategoryId;
-  int vendorId;
-  int storeId;
-  int manufacturer_id;
-  int Main_categoryid;
-  int prodcountry_id;
-  dynamic cartype_id;
-  int transmission_id;
-  int quantity;
+  String yearId;
+  String CategoryId;
+  String partCategoryId;
+  String vendorId;
+  String storeId;
+  String manufacturer_id;
+  String Main_categoryid;
+  String prodcountry_id;
+  String cartype_id;
+  String transmission_id;
+  String quantity;
   String serialNumber;
+
+  Categories category;
+
+  CarMade carMade;
 
   Product(
       {this.id,
@@ -82,31 +89,51 @@ class Product {
     description = json['description'];
     price = json['price'];
     discount = json['discount'].toString();
-    manufacturer_id = json['manufacturer_id'];
-    transmission_id = json['transmission_id'];
-    prodcountry_id = json['prodcountry_id'];
     createdAt = json['created_at'];
-    carMadeId = json['car_made_id'];
-    cartype_id = json['producttype_id'].toString();
+    carMadeId = json['car_made_id'].toString();
     carModelId = json['car_model_id'];
-
-      if (json['photo'] != null) {
-        photo = new List<Photo>();
-        json['photo'].forEach((v) {
-          photo.add(new Photo.fromJson(v));
-        });
-      };
-
+    cartype_id= json['cartype_id'].toString();
     yearId = json['year_id'];
-    partCategoryId = json['part_category_id'];
-    vendorId = json['vendor_id'];
-    storeId = json['store_id'];
-    quantity = json['quantity'];
+    partCategoryId = json['part_category_id'].toString();
+    CategoryId = json['category_id'].toString();
+    vendorId = json['vendor_id'].toString();
+    storeId = json['store_id'].toString();
+    quantity = json['quantity'].toString();
     serialNumber = json['serial_number'];
+    if (json['photo'] != null) {
+      photo = new List<Photo>();
+      json['photo'].forEach((v) { photo.add(new Photo.fromJson(v)); });
+    }
+    if (json['tags'] != null) {
+      tags = new List<Tag>();
+      json['tags'].forEach((v) { tags.add(new Tag.fromJson(v)); });
+    }
+    category = json['category'] != null ? new Categories.fromJson(json['category']) : null;
+    carMade = json['car_made'] != null ? new CarMade.fromJson(json['car_made']) : null;
+    // if (json['car_model'] != null) {
+    //   carModel = new List<CarModel>();
+    //   json['car_model'].forEach((v) { carModel.add(new CarModel.fromJson(v)); });
+    // }
+    // carType = json['car_type'] != null ? new CarType.fromJson(json['car_type']) : null;
+     //year = json['year'];
+    // partCategory = json['part_category'] != null ? new PartCategory.fromJson(json['part_category']) : null;
+    // store = json['store'] != null ? new Store.fromJson(json['store']) : null;
+    // vendor = json['vendor'] != null ? new Vendor.fromJson(json['vendor']) : null;
+    // manufacturer = json['manufacturer'] != null ? new Manufacturer.fromJson(json['manufacturer']) : null;
+    // originCountry = json['origin_country'] != null ? new OriginCountry.fromJson(json['origin_country']) : null;
+    // transmissionId = json['transmission_id'];
+    // transmission = json['transmission'] != null ? new Transmission.fromJson(json['transmission']) : null;
+    // producttypeId = json['producttype_id'] != null ? new ProducttypeId.fromJson(json['producttype_id']) : null;
+    // serialCoding = json['serial_coding'];
+    // serialId = json['serial_id'];
+    // approved = json['approved'];
+    // qtyReminder = json['qty_reminder'];
+    // holesalePrice = json['holesale_price'];
+    // noOfOrders = json['no_of_orders'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+  Map<String, String> toJson() {
+    final Map<String, String> data = new Map<String, String>();
     data['name'] = this.name;
     data['description'] = this.description;
     data['price'] = this.price;

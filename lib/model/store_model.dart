@@ -62,11 +62,18 @@ class Store {
   int _status;
   String _createdAt;
   String _updatedAt;
+  int countryId;
+  int areaId;
+  int cityId;
+  String headCenter;
+  String serialId;
+  String countryName;
+  String areaName;
+  String cityName;
   dynamic _deletedAt;
   String _vendorName;
   Vendor _vendor;
   bool isSelect=false;
-
   set id(int value) {
     _id = value;
   }
@@ -121,20 +128,27 @@ class Store {
   }
 
   Store.fromJson(dynamic json) {
-    _id = json["id"];
-    _name = json["name"];
-    _address = json["address"];
-    _lat = json["lat"];
-    _long = json["long"];
-    _vendorId = json["vendor_id"];
-    _moderatorName = json["moderator_name"];
-    _moderatorPhone = json["moderator_phone"];
-    _moderatorAltPhone = json["moderator_alt_phone"];
-    _status = json["status"];
-    _createdAt = json["created_at"];
-    _updatedAt = json["updated_at"];
-    _deletedAt = json["deleted_at"];
-    _vendorName = json["vendor_name"];
+    id = json['id'];
+    name = json['name'];
+    address = json['address'];
+    lat = json['lat'];
+    long = json['long'];
+    vendorId = json['vendor_id'];
+    countryId = json['country_id'];
+    areaId = json['area_id'];
+    cityId = json['city_id'];
+    countryName = json['country_name'];
+    areaName = json['area_name'];
+    cityName = json['city_name'];
+    headCenter = json['head_center'];
+    serialId = json['serial_id'];
+    moderatorPhone = json['moderator_phone'];
+    moderatorAltPhone = json['moderator_alt_phone'];
+    status = json['status'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    deletedAt = json['deleted_at'];
+    vendorName = json['vendor_name'];
     _vendor = json["vendor"] != null ? Vendor.fromJson(json["vendor"]) : null;
   }
 

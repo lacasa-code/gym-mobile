@@ -290,7 +290,7 @@ class _tickets_informationState extends State<tickets_information> {
                             showDialog(
                                 context: context,
                                 builder: (_) =>
-                                    ResultOverlay(value['message']));
+                                    ResultOverlay(value['errors']));
                           }
                         }
                       });

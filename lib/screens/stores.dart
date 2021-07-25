@@ -29,6 +29,7 @@ class _StoresState extends State<Stores> {
   List<Store> stores;
   List<Store> filteredStores;
   List<int> selectStores = [];
+  String url="stores";
 
   final debouncer = Search(milliseconds: 1000);
   AutoCompleteTextField searchTextField;
@@ -68,7 +69,7 @@ class _StoresState extends State<Stores> {
             SizedBox(
               width: 10,
             ),
-            Text(getTransrlate(context, 'store')),
+            Text(getTransrlate(context, 'stores')),
           ],
         ),
         actions: [
@@ -275,7 +276,7 @@ class _StoresState extends State<Stores> {
                                     .then((val) {
                                   print(val);
                                   API(context)
-                                      .get('users?sort_type=${val}')
+                                      .get('$url?sort_type=${val}')
                                       .then((value) {
                                     if (value != null) {
                                       if (value['status_code'] == 200) {
@@ -521,7 +522,7 @@ class _StoresState extends State<Stores> {
   }
 
   Future<void> getAllStore() async {
-    API(context).get('stores').then((value) {
+    API(context).get(url).then((value) {
       if (value != null) {
         setState(() {
           filteredStores = stores = [];

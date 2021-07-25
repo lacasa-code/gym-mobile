@@ -40,6 +40,7 @@ class User {
   String passwordConfirmation;
   int _addedById;
   int rolesid;
+  int storeid;
   Role _roles;
 bool isSelect=false;
 

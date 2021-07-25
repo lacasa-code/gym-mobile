@@ -33,12 +33,14 @@ class Invoices extends StatefulWidget {
 class _InvoicesState extends State<Invoices> {
   List<Invoice> orders;
   List<Invoice> filteredOrders;
+  String _character='ASC';
+
   final debouncer = Search(milliseconds: 1000);
   AutoCompleteTextField searchTextField;
   GlobalKey<AutoCompleteTextFieldState<Order>> key = new GlobalKey();
   ScrollController _scrollController = new ScrollController();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-
+  String url="show/invoices";
   int i = 2;
 
   @override
@@ -161,10 +163,12 @@ class _InvoicesState extends State<Invoices> {
                     onTap: () {
                       showDialog(
                           context: context,
-                          builder: (_) => Sortdialog()).then((val) {
-                        print(val);
+                          builder: (_) => Sortdialog(character: _character,)).then((val) {
+                       setState(() {
+                         _character=val;
+                       });
                         API(context)
-                            .get('users?sort_type=${val}')
+                            .get('$url?sort_type=${val}')
                             .then((value) {
                           if (value != null) {
                             if (value['status_code'] == 200) {
@@ -272,7 +276,7 @@ class _InvoicesState extends State<Invoices> {
 
   Future<void> getAllStore() async {
     API(context)
-        .get('show/invoices')
+        .get(url)
         .then((value) {
       if (value != null) {
         setState(() {

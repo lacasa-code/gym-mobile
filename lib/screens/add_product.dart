@@ -59,14 +59,12 @@ class _Add_ProductState extends State<Add_Product> {
   List<CarType> cartypes;
   List<Asset> images = List<Asset>();
   List<Main_Category> _listCategory;
-
   DateTime selectedDate = DateTime.now();
   String SelectDate = ' ';
   File _image;
   List<String> photos = [];
   String base64Image;
   final search = Search(milliseconds: 1000);
-
   final picker = ImagePicker();
 
   Future getImage() async {
@@ -211,7 +209,7 @@ class _Add_ProductState extends State<Add_Product> {
                       //  onFind: (String filter) => getData(filter),
                       itemAsString: (Main_Category u) => u.mainCategoryName,
                       onChanged: (Main_Category data) =>
-                      product.Main_categoryid = data.id),
+                      product.Main_categoryid = data.id.toString()),
                 ),
                 SizedBox(
                   height: 5,
@@ -256,7 +254,7 @@ class _Add_ProductState extends State<Add_Product> {
                                     //  onFind: (String filter) => getData(filter),
                                     itemAsString: (Categories u) => u.name,
                                     onChanged: (Categories data) =>
-                                        product.CategoryId = data.id),
+                                        product.CategoryId = data.id.toString()),
                               ),
                       ],
                     ),
@@ -298,7 +296,7 @@ class _Add_ProductState extends State<Add_Product> {
                                     itemAsString: (Part_Category u) =>
                                         u.categoryName,
                                     onChanged: (Part_Category data) =>
-                                        product.partCategoryId = data.id),
+                                        product.partCategoryId = data.id.toString()),
                               ),
                       ],
                     ),
@@ -345,7 +343,7 @@ class _Add_ProductState extends State<Add_Product> {
                                 itemAsString: (Transmission u) =>
                                     u.transmissionName,
                                 onChanged: (Transmission data) =>
-                                    product.transmission_id = data.id),
+                                    product.transmission_id = data.id.toString()),
                           ),
                     CarMades == null
                         ? Container(
@@ -374,7 +372,7 @@ class _Add_ProductState extends State<Add_Product> {
                                 //  onFind: (String filter) => getData(filter),
                                 itemAsString: (CarMade u) => u.carMade,
                                 onChanged: (CarMade data) {
-                                  product.carMadeId = data.id;
+                                  product.carMadeId = data.id.toString();
                                   getAllCareModel(data.id);
                                 }),
                           ),
@@ -413,7 +411,7 @@ class _Add_ProductState extends State<Add_Product> {
                                 //  onFind: (String filter) => getData(filter),
                                 itemAsString: (Carmodel u) => u.carmodel,
                                 onChanged: (Carmodel data) =>
-                                    product.carModelId = data.id),
+                                    product.carModelId = data.id.toString()),
                           ),
                     years == null
                         ? Container(
@@ -442,7 +440,7 @@ class _Add_ProductState extends State<Add_Product> {
                                 //  onFind: (String filter) => getData(filter),
                                 itemAsString: (Year u) => u.year,
                                 onChanged: (Year data) =>
-                                    product.yearId = data.id),
+                                    product.yearId = data.id.toString()),
                           ),
                   ],
                 ),
@@ -507,7 +505,7 @@ class _Add_ProductState extends State<Add_Product> {
                             //  onFind: (String filter) => getData(filter),
                             itemAsString: (Manufacturer u) => u.manufacturerName,
                             onChanged: (Manufacturer data) =>
-                                product.manufacturer_id = data.id),
+                                product.manufacturer_id = data.id.toString()),
                       ),
                 SizedBox(
                   height: 10,
@@ -581,7 +579,7 @@ class _Add_ProductState extends State<Add_Product> {
                             //  onFind: (String filter) => getData(filter),
                             itemAsString: (Store u) => u.name,
                             onChanged: (Store data) =>
-                                product.storeId = data.id),
+                                product.storeId = data.id.toString()),
                       ),
                 MyTextFormField(
                   intialLabel: product.price ?? ' ',
@@ -616,7 +614,7 @@ class _Add_ProductState extends State<Add_Product> {
                     return null;
                   },
                   onSaved: (String value) {
-                    product.quantity = int.parse(value);
+                    product.quantity = value;
                   },
                 ),
                 MyTextFormField(
@@ -634,7 +632,7 @@ class _Add_ProductState extends State<Add_Product> {
                     return null;
                   },
                   onSaved: (String value) {
-                    product.qty_reminder = int.parse(value);
+                    product.qty_reminder = value;
                   },
                 ),
                 MyTextFormField(
@@ -678,7 +676,7 @@ class _Add_ProductState extends State<Add_Product> {
                             //  onFind: (String filter) => getData(filter),
                             itemAsString: (ProdCountry u) => u.countryName,
                             onChanged: (ProdCountry data) =>
-                                product.prodcountry_id = data.id),
+                                product.prodcountry_id = data.id.toString()),
                       ),
                 SizedBox(
                   height: 10,
@@ -826,7 +824,7 @@ class _Add_ProductState extends State<Add_Product> {
                             product.photos=images;
                             setState(() => loading = true);
                             API(context)
-                                .post("add/products", product.toJson())
+                                .postFile("add/products", product.toJson(),attachment: images)
                                 .then((value) {
                               if (value != null) {
                                 setState(() {
@@ -895,7 +893,7 @@ class _Add_ProductState extends State<Add_Product> {
     });
   }
 
-  Future<void> getAllCareModel(int id) async {
+  Future<void> getAllCareModel(String id) async {
     API(context).get('car-modelslist/$id').then((value) {
       if (value != null) {
         setState(() {

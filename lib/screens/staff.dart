@@ -34,6 +34,7 @@ class _StaffState extends State<Staff> {
   GlobalKey<AutoCompleteTextFieldState<User>> key = new GlobalKey();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   bool isSelect = false;
+  String url="users";
 
   @override
   void initState() {
@@ -275,7 +276,7 @@ class _StaffState extends State<Staff> {
                                         print(val);
                                         if(val!=null){
                                           API(context)
-                                              .get('users?sort_type=${val}')
+                                              .get('$url?sort_type=${val}')
                                               .then((value) {
                                             if (value != null) {
                                               if (value['status_code'] == 200) {
@@ -528,7 +529,7 @@ class _StaffState extends State<Staff> {
   }
 
   Future<void> getAllStore() async {
-    API(context).get('users').then((value) {
+    API(context).get(url).then((value) {
       if (value != null) {
         setState(() {
           filteredStores = staff = User_model.fromJson(value).data;

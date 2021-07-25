@@ -1,10 +1,13 @@
 import 'dart:convert';
-import 'dart:io';
+
+import 'package:http_parser/http_parser.dart';
+import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:http/http.dart' as http;
+import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trkar_vendor/screens/Maintenance.dart';
 import 'package:trkar_vendor/utils/navigator.dart';
@@ -22,7 +25,7 @@ class API {
     try {
       print(full_url);
 
-      http.Response response = await http.get(full_url, headers: {
+      http.Response response = await http.get(Uri.parse(full_url), headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'Authorization': 'Bearer ${prefs.getString('token')}',
@@ -62,7 +65,7 @@ class API {
     print("full_url =$full_url");
     print(body);
     try {
-      http.Response response = await http.post(full_url,
+      http.Response response = await http.post(Uri.parse(full_url),
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
@@ -105,7 +108,7 @@ class API {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     try {
-      http.Response response = await http.put(full_url,
+      http.Response response = await http.put(Uri.parse(full_url),
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
@@ -132,7 +135,7 @@ class API {
     print(full_url);
     try {
       http.Response response = await http.delete(
-        full_url,
+        Uri.parse(full_url),
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -151,7 +154,7 @@ class API {
 
 
   postFile(String url, Map<String, String> body,
-      {File attachment}) async {
+      {List<Asset> attachment}) async {
     final full_url =
     Uri.parse('${GlobalConfiguration().getString('api_base_url')}$url');
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -160,8 +163,15 @@ class API {
     }; // remove headers if not wanted
     var request = http.MultipartRequest(
         'POST', Uri.parse(full_url.toString())); // your server url
-    request.fields.addAll(body); // any other fields required by your server
-    attachment==null?null:  request.files.add(await http.MultipartFile.fromPath('attachment', '${attachment.path}')); // file you want to upload
+    request.fields.addAll(body);
+    for (Asset asset in attachment) {
+      ByteData byteData = await asset.getByteData();
+      List<int> imageData = byteData.buffer.asUint8List();
+      request.files.add(http.MultipartFile.fromBytes( "photo",imageData,
+        filename: 'photo',
+        contentType: MediaType("image", "jpg"),));
+    }
+   // attachment==null?null:  request.files.add(await http.MultipartFile.fromPath('photo[]', '${attachment[0].identifier}')); // file you want to upload
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
     //print(await request.files);

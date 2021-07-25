@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/roles_model.dart';
+import 'package:trkar_vendor/model/store_model.dart';
 import 'package:trkar_vendor/model/user_model.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
@@ -23,12 +24,15 @@ class _add_StaffState extends State<add_Staff> {
   bool loading = false;
   final _formKey = GlobalKey<FormState>();
   List<Role> roles;
+  List<Store> _listStore;
   bool passwordVisible = false;
   User user = User();
 
   @override
   void initState() {
     getRoles();
+    getAllStore();
+
     super.initState();
   }
 
@@ -143,6 +147,30 @@ class _add_StaffState extends State<add_Staff> {
                         SizedBox(
                           height: 10,
                         ),
+                        Text("${getTransrlate(context, 'stores')}",style: TextStyle(color: Colors.black,fontSize: 16),),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        _listStore == null
+                            ? Container()
+                            : DropdownSearch<Store>(
+                                showSearchBox: false,
+                                showClearButton: false,
+                                label: "   ",
+                                validator: (Store item) {
+                                  if (item == null) {
+                                    return "Required field";
+                                  } else
+                                    return null;
+                                },
+                                items: _listStore,
+                                //  onFind: (String filter) => getData(filter),
+                                itemAsString: (Store u) => u.name,
+                                onChanged: (Store data) =>
+                                    user.storeid = data.id),
+                        SizedBox(
+                          height: 10,
+                        ),
                         MyTextFormField(
                           intialLabel: '',
                           Keyboard_Type: TextInputType.visiblePassword,
@@ -253,11 +281,11 @@ class _add_StaffState extends State<add_Staff> {
                             if (_formKey.currentState.validate()) {
                               _formKey.currentState.save();
                               setState(() => loading = true);
-                              API(context).post("users", {
-                                "name": user.name,
+                              API(context).post("vendor/add/staff", {
+                                "stores": user.storeid,
                                 "email": user.email,
                                 "password": user.password,
-                                "roles": user.rolesid
+                                "role": user.rolesid
                               }).then((value) {
                                 if (value != null) {
                                   setState(() {
@@ -276,7 +304,7 @@ class _add_StaffState extends State<add_Staff> {
                                     showDialog(
                                       context: context,
                                       builder: (_) => ResultOverlay(
-                                        'Done',
+                                        value['message'].toString(),
                                       ),
                                     );
                                   }
@@ -324,4 +352,15 @@ class _add_StaffState extends State<add_Staff> {
       }
     });
   }
+  Future<void> getAllStore() async {
+    API(context).get('stores').then((value) {
+      if (value != null) {
+        setState(() {
+          _listStore= Store_model.fromJson(value).data;
+        });
+      }
+    });
+  }
+
+
 }

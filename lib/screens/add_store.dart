@@ -54,7 +54,7 @@ class _add_StoreState extends State<add_Store> {
             SizedBox(
               width: 10,
             ),
-            Text(getTransrlate(context, 'store')),
+            Text(getTransrlate(context, 'stores')),
           ],
         ),
         backgroundColor: themeColor.getColor(),
