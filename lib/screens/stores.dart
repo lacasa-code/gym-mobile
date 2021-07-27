@@ -252,22 +252,22 @@ class _StoresState extends State<Stores> {
                               ),
                               // color: Color(0xffE4E4E4),
                             ),
-                            InkWell(
-                              onTap: () {
-                                // showDialog(
-                                //     context: context,
-                                //     builder: (_) => Filterdialog());
-                              },
-                              child: Row(
-                                children: [
-                                  Text('تصفية'),
-                                  Icon(
-                                    Icons.keyboard_arrow_down,
-                                    size: 20,
-                                  )
-                                ],
-                              ),
-                            ),
+                            // InkWell (
+                            //   onTap: () {
+                            //     // showDialog(
+                            //     //     context: context,
+                            //     //     builder: (_) => Filterdialog());
+                            //   },
+                            //   child: Row(
+                            //     children: [
+                            //       Text('تصفية'),
+                            //       Icon(
+                            //         Icons.keyboard_arrow_down,
+                            //         size: 20,
+                            //       )
+                            //     ],
+                            //   ),
+                            // ),
                             InkWell(
                               onTap: () {
                                 showDialog(

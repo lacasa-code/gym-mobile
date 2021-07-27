@@ -53,6 +53,7 @@ class Product {
   String manufacturer_id;
   String Main_categoryid;
   String prodcountry_id;
+  String productType_id;
   String cartype_id;
   String transmission_id;
   String quantity;
@@ -153,6 +154,8 @@ class Product {
     data['qty_reminder'] = this.qty_reminder;
     data['transmission_id'] = this.transmission_id;
     data['store_id'] = this.storeId;
+    data['quantity'] = this.quantity;
+    data['holesale_price'] = this.quantity;
     data['quantity'] = this.quantity;
     data['serial_number'] = this.serialNumber;
     if (this.tags != null) {

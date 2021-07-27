@@ -140,7 +140,7 @@ class Store {
     countryName = json['country_name'];
     areaName = json['area_name'];
     cityName = json['city_name'];
-    headCenter = json['head_center'];
+    //headCenter = json['head_center'];
     serialId = json['serial_id'];
     moderatorPhone = json['moderator_phone'];
     moderatorAltPhone = json['moderator_alt_phone'];
@@ -158,6 +158,9 @@ class Store {
     map["address"] = _address;
     map["lat"] = _lat;
     map["long"] = _long;
+    map["country_id"] = countryId;
+    map["area_id"] = areaId;
+    map["city_id"] = cityId;
     map["moderator_phone"] = moderatorPhone;
     if (_moderatorAltPhone.isNotEmpty) {
       map["moderator_alt_phone"] = moderatorAltPhone;

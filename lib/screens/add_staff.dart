@@ -171,74 +171,7 @@ class _add_StaffState extends State<add_Staff> {
                         SizedBox(
                           height: 10,
                         ),
-                        MyTextFormField(
-                          intialLabel: '',
-                          Keyboard_Type: TextInputType.visiblePassword,
-                          labelText: getTransrlate(context, 'password'),
-                          hintText: getTransrlate(context, 'password'),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              // Based on passwordVisible state choose the icon
-                              passwordVisible
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                              color: Colors.black26,
-                            ),
-                            onPressed: () {
-                              // Update the state i.e. toogle the state of passwordVisible variable
-                              setState(() {
-                                passwordVisible = !passwordVisible;
-                              });
-                            },
-                          ),
-                          isPassword: passwordVisible,
-                          validator: (String value) {
-                            if (value.isEmpty) {
-                              return getTransrlate(context, 'password');
-                            } else if (!value.contains(new RegExp(
-                                r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$'))) {
-                              return "one Uppercase, One Lowercase, One Number and one Special Character";
-                            }
-                            _formKey.currentState.save();
-                            return null;
-                          },
-                          onSaved: (String value) {
-                            user.password = value;
-                          },
-                        ),
-                        MyTextFormField(
-                          intialLabel: '',
-                          Keyboard_Type: TextInputType.emailAddress,
-                          labelText:
-                              getTransrlate(context, 'ConfirmPassword'),
-                          hintText: getTransrlate(context, 'ConfirmPassword'),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              // Based on passwordVisible state choose the icon
-                              passwordVisible
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                              color: Colors.black26,
-                            ),
-                            onPressed: () {
-                              // Update the state i.e. toogle the state of passwordVisible variable
-                              setState(() {
-                                passwordVisible = !passwordVisible;
-                              });
-                            },
-                          ),
-                          isPassword: passwordVisible,
-                          validator: (String value) {
-                            if (value != user.password) {
-                              return getTransrlate(context, 'Passwordmatch');
-                            }
-                            _formKey.currentState.save();
-                            return null;
-                          },
-                          onSaved: (String value) {
-                            user.passwordConfirmation = value;
-                          },
-                        ),
+
                       ],
                     ),
                   ),

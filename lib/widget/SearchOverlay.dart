@@ -13,6 +13,8 @@ import 'package:trkar_vendor/utils/service/API.dart';
 import 'ResultOverlay.dart';
 
 class SearchOverlay extends StatefulWidget {
+  String url;
+  SearchOverlay({this.url});
   @override
   State<StatefulWidget> createState() => SearchOverlayState();
 }
@@ -112,15 +114,13 @@ class SearchOverlayState extends State<SearchOverlay>
                               textChanged: (string) {
                                 if(string.length>=1){
 
-                           API(context).post('user/search/products', {
+                           API(context).post(widget.url, {
                                     "search_index": string,
                                   }).then((value) {
                                     if (value != null) {
                                       if (value['status_code'] == 200) {
                                         setState(() {
-                                          products =
-                                              Products_model.fromJson(value)
-                                                  .product;
+                                          products = Products_model.fromJson(value).product;
                                         });
                                       } else {
                                         showDialog(

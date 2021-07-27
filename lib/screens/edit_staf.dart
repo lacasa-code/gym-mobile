@@ -37,6 +37,7 @@ class _EditStaffState extends State<EditStaff> {
   Widget build(BuildContext context) {
     final themeColor = Provider.of<Provider_control>(context);
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Row(
           children: [

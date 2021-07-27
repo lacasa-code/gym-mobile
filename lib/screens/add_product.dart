@@ -18,6 +18,7 @@ import 'package:trkar_vendor/model/main_category.dart';
 import 'package:trkar_vendor/model/manufacturer_model.dart';
 import 'package:trkar_vendor/model/part__category.dart';
 import 'package:trkar_vendor/model/prod_country.dart';
+import 'package:trkar_vendor/model/product_type_model.dart';
 import 'package:trkar_vendor/model/products_model.dart';
 import 'package:trkar_vendor/model/store_model.dart';
 import 'package:trkar_vendor/model/tags_model.dart';
@@ -59,6 +60,7 @@ class _Add_ProductState extends State<Add_Product> {
   List<CarType> cartypes;
   List<Asset> images = List<Asset>();
   List<Main_Category> _listCategory;
+  List<ProductType> _ProductType;
   DateTime selectedDate = DateTime.now();
   String SelectDate = ' ';
   File _image;
@@ -98,7 +100,6 @@ class _Add_ProductState extends State<Add_Product> {
           allViewTitle: "All Photos",
           useDetailsView: false,
           statusBarColor: "#EF9300",
-
           selectCircleStrokeColor: "#000000",
         ),
       );
@@ -149,7 +150,7 @@ class _Add_ProductState extends State<Add_Product> {
             onPressed: () {
               showDialog(
                 context: context,
-                builder: (_) => SearchOverlay(),
+                builder: (_) => SearchOverlay(url: 'products/search/dynamic',),
               );
             },
           )
@@ -581,6 +582,39 @@ class _Add_ProductState extends State<Add_Product> {
                             onChanged: (Store data) =>
                                 product.storeId = data.id.toString()),
                       ),
+                Text(
+                  "نوع المنتج",
+                  style: TextStyle(color: Colors.black, fontSize: 16),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+             _ProductType == null
+                    ? Container(
+                  child: DropdownSearch<String>(
+                    showSearchBox: false,
+                    showClearButton: false,
+                    label: " ",
+                    items: [''],enabled: false,
+                    //  onFind: (String filter) => getData(filter),
+                  ),
+                )
+                    : Container(
+                        child: DropdownSearch<ProductType>(
+                            showSearchBox: false,
+                            showClearButton: false,
+                            validator: (ProductType item) {
+                              if (item == null) {
+                                return "Required field";
+                              } else
+                                return null;
+                            },
+                            items: _ProductType,
+                            //  onFind: (String filter) => getData(filter),
+                            itemAsString: (ProductType u) => u.producttype,
+                            onChanged: (ProductType data) => product.productType_id = data.id.toString()),
+                      ),
+
                 MyTextFormField(
                   intialLabel: product.price ?? ' ',
                   Keyboard_Type: TextInputType.number,
@@ -928,6 +962,15 @@ class _Add_ProductState extends State<Add_Product> {
       }
     });
   }
+  Future<void> getAllproducttypes() async {
+    API(context).get('product/types/list').then((value) {
+      if (value != null) {
+        setState(() {
+          _ProductType = ProductTypeModel.fromJson(value).data;
+        });
+      }
+    });
+  }
 
   Future<void> getAllYear() async {
     API(context).get('car-yearslist').then((value) {
@@ -1014,6 +1057,7 @@ class _Add_ProductState extends State<Add_Product> {
         });
       }
     });
+    getAllproducttypes();
   }
 
   _generateTags() {

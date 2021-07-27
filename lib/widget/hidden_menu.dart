@@ -21,6 +21,7 @@ import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
 import 'package:trkar_vendor/utils/url_launcher.dart';
 import 'package:trkar_vendor/widget/item_hidden_menu.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // ignore: must_be_immutable
 class HiddenMenu extends StatefulWidget {
@@ -76,11 +77,21 @@ class _HiddenMenuState extends State<HiddenMenu> {
                             size: 35,
                             color: Colors.white,
                           )),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: Image.asset(
-                          "assets/images/logo.png",
-                          width: ScreenUtil.getWidth(context) / 4,
+                      InkWell(
+                        onTap: (){
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (BuildContext context) => Home(),
+                            ),
+                                (route) => false,
+                          );                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Image.asset(
+                            "assets/images/logo.png",
+                            width: ScreenUtil.getWidth(context) / 4,
+                          ),
                         ),
                       ),
                     ],
@@ -102,8 +113,13 @@ class _HiddenMenuState extends State<HiddenMenu> {
                   children: <Widget>[
                     ItemHiddenMenu(
                       onTap: () {
-                        Nav.routeReplacement(context, Home());
-                      },
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => Home(),
+                          ),
+                              (route) => false,
+                        );                          },
                       icon: SvgPicture.asset(
                         "assets/icons/homescreen.svg",
                         height: 30,
@@ -283,25 +299,26 @@ class _HiddenMenuState extends State<HiddenMenu> {
                       ),
                     ),
 
-                    InkWell(
-                      onTap: (){
-                        launchURL('tel:+201111511190');
-                      },
-                      child: ItemHiddenMenu(
-                        icon: SvgPicture.asset(
-                          "assets/icons/Call.svg",
-                          height: 30,
-                          width: 30,
-                          color: Colors.orange,
-                        ),
-                        name: getTransrlate(context, 'contact'),
-                        baseStyle: TextStyle(
-                            color: Colors.white.withOpacity(0.6),
-                            fontSize: 19.0,
-                            fontWeight: FontWeight.w800),
-                        colorLineSelected: Colors.orange,
-                      ),
-                    ),
+                    // InkWell(
+                    //   onTap: (){
+                    //   //  launchURL('tel:+201111511190');
+                    //     _launchURL('https://www.instagram.com/');
+                    //   },
+                    //   child: ItemHiddenMenu(
+                    //     icon: SvgPicture.asset(
+                    //       "assets/icons/Call.svg",
+                    //       height: 30,
+                    //       width: 30,
+                    //       color: Colors.orange,
+                    //     ),
+                    //     name: getTransrlate(context, 'contact'),
+                    //     baseStyle: TextStyle(
+                    //         color: Colors.white.withOpacity(0.6),
+                    //         fontSize: 19.0,
+                    //         fontWeight: FontWeight.w800),
+                    //     colorLineSelected: Colors.orange,
+                    //   ),
+                    // ),
                     ItemHiddenMenu(
                       onTap: () {
                         Nav.route(context, FaqPage());
@@ -367,4 +384,7 @@ class _HiddenMenuState extends State<HiddenMenu> {
           ])),
     );
   }
+  void _launchURL(String _url) async => await canLaunch(_url)
+      ? await launch(_url)
+      : throw 'Could not launch $_url';
 }

@@ -124,22 +124,22 @@ class _TicketsState extends State<Tickets> {
                             SizedBox(
                               width: 5,
                             ),
-                            InkWell(
-                              onTap: () {
-                                // showDialog(
-                                //     context: context,
-                                //     builder: (_) => Filterdialog());
-                              },
-                              child: Row(
-                                children: [
-                                  Text('تصفية'),
-                                  Icon(
-                                    Icons.keyboard_arrow_down,
-                                    size: 20,
-                                  )
-                                ],
-                              ),
-                            ),
+                            // InkWell(
+                            //   onTap: () {
+                            //     // showDialog(
+                            //     //     context: context,
+                            //     //     builder: (_) => Filterdialog());
+                            //   },
+                            //   child: Row(
+                            //     children: [
+                            //       Text('تصفية'),
+                            //       Icon(
+                            //         Icons.keyboard_arrow_down,
+                            //         size: 20,
+                            //       )
+                            //     ],
+                            //   ),
+                            // ),
                             InkWell(
                               onTap: () {
                                 showDialog(

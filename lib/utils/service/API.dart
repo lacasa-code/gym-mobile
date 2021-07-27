@@ -152,11 +152,10 @@ class API {
     } catch (e) {} finally {}
   }
 
-
   postFile(String url, Map<String, String> body,
       {List<Asset> attachment}) async {
     final full_url =
-    Uri.parse('${GlobalConfiguration().getString('api_base_url')}$url');
+        Uri.parse('${GlobalConfiguration().getString('api_base_url')}$url');
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var headers = {
       'Authorization': 'Bearer  ${prefs.getString('token')}'
@@ -167,11 +166,18 @@ class API {
     for (Asset asset in attachment) {
       ByteData byteData = await asset.getByteData();
       List<int> imageData = byteData.buffer.asUint8List();
-      request.files.add(http.MultipartFile.fromBytes( "photo",imageData,
+      request.files.add(http.MultipartFile.fromBytes(
+        'photo[${attachment.indexOf(asset)}]',
+        imageData,
         filename: 'photo',
-        contentType: MediaType("image", "jpg"),));
+        contentType: MediaType("image", "jpg"),
+      ));
     }
-   // attachment==null?null:  request.files.add(await http.MultipartFile.fromPath('photo[]', '${attachment[0].identifier}')); // file you want to upload
+    // attachment.forEach((element) async {
+    //   request.files.add(await http.MultipartFile.fromBytes(
+    //       'photo[${attachment.indexOf(element)}]', element.getByteData(qualit)));
+    // });
+    //attachment==null?null:request.files.add(await http.MultipartFile.fromPath('photo[]', '${attachment[0].identifier}')); // file you want to upload
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
     //print(await request.files);
@@ -179,6 +185,6 @@ class API {
     return response.stream.bytesToString().then((value) {
       print(jsonDecode(value));
       return jsonDecode(value);
-    } );
+    });
   }
 }
