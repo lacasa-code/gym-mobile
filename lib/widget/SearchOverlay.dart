@@ -29,7 +29,6 @@ class SearchOverlayState extends State<SearchOverlay>
   @override
   void initState() {
     super.initState();
-
     controller =
         AnimationController(vsync: this, duration: Duration(milliseconds: 450));
     scaleAnimation =

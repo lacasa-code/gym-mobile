@@ -150,7 +150,9 @@ class _Add_ProductState extends State<Add_Product> {
             onPressed: () {
               showDialog(
                 context: context,
-                builder: (_) => SearchOverlay(url: 'products/search/dynamic',),
+                builder: (_) => SearchOverlay(
+                  url: 'products/search/dynamic',
+                ),
               );
             },
           )
@@ -185,33 +187,36 @@ class _Add_ProductState extends State<Add_Product> {
                 ),
                 SizedBox(
                   height: 5,
-                ),     _listCategory == null
-                    ? Container(
-                  child: DropdownSearch<String>(
-                    showSearchBox: false,
-                    showClearButton: false,
-                    label: " ",
-                    items: [''],enabled: false,
-                    //  onFind: (String filter) => getData(filter),
-                  ),
-                )
-                    : Container(
-                  child: DropdownSearch<Main_Category>(
-                      showSearchBox: false,
-                      showClearButton: false,
-                      label: "الفئة الرئيسية",
-                      validator: (Main_Category item) {
-                        if (item == null) {
-                          return "Required field";
-                        } else
-                          return null;
-                      },
-                      items: _listCategory,
-                      //  onFind: (String filter) => getData(filter),
-                      itemAsString: (Main_Category u) => u.mainCategoryName,
-                      onChanged: (Main_Category data) =>
-                      product.Main_categoryid = data.id.toString()),
                 ),
+                _listCategory == null
+                    ? Container(
+                        child: DropdownSearch<String>(
+                          showSearchBox: false,
+                          showClearButton: false,
+                          label: " ",
+                          items: [''],
+                          enabled: false,
+                          //  onFind: (String filter) => getData(filter),
+                        ),
+                      )
+                    : Container(
+                        child: DropdownSearch<Main_Category>(
+                            showSearchBox: false,
+                            showClearButton: false,
+                            label: "الفئة الرئيسية",
+                            validator: (Main_Category item) {
+                              if (item == null) {
+                                return "Required field";
+                              } else
+                                return null;
+                            },
+                            items: _listCategory,
+                            //  onFind: (String filter) => getData(filter),
+                            itemAsString: (Main_Category u) =>
+                                u.mainCategoryName,
+                            onChanged: (Main_Category data) =>
+                                product.Main_categoryid = data.id.toString()),
+                      ),
                 SizedBox(
                   height: 5,
                 ),
@@ -230,15 +235,16 @@ class _Add_ProductState extends State<Add_Product> {
                         ),
                         _category == null
                             ? Container(
-                          width: ScreenUtil.getWidth(context) / 2.5,
-                          child: DropdownSearch<String>(
-                              showSearchBox: false,
-                              showClearButton: false,
-                              label: " ",
-                              items: [''],enabled: false,
-                              //  onFind: (String filter) => getData(filter),
-                         ),
-                            )
+                                width: ScreenUtil.getWidth(context) / 2.5,
+                                child: DropdownSearch<String>(
+                                  showSearchBox: false,
+                                  showClearButton: false,
+                                  label: " ",
+                                  items: [''],
+                                  enabled: false,
+                                  //  onFind: (String filter) => getData(filter),
+                                ),
+                              )
                             : Container(
                                 width: ScreenUtil.getWidth(context) / 2.5,
                                 child: DropdownSearch<Categories>(
@@ -254,8 +260,8 @@ class _Add_ProductState extends State<Add_Product> {
                                     items: _category,
                                     //  onFind: (String filter) => getData(filter),
                                     itemAsString: (Categories u) => u.name,
-                                    onChanged: (Categories data) =>
-                                        product.CategoryId = data.id.toString()),
+                                    onChanged: (Categories data) => product
+                                        .CategoryId = data.id.toString()),
                               ),
                       ],
                     ),
@@ -271,15 +277,16 @@ class _Add_ProductState extends State<Add_Product> {
                         ),
                         part_Categories == null
                             ? Container(
-                          width: ScreenUtil.getWidth(context) / 2.5,
-                          child: DropdownSearch<String>(
-                            showSearchBox: false,
-                            showClearButton: false,
-                            label: " ",
-                            items: [''],enabled: false,
-                            //  onFind: (String filter) => getData(filter),
-                          ),
-                        )
+                                width: ScreenUtil.getWidth(context) / 2.5,
+                                child: DropdownSearch<String>(
+                                  showSearchBox: false,
+                                  showClearButton: false,
+                                  label: " ",
+                                  items: [''],
+                                  enabled: false,
+                                  //  onFind: (String filter) => getData(filter),
+                                ),
+                              )
                             : Container(
                                 width: ScreenUtil.getWidth(context) / 2.5,
                                 child: DropdownSearch<Part_Category>(
@@ -296,8 +303,8 @@ class _Add_ProductState extends State<Add_Product> {
                                     //  onFind: (String filter) => getData(filter),
                                     itemAsString: (Part_Category u) =>
                                         u.categoryName,
-                                    onChanged: (Part_Category data) =>
-                                        product.partCategoryId = data.id.toString()),
+                                    onChanged: (Part_Category data) => product
+                                        .partCategoryId = data.id.toString()),
                               ),
                       ],
                     ),
@@ -318,15 +325,16 @@ class _Add_ProductState extends State<Add_Product> {
                   children: [
                     transmissions == null
                         ? Container(
-                      width: ScreenUtil.getWidth(context) / 2.5,
-                      child: DropdownSearch<String>(
-                        showSearchBox: false,
-                        showClearButton: false,
-                        label: " ",
-                        items: [''],enabled: false,
-                        //  onFind: (String filter) => getData(filter),
-                      ),
-                    )
+                            width: ScreenUtil.getWidth(context) / 2.5,
+                            child: DropdownSearch<String>(
+                              showSearchBox: false,
+                              showClearButton: false,
+                              label: " ",
+                              items: [''],
+                              enabled: false,
+                              //  onFind: (String filter) => getData(filter),
+                            ),
+                          )
                         : Container(
                             width: ScreenUtil.getWidth(context) / 2.5,
                             child: DropdownSearch<Transmission>(
@@ -343,20 +351,21 @@ class _Add_ProductState extends State<Add_Product> {
                                 //  onFind: (String filter) => getData(filter),
                                 itemAsString: (Transmission u) =>
                                     u.transmissionName,
-                                onChanged: (Transmission data) =>
-                                    product.transmission_id = data.id.toString()),
+                                onChanged: (Transmission data) => product
+                                    .transmission_id = data.id.toString()),
                           ),
                     CarMades == null
                         ? Container(
-                      width: ScreenUtil.getWidth(context) / 2.5,
-                      child: DropdownSearch<String>(
-                        showSearchBox: false,
-                        showClearButton: false,
-                        label: " ",
-                        items: [''],enabled: false,
-                        //  onFind: (String filter) => getData(filter),
-                      ),
-                    )
+                            width: ScreenUtil.getWidth(context) / 2.5,
+                            child: DropdownSearch<String>(
+                              showSearchBox: false,
+                              showClearButton: false,
+                              label: " ",
+                              items: [''],
+                              enabled: false,
+                              //  onFind: (String filter) => getData(filter),
+                            ),
+                          )
                         : Container(
                             width: ScreenUtil.getWidth(context) / 2.5,
                             child: DropdownSearch<CarMade>(
@@ -387,15 +396,16 @@ class _Add_ProductState extends State<Add_Product> {
                   children: [
                     carmodels == null
                         ? Container(
-                      width: ScreenUtil.getWidth(context) / 2.5,
-                      child: DropdownSearch<String>(
-                        showSearchBox: false,
-                        showClearButton: false,
-                        label: " ",
-                        items: [''],enabled: false,
-                        //  onFind: (String filter) => getData(filter),
-                      ),
-                    )
+                            width: ScreenUtil.getWidth(context) / 2.5,
+                            child: DropdownSearch<String>(
+                              showSearchBox: false,
+                              showClearButton: false,
+                              label: " ",
+                              items: [''],
+                              enabled: false,
+                              //  onFind: (String filter) => getData(filter),
+                            ),
+                          )
                         : Container(
                             width: ScreenUtil.getWidth(context) / 2.5,
                             child: DropdownSearch<Carmodel>(
@@ -416,15 +426,16 @@ class _Add_ProductState extends State<Add_Product> {
                           ),
                     years == null
                         ? Container(
-                      width: ScreenUtil.getWidth(context) / 2.5,
-                      child: DropdownSearch<String>(
-                        showSearchBox: false,
-                        showClearButton: false,
-                        label: " ",
-                        items: [''],enabled: false,
-                        //  onFind: (String filter) => getData(filter),
-                      ),
-                    )
+                            width: ScreenUtil.getWidth(context) / 2.5,
+                            child: DropdownSearch<String>(
+                              showSearchBox: false,
+                              showClearButton: false,
+                              label: " ",
+                              items: [''],
+                              enabled: false,
+                              //  onFind: (String filter) => getData(filter),
+                            ),
+                          )
                         : Container(
                             width: ScreenUtil.getWidth(context) / 2.5,
                             child: DropdownSearch<Year>(
@@ -450,14 +461,15 @@ class _Add_ProductState extends State<Add_Product> {
                 ),
                 cartypes == null
                     ? Container(
-                  child: DropdownSearch<String>(
-                    showSearchBox: false,
-                    showClearButton: false,
-                    label: " ",
-                    items: [''],enabled: false,
-                    //  onFind: (String filter) => getData(filter),
-                  ),
-                )
+                        child: DropdownSearch<String>(
+                          showSearchBox: false,
+                          showClearButton: false,
+                          label: " ",
+                          items: [''],
+                          enabled: false,
+                          //  onFind: (String filter) => getData(filter),
+                        ),
+                      )
                     : Container(
                         child: DropdownSearch<CarType>(
                             showSearchBox: false,
@@ -477,20 +489,22 @@ class _Add_ProductState extends State<Add_Product> {
                       ),
                 SizedBox(
                   height: 10,
-                ),   SizedBox(
+                ),
+                SizedBox(
                   height: 10,
                 ),
                 _manufacturers == null
                     ? Container(
-                  width: ScreenUtil.getWidth(context) / 2.5,
-                  child: DropdownSearch<String>(
-                    showSearchBox: false,
-                    showClearButton: false,
-                    label: " ",
-                    items: [''],enabled: false,
-                    //  onFind: (String filter) => getData(filter),
-                  ),
-                )
+                        width: ScreenUtil.getWidth(context) / 2.5,
+                        child: DropdownSearch<String>(
+                          showSearchBox: false,
+                          showClearButton: false,
+                          label: " ",
+                          items: [''],
+                          enabled: false,
+                          //  onFind: (String filter) => getData(filter),
+                        ),
+                      )
                     : Container(
                         child: DropdownSearch<Manufacturer>(
                             showSearchBox: false,
@@ -504,7 +518,8 @@ class _Add_ProductState extends State<Add_Product> {
                             },
                             items: _manufacturers,
                             //  onFind: (String filter) => getData(filter),
-                            itemAsString: (Manufacturer u) => u.manufacturerName,
+                            itemAsString: (Manufacturer u) =>
+                                u.manufacturerName,
                             onChanged: (Manufacturer data) =>
                                 product.manufacturer_id = data.id.toString()),
                       ),
@@ -521,7 +536,7 @@ class _Add_ProductState extends State<Add_Product> {
                   validator: (String value) {
                     if (value.isEmpty) {
                       return getTransrlate(context, 'description');
-                    }else  if (value.length<6) {
+                    } else if (value.length < 6) {
                       return getTransrlate(context, 'description');
                     }
                     _formKey.currentState.save();
@@ -558,14 +573,15 @@ class _Add_ProductState extends State<Add_Product> {
                 ),
                 _store == null
                     ? Container(
-                  child: DropdownSearch<String>(
-                    showSearchBox: false,
-                    showClearButton: false,
-                    label: " ",
-                    items: [''],enabled: false,
-                    //  onFind: (String filter) => getData(filter),
-                  ),
-                )
+                        child: DropdownSearch<String>(
+                          showSearchBox: false,
+                          showClearButton: false,
+                          label: " ",
+                          items: [''],
+                          enabled: false,
+                          //  onFind: (String filter) => getData(filter),
+                        ),
+                      )
                     : Container(
                         child: DropdownSearch<Store>(
                             showSearchBox: false,
@@ -589,16 +605,17 @@ class _Add_ProductState extends State<Add_Product> {
                 SizedBox(
                   height: 10,
                 ),
-             _ProductType == null
+                _ProductType == null
                     ? Container(
-                  child: DropdownSearch<String>(
-                    showSearchBox: false,
-                    showClearButton: false,
-                    label: " ",
-                    items: [''],enabled: false,
-                    //  onFind: (String filter) => getData(filter),
-                  ),
-                )
+                        child: DropdownSearch<String>(
+                          showSearchBox: false,
+                          showClearButton: false,
+                          label: " ",
+                          items: [''],
+                          enabled: false,
+                          //  onFind: (String filter) => getData(filter),
+                        ),
+                      )
                     : Container(
                         child: DropdownSearch<ProductType>(
                             showSearchBox: false,
@@ -610,49 +627,210 @@ class _Add_ProductState extends State<Add_Product> {
                                 return null;
                             },
                             items: _ProductType,
+                            selectedItem: _ProductType[0],
                             //  onFind: (String filter) => getData(filter),
                             itemAsString: (ProductType u) => u.producttype,
-                            onChanged: (ProductType data) => product.productType_id = data.id.toString()),
+                            onChanged: (ProductType data) {
+                              setState(() {
+                                product.productType_id = data.id.toString();
+                              });
+                            }),
                       ),
-
-                MyTextFormField(
-                  intialLabel: product.price ?? ' ',
-                  Keyboard_Type: TextInputType.number,
-                  labelText: 'السعر',
-                  hintText: 'السعر',
-                  isPhone: true,
-                  enabled: true,
-                  validator: (String value) {
-                    if (value.isEmpty) {
-                      return 'السعر';
-                    }
-                    _formKey.currentState.save();
-                    return null;
-                  },
-                  onSaved: (String value) {
-                    product.price = value;
-                  },
+                product.productType_id == "1"
+                    ? Column(
+                        children: [
+                          MyTextFormField(
+                            intialLabel: product.price ?? ' ',
+                            Keyboard_Type: TextInputType.number,
+                            labelText: 'السعر',
+                            hintText: 'السعر',
+                            isPhone: true,
+                            enabled: true,
+                            validator: (String value) {
+                              if (value.isEmpty) {
+                                return 'السعر';
+                              }
+                              _formKey.currentState.save();
+                              return null;
+                            },
+                            onSaved: (String value) {
+                              product.price = value;
+                            },
+                          ),
+                          MyTextFormField(
+                            intialLabel: ' ',
+                            Keyboard_Type: TextInputType.number,
+                            labelText: "الكمية",
+                            hintText: 'الكمية',
+                            isPhone: true,
+                            enabled: true,
+                            validator: (String value) {
+                              if (value.isEmpty) {
+                                return 'الكمية';
+                              }
+                              _formKey.currentState.save();
+                              return null;
+                            },
+                            onSaved: (String value) {
+                              product.quantity = value;
+                            },
+                          ),
+                          MyTextFormField(
+                            intialLabel: ' ',
+                            Keyboard_Type: TextInputType.number,
+                            labelText: "الخصم",
+                            hintText: 'الخصم',
+                            isPhone: true,
+                            enabled: true,
+                            validator: (String value) {
+                              if (value.isEmpty) {
+                                return 'الخصم';
+                              }
+                              _formKey.currentState.save();
+                              return null;
+                            },
+                            onSaved: (String value) {
+                              product.discount = value;
+                            },
+                          ),
+                        ],
+                      )
+                    :product.productType_id == "2"
+                    ? Column(
+                        children: [
+                          MyTextFormField(
+                            intialLabel: product.price ?? ' ',
+                            Keyboard_Type: TextInputType.number,
+                            labelText: 'سعر الجملة',
+                            hintText: 'سعر الجملة',
+                            isPhone: true,
+                            enabled: true,
+                            validator: (String value) {
+                              if (value.isEmpty) {
+                                return 'سعر الجملة';
+                              }
+                              _formKey.currentState.save();
+                              return null;
+                            },
+                            onSaved: (String value) {
+                              product.wholesale = value;
+                            },
+                          ),
+                          MyTextFormField(
+                            intialLabel: ' ',
+                            Keyboard_Type: TextInputType.number,
+                            labelText: "الحد الادنى للطلب ",
+                            hintText: 'الحد الادنى للطلب',
+                            isPhone: true,
+                            enabled: true,
+                            validator: (String value) {
+                              if (value.isEmpty) {
+                                return 'الحد الادنى للطلب';
+                              }
+                              _formKey.currentState.save();
+                              return null;
+                            },
+                            onSaved: (String value) {
+                              product.minOfOrder = value;
+                            },
+                          ),
+                        ],
+                      ):Column(
+                  children: [
+                    MyTextFormField(
+                      intialLabel: product.price ?? ' ',
+                      Keyboard_Type: TextInputType.number,
+                      labelText: 'السعر',
+                      hintText: 'السعر',
+                      isPhone: true,
+                      enabled: true,
+                      validator: (String value) {
+                        if (value.isEmpty) {
+                          return 'السعر';
+                        }
+                        _formKey.currentState.save();
+                        return null;
+                      },
+                      onSaved: (String value) {
+                        product.price = value;
+                      },
+                    ),
+                    MyTextFormField(
+                      intialLabel: ' ',
+                      Keyboard_Type: TextInputType.number,
+                      labelText: "الكمية",
+                      hintText: 'الكمية',
+                      isPhone: true,
+                      enabled: true,
+                      validator: (String value) {
+                        if (value.isEmpty) {
+                          return 'الكمية';
+                        }
+                        _formKey.currentState.save();
+                        return null;
+                      },
+                      onSaved: (String value) {
+                        product.quantity = value;
+                      },
+                    ),
+                    MyTextFormField(
+                      intialLabel: ' ',
+                      Keyboard_Type: TextInputType.number,
+                      labelText: "الخصم",
+                      hintText: 'الخصم',
+                      isPhone: true,
+                      enabled: true,
+                      validator: (String value) {
+                        if (value.isEmpty) {
+                          return 'الخصم';
+                        }
+                        _formKey.currentState.save();
+                        return null;
+                      },
+                      onSaved: (String value) {
+                        product.discount = value;
+                      },
+                    ),
+                    MyTextFormField(
+                      intialLabel: product.price ?? ' ',
+                      Keyboard_Type: TextInputType.number,
+                      labelText: 'سعر الجملة',
+                      hintText: 'سعر الجملة',
+                      isPhone: true,
+                      enabled: true,
+                      validator: (String value) {
+                        if (value.isEmpty) {
+                          return 'سعر الجملة';
+                        }
+                        _formKey.currentState.save();
+                        return null;
+                      },
+                      onSaved: (String value) {
+                        product.wholesale = value;
+                      },
+                    ),
+                    MyTextFormField(
+                      intialLabel: ' ',
+                      Keyboard_Type: TextInputType.number,
+                      labelText: "الحد الادنى للطلب جملة",
+                      hintText: ' الحد الادنى للطلب جملة',
+                      isPhone: true,
+                      enabled: true,
+                      validator: (String value) {
+                        if (value.isEmpty) {
+                          return 'الحد الادنى للطلب';
+                        }
+                        _formKey.currentState.save();
+                        return null;
+                      },
+                      onSaved: (String value) {
+                        product.minOfOrder = value;
+                      },
+                    ),
+                  ],
                 ),
                 MyTextFormField(
-                  intialLabel:  ' ',
-                  Keyboard_Type: TextInputType.number,
-                  labelText: "الكمية",
-                  hintText: 'الكمية',
-                  isPhone: true,
-                  enabled: true,
-                  validator: (String value) {
-                    if (value.isEmpty) {
-                      return 'الكمية';
-                    }
-                    _formKey.currentState.save();
-                    return null;
-                  },
-                  onSaved: (String value) {
-                    product.quantity = value;
-                  },
-                ),
-                MyTextFormField(
-                  intialLabel:  ' ',
+                  intialLabel: ' ',
                   Keyboard_Type: TextInputType.number,
                   labelText: "تنبيه الكمية ",
                   hintText: 'الكمية',
@@ -667,24 +845,6 @@ class _Add_ProductState extends State<Add_Product> {
                   },
                   onSaved: (String value) {
                     product.qty_reminder = value;
-                  },
-                ),
-                MyTextFormField(
-                  intialLabel:  ' ',
-                  Keyboard_Type: TextInputType.number,
-                  labelText: "الخصم",
-                  hintText: 'الخصم',
-                  isPhone: true,
-                  enabled: true,
-                  validator: (String value) {
-                    if (value.isEmpty) {
-                      return 'الخصم';
-                    }
-                    _formKey.currentState.save();
-                    return null;
-                  },
-                  onSaved: (String value) {
-                    product.discount = value;
                   },
                 ),
                 Text(
@@ -727,7 +887,8 @@ class _Add_ProductState extends State<Add_Product> {
                   height: 5,
                 ),
                 Container(
-                  decoration: BoxDecoration(border: Border.all(width: 1,color: Colors.black26)),
+                  decoration: BoxDecoration(
+                      border: Border.all(width: 1, color: Colors.black26)),
                   child: TypeAheadField(
                     hideOnLoading: true,
                     hideOnEmpty: true,
@@ -750,23 +911,26 @@ class _Add_ProductState extends State<Add_Product> {
                     },
                   ),
                 ),
-
                 SizedBox(
                   height: 10,
                 ),
                 Text(
                   "صور المنتج",
                   style: TextStyle(color: Colors.black, fontSize: 16),
-                ), images.isEmpty?Container()
+                ),
+                images.isEmpty
+                    ? Container()
                     : GridView.count(
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         crossAxisCount: 3,
-                        children:List.generate(images.length, (index) {
+                        children: List.generate(images.length, (index) {
                           Asset asset = images[index];
                           return Container(
                             margin: EdgeInsets.all(8),
-                            decoration: BoxDecoration(border: Border.all(width: 1,color: Colors.black26)),
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    width: 1, color: Colors.black26)),
                             child: Stack(
                               children: [
                                 AssetThumb(
@@ -775,11 +939,13 @@ class _Add_ProductState extends State<Add_Product> {
                                   height: 400,
                                 ),
                                 Positioned(
-                                  left:5,
+                                  left: 5,
                                   child: InkWell(
-                                    onTap: (){setState(() {
-                                      images.remove(asset);
-                                    });},
+                                    onTap: () {
+                                      setState(() {
+                                        images.remove(asset);
+                                      });
+                                    },
                                     child: Container(
                                       color: Colors.grey,
                                       child: Padding(
@@ -826,11 +992,9 @@ class _Add_ProductState extends State<Add_Product> {
                     onPressed: () async {
                       getImages();
                     }),
-
                 SizedBox(
                   height: 10,
                 ),
-
                 Padding(
                   padding: const EdgeInsets.only(top: 15),
                   child: Row(
@@ -854,11 +1018,12 @@ class _Add_ProductState extends State<Add_Product> {
                         onPressed: () async {
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
-                            product.tags=_tagSelect;
-                            product.photos=images;
+                            product.tags = _tagSelect;
+                            product.photos = images;
                             setState(() => loading = true);
                             API(context)
-                                .postFile("add/products", product.toJson(),attachment: images)
+                                .postFile("add/products", product.toJson(),
+                                    attachment: images)
                                 .then((value) {
                               if (value != null) {
                                 setState(() {
@@ -953,6 +1118,7 @@ class _Add_ProductState extends State<Add_Product> {
     });
     getAllMain_category();
   }
+
   Future<void> getAllMain_category() async {
     API(context).get('main/categories/list/all').then((value) {
       if (value != null) {
@@ -962,11 +1128,13 @@ class _Add_ProductState extends State<Add_Product> {
       }
     });
   }
+
   Future<void> getAllproducttypes() async {
     API(context).get('product/types/list').then((value) {
       if (value != null) {
         setState(() {
           _ProductType = ProductTypeModel.fromJson(value).data;
+          product.productType_id = _ProductType[0].id.toString();
         });
       }
     });

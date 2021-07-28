@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -8,6 +9,9 @@ import 'package:geocoder/model.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:map_pin_picker/map_pin_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:trkar_vendor/model/area_model.dart';
+import 'package:trkar_vendor/model/city_model.dart';
+import 'package:trkar_vendor/model/country_model.dart';
 import 'package:trkar_vendor/model/store_model.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
@@ -27,13 +31,16 @@ class _add_StoreState extends State<add_Store> {
   final _formKey = GlobalKey<FormState>();
   Completer<GoogleMapController> _controller = Completer();
   MapPickerController mapPickerController = MapPickerController();
-
+  List<Country> contries;
+  List<City> cities;
+  List<Area> area;
   CameraPosition cameraPosition = CameraPosition(
     target: LatLng(31.2060916, 29.9187),
     zoom: 14.4746,
   );
   @override
   void initState() {
+    getCountry();
 
     super.initState();
   }
@@ -94,7 +101,7 @@ class _add_StoreState extends State<add_Store> {
                           Keyboard_Type: TextInputType.phone,
                           labelText: getTransrlate(context, 'ModeratorPhone'),
                           hintText: getTransrlate(context, 'ModeratorPhone'),
-                          suffixIcon: Text('  +966 ',textDirection: TextDirection.ltr,),
+                          suffixIcon: Text('  +966 ',textDirection: TextDirection.ltr),
                           isPhone: true,
                           textDirection: TextDirection.ltr,
                           enabled: true,
@@ -121,6 +128,89 @@ class _add_StoreState extends State<add_Store> {
                             store.moderatorAltPhone = "00966$value";
                           },
                         ),
+
+                        contries == null
+                            ? Container()
+                            : Padding(
+                          padding: const EdgeInsets
+                              .symmetric(
+                              vertical: 10),
+                          child:
+                          DropdownSearch<Country>(
+                            // label: getTransrlate(context, 'Countroy'),
+                            validator:
+                                (Country item) {
+                              if (item == null) {
+                                return "Required field";
+                              } else
+                                return null;
+                            },
+                            selectedItem:store.countryId==null?Country(countryName: 'select country'):contries.where((element) => element.id==store.countryId).first,
+                            showSearchBox: true,
+                            items: contries,
+                            //  onFind: (String filter) => getData(filter),
+                            itemAsString:
+                                (Country u) =>
+                            u.countryName,
+                            onChanged:
+                                (Country data) {
+                             store.countryId =
+                                  data.id;
+                              getArea(data.id);
+                            },
+                          ),
+                        ),
+                        area == null
+                            ? Container()
+                            : Padding(
+                          padding: const EdgeInsets
+                              .symmetric(
+                              vertical: 10),
+                          child: DropdownSearch<Area>(
+                            // label: getTransrlate(context, 'Countroy'),
+                            validator: (Area item) {
+                              if (item == null) {
+                                return "Required field";
+                              } else
+                                return null;
+                            },
+
+                            items: area,
+                            //  onFind: (String filter) => getData(filter),
+                            itemAsString: (Area u) =>
+                            u.areaName,
+                            onChanged: (Area data) {
+                         store.areaId =
+                                  data.id;
+                              getCity(data.id);
+                            },
+                          ),
+                        ),
+                        cities == null
+                            ? Container()
+                            : Padding(
+                          padding: const EdgeInsets
+                              .symmetric(
+                              vertical: 10),
+                          child: DropdownSearch<City>(
+                            // label: getTransrlate(context, 'Countroy'),
+                            validator: (City item) {
+                              if (item == null) {
+                                return "Required field";
+                              } else
+                                return null;
+                            },
+
+                            items: cities,
+                            //  onFind: (String filter) => getData(filter),
+                            itemAsString: (City u) =>
+                            u.cityName,
+                            onChanged: (City data) {
+                          store.cityId =data.id;
+                            },
+                          ),
+                        ),
+
                         MyTextFormField(
                           intialLabel: store.address ?? ' ',
                           Keyboard_Type: TextInputType.text,
@@ -283,5 +373,29 @@ class _add_StoreState extends State<add_Store> {
         ],
       ),
     );
+  }
+  void getCity(int id) {
+    API(context).get('cities/list/all/$id').then((value) {
+      setState(() {
+        cities = City_model.fromJson(value).data;
+      });
+    });
+  }
+
+  void getArea(int id) {
+    API(context).get('areas/list/all/$id').then((value) {
+      print(value);
+      setState(() {
+        area = Area_model.fromJson(value).data;
+      });
+    });
+  }
+
+  void getCountry() {
+    API(context).get('countries/list/all').then((value) {
+      setState(() {
+        contries = Country_model.fromJson(value).data;
+      });
+    });
   }
 }

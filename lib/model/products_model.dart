@@ -55,6 +55,8 @@ class Product {
   String prodcountry_id;
   String productType_id;
   String cartype_id;
+  String wholesale;
+  String minOfOrder;
   String transmission_id;
   String quantity;
   String serialNumber;
@@ -137,7 +139,7 @@ class Product {
     final Map<String, String> data = new Map<String, String>();
     data['name'] = this.name;
     data['description'] = this.description;
-    data['price'] = this.price;
+    this.price==null?null:data['price'] = this.price;
     data['discount'] = this.discount;
     data['car_made_id'] = this.carMadeId;
     data['category_id'] = this.CategoryId;
@@ -148,15 +150,15 @@ class Product {
     data['cartype_id'] = this.cartype_id;
     data['maincategory_id'] = this.CategoryId;
     data['prodcountry_id'] = this.prodcountry_id;
-    data['producttype_id'] = this.cartype_id;
+    data['producttype_id'] = this.productType_id;
     data['maincategory_id'] = this.Main_categoryid;
     data['manufacturer_id'] = this.manufacturer_id;
     data['qty_reminder'] = this.qty_reminder;
     data['transmission_id'] = this.transmission_id;
     data['store_id'] = this.storeId;
-    data['quantity'] = this.quantity;
-    data['holesale_price'] = this.quantity;
-    data['quantity'] = this.quantity;
+    this.quantity==null?null:data['quantity'] = this.quantity;
+    this.wholesale==null?null:data['holesale_price'] = this.wholesale;
+    this.minOfOrder==null?null: data['no_of_orders'] = this.minOfOrder;
     data['serial_number'] = this.serialNumber;
     if (this.tags != null) {
       data['tags'] = this.tags.map((v) => v.id).toList().toString();

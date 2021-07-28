@@ -33,7 +33,6 @@ class _OrdersState extends State<Orders> {
   ScrollController _scrollController = new ScrollController();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   String url="show/orders?ordered_by=created_at&";
-
   int i = 2;
 
   @override

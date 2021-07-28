@@ -30,9 +30,17 @@ class _ProductsState extends State<Products> {
   bool isSelect = false;
   List<int> selectProduct = [];
   String url="products";
+  int i = 2;
+  ScrollController _scrollController = new ScrollController();
 
   @override
   void initState() {
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        PerProducts();
+      }
+    });
     getProducts();
     super.initState();
   }
@@ -138,6 +146,7 @@ class _ProductsState extends State<Products> {
                   ),
                 )
               : SingleChildScrollView(
+        controller: _scrollController,
                   child: Column(
                     children: [
                       isSelect
@@ -401,6 +410,15 @@ class _ProductsState extends State<Products> {
           products = Products_model.fromJson(value).product;
         });
         print(products.toString());
+      }
+    });
+  }
+  Future<void> PerProducts() async {
+    API(context).get("$url?page=${i++}&ordered_by=created_at&sort_type=desc").then((value) {
+      if (value != null) {
+        setState(() {
+          products.addAll(Products_model.fromJson(value).product);
+        });
       }
     });
   }

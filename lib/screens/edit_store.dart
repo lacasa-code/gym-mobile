@@ -411,6 +411,7 @@ class _Edit_StoreState extends State<Edit_Store> {
         cities = City_model.fromJson(value).data;
       });
     });
+
   }
 
   void getArea(int id) {
@@ -419,6 +420,8 @@ class _Edit_StoreState extends State<Edit_Store> {
       setState(() {
         area = Area_model.fromJson(value).data;
       });
+      getCity(widget.store.cityId);
+
     });
   }
 
@@ -427,6 +430,7 @@ class _Edit_StoreState extends State<Edit_Store> {
       setState(() {
         contries = Country_model.fromJson(value).data;
       });
+      getArea(widget.store.countryId);
     });
   }
 }
