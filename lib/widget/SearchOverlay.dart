@@ -1,20 +1,19 @@
-import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/products_model.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
-import 'package:trkar_vendor/utils/navigator.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
 
 import 'ResultOverlay.dart';
 
 class SearchOverlay extends StatefulWidget {
   String url;
+
   SearchOverlay({this.url});
+
   @override
   State<StatefulWidget> createState() => SearchOverlayState();
 }
@@ -24,8 +23,7 @@ class SearchOverlayState extends State<SearchOverlay>
   AnimationController controller;
   Animation<double> scaleAnimation;
   List<Product> products = [];
-  AutoCompleteTextField searchTextField;
-  GlobalKey<AutoCompleteTextFieldState<Product>> key = new GlobalKey();
+
   @override
   void initState() {
     super.initState();
@@ -78,69 +76,96 @@ class SearchOverlayState extends State<SearchOverlay>
                         ),
                         Expanded(
                           child: Container(
-                            height: 50,
-                            color: Colors.white,
-                            child: searchTextField =
-                                AutoCompleteTextField<Product>(
-                              key: key,
-                              clearOnSubmit: false,
-                              suggestions: products,
-                              style: TextStyle(
-                                  color: Colors.black, fontSize: 16.0),
-                              decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText:getTransrlate(context, 'search'),
-                                  hintStyle: TextStyle(
-                                    fontSize: 13,
-                                    color: Color(0xFF5D6A78),
-                                    fontWeight: FontWeight.w400,
-                                  )),
-                              itemFilter: (item, query) {
-                                return item
-                                    .toString()
-                                    .toLowerCase()
-                                    .startsWith(query.toLowerCase());
-                              },
-                              itemSorter: (a, b) {
-                                return a.name.compareTo(b.name);
-                              },
-                              itemSubmitted: (item) {
-                                setState(() {
-                                  searchTextField.textField.controller.text =
-                                      item.toString();
-                                });
-                              },
-                              textChanged: (string) {
-                                if(string.length>=1){
-
-                           API(context).post(widget.url, {
-                                    "search_index": string,
-                                  }).then((value) {
-                                    if (value != null) {
-                                      if (value['status_code'] == 200) {
-                                        setState(() {
-                                          products = Products_model.fromJson(value).product;
-                                        });
-                                      } else {
-                                        showDialog(
-                                            context: context,
-                                            builder: (_) => ResultOverlay(
-                                                value['message']));
+                              height: 50,
+                              color: Colors.white,
+                              child: TextFormField(
+                                onChanged: (string) {
+                                  if (string.length >= 1) {
+                                    API(context).post(widget.url, {
+                                      "search_index": string,
+                                    }).then((value) {
+                                      if (value != null) {
+                                        if (value['status_code'] == 200) {
+                                          setState(() {
+                                            products =
+                                                Products_model.fromJson(value).product;
+                                          });
+                                        } else {
+                                          showDialog(
+                                              context: context,
+                                              builder: (_) => ResultOverlay(
+                                                  value['message']));
+                                        }
                                       }
-                                    }
-                                  });
-                                }else{
-                                  setState(() {
-                                    products=[];
-                                  });
-                                }
-                              },
-                              itemBuilder: (context, item) {
-                                // ui for the autocompelete row
-                                return row(item);
-                              },
-                            ),
-                          ),
+                                    });
+                                  } else {
+                                    setState(() {
+                                      products = [];
+                                    });
+                                  }
+                                },
+                              )
+                              //   searchTextField =
+                              //       AutoCompleteTextField<Product>(
+                              //     key: key,
+                              //     clearOnSubmit: false,
+                              //     suggestions: products,
+                              //     style: TextStyle(
+                              //         color: Colors.black, fontSize: 16.0),
+                              //     decoration: InputDecoration(
+                              //         border: InputBorder.none,
+                              //         hintText:getTransrlate(context, 'search'),
+                              //         hintStyle: TextStyle(
+                              //           fontSize: 13,
+                              //           color: Color(0xFF5D6A78),
+                              //           fontWeight: FontWeight.w400,
+                              //         )),
+                              //     itemFilter: (item, query) {
+                              //       return item
+                              //           .toString()
+                              //           .toLowerCase()
+                              //           .startsWith(query.toLowerCase());
+                              //     },
+                              //     itemSorter: (a, b) {
+                              //       return a.name.compareTo(b.name);
+                              //     },
+                              //     itemSubmitted: (item) {
+                              //       setState(() {
+                              // //        searchTextField.textField.controller.text = item.toString();
+                              //       });
+                              //     },
+                              //     textChanged: (string) {
+                              //       if(string.length>=1){
+                              //
+                              //  API(context).post(widget.url, {
+                              //           "search_index": string,
+                              //         }).then((value) {
+                              //           if (value != null) {
+                              //             if (value['status_code'] == 200) {
+                              //               setState(() {
+                              //                 products = Products_model.fromJson(value).product;
+                              //               });
+                              //             } else {
+                              //               showDialog(
+                              //                   context: context,
+                              //                   builder: (_) => ResultOverlay(
+                              //                       value['message']));
+                              //             }
+                              //           }
+                              //         });
+                              //       }else{
+                              //         setState(() {
+                              //           products=[];
+                              //         });
+                              //       }
+                              //     },
+                              //     itemBuilder: (context, item) {
+                              //       print(item);
+                              //       // ui for the autocompelete row
+                              //       return row(item);
+                              //     },
+                              //   ),
+                              ),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -159,30 +184,28 @@ class SearchOverlayState extends State<SearchOverlay>
                     ),
                   ),
                 ),
-
+                ListView.builder(
+                    itemCount: products == null && products.isEmpty
+                        ? 0
+                        : products.length,
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemBuilder: (BuildContext context, int index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text("${products[index].name}"),
+                          ),
+                        ),
+                      );
+                    })
               ],
             ),
           ),
         ),
       ),
-    );
-  }
-
-  Widget row(Product productModel) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Text(
-          productModel.name.toString(),
-          style: TextStyle(fontSize: 16.0),
-        ),
-        SizedBox(
-          width: 10.0,
-        ),
-        Text(
-          productModel.price.toString(),
-        ),
-      ],
     );
   }
 }

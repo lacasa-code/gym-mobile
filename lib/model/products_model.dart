@@ -2,8 +2,13 @@ import 'package:dio/dio.dart';
 import 'package:flutter_tags/flutter_tags.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:trkar_vendor/model/car_made.dart';
+import 'package:trkar_vendor/model/car_types.dart';
+import 'package:trkar_vendor/model/carmodel.dart';
 import 'package:trkar_vendor/model/category.dart';
+import 'package:trkar_vendor/model/manufacturer_model.dart';
+import 'package:trkar_vendor/model/store_model.dart';
 import 'package:trkar_vendor/model/tags_model.dart';
+import 'package:trkar_vendor/model/year.dart';
 
 class Products_model {
   List<Product> product;
@@ -64,7 +69,21 @@ class Product {
   Categories category;
 
   CarMade carMade;
-
+  List<Carmodel> carModel;
+  CarType carType;
+  Year year;
+  PartCategory partCategory;
+  Store store;
+  Vendor vendor;
+  Manufacturer manufacturer;
+  OriginCountry originCountry;
+  ProducttypeId producttypeId;
+  String serialCoding;
+  String serialId;
+  int approved;
+  int qtyReminder;
+  String holesalePrice;
+  String noOfOrders;
   Product(
       {this.id,
       this.name,
@@ -113,26 +132,26 @@ class Product {
     }
     category = json['category'] != null ? new Categories.fromJson(json['category']) : null;
     carMade = json['car_made'] != null ? new CarMade.fromJson(json['car_made']) : null;
-    // if (json['car_model'] != null) {
-    //   carModel = new List<CarModel>();
-    //   json['car_model'].forEach((v) { carModel.add(new CarModel.fromJson(v)); });
-    // }
-    // carType = json['car_type'] != null ? new CarType.fromJson(json['car_type']) : null;
-     //year = json['year'];
-    // partCategory = json['part_category'] != null ? new PartCategory.fromJson(json['part_category']) : null;
-    // store = json['store'] != null ? new Store.fromJson(json['store']) : null;
-    // vendor = json['vendor'] != null ? new Vendor.fromJson(json['vendor']) : null;
-    // manufacturer = json['manufacturer'] != null ? new Manufacturer.fromJson(json['manufacturer']) : null;
-    // originCountry = json['origin_country'] != null ? new OriginCountry.fromJson(json['origin_country']) : null;
-    // transmissionId = json['transmission_id'];
-    // transmission = json['transmission'] != null ? new Transmission.fromJson(json['transmission']) : null;
-    // producttypeId = json['producttype_id'] != null ? new ProducttypeId.fromJson(json['producttype_id']) : null;
-    // serialCoding = json['serial_coding'];
-    // serialId = json['serial_id'];
-    // approved = json['approved'];
-    // qtyReminder = json['qty_reminder'];
-    // holesalePrice = json['holesale_price'];
-    // noOfOrders = json['no_of_orders'];
+    if (json['car_model'] != null) {
+      carModel = new List<Carmodel>();
+      json['car_model'].forEach((v) { carModel.add(new Carmodel.fromJson(v)); });
+    }
+    carType = json['car_type'] != null ? new CarType.fromJson(json['car_type']) : null;
+     year = json['year'];
+    partCategory = json['part_category'] != null ? new PartCategory.fromJson(json['part_category']) : null;
+    store = json['store'] != null ? new Store.fromJson(json['store']) : null;
+    vendor = json['vendor'] != null ? new Vendor.fromJson(json['vendor']) : null;
+    manufacturer = json['manufacturer'] != null ? new Manufacturer.fromJson(json['manufacturer']) : null;
+    originCountry = json['origin_country'] != null ? new OriginCountry.fromJson(json['origin_country']) : null;
+   // transmissionId = json['transmission_id'];
+    //transmission = json['transmission'] != null ? new Transmission.fromJson(json['transmission']) : null;
+    //producttypeId = json['producttype_id'] != null ? new ProducttypeId.fromJson(json['producttype_id']) : null;
+    serialCoding = json['serial_coding'];
+    serialId = json['serial_id'];
+    approved = json['approved'];
+    qtyReminder = json['qty_reminder'];
+    holesalePrice = json['holesale_price'].toString();
+    noOfOrders = json['no_of_orders'].toString();
   }
 
   Map<String, String> toJson() {
@@ -256,6 +275,178 @@ class Photo {
     data['fullurl'] = this.fullurl;
     data['thumbnail'] = this.thumbnail;
     data['preview'] = this.preview;
+    return data;
+  }
+
+}
+
+class PartCategory {
+  int id;
+  String categoryName;
+  String createdAt;
+  String updatedAt;
+  Null deletedAt;
+  String lang;
+  int categoryId;
+
+  PartCategory({this.id, this.categoryName, this.createdAt, this.updatedAt, this.deletedAt, this.lang, this.categoryId});
+
+  PartCategory.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    categoryName = json['category_name'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    deletedAt = json['deleted_at'];
+    lang = json['lang'];
+    categoryId = json['category_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['category_name'] = this.categoryName;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    data['deleted_at'] = this.deletedAt;
+    data['lang'] = this.lang;
+    data['category_id'] = this.categoryId;
+    return data;
+  }
+}
+
+
+class Vendor {
+  int id;
+  String vendorName;
+  String email;
+  String type;
+  String serial;
+  String createdAt;
+  String updatedAt;
+  Null deletedAt;
+  int useridId;
+  String lang;
+  String commercialNo;
+  String commercialDoc;
+  String taxCardNo;
+  String taxCardDoc;
+  String bankAccount;
+  int approved;
+  int complete;
+  int declined;
+  int rejected;
+  String companyName;
+
+  Vendor({this.id, this.vendorName, this.email, this.type, this.serial, this.createdAt, this.updatedAt, this.deletedAt, this.useridId, this.lang, this.commercialNo, this.commercialDoc, this.taxCardNo, this.taxCardDoc, this.bankAccount, this.approved, this.complete, this.declined, this.rejected, this.companyName});
+
+  Vendor.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    vendorName = json['vendor_name'];
+    email = json['email'];
+    type = json['type'];
+    serial = json['serial'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    deletedAt = json['deleted_at'];
+    useridId = json['userid_id'];
+    lang = json['lang'];
+    commercialNo = json['commercial_no'];
+    commercialDoc = json['commercial_doc'];
+    taxCardNo = json['tax_card_no'];
+    taxCardDoc = json['tax_card_doc'];
+    bankAccount = json['bank_account'];
+    approved = json['approved'];
+    complete = json['complete'];
+    declined = json['declined'];
+    rejected = json['rejected'];
+    companyName = json['company_name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['vendor_name'] = this.vendorName;
+    data['email'] = this.email;
+    data['type'] = this.type;
+    data['serial'] = this.serial;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    data['deleted_at'] = this.deletedAt;
+    data['userid_id'] = this.useridId;
+    data['lang'] = this.lang;
+    data['commercial_no'] = this.commercialNo;
+    data['commercial_doc'] = this.commercialDoc;
+    data['tax_card_no'] = this.taxCardNo;
+    data['tax_card_doc'] = this.taxCardDoc;
+    data['bank_account'] = this.bankAccount;
+    data['approved'] = this.approved;
+    data['complete'] = this.complete;
+    data['declined'] = this.declined;
+    data['rejected'] = this.rejected;
+    data['company_name'] = this.companyName;
+    return data;
+  }
+}
+
+
+class OriginCountry {
+  int id;
+  String countryName;
+  String countryCode;
+  int status;
+  String lang;
+
+  OriginCountry({this.id, this.countryName, this.countryCode, this.status, this.lang});
+
+  OriginCountry.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    countryName = json['country_name'];
+    countryCode = json['country_code'];
+    status = json['status'];
+    lang = json['lang'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['country_name'] = this.countryName;
+    data['country_code'] = this.countryCode;
+    data['status'] = this.status;
+    data['lang'] = this.lang;
+    return data;
+  }
+}
+
+class ProducttypeId {
+  int id;
+  String producttype;
+  String lang;
+  int status;
+  String createdAt;
+  String updatedAt;
+  Null deletedAt;
+
+  ProducttypeId({this.id, this.producttype, this.lang, this.status, this.createdAt, this.updatedAt, this.deletedAt});
+
+  ProducttypeId.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    producttype = json['producttype'];
+    lang = json['lang'];
+    status = json['status'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    deletedAt = json['deleted_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['producttype'] = this.producttype;
+    data['lang'] = this.lang;
+    data['status'] = this.status;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    data['deleted_at'] = this.deletedAt;
     return data;
   }
 }

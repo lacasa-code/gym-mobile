@@ -3,14 +3,10 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:trkar_vendor/screens/home.dart';
-import 'package:trkar_vendor/screens/login.dart';
 import 'package:trkar_vendor/screens/onboarding_page.dart';
 import 'package:trkar_vendor/splash_screen.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/local/AppLocalizations.dart';
-import 'package:trkar_vendor/utils/navigator.dart';
-import 'package:trkar_vendor/utils/service/API.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

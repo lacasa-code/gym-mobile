@@ -9,8 +9,10 @@ import 'package:responsive_grid/responsive_grid.dart';
 import 'package:trkar_vendor/model/products_model.dart';
 import 'package:trkar_vendor/screens/add_product.dart';
 import 'package:trkar_vendor/screens/edit_product.dart';
+import 'package:trkar_vendor/screens/productPage.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
+import 'package:trkar_vendor/utils/navigator.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
 import 'package:trkar_vendor/widget/ResultOverlay.dart';
@@ -83,7 +85,7 @@ class _ProductsState extends State<Products> {
             onPressed: () {
               showDialog(
                 context: context,
-                builder: (_) => SearchOverlay(),
+                builder: (_) => SearchOverlay(url: 'products/search/dynamic',),
               );
             },
           )
@@ -323,65 +325,70 @@ class _ProductsState extends State<Products> {
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
                           itemBuilder: (BuildContext context, int index) {
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8,horizontal: 16),
-                              child: Stack(
-                                children: [
-                                  Product_item(
-                                    hall_model: products[index],
-                                    isSelect: isSelect,selectStores: selectProduct,
-                                  ),
-                                  Positioned(
-                                      left: 20,
-                                      top: 20,
-                                      child: PopupMenuButton<int>(
-                                        itemBuilder: (context) => [
-                                          PopupMenuItem(
-                                            value: 1,
-                                            child: InkWell(
-                                              onTap: (){
-                                                _navigate_edit_hell(
-                                                    context, products[index]);
-                                              },
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                                children: [
-                                                  Text("تعديل"),
-                                                  Icon(
-                                                    Icons.edit_outlined,
-                                                    color: Colors.black54,
-                                                  )
-                                                ],
+                            return InkWell(
+                              onTap: (){
+                                Nav.route(context, ProductPage(product: products[index],));
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 8,horizontal: 16),
+                                child: Stack(
+                                  children: [
+                                    Product_item(
+                                      hall_model: products[index],
+                                      isSelect: isSelect,selectStores: selectProduct,
+                                    ),
+                                    Positioned(
+                                        left: 20,
+                                        top: 20,
+                                        child: PopupMenuButton<int>(
+                                          itemBuilder: (context) => [
+                                            PopupMenuItem(
+                                              value: 1,
+                                              child: InkWell(
+                                                onTap: (){
+                                                  _navigate_edit_hell(
+                                                      context, products[index]);
+                                                },
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                                  children: [
+                                                    Text("تعديل"),
+                                                    Icon(
+                                                      Icons.edit_outlined,
+                                                      color: Colors.black54,
+                                                    )
+                                                  ],
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          PopupMenuItem(
-                                            value: 2,
-                                            child:  InkWell(
-                                              onTap: (){
-                                                Delete_Products(products[index].id);
+                                            PopupMenuItem(
+                                              value: 2,
+                                              child:  InkWell(
+                                                onTap: (){
+                                                  Delete_Products(products[index].id);
 
-                                              },
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                                children: [
-                                                  Text("حذف"),
-                                                  Icon(
-                                                    CupertinoIcons.delete,
-                                                    color: Colors.black54,
-                                                  )
-                                                ],
+                                                },
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                                  children: [
+                                                    Text("حذف"),
+                                                    Icon(
+                                                      CupertinoIcons.delete,
+                                                      color: Colors.black54,
+                                                    )
+                                                  ],
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        ],
-                                      )
+                                          ],
+                                        )
 
-                                  ),
+                                    ),
 
-                                ],
+                                  ],
+                                ),
                               ),
                             );
                           }),

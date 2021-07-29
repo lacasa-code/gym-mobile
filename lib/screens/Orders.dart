@@ -451,11 +451,10 @@ class _OrdersState extends State<Orders> {
 
   void pageFetch() {
     API(context)
-        .get('show/orders?page=${i++}&ordered_by=created_at&sort_type=desc')
+        .post('show/orders?page=${i++}&ordered_by=created_at&sort_type=desc',{})
         .then((value) {
       setState(() {
-        orders.addAll(Orders_model.fromJson(value).data);
-        filteredOrders.addAll(Orders_model.fromJson(value).data);
+        orders.addAll(Orders_model.fromJson(value).data);filteredOrders.addAll(Orders_model.fromJson(value).data);
       });
     });
   }
