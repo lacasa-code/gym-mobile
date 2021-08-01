@@ -409,6 +409,20 @@ class _ProductsState extends State<Products> {
         context, MaterialPageRoute(builder: (context) => Edit_Product(hall)));
     Timer(Duration(seconds: 3), () => getProducts());
   }
+  Future<void> Delete_Products(int id) async {
+    API(context).Delete('products/$id').then((value) {
+      if (value != null) {
+        print(value.containsKey('errors'));
+        showDialog(
+          context: context,
+          builder: (_) => ResultOverlay(
+            value.containsKey('errors') ? value['errors'] : 'Done',
+          ),
+        );
+      }
+      getProducts();
+    });
+  }
 
   Future<void> getProducts() async {
     API(context).get(url).then((value) {
@@ -430,18 +444,4 @@ class _ProductsState extends State<Products> {
     });
   }
 
-  Future<void> Delete_Products(int id) async {
-    API(context).Delete('products/$id').then((value) {
-      if (value != null) {
-        print(value.containsKey('errors'));
-        showDialog(
-          context: context,
-          builder: (_) => ResultOverlay(
-            value.containsKey('errors') ? value['errors'] : 'Done',
-          ),
-        );
-      }
-      getProducts();
-    });
-  }
 }

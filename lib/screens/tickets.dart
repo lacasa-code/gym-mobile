@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -27,8 +26,6 @@ class _TicketsState extends State<Tickets> {
   List<Ticket> stores;
   List<Ticket> filteredStores;
   final debouncer = Search(milliseconds: 1000);
-  AutoCompleteTextField searchTextField;
-  GlobalKey<AutoCompleteTextFieldState<Ticket>> key = new GlobalKey();
   ScrollController _scrollController = new ScrollController();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override

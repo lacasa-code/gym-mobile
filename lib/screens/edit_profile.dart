@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -231,6 +232,9 @@ class _Edit_profileState extends State<Edit_profile> {
                                     left: 25.0, right: 25.0, top: 2.0),
                                 child: TextFormField(
                                   initialValue: userModal.phoneNo,
+                                  inputFormatters: [
+                                    new LengthLimitingTextInputFormatter(16),
+                                  ],
                                   decoration: InputDecoration(),
                                   validator: (String value) {
                                     if (value.isEmpty) {

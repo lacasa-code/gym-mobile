@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -28,8 +27,6 @@ class _OrdersState extends State<Orders> {
   List<Order> orders;
   List<Order> filteredOrders;
   final debouncer = Search(milliseconds: 1000);
-  AutoCompleteTextField searchTextField;
-  GlobalKey<AutoCompleteTextFieldState<Order>> key = new GlobalKey();
   ScrollController _scrollController = new ScrollController();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   String url="show/orders?ordered_by=created_at&";

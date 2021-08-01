@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:geocoder/model.dart';
@@ -123,6 +124,9 @@ class _Edit_StoreState extends State<Edit_Store> {
                           labelText: getTransrlate(context, 'ModeratorPhone'),
                           hintText: getTransrlate(context, 'ModeratorPhone'),
                           isPhone: true,
+                          inputFormatters: [
+                            new LengthLimitingTextInputFormatter(15),
+                          ],
                           enabled: true,
                           validator: (String value) {
                             if (value.length<=8) {
@@ -141,6 +145,9 @@ class _Edit_StoreState extends State<Edit_Store> {
                           labelText: getTransrlate(context, 'phone'),
                           hintText: getTransrlate(context, 'phone'),
                           isPhone: true,
+                          inputFormatters: [
+                            new LengthLimitingTextInputFormatter(15),
+                          ],
                           enabled: true,
                           validator: (String value) {
                             if (value.isEmpty) {

@@ -8,6 +8,7 @@ class MyTextFormField extends StatelessWidget {
   final String labelText;
   final Function validator;
   final Function onSaved;
+  final List<TextInputFormatter> inputFormatters;
   final TextDirection textDirection;
   final Widget suffixIcon;
   final bool isPassword;
@@ -34,6 +35,7 @@ class MyTextFormField extends StatelessWidget {
         this.Keyboard_Type,
         this.intialLabel,
         this.textStyle,
+        this.inputFormatters,
         this.press});
 
   @override
@@ -43,10 +45,11 @@ class MyTextFormField extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(labelText??'',style:textStyle?? TextStyle(color: Colors.black,fontSize: 16),),
-          SizedBox(height: 5,),
+          SizedBox(height: 5),
           TextFormField(
             onTap: press,
             initialValue: intialLabel == null ? '' : intialLabel,
+            inputFormatters:inputFormatters ,
             decoration: InputDecoration(
               fillColor: Colors.white,
               prefixIcon: prefix,

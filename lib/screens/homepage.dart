@@ -474,6 +474,8 @@ class _HomeMobileState extends State<HomeMobile> {
               ),
               product == null
                   ? Container()
+                  : product.isEmpty
+                  ? Container()
                   : Card(
                       child: Container(
                         decoration: BoxDecoration(

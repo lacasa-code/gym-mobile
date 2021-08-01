@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:geocoder/model.dart';
@@ -99,6 +100,9 @@ class _add_StoreState extends State<add_Store> {
                         MyTextFormField(
                           intialLabel: store.moderatorName ?? ' ',
                           Keyboard_Type: TextInputType.phone,
+                          inputFormatters: [
+                            new LengthLimitingTextInputFormatter(12),
+                          ],
                           labelText: getTransrlate(context, 'ModeratorPhone'),
                           hintText: getTransrlate(context, 'ModeratorPhone'),
                           suffixIcon: Text('  +966 ',textDirection: TextDirection.ltr),
@@ -120,6 +124,9 @@ class _add_StoreState extends State<add_Store> {
                           intialLabel: store.moderatorAltPhone ?? ' ',
                           Keyboard_Type: TextInputType.phone,textDirection: TextDirection.ltr,
                           labelText: getTransrlate(context, 'phone'),
+                          inputFormatters: [
+                            new LengthLimitingTextInputFormatter(12),
+                          ],
                           hintText: getTransrlate(context, 'phone'),
                           suffixIcon: Text('  +966 ',textDirection: TextDirection.ltr,),
                           isPhone: true,
@@ -128,7 +135,6 @@ class _add_StoreState extends State<add_Store> {
                             store.moderatorAltPhone = "00966$value";
                           },
                         ),
-
                         contries == null
                             ? Container()
                             : Padding(

@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -32,8 +30,6 @@ class _StoresState extends State<Stores> {
   String url="stores";
 
   final debouncer = Search(milliseconds: 1000);
-  AutoCompleteTextField searchTextField;
-  GlobalKey<AutoCompleteTextFieldState<Store>> key = new GlobalKey();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   bool isSelect = false;
 

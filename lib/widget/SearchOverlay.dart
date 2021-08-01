@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/products_model.dart';
+import 'package:trkar_vendor/screens/edit_product.dart';
+import 'package:trkar_vendor/screens/productPage.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
-import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
+import 'package:trkar_vendor/utils/navigator.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
+import 'package:trkar_vendor/widget/products/product_item.dart';
 
 import 'ResultOverlay.dart';
 
@@ -31,7 +34,6 @@ class SearchOverlayState extends State<SearchOverlay>
         AnimationController(vsync: this, duration: Duration(milliseconds: 450));
     scaleAnimation =
         CurvedAnimation(parent: controller, curve: Curves.elasticInOut);
-
     controller.addListener(() {
       setState(() {});
     });
@@ -191,12 +193,70 @@ class SearchOverlayState extends State<SearchOverlay>
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
                     itemBuilder: (BuildContext context, int index) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Card(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text("${products[index].name}"),
+                      return InkWell(
+                        onTap: (){
+                          Nav.route(context, ProductPage(product: products[index],));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8,horizontal: 16),
+                          child: Stack(
+                            children: [
+                              Product_item(
+                                hall_model: products[index],
+                                isSelect: false,
+                                //selectStores: selectProduct,
+                              ),
+                              Positioned(
+                                  left: 20,
+                                  top: 20,
+                                  child: PopupMenuButton<int>(
+                                    itemBuilder: (context) => [
+                                      PopupMenuItem(
+                                        value: 1,
+                                        child: InkWell(
+                                          onTap: (){
+                                            _navigate_edit_hell(
+                                                context, products[index]);
+                                          },
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                            children: [
+                                              Text("تعديل"),
+                                              Icon(
+                                                Icons.edit_outlined,
+                                                color: Colors.black54,
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      PopupMenuItem(
+                                        value: 2,
+                                        child:  InkWell(
+                                          onTap: (){
+                                            Delete_Products(products[index].id);
+                                            products.remove(products[index]);
+                                          },
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                            children: [
+                                              Text("حذف"),
+                                              Icon(
+                                                CupertinoIcons.delete,
+                                                color: Colors.black54,
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+
+                              ),
+
+                            ],
                           ),
                         ),
                       );
@@ -208,4 +268,24 @@ class SearchOverlayState extends State<SearchOverlay>
       ),
     );
   }
+  _navigate_edit_hell(BuildContext context, Product hall) async {
+    await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => Edit_Product(hall)));
+  }
+  Future<void> Delete_Products(int id) async {
+    API(context).Delete('products/$id').then((value) {
+      if (value != null) {
+        print(value.containsKey('errors'));
+        showDialog(
+          context: context,
+          builder: (_) => ResultOverlay(
+            value.containsKey('errors') ? value['errors'] : 'Done',
+          ),
+        );
+      }
+    });
+  }
+
+
+
 }
