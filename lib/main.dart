@@ -45,13 +45,12 @@ class _MyAppState extends State<MyApp> {
   Locale _locale;
   final GlobalKey<NavigatorState> navigatorKey =
       new GlobalKey<NavigatorState>();
-bool onboard=false;
+  bool onboard=false;
   void setlocal(Locale locale) {
     setState(() {
       _locale = locale;
     });
   }
-
   @override
   void initState() {
    SharedPreferences.getInstance().then((prefs) {
@@ -64,7 +63,6 @@ bool onboard=false;
    super.initState();
 
   }
-
   @override
   Widget build(BuildContext context) {
     final themeColor = Provider.of<Provider_control>(context);
@@ -90,7 +88,6 @@ bool onboard=false;
       supportedLocales: [
         Locale("ar", ""),
         Locale("en", ""),
-
       ],
       theme: ThemeData(
         pageTransitionsTheme: PageTransitionsTheme(builders: {

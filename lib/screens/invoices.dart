@@ -83,18 +83,18 @@ class _InvoicesState extends State<Invoices> {
           ],
         ),
         actions: [
-          IconButton(
-            icon: Icon(
-              Icons.search,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (_) => SearchOverlay(),
-              );
-            },
-          )
+          // IconButton(
+          //   icon: Icon(
+          //     Icons.search,
+          //     color: Colors.white,
+          //   ),
+          //   onPressed: () {
+          //     showDialog(
+          //       context: context,
+          //       builder: (_) => SearchOverlay(),
+          //     );
+          //   },
+          // )
         ],
         backgroundColor: themeColor.getColor(),
       ),
@@ -136,7 +136,7 @@ class _InvoicesState extends State<Invoices> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Text('${orders.length} فواتير '),
+                  Text('${orders.length} ${getTransrlate(context, 'invoice')}'),
                   SizedBox(
                     width: 100,
                   ),
@@ -185,7 +185,7 @@ class _InvoicesState extends State<Invoices> {
                     },
                     child: Row(
                       children: [
-                        Text('ترتيب'),
+                        Text('${getTransrlate(context, 'Sort')}'),
                         Icon(
                           Icons.keyboard_arrow_down,
                           size: 20,

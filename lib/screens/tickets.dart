@@ -66,18 +66,18 @@ class _TicketsState extends State<Tickets> {
           ],
         ),
         actions: [
-          IconButton(
-            icon: Icon(
-              Icons.search,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (_) => SearchOverlay(),
-              );
-            },
-          )
+          // IconButton(
+          //   icon: Icon(
+          //     Icons.search,
+          //     color: Colors.white,
+          //   ),
+          //   onPressed: () {
+          //     showDialog(
+          //       context: context,
+          //       builder: (_) => SearchOverlay(),
+          //     );
+          //   },
+          // )
         ],
         backgroundColor: themeColor.getColor(),
       ),

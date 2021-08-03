@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trkar_vendor/model/user_info.dart';
@@ -30,6 +31,7 @@ class _Edit_profileState extends State<Edit_profile> {
   bool loading = false;
   UserInfo userModal;
   List<String> items = ["male", "female"];
+  TextEditingController _tocontroller = TextEditingController();
 
   String password;
   final _formKey = GlobalKey<FormState>();
@@ -87,7 +89,7 @@ class _Edit_profileState extends State<Edit_profile> {
               SizedBox(
                 width: 10,
               ),
-              Text('البيانات الشخصية'),
+              Text('${getTransrlate(context, 'MyProfileInfo')}'),
             ],
           ),
         ),
@@ -233,7 +235,7 @@ class _Edit_profileState extends State<Edit_profile> {
                                 child: TextFormField(
                                   initialValue: userModal.phoneNo,
                                   inputFormatters: [
-                                    new LengthLimitingTextInputFormatter(16),
+                                    new LengthLimitingTextInputFormatter(14),
                                   ],
                                   decoration: InputDecoration(),
                                   validator: (String value) {
@@ -254,26 +256,31 @@ class _Edit_profileState extends State<Edit_profile> {
                                 padding: EdgeInsets.only(
                                     left: 25.0, right: 25.0, top: 25.0),
                                 child: Text(
-                                  'تاريخ الميلاد',
+                                  '${getTransrlate(context, 'birthDate')}',
                                 )),
-                            Padding(
-                                padding: EdgeInsets.only(
-                                    left: 25.0, right: 25.0, top: 2.0),
-                                child: TextFormField(
-                                  initialValue: userModal.birthdate,
-                                  decoration: InputDecoration(),
-                                  enabled: !_status,
-                                  onSaved: (String val) =>
-                                  userModal.birthdate = val,
-                                  onChanged: (String val) =>
-                                  userModal.birthdate = val,
-                                )),
+                            InkWell(
+                              onTap: (){
+                                _selectDateto(context);
+
+                              },
+                              child: Padding(
+                                  padding: EdgeInsets.only(
+                                      left: 25.0, right: 25.0, top: 2.0),
+                                  child: TextFormField(
+                                    initialValue: userModal.birthdate,
+                                    decoration: InputDecoration(),
+                                    enabled: false,
+                                    onSaved: (String val) =>
+                                    userModal.birthdate = val,
+                                    onChanged: (String val) =>
+                                    userModal.birthdate = val,
+                                  )),
+                            ),
                             Padding(
                                 padding: EdgeInsets.only(
                                     left: 25.0, right: 25.0, top: 25.0),
                                 child: Text(
-                                  'الجنس',
-                                )),
+                                  '${getTransrlate(context, 'gender')}')),
                             Padding(
                               padding: EdgeInsets.only(
                                   left: 25.0,
@@ -305,7 +312,7 @@ class _Edit_profileState extends State<Edit_profile> {
                                 padding: EdgeInsets.only(
                                     left: 25.0, right: 25.0, top: 25.0),
                                 child: Text(
-                                  'كلمة المرور',
+                                  '${getTransrlate(context, 'password')}',
                                 )),
                             Padding(
                                 padding: EdgeInsets.only(
@@ -481,4 +488,14 @@ class _Edit_profileState extends State<Edit_profile> {
       ),
     );
   }
+
+  Future<void> _selectDateto(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,initialDate: DateTime(2005),lastDate: DateTime(2005), firstDate: DateTime(1930));
+    if (picked != null)
+      setState(() {
+        _tocontroller.text = DateFormat('yyyy-MM-dd').format(picked);
+      });
+  }
+
 }

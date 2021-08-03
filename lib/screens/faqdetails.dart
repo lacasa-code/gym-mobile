@@ -100,7 +100,7 @@ class _faq_informationState extends State<faq_information> {
                         BoxDecoration(border: Border.all(color: Colors.orange)),
                     child: Center(
                       child: AutoSizeText(
-                        getTransrlate(context, 'send'),
+                        "${getTransrlate(context, 'send')}",
                         overflow: TextOverflow.ellipsis,
                         maxFontSize: 14,
                         maxLines: 1,

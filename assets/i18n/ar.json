@@ -89,8 +89,10 @@
   "LostPassword": "نسيت كلمة المرور ؟",
   "ThankYou": "شكرا لك",
   "Notification": "الاشعارات",
+  "message": "الرسائل",
   "AllowNotification": "السماح بالاشعارات",
   "Order": "الطلب",
+  "Orders": "طلبات",
   "discOrder": "تتبع ترتيب الطلب الخاص بك",
   "descStore": "التواصل السهل مع المخزن ",
   "StoreQ&A": "تخزين الأسئلة والأجوبة",
@@ -128,12 +130,12 @@
   "MyProfileInfo": "البيانات الشخصية",
   "changePassword": "تغير كلمة المرور",
   "MyAddress": "العناوين ",
-  "Notification": "اعدادت الاشعارات",
   "AddressTitle": "أسم العنوان",
   "Myorders": "الطلبات",
   "MyProfile": "حسابى",
   "productRateing": "تقيماتك",
   "invoices": "الفواتير",
+  "invoice": "فواتير",
   "SortByPricemore": "الأعلى سعراً",
   "SortByPriceLess": "الأقل سعراً",
   "SortByNew": "الاجدد",
@@ -220,7 +222,7 @@
   "SavedAddress": "تم أضافة العنوان ",
   "notSavedcart": "لم يتم أضافة الى العربة",
   "Savedcart": "تم أضافة الى العربة ",
-  "product": "المنتجات",
+  "products": "المنتجات",
   "notlogin": "لم  يتم تسجيل حساب",
   "PleaseLogin": "برجاء تسجيل حساب ",
   "close": "إغلاق",
@@ -228,6 +230,7 @@
   "Reviews": "تقيمات",
   "NoReviews": "لا توجد تقيمات",
   "LocationSelected": "تحديد موقعك",
+  "Location": "الموقع",
   "SaveNaw": "حفظ الأن",
   "OrderDone": "تم إتمام الطلب بنجاح\n شكرا لأستخدامك التطبيق !",
   "OrderNO": "رقم الطلب",
@@ -238,6 +241,16 @@
   "notAvailableOrder": "المنتج نفذ من المخزن الان !",
   "OrderDitails": "رقم الطلب",
   "OrderDate": "تاريخ الطلب",
+  "gender": "الجنس",
+  "birthDate": "تاريخ الميلاد",
+  "QustDate": "تاريخ السؤال",
+  "QustOwner": "صاحب السؤال",
+  "Qust": "السؤال",
+  "product": "المنتج",
+  "answer": "الاجابة",
+  "duration": "المدة",
+  "from": "من",
+  "to": "إلى",
   "OrderShipping": "بيانات الشحن",
   "custCode": "كود العميل",
   "name": "ألاسم",
@@ -257,14 +270,8 @@
   "paypal": "باي بال",
   "showAll": "عرض الكل",
   "search": " بحث  ",
-
-
   "viewProfile": "عرض الحساب",
   "vistStore": "زيارة المتجر",
-
-
-
-
   "filter": "تصفيه",
   "Browse": "تصفح الأن",
   "Shopping": "شراء الأن",
@@ -274,11 +281,9 @@
   "noMyaddress": "لا توجد عناوين مسجلة",
   "change": "تغير",
   "Schedule_order": "الطلبات المجدولة",
-
   "version": "أصدار",
   "skip": "تخطى",
   "store": "مخازن",
-
   "selectCity": "أختر المدنية"
 
 

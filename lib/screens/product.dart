@@ -73,7 +73,7 @@ class _ProductsState extends State<Products> {
             SizedBox(
               width: 10,
             ),
-            Text(getTransrlate(context, 'product')),
+            Text(getTransrlate(context, 'products')),
           ],
         ),
         actions: [
@@ -337,7 +337,7 @@ class _ProductsState extends State<Products> {
                                       hall_model: products[index],
                                       isSelect: isSelect,selectStores: selectProduct,
                                     ),
-                                    Positioned(
+                                    products[index].approved==0?Container():Positioned(
                                         left: 20,
                                         top: 20,
                                         child: PopupMenuButton<int>(

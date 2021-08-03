@@ -51,17 +51,17 @@ class _FaqPageState extends State<FaqPage> {
           ],
         ),
         actions: [
-          IconButton(
-            icon: Icon(
-              Icons.search,
-              color: Colors.white,
-            ),
-            onPressed: (){
-              showDialog(
-                context: context,
-                builder: (_) => SearchOverlay(),
-              );},
-          )
+          // IconButton(
+          //   icon: Icon(
+          //     Icons.search,
+          //     color: Colors.white,
+          //   ),
+          //   onPressed: (){
+          //     showDialog(
+          //       context: context,
+          //       builder: (_) => SearchOverlay(),
+          //     );},
+          // )
         ],
         backgroundColor: themeColor.getColor(),
       ),
@@ -139,21 +139,21 @@ class _FaqPageState extends State<FaqPage> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(" صاحب السؤال:${faq[index].userId??''}",
+                                      Text(" ${getTransrlate(context, 'QustOwner')}:${faq[index].userId??''}",
                                           style: TextStyle(
                                               color: Colors.black, fontSize: 12)),
-                                      Text(" تاريخ السؤال:${DateFormat('yyyy-MM-dd').format(DateTime.parse(faq[index].createdAt))}",
+                                      Text(" ${getTransrlate(context, 'QustDate')}:${DateFormat('yyyy-MM-dd').format(DateTime.parse(faq[index].createdAt))}",
                                           style: TextStyle(
                                               color: Colors.black, fontSize: 12)),
                                     ],
                                   ),
-                                  Text(" السؤال:${faq[index].bodyQuestion??''}",
+                                  Text(" ${getTransrlate(context, 'Qust')}:${faq[index].bodyQuestion??''}",
                                       style: TextStyle(
                                           color: Colors.black, fontSize: 12)),
-                                  Text(" المنتج:${faq[index].productId??''}",
+                                  Text(" ${getTransrlate(context, 'product')}:${faq[index].productId??''}",
                                       style: TextStyle(
                                           color: Colors.black, fontSize: 12)),
-                                  Text(" الحالة :${faq[index].answer??''}",
+                                  faq[index].answer==null?Container(): Text(" ${getTransrlate(context, 'answer')} :${faq[index].answer??''}",
                                       style: TextStyle(
                                           color: Colors.black, fontSize: 12)),
 

@@ -138,7 +138,7 @@ class _Add_ProductState extends State<Add_Product> {
             SizedBox(
               width: 10,
             ),
-            Text(getTransrlate(context, 'product')),
+            Text(getTransrlate(context, 'products')),
           ],
         ),
         actions: [
@@ -214,8 +214,12 @@ class _Add_ProductState extends State<Add_Product> {
                             //  onFind: (String filter) => getData(filter),
                             itemAsString: (Main_Category u) =>
                                 u.mainCategoryName,
-                            onChanged: (Main_Category data) =>
-                                product.Main_categoryid = data.id.toString()),
+                            onChanged: (Main_Category data) {
+                                product.Main_categoryid = data.id.toString();
+                                setState(() {
+                                  _category=null;
+                                });
+                                getAllCategory(data.id);}),
                       ),
                 SizedBox(
                   height: 5,
@@ -260,8 +264,13 @@ class _Add_ProductState extends State<Add_Product> {
                                     items: _category,
                                     //  onFind: (String filter) => getData(filter),
                                     itemAsString: (Categories u) => u.name,
-                                    onChanged: (Categories data) => product
-                                        .CategoryId = data.id.toString()),
+                                    onChanged: (Categories data) {
+                                    product.CategoryId = data.id.toString();
+                                    setState(() {
+                                      part_Categories=null;
+                                    });
+                                    getAllParts_Category( data.id);
+                                    }),
                               ),
                       ],
                     ),
@@ -1088,7 +1097,6 @@ class _Add_ProductState extends State<Add_Product> {
           CarMades = CarsMade.fromJson(value).data;
         });
       }
-      getAllParts_Category();
     });
   }
 
@@ -1107,8 +1115,8 @@ class _Add_ProductState extends State<Add_Product> {
     });
   }
 
-  Future<void> getAllParts_Category() async {
-    API(context).get('part-categorieslist').then((value) {
+  Future<void> getAllParts_Category(int id) async {
+    API(context).get('part-categorieslist/$id').then((value) {
       if (value != null) {
         setState(() {
           part_Categories = Parts_Category.fromJson(value).data;
@@ -1159,11 +1167,10 @@ class _Add_ProductState extends State<Add_Product> {
         });
       }
     });
-    getAllCategory();
   }
 
-  Future<void> getAllCategory() async {
-    API(context).get('categorieslist').then((value) {
+  Future<void> getAllCategory(int id) async {
+    API(context).get('categorieslist/$id').then((value) {
       if (value != null) {
         setState(() {
           _category = Category_model.fromJson(value).data;

@@ -10,6 +10,10 @@
   "Empty": "No found product !",
   "store": "Store",
 
+  "duration": "duration",
+  "from": "from",
+  "to": "to",
+
   "good_morning": "Good Morning",
   "good_night": "Good Night",
   "contact": "Call Naw",
@@ -46,8 +50,14 @@
   "haveanaccount": "Do you have an account?",
   "New": "New",
   "id": "No id",
-
+  "birthDate": "BirthDate",
+  "gender": "Gender",
   "showAll": "Show all",
+  "QustDate": "Question Date",
+  "QustOwner": "Question Owner",
+  "Qust": "Question",
+  "product": "product",
+  "answer": "Answer",
   "price": "Price",
   "Support": "Support",
   "Submit": "Submit",
@@ -68,7 +78,7 @@
   "FAQ": "General inquiries",
 
 
-  "product": "Products",
+  "products": "Products",
   "filter": "Filter",
   "Currency": " SAR ",
 
@@ -82,9 +92,11 @@
   "MyProfile": "My Profile",
   "productRateing": "Product ratings",
   "invoices": "Invoices",
+  "invoice": "Invoices",
   "MyProfileInfo": "My Profile Info",
   "changePassword": "Change Password",
-  "Notification": "Notification Settings",
+  "Notification": "Notification",
+  "message": "Message",
   "Sort": "Sort By",
   "SortByPricemore": "Price to high",
   "SortByPriceLess": "Price to low",
@@ -127,6 +139,7 @@
   "total_tax": "tax",
   "addressShipping": "Address Shipping",
   "totalOrder": "Total Order",
+  "Orders": "Orders",
   "totalShipping": "Total Shipping",
   "staff": "Staff",
   "addstaff": "Add staff",
@@ -160,6 +173,7 @@
   "allcatery": "All Category",
 
   "LocationSelected": "Location",
+  "Location": "Location",
   "SaveNaw": "Shipping this",
   "OrderDone": "Done ! \n Thank you for using the app!\n ",
   "OrderNO": "Order No !",

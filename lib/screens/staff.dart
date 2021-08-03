@@ -14,6 +14,7 @@ import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
 import 'package:trkar_vendor/widget/ResultOverlay.dart';
 import 'package:trkar_vendor/widget/SearchOverlay.dart';
+import 'package:trkar_vendor/widget/SearchOverlay_staff.dart';
 import 'package:trkar_vendor/widget/Sort.dart';
 import 'package:trkar_vendor/widget/hidden_menu.dart';
 import 'package:trkar_vendor/widget/stores/user_item.dart';
@@ -76,7 +77,7 @@ class _StaffState extends State<Staff> {
             onPressed: (){
               showDialog(
               context: context,
-              builder: (_) => SearchOverlay(),
+              builder: (_) => SearchOverlay_Staff(url: 'users/search/name',),
             );},
           )
         ],

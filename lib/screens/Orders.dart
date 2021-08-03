@@ -14,6 +14,7 @@ import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
 import 'package:trkar_vendor/widget/ResultOverlay.dart';
 import 'package:trkar_vendor/widget/SearchOverlay.dart';
+import 'package:trkar_vendor/widget/SearchOverlay_order.dart';
 import 'package:trkar_vendor/widget/Sort.dart';
 import 'package:trkar_vendor/widget/hidden_menu.dart';
 import 'package:trkar_vendor/widget/stores/Order_item.dart';
@@ -81,7 +82,7 @@ class _OrdersState extends State<Orders> {
             onPressed: () {
               showDialog(
                 context: context,
-                builder: (_) => SearchOverlay(url: 'orders/search/name',),
+                builder: (_) => SearchOverlay_Order(url: 'orders/search/name',),
               );
             },
           )
@@ -126,7 +127,7 @@ class _OrdersState extends State<Orders> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Text('${orders.length} طلبات'),
+                            Text('${orders.length} ${getTransrlate(context, 'orders')}'),
                             SizedBox(
                               width: 100,
                             ),
@@ -173,7 +174,7 @@ class _OrdersState extends State<Orders> {
                               },
                               child: Row(
                                 children: [
-                                  Text('ترتيب'),
+                                  Text('${getTransrlate(context, 'Sort')}'),
                                   Icon(
                                     Icons.keyboard_arrow_down,
                                     size: 20,

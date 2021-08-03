@@ -10,12 +10,14 @@ import 'package:responsive_grid/responsive_grid.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trkar_vendor/model/basic_report.dart';
 import 'package:trkar_vendor/model/products_model.dart';
+import 'package:trkar_vendor/screens/message_show.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/data_repostory.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
+import 'package:trkar_vendor/utils/navigator.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
-import 'package:trkar_vendor/widget/commons/default_button.dart';
+import 'package:trkar_vendor/screens/notification.dart';
 import 'package:trkar_vendor/widget/hidden_menu.dart';
 
 class HomeMobile extends StatefulWidget {
@@ -96,8 +98,12 @@ class _HomeMobileState extends State<HomeMobile> {
           width: ScreenUtil.getWidth(context) / 4,
         ),
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.messenger_outline)),
-          IconButton(onPressed: () {}, icon: Icon(Icons.notifications_none)),
+          IconButton(onPressed: () {
+            Nav.route(context, Message_show());
+          }, icon: Icon(Icons.messenger_outline)),
+          IconButton(onPressed: () {
+            Nav.route(context, Notification_show());
+          }, icon: Icon(Icons.notifications_none)),
         ],
       ),
       body: SingleChildScrollView(
@@ -127,7 +133,7 @@ class _HomeMobileState extends State<HomeMobile> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Text('عرض : '),
+                        Text('${getTransrlate(context, 'duration')} : '),
                         InkWell(
                           onTap: () {
                             _selectDatefrom(context);
@@ -141,7 +147,7 @@ class _HomeMobileState extends State<HomeMobile> {
                               SizedBox(
                                 width: 5,
                               ),
-                              Text(" من : ${_fromcontroller.text}",style: TextStyle(fontSize: 14),),
+                              Text(" ${getTransrlate(context, 'from')} : ${_fromcontroller.text}",style: TextStyle(fontSize: 14),),
                             ],
                           ),
                         ),
@@ -158,7 +164,7 @@ class _HomeMobileState extends State<HomeMobile> {
                               SizedBox(
                                 width: 5,
                               ),
-                              Text(" إلى : ${_tocontroller.text}",style: TextStyle(fontSize: 14)),
+                              Text(" ${getTransrlate(context, 'to')} : ${_tocontroller.text}",style: TextStyle(fontSize: 14)),
                             ],
                           ),
                         ),

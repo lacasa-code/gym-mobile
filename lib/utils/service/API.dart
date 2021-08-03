@@ -8,8 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:http/http.dart' as http;
 import 'package:multi_image_picker/multi_image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trkar_vendor/screens/Maintenance.dart';
+import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/navigator.dart';
 import 'package:trkar_vendor/widget/ResultOverlay.dart';
 
@@ -29,7 +31,7 @@ class API {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'Authorization': 'Bearer ${prefs.getString('token')}',
-        //  'locale': Provider.of<Provider_control>(context).getlocal(),
+        'Accept-Language': Provider.of<Provider_control>(context,listen: false).getlocal(),
       });
       print(response.body);
       if (response.statusCode == 500) {
@@ -70,7 +72,7 @@ class API {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
             'Authorization': 'Bearer ${prefs.getString('token')}',
-            //  'locale': Provider.of<Provider_control>(context).getlocal(),
+            //  'Accept-Language': Provider.of<Provider_control>(context).getlocal(),
           },
           body: json.encode(body));
       print("body =${jsonDecode(response.body)}");
