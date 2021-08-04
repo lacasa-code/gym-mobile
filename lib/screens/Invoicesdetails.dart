@@ -102,7 +102,7 @@ class _Invoices_informationState extends State<Invoices_information> {
                     minFontSize: 11,
                   ),
                   AutoSizeText(
-                    'محمد حسن مبنى 12 الطابق الثاني مكتب 23 ش الملك عبدالله تبوك المملكة العربية السعودية +9660505521235 ',
+                    '${widget.orders_model}',
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.black,

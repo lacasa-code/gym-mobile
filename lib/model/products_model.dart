@@ -13,9 +13,7 @@ import 'package:trkar_vendor/model/year.dart';
 class Products_model {
   List<Product> product;
   int total;
-
   Products_model({this.product, this.total});
-
   Products_model.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
       product = new List<Product>();
@@ -79,6 +77,7 @@ class Product {
   OriginCountry originCountry;
   ProducttypeId producttypeId;
   String serialCoding;
+  String actualPrice;
   String serialId;
   int approved;
   int qtyReminder;
@@ -110,7 +109,9 @@ class Product {
     name = json['name'];
     description = json['description'];
     price = json['price'];
-    discount = json['discount'].toString();
+    actualPrice = json['actual_price'].toString();
+
+   discount = json['discount'].toString();
     createdAt = json['created_at'];
     carMadeId = json['car_made_id'].toString();
     carModelId = json['car_model_id'];
@@ -120,7 +121,7 @@ class Product {
     CategoryId = json['category_id'].toString();
     vendorId = json['vendor_id'].toString();
     storeId = json['store_id'].toString();
-    quantity = json['quantity'].toString();
+      quantity = json['quantity'].toString();
     serialNumber = json['serial_number'];
     if (json['photo'] != null) {
       photo = new List<Photo>();
@@ -150,8 +151,8 @@ class Product {
     serialId = json['serial_id'];
     approved = json['approved'];
     qtyReminder = json['qty_reminder'];
-    holesalePrice = json['holesale_price'].toString();
-    noOfOrders = json['no_of_orders'].toString();
+    holesalePrice== null?null:holesalePrice = json['holesale_price'].toString();
+    noOfOrders== null?null:noOfOrders = json['no_of_orders'].toString();
   }
 
   Map<String, String> toJson() {
@@ -159,7 +160,7 @@ class Product {
     data['name'] = this.name;
     data['description'] = this.description;
     this.price==null?null:data['price'] = this.price;
-    data['discount'] = this.discount;
+    this.discount ==null?null: data['discount'] = this.discount;
     data['car_made_id'] = this.carMadeId;
     data['category_id'] = this.CategoryId;
     data['car_model_id'] = this.carModelId;

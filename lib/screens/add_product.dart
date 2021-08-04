@@ -117,7 +117,10 @@ class _Add_ProductState extends State<Add_Product> {
 
   @override
   void initState() {
-    getAllCareMade();
+    getAllType();
+    getAllMain_category();
+    getAllStore();
+    getAllYear();
     super.initState();
   }
 
@@ -186,7 +189,40 @@ class _Add_ProductState extends State<Add_Product> {
                   },
                 ),
                 SizedBox(
-                  height: 5,
+                  height: 10,
+                ),
+                cartypes == null
+                    ? Container(
+                  child: DropdownSearch<String>(
+                    showSearchBox: false,
+                    showClearButton: false,
+                    label: " ",
+                    items: [''],
+                    enabled: false,
+                    //  onFind: (String filter) => getData(filter),
+                  ),
+                )
+                    : Container(
+                    child: DropdownSearch<CarType>(
+                        showSearchBox: false,
+                        showClearButton: false,
+                        label: " نوع المركبة",
+                        validator: (CarType item) {
+                          if (item == null) {
+                            return "Required field";
+                          } else
+                            return null;
+                        },
+                        items: cartypes,
+                        //  onFind: (String filter) => getData(filter),
+                        itemAsString: (CarType u) => u.typeName,
+                        onChanged: (CarType data) {
+                          product.cartype_id = data.id.toString();
+                          getAllCarMade(data.id.toString());
+                        })
+                ),
+                SizedBox(
+                  height: 10,
                 ),
                 _listCategory == null
                     ? Container(
@@ -465,37 +501,7 @@ class _Add_ProductState extends State<Add_Product> {
                           ),
                   ],
                 ),
-                SizedBox(
-                  height: 10,
-                ),
-                cartypes == null
-                    ? Container(
-                        child: DropdownSearch<String>(
-                          showSearchBox: false,
-                          showClearButton: false,
-                          label: " ",
-                          items: [''],
-                          enabled: false,
-                          //  onFind: (String filter) => getData(filter),
-                        ),
-                      )
-                    : Container(
-                        child: DropdownSearch<CarType>(
-                            showSearchBox: false,
-                            showClearButton: false,
-                            label: " نوع المركبة",
-                            validator: (CarType item) {
-                              if (item == null) {
-                                return "Required field";
-                              } else
-                                return null;
-                            },
-                            items: cartypes,
-                            //  onFind: (String filter) => getData(filter),
-                            itemAsString: (CarType u) => u.typeName,
-                            onChanged: (CarType data) =>
-                                product.cartype_id = data.id.toString()),
-                      ),
+
                 SizedBox(
                   height: 10,
                 ),
@@ -642,6 +648,7 @@ class _Add_ProductState extends State<Add_Product> {
                             onChanged: (ProductType data) {
                               setState(() {
                                 product.productType_id = data.id.toString();
+
                               });
                             }),
                       ),
@@ -1030,6 +1037,8 @@ class _Add_ProductState extends State<Add_Product> {
                             product.tags = _tagSelect;
                             product.photos = images;
                             setState(() => loading = true);
+                            print(product.toJson());
+
                             API(context)
                                 .postFile("add/products", product.toJson(),
                                     attachment: images)
@@ -1090,8 +1099,8 @@ class _Add_ProductState extends State<Add_Product> {
     );
   }
 
-  Future<void> getAllCareMade() async {
-    API(context).get('car-madeslist').then((value) {
+  Future<void> getAllCarMade(String id) async {
+    API(context).get('cartype/madeslist/$id').then((value) {
       if (value != null) {
         setState(() {
           CarMades = CarsMade.fromJson(value).data;
@@ -1121,10 +1130,8 @@ class _Add_ProductState extends State<Add_Product> {
         setState(() {
           part_Categories = Parts_Category.fromJson(value).data;
         });
-        getAllYear();
       }
     });
-    getAllMain_category();
   }
 
   Future<void> getAllMain_category() async {
@@ -1156,9 +1163,7 @@ class _Add_ProductState extends State<Add_Product> {
         });
       }
     });
-    getAllStore();
   }
-
   Future<void> getAllStore() async {
     API(context).get('storeslist').then((value) {
       if (value != null) {

@@ -538,7 +538,7 @@ class _HomeDesktopState extends State<HomeDesktop> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text("Total Customers"),
-                                    Text("${basic_report.totalCustomers ?? 0}",
+                                    Text("${basic_report.pending_orders ?? 0}",
                                         style: TextStyle(
                                             color: themeColor.getColor())),
                                   ],
@@ -566,7 +566,7 @@ class _HomeDesktopState extends State<HomeDesktop> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text("Total Vendors"),
-                                    Text("${basic_report.totalVendors ?? 0}",
+                                    Text("${basic_report.tickets ?? 0}",
                                         style: TextStyle(
                                             color: themeColor.getColor())),
                                   ],

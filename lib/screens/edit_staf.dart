@@ -89,7 +89,7 @@ class _EditStaffState extends State<EditStaff> {
                         labelText: getTransrlate(context, 'Email'),
                         hintText: getTransrlate(context, 'Email'),
                         isPhone: true,
-                        enabled: true,
+                        enabled: false,
                         validator: (String value) {
                           if (value.isEmpty) {
                             return getTransrlate(context, 'mail');
@@ -101,9 +101,9 @@ class _EditStaffState extends State<EditStaff> {
                           _formKey.currentState.save();
                           return null;
                         },
-                        onSaved: (String value) {
-                          widget.user.email = value;
-                        },
+                        // onSaved: (String value) {
+                        //   widget.user.email = value;
+                        // },
                       ),
                       SizedBox(
                         height: 10,
@@ -172,6 +172,12 @@ class _EditStaffState extends State<EditStaff> {
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
                             setState(() => loading = true);
+                            print("users/${widget.user.id}");
+                            print({
+                              "name": widget.user.name,
+                              "email": widget.user.email,
+                              "roles": widget.user.rolesid
+                            });
                             API(context).Put("users/${widget.user.id}", {
                               "name": widget.user.name,
                               "email": widget.user.email,

@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -56,7 +57,7 @@ class _faq_informationState extends State<faq_information> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(" صاحب السؤال:${widget.orders_model.userId ?? ''}",
+                  Text(" صاحب السؤال:${widget.orders_model.user_name ?? ''}",
                       style: TextStyle(color: Colors.black, fontSize: 12)),
                   Text(
                       " تاريخ السؤال:${DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.orders_model.createdAt))}",
@@ -65,9 +66,9 @@ class _faq_informationState extends State<faq_information> {
               ),
               Text(" السؤال:${widget.orders_model.bodyQuestion ?? ''}",
                   style: TextStyle(color: Colors.black, fontSize: 12)),
-              Text(" المنتج:${widget.orders_model.productId ?? ''}",
+              widget.orders_model.product==null?Container():   Text(" المنتج:${widget.orders_model.product.name ?? ''}",
                   style: TextStyle(color: Colors.black, fontSize: 12)),
-              Text(" الحالة :${widget.orders_model.answer ?? ''}",
+              widget.orders_model.answer==null?Container():  Text("${getTransrlate(context, 'answer')} :${widget.orders_model.answer ?? ''}",
                   style: TextStyle(color: Colors.black, fontSize: 12)),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -138,36 +139,44 @@ class _faq_informationState extends State<faq_information> {
                 ),
               ),
               SizedBox(height: 10,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              widget.orders_model.product==null?Container():   Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(" المنتج :${widget.orders_model.productId ?? ''}",
-                      style: TextStyle(color: Colors.black, fontSize: 12)),
-                  Container(
-                    margin: EdgeInsets.only(left: 5),
-                    decoration: BoxDecoration(border: Border.all(color: Colors.black12,width: 2)),
-                    child: CachedNetworkImage(
-                      imageUrl:
-                     // "${widget.orders_model.photo.isNotEmpty ? widget.hall_model.photo[0].image : ''}",
-                      "https://images.yaoota.com/MfKaqTCN55Tr_Fcc9RY9z332A-g=/trim/yaootaweb-production/media/crawledproductimages/86d073f668edbe726371bfe1ebc49ab29c9b4f9d.jpg",
-                      height: ScreenUtil.getHeight(context) / 8,
-                      width: ScreenUtil.getWidth(context)/5,
-                      fit: BoxFit.contain,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(" المنتج :${widget.orders_model.productId ?? ''}",
+                          style: TextStyle(color: Colors.black, fontSize: 12)),
+                      Container(
+                        margin: EdgeInsets.only(left: 5),
+                        decoration: BoxDecoration(border: Border.all(color: Colors.black12,width: 2)),
+                        child: CachedNetworkImage(
+                          imageUrl:
+                          "${widget.orders_model.product==null?'':widget.orders_model.product.photo[0].image}",
+                          height: ScreenUtil.getHeight(context) / 8,
+                          width: ScreenUtil.getWidth(context)/5,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    ],
                   ),
+                  Text(" الفئة الرئيسية :${widget.orders_model.product.category==null?"":
+                  widget.orders_model.product.category.name ?? ''}",
+                      style: TextStyle(color: Colors.black, fontSize: 12)),
+                  Text(" الوصف :${widget.orders_model.product.description ?? ''}",
+                      style: TextStyle(color: Colors.black, fontSize: 12)),
+                  Text(" بلد المنشأ :${widget.orders_model.product.originCountry==null?"":
+                  widget.orders_model.product.originCountry.countryName?? ''}",
+                      style: TextStyle(color: Colors.black, fontSize: 12)),
+                  Text(" السعر :${widget.orders_model.product.actualPrice ?? ''}",
+                      style: TextStyle(color: Colors.black, fontSize: 12)),
+                  Text(" المركبة :${widget.orders_model.product.carMade==null?"":widget.orders_model.product.carMade.carMade ?? ''}",
+                      style: TextStyle(color: Colors.black, fontSize: 12)),
+
                 ],
               ),
-              Text(" الفئة الرئيسية :${widget.orders_model.productId ?? ''}",
-                  style: TextStyle(color: Colors.black, fontSize: 12)),
-              Text(" الوصف :${widget.orders_model.productId ?? ''}",
-                  style: TextStyle(color: Colors.black, fontSize: 12)),
-              Text(" بلد المنشأ :${widget.orders_model.productId ?? ''}",
-                  style: TextStyle(color: Colors.black, fontSize: 12)),
-              Text(" السعر :${widget.orders_model.productId ?? ''}",
-                  style: TextStyle(color: Colors.black, fontSize: 12)),
-              Text(" المركبة :${widget.orders_model.productId ?? ''}",
-                  style: TextStyle(color: Colors.black, fontSize: 12)),
 
             ],
           ),

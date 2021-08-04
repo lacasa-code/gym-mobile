@@ -30,6 +30,7 @@ class _Edit_profileState extends State<Edit_profile> {
   bool _isLoading = false;
   bool loading = false;
   UserInfo userModal;
+  TextEditingController birthdate =TextEditingController();
   List<String> items = ["male", "female"];
   TextEditingController _tocontroller = TextEditingController();
 
@@ -60,6 +61,7 @@ class _Edit_profileState extends State<Edit_profile> {
           setState(() {
             userModal = UserInformation.fromJson(value).data.user;
           });
+          birthdate.text=userModal.birthdate??' ';
 
       }
     });
@@ -267,7 +269,7 @@ class _Edit_profileState extends State<Edit_profile> {
                                   padding: EdgeInsets.only(
                                       left: 25.0, right: 25.0, top: 2.0),
                                   child: TextFormField(
-                                    initialValue: userModal.birthdate,
+                                    controller:birthdate,
                                     decoration: InputDecoration(),
                                     enabled: false,
                                     onSaved: (String val) =>
@@ -494,7 +496,7 @@ class _Edit_profileState extends State<Edit_profile> {
         context: context,initialDate: DateTime(2005),lastDate: DateTime(2005), firstDate: DateTime(1930));
     if (picked != null)
       setState(() {
-        _tocontroller.text = DateFormat('yyyy-MM-dd').format(picked);
+        birthdate.text = DateFormat('yyyy-MM-dd').format(picked);
       });
   }
 

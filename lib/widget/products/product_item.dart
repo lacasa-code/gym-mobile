@@ -84,7 +84,7 @@ class _Product_itemState extends State<Product_item> {
                 ),
               ),
               Text(
-                "السعر :  ${widget.hall_model.price}",
+                "السعر :  ${widget.hall_model.actualPrice}",
                 maxLines: 1,
                 style: TextStyle(
                     color: Colors.black,

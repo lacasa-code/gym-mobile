@@ -139,7 +139,7 @@ class _FaqPageState extends State<FaqPage> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(" ${getTransrlate(context, 'QustOwner')}:${faq[index].userId??''}",
+                                      Text(" ${getTransrlate(context, 'QustOwner')}: ${faq[index].user_name??''}",
                                           style: TextStyle(
                                               color: Colors.black, fontSize: 12)),
                                       Text(" ${getTransrlate(context, 'QustDate')}:${DateFormat('yyyy-MM-dd').format(DateTime.parse(faq[index].createdAt))}",
@@ -150,10 +150,10 @@ class _FaqPageState extends State<FaqPage> {
                                   Text(" ${getTransrlate(context, 'Qust')}:${faq[index].bodyQuestion??''}",
                                       style: TextStyle(
                                           color: Colors.black, fontSize: 12)),
-                                  Text(" ${getTransrlate(context, 'product')}:${faq[index].productId??''}",
+                                  faq[index].product==null?Container(): Text(" ${getTransrlate(context, 'product')}: ${faq[index].product.name??''}",
                                       style: TextStyle(
                                           color: Colors.black, fontSize: 12)),
-                                  faq[index].answer==null?Container(): Text(" ${getTransrlate(context, 'answer')} :${faq[index].answer??''}",
+                                  faq[index].answer==null?Container(): Text(" ${getTransrlate(context, 'answer')} : ${faq[index].answer??''}",
                                       style: TextStyle(
                                           color: Colors.black, fontSize: 12)),
 

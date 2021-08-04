@@ -1,3 +1,5 @@
+import 'package:trkar_vendor/model/products_model.dart';
+
 class Faq_model {
   int statusCode;
   String message;
@@ -37,7 +39,9 @@ class Faq {
   int vendorId;
   String bodyQuestion;
   String answer;
+  String user_name;
   String lang;
+  Product product;
   String createdAt;
   String updatedAt;
   String deletedAt;
@@ -50,6 +54,7 @@ class Faq {
         this.bodyQuestion,
         this.answer,
         this.lang,
+        this.user_name,
         this.createdAt,
         this.updatedAt,
         this.deletedAt});
@@ -57,10 +62,14 @@ class Faq {
   Faq.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userId = json['user_id'];
+    user_name = json['user_name'];
     productId = json['product_id'];
     vendorId = json['vendor_id'];
     bodyQuestion = json['body_question'];
     answer = json['answer'];
+   if(json['product']!=null) {
+      product = Product.fromJson(json['product']);
+    }
     lang = json['lang'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];

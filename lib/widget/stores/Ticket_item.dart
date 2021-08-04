@@ -218,14 +218,14 @@ class Ticket_item extends StatelessWidget {
 
   Color isPassed(String value) {
     switch (value) {
-      case 'progress':
+      case 'pending':
         return Colors.amber;
         break;
-      case 'open':
+      case 'solved':
         return Colors.lightGreen;
         break;
-      case 'close':
-        return Colors.red;
+      case 'to admin':
+        return Colors.orange;
         break;
       default:
         return Colors.blue;

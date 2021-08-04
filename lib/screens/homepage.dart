@@ -255,7 +255,7 @@ class _HomeMobileState extends State<HomeMobile> {
                                                   fontSize: 11,
                                                   fontWeight: FontWeight.bold),
                                             ),
-                                            Text("${basic_report.totalOrders}",
+                                            Text("${basic_report.pending_orders}",
                                                 maxLines: 1,
                                                 style: TextStyle(
                                                     color:
@@ -394,7 +394,7 @@ class _HomeMobileState extends State<HomeMobile> {
                                               ),
                                             ),
                                             Text(
-                                                "${basic_report.totalCustomers ?? '0'}",
+                                                "${basic_report.prod_questions ?? '0'}",
                                                 maxLines: 1,
                                                 style: TextStyle(
                                                     color:
@@ -440,7 +440,7 @@ class _HomeMobileState extends State<HomeMobile> {
                                               ),
                                             ),
                                             Text(
-                                                "${basic_report.totalVendors ?? '0'}",
+                                                "${basic_report.tickets ?? '0'}",
                                                 maxLines: 1,
                                                 style: TextStyle(
                                                     color:

@@ -10,16 +10,18 @@ class Basic_report {
   int _totalOrders;
   int _totalInvoices;
   double _totalSale;
-  int _totalCustomers;
-  int _totalVendors;
+  int _prod_questions;
+  int _tickets;
+  int _pending_orders;
   int _totalProducts;
   List<Period_details> _periodDetails;
 
   int get totalOrders => _totalOrders;
   int get totalInvoices => _totalInvoices;
   double get totalSale => _totalSale;
-  int get totalCustomers => _totalCustomers;
-  int get totalVendors => _totalVendors;
+  int get prod_questions => _prod_questions;
+  int get tickets => _tickets;
+  int get pending_orders => _pending_orders;
   int get totalProducts => _totalProducts;
   List<Period_details> get periodDetails => _periodDetails;
 
@@ -27,15 +29,17 @@ class Basic_report {
       {int totalOrders,
       int totalInvoices,
       double totalSale,
-      int totalCustomers,
-      int totalVendors,
+      int prod_questions,
+      int pending_orders,
+      int tickets,
       int totalProducts,
       List<Period_details> periodDetails}) {
     _totalOrders = totalOrders;
     _totalInvoices = totalInvoices;
     _totalSale = totalSale;
-    _totalCustomers = totalCustomers;
-    _totalVendors = totalVendors;
+    _prod_questions = prod_questions;
+    _pending_orders = pending_orders;
+    _tickets = tickets;
     _totalProducts = totalProducts;
     _periodDetails = periodDetails;
   }
@@ -44,8 +48,9 @@ class Basic_report {
     _totalOrders = json["total_orders"];
     _totalInvoices = json["total_invoices"];
     _totalSale = double.parse(json["total_sale"].toString());
-    _totalCustomers = json["total_customers"];
-    _totalVendors = json["total_vendors"];
+    _prod_questions = json["prod_questions"];
+    _pending_orders = json["pending_orders"];
+    _tickets = json["tickets"];
     _totalProducts = json["total_products"];
     if (json["period_details"] != null) {
       _periodDetails = [];
@@ -60,8 +65,8 @@ class Basic_report {
     map["total_orders"] = _totalOrders;
     map["total_invoices"] = _totalInvoices;
     map["total_sale"] = _totalSale;
-    map["total_customers"] = _totalCustomers;
-    map["total_vendors"] = _totalVendors;
+    map["total_customers"] = _prod_questions;
+    map["total_vendors"] = _tickets;
     map["total_products"] = _totalProducts;
     if (_periodDetails != null) {
       map["period_details"] = _periodDetails.map((v) => v.toJson()).toList();

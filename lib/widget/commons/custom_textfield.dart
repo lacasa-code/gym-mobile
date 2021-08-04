@@ -18,6 +18,7 @@ class MyTextFormField extends StatelessWidget {
   final Widget prefix;
   final TextInputType Keyboard_Type;
   final String intialLabel;
+  final TextEditingController textEditingController;
   final GestureTapCallback press;
 
   MyTextFormField(
@@ -29,6 +30,7 @@ class MyTextFormField extends StatelessWidget {
         this.isEmail = false,
         this.isPhone = false,
         this.labelText,
+        this.textEditingController,
         this.suffixIcon,
         this.textDirection,
         this.prefix,
@@ -48,7 +50,8 @@ class MyTextFormField extends StatelessWidget {
           SizedBox(height: 5),
           TextFormField(
             onTap: press,
-            initialValue: intialLabel == null ? '' : intialLabel,
+            controller: textEditingController,
+            initialValue: intialLabel ,
             inputFormatters:inputFormatters ,
             decoration: InputDecoration(
               fillColor: Colors.white,

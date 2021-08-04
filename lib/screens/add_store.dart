@@ -33,6 +33,7 @@ class _add_StoreState extends State<add_Store> {
   Completer<GoogleMapController> _controller = Completer();
   MapPickerController mapPickerController = MapPickerController();
   List<Country> contries;
+  TextEditingController addressController=TextEditingController();
   List<City> cities;
   List<Area> area;
   CameraPosition cameraPosition = CameraPosition(
@@ -101,7 +102,7 @@ class _add_StoreState extends State<add_Store> {
                           intialLabel: store.moderatorName ?? ' ',
                           Keyboard_Type: TextInputType.phone,
                           inputFormatters: [
-                            new LengthLimitingTextInputFormatter(12),
+                            new LengthLimitingTextInputFormatter(9),
                           ],
                           labelText: getTransrlate(context, 'ModeratorPhone'),
                           hintText: getTransrlate(context, 'ModeratorPhone'),
@@ -125,7 +126,7 @@ class _add_StoreState extends State<add_Store> {
                           Keyboard_Type: TextInputType.phone,textDirection: TextDirection.ltr,
                           labelText: getTransrlate(context, 'phone'),
                           inputFormatters: [
-                            new LengthLimitingTextInputFormatter(12),
+                            new LengthLimitingTextInputFormatter(9),
                           ],
                           hintText: getTransrlate(context, 'phone'),
                           suffixIcon: Text('  +966 ',textDirection: TextDirection.ltr,),
@@ -216,9 +217,8 @@ class _add_StoreState extends State<add_Store> {
                             },
                           ),
                         ),
-
                         MyTextFormField(
-                          intialLabel: store.address ?? ' ',
+                          textEditingController: addressController,
                           Keyboard_Type: TextInputType.text,
                           labelText: getTransrlate(context, 'address'),
                           hintText: getTransrlate(context, 'address'),
@@ -273,8 +273,11 @@ class _add_StoreState extends State<add_Store> {
                                         cameraPosition.target.latitude,
                                         cameraPosition.target.longitude));
                                 // update the ui with the address
-                                store.address =
-                                    '${addresses.first?.addressLine ?? ''}';
+
+                                addressController.text = '${addresses.first?.addressLine ?? ''}';
+                                  store.address = '${addresses.first?.addressLine ?? ''}';
+
+
                               },
                             ),
                           ),

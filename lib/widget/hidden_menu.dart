@@ -195,7 +195,7 @@ class _HiddenMenuState extends State<HiddenMenu> {
                         width: 30,
                         color: Colors.orange,
                       ),
-                      name: getTransrlate(context, 'product'),
+                      name: getTransrlate(context, 'products'),
                       baseStyle: TextStyle(
                           color: Colors.black.withOpacity(0.6),
                           fontSize: 19.0,
