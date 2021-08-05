@@ -1,3 +1,5 @@
+import 'package:trkar_vendor/model/area_model.dart';
+import 'package:trkar_vendor/model/city_model.dart';
 import 'package:trkar_vendor/model/orders_model.dart';
 
 class Tickets_model {
@@ -209,7 +211,8 @@ class Shipping {
   String telephoneNo;
   String nearestMilestone;
   String notices;
-
+  Area area;
+  City city;
   Shipping(
       {this.id,
         this.userId,
@@ -218,6 +221,7 @@ class Shipping {
         this.recipientName,
         this.recipientPhone,
         this.lastName,
+        this.area,
         this.street,
         this.district,
         this.homeNo,
@@ -239,6 +243,12 @@ class Shipping {
     district = json['district'];
     homeNo = json['home_no'];
     floorNo = json['floor_no'];
+     if(json['area']!=null) {
+       area = Area.fromJson(json['area']);
+    };
+     if(json['city']!=null) {
+       city = City.fromJson(json['city']);
+    };
     apartmentNo = json['apartment_no'];
     telephoneNo = json['telephone_no'];
     nearestMilestone = json['nearest_milestone'];

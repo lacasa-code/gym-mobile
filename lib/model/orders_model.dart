@@ -1,3 +1,5 @@
+import 'package:trkar_vendor/model/tickets_model.dart';
+
 class Orders_model {
   int statusCode;
   String message;
@@ -37,6 +39,8 @@ class Order {
   String orderTotal;
   int expired;
   int approved;
+  Shipping shipping;
+  Payment payment;
   String paid;
   int status;
   String createdAt;
@@ -51,7 +55,7 @@ class Order {
         this.expired,
         this.approved,
         this.paid,
-        this.status,
+        this.status,this.payment,this.shipping,
         this.createdAt,
         this.orderStatus,
         this.orderDetails});
@@ -64,6 +68,12 @@ class Order {
     expired = json['expired'];
     approved = json['approved'];
     paid = json['paid'].toString();
+    if(json['shipping']!=null) {
+      shipping =Shipping.fromJson(json['shipping']) ;
+    }
+    if(json['payment']!=null) {
+      payment =Payment.fromJson(json['payment']) ;
+    }
     createdAt = json['created_at'];
     orderStatus = json['orderStatus'];
     if (json['orderDetails'] != null) {
@@ -148,6 +158,7 @@ class OrderDetails {
     quantity = json['quantity'];
     price = json['price'].toString();
     discount = json['discount'];
+
     total = json['total'].toString();
     approved = json['approved'];
     createdAt = json['created_at'];

@@ -16,7 +16,7 @@ class Order_information extends StatefulWidget {
       : super(key: key);
 
   final Order orders_model;
-   List<Order> orders;
+  List<Order> orders;
 
   @override
   _Order_informationState createState() => _Order_informationState();
@@ -100,7 +100,14 @@ class _Order_informationState extends State<Order_information> {
                     minFontSize: 11,
                   ),
                   AutoSizeText(
-                    'محمد حسن مبنى 12 الطابق الثاني مكتب 23 ش الملك عبدالله تبوك المملكة العربية السعودية +9660505521235 ',
+                    widget.orders_model.shipping == null
+                        ? ''
+                        : "${widget.orders_model.shipping.area.areaName} , "
+                        "${widget.orders_model.shipping.city.cityName} , "
+                        "${widget.orders_model.shipping.street} , "
+                        "${widget.orders_model.shipping.district} , "
+                        "${widget.orders_model.shipping.floorNo} , "
+                        "${widget.orders_model.shipping.apartmentNo}",
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.black,

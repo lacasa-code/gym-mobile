@@ -1,3 +1,5 @@
+import 'package:trkar_vendor/model/tickets_model.dart';
+
 /// data : [{"id":1,"order_id":1,"order_number":20000000,"vendor_id":1,"vendor_name":"first vendor","vendor_email":"vendor@vendor.com","invoice_number":40000000,"invoice_total":19.8,"status":1,"created_at":"2021-03-09T09:34:21.000000Z","time_created":"2021-03-09 09:34:21"},{"id":2,"order_id":5,"order_number":20000004,"vendor_id":2,"vendor_name":"second  vendor","vendor_email":"second@second.com","invoice_number":40000001,"invoice_total":40,"status":1,"created_at":"2021-03-09T09:34:22.000000Z","time_created":"2021-03-09 09:34:22"},{"id":3,"order_id":5,"order_number":20000004,"vendor_id":3,"vendor_name":"third vendor","vendor_email":"thirdv@v.com","invoice_number":40000002,"invoice_total":10,"status":1,"created_at":"2021-03-09T09:34:23.000000Z","time_created":"2021-03-09 09:34:23"},{"id":4,"order_id":2,"order_number":20000001,"vendor_id":2,"vendor_name":"second  vendor","vendor_email":"second@second.com","invoice_number":40000003,"invoice_total":110,"status":1,"created_at":"2021-03-09T09:34:24.000000Z","time_created":"2021-03-09 09:34:24"},{"id":5,"order_id":3,"order_number":20000002,"vendor_id":2,"vendor_name":"second  vendor","vendor_email":"second@second.com","invoice_number":40000004,"invoice_total":280,"status":1,"created_at":"2021-03-09T09:34:25.000000Z","time_created":"2021-03-09 09:34:25"},{"id":6,"order_id":4,"order_number":20000003,"vendor_id":3,"vendor_name":"third vendor","vendor_email":"thirdv@v.com","invoice_number":40000005,"invoice_total":250,"status":1,"created_at":"2021-03-09T09:34:26.000000Z","time_created":"2021-03-09 09:34:26"},{"id":7,"order_id":6,"order_number":20000005,"vendor_id":2,"vendor_name":"second  vendor","vendor_email":"second@second.com","invoice_number":40000006,"invoice_total":90,"status":1,"created_at":"2021-03-09T09:34:27.000000Z","time_created":"2021-03-09 09:34:27"},{"id":8,"order_id":6,"order_number":20000005,"vendor_id":3,"vendor_name":"third vendor","vendor_email":"thirdv@v.com","invoice_number":40000007,"invoice_total":160,"status":1,"created_at":"2021-03-09T09:34:28.000000Z","time_created":"2021-03-09 09:34:28"},{"id":9,"order_id":7,"order_number":20000006,"vendor_id":2,"vendor_name":"second  vendor","vendor_email":"second@second.com","invoice_number":40000008,"invoice_total":80,"status":1,"created_at":"2021-03-09T09:34:29.000000Z","time_created":"2021-03-09 09:34:29"},{"id":10,"order_id":8,"order_number":20000007,"vendor_id":2,"vendor_name":"second  vendor","vendor_email":"second@second.com","invoice_number":40000009,"invoice_total":300,"status":1,"created_at":"2021-03-09T09:34:30.000000Z","time_created":"2021-03-09 09:34:30"}]
 /// total : 14
 
@@ -50,6 +52,7 @@ class Invoice {
   int _orderId;
   int _orderNumber;
   int _vendorId;
+  Shipping _shipping;
   String _vendorName;
   String _vendorEmail;
   int _invoiceNumber;
@@ -64,6 +67,7 @@ class Invoice {
   int get vendorId => _vendorId;
   String get vendorName => _vendorName;
   String get vendorEmail => _vendorEmail;
+  Shipping get shipping => _shipping;
   int get invoiceNumber => _invoiceNumber;
   String get invoiceTotal => _invoiceTotal;
   int get status => _status;
@@ -78,6 +82,7 @@ class Invoice {
       String vendorName,
       String vendorEmail,
       int invoiceNumber,
+        Shipping shipping,
       String invoiceTotal,
       int status,
       String createdAt,
@@ -88,6 +93,7 @@ class Invoice {
     _vendorId = vendorId;
     _vendorName = vendorName;
     _vendorEmail = vendorEmail;
+    _shipping = shipping;
     _invoiceNumber = invoiceNumber;
     _invoiceTotal = invoiceTotal;
     _status = status;
@@ -103,6 +109,9 @@ class Invoice {
     _vendorName = json["vendor_name"];
     _vendorEmail = json["vendor_email"];
     _invoiceNumber = json["invoice_number"];
+    if(json['shipping']!=null) {
+      _shipping =Shipping.fromJson(json['user_address']) ;
+    }
     _invoiceTotal = json["invoice_total"].toString();
     _status = json["status"];
     _createdAt = json["created_at"];

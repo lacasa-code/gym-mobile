@@ -127,7 +127,7 @@ class _OrdersState extends State<Orders> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Text('${orders.length} ${getTransrlate(context, 'orders')}'),
+                            Text('${orders.length} ${getTransrlate(context, 'Orders')}'),
                             SizedBox(
                               width: 100,
                             ),

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/orders_model.dart';
 import 'package:trkar_vendor/model/products_model.dart';
-import 'package:trkar_vendor/screens/edit_product.dart';
+import 'package:trkar_vendor/screens/Edit_product.dart';
 import 'package:trkar_vendor/screens/orderdetails.dart';
 import 'package:trkar_vendor/screens/productPage.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';

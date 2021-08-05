@@ -23,6 +23,11 @@ class _ProductPageState extends State<ProductPage> {
   int _carouselCurrentPage = 0;
 
   @override
+  void initState() {
+    widget.product.manufacturer_id=widget.product.manufacturer.id.toString();
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
     final themeColor = Provider.of<Provider_control>(context);
     return Scaffold(
@@ -38,7 +43,7 @@ class _ProductPageState extends State<ProductPage> {
             SizedBox(
               width: 10,
             ),
-            Text(getTransrlate(context, 'product')),
+            Text(getTransrlate(context, 'products')),
           ],
         ),
         actions: [
@@ -110,19 +115,34 @@ class _ProductPageState extends State<ProductPage> {
         DataRow(
           cells: <DataCell>[
             DataCell(Text('الفئة الرئيسية')),
-            DataCell(Text('${widget.product.category.name}')),
+            DataCell(Text('${widget.product.maincategory==null?'':widget.product.maincategory}')),
           ],
         ),
         DataRow(color: MaterialStateProperty.resolveWith((states) => Colors.black26) ,
           cells: <DataCell>[
-            DataCell(Text('الفئة الفرعية')),
-            DataCell(Text('${widget.product.partCategory.categoryName}')),
+            DataCell(Text('الفئة الفرعية |')),
+            DataCell(Text('${widget.product.category==null?'':widget.product.category.name}')),
+          ],
+        ),
+        DataRow(
+          cells: <DataCell>[
+            DataCell(Text('الفئه الفرعيه | |')),
+            DataCell(Text('${widget.product.partCategory==null?'':widget.product.partCategory.categoryName}')),
+          ],
+        ),
+        DataRow(color: MaterialStateProperty.resolveWith((states) => Colors.black26) ,
+          cells: <DataCell>[
+            DataCell(Text('السيريال')),
+            DataCell(Text('${widget.product.serialNumber}')),
           ],
         ),
         DataRow(
           cells: <DataCell>[
             DataCell(Text('الوصف')),
-            DataCell(Container(width: ScreenUtil.getWidth(context)/3,child: Text('${widget.product.description}'))),
+            DataCell(Container(width: ScreenUtil.getWidth(context)/2,child: Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Text('${widget.product.description}'),
+            ))),
           ],
         ),
         DataRow(color: MaterialStateProperty.resolveWith((states) => Colors.black26) ,
@@ -159,7 +179,7 @@ class _ProductPageState extends State<ProductPage> {
         DataRow(
           cells: <DataCell>[
             DataCell(Text('الخصم')),
-            DataCell(Text('${widget.product.discount}% ${widget.product.price}')),
+            DataCell(Text('${widget.product.discount} %')),
           ],
         ),
 

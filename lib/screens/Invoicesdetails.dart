@@ -102,9 +102,16 @@ class _Invoices_informationState extends State<Invoices_information> {
                     minFontSize: 11,
                   ),
                   AutoSizeText(
-                    '${widget.orders_model}',
+                    widget.orders_model.shipping == null
+                        ? ''
+                        : "${widget.orders_model.shipping.area.areaName} , "
+                        "${widget.orders_model.shipping.city.cityName} , "
+                        "${widget.orders_model.shipping.street} , "
+                        "${widget.orders_model.shipping.district} , "
+                        "${widget.orders_model.shipping.floorNo} , "
+                        "${widget.orders_model.shipping.apartmentNo}",
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 14,
                       color: Colors.black,
                       fontWeight: FontWeight.w600,
                     ),

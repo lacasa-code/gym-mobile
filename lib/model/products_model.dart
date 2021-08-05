@@ -1,13 +1,17 @@
-import 'package:dio/dio.dart';
-import 'package:flutter_tags/flutter_tags.dart';
+
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:trkar_vendor/model/car_made.dart';
 import 'package:trkar_vendor/model/car_types.dart';
 import 'package:trkar_vendor/model/carmodel.dart';
 import 'package:trkar_vendor/model/category.dart';
+import 'package:trkar_vendor/model/main_category.dart';
 import 'package:trkar_vendor/model/manufacturer_model.dart';
+import 'package:trkar_vendor/model/part__category.dart';
+import 'package:trkar_vendor/model/prod_country.dart';
+import 'package:trkar_vendor/model/product_type_model.dart';
 import 'package:trkar_vendor/model/store_model.dart';
 import 'package:trkar_vendor/model/tags_model.dart';
+import 'package:trkar_vendor/model/transmissions.dart';
 import 'package:trkar_vendor/model/year.dart';
 
 class Products_model {
@@ -44,11 +48,17 @@ class Product {
   String createdAt;
   bool isSelect=false;
   String carMadeId;
+  String maincategory_id;
+  Main_Category maincategory;
   String carModelId;
   List<Photo> photo;
   List<Asset> photos;
   List<Tag> tags;
   String yearId;
+  Year yearto;
+  Year yearfrom;
+  String yeartoId;
+  String yearfromId;
   String CategoryId;
   String partCategoryId;
   String vendorId;
@@ -63,24 +73,25 @@ class Product {
   String transmission_id;
   String quantity;
   String serialNumber;
-
+  String transmissionId;
   Categories category;
-
+  ProdCountry prodCountry;
   CarMade carMade;
   List<Carmodel> carModel;
   CarType carType;
   Year year;
-  PartCategory partCategory;
+  Part_Category partCategory;
   Store store;
   Vendor vendor;
   Manufacturer manufacturer;
+  Transmission transmission;
   OriginCountry originCountry;
-  ProducttypeId producttypeId;
+  ProductType producttypeId;
   String serialCoding;
   String actualPrice;
   String serialId;
   int approved;
-  int qtyReminder;
+  String qtyReminder;
   String holesalePrice;
   String noOfOrders;
   Product(
@@ -94,14 +105,16 @@ class Product {
       this.carModelId,
       this.yearId,
       this.partCategoryId,
-      this.photo,
+      this.photo,this.yearto,this.yearfrom,
       this.vendorId,
+        this.maincategory,
       this.manufacturer_id,
       this.transmission_id,
+        this.qty_reminder,
       this.prodcountry_id,
       this.storeId,
-      this.cartype_id,
-      this.quantity,
+      this.cartype_id,this.prodCountry,
+      this.quantity,this.maincategory_id,
       this.serialNumber});
 
   Product.fromJson(Map<String, dynamic> json) {
@@ -110,12 +123,13 @@ class Product {
     description = json['description'];
     price = json['price'];
     actualPrice = json['actual_price'].toString();
-
    discount = json['discount'].toString();
     createdAt = json['created_at'];
     carMadeId = json['car_made_id'].toString();
     carModelId = json['car_model_id'];
     cartype_id= json['cartype_id'].toString();
+    yearfrom = json['year_from'] != null ? new Year.fromJson(json['year_from']) : null;
+    yearto = json['year_to'] != null ? new Year.fromJson(json['year_to']) : null;
     yearId = json['year_id'];
     partCategoryId = json['part_category_id'].toString();
     CategoryId = json['category_id'].toString();
@@ -132,6 +146,8 @@ class Product {
       json['tags'].forEach((v) { tags.add(new Tag.fromJson(v)); });
     }
     category = json['category'] != null ? new Categories.fromJson(json['category']) : null;
+    prodCountry = json['origin_country'] != null ? new ProdCountry.fromJson(json['origin_country']) : null;
+    maincategory = json['main_category'] != null ? new Main_Category.fromJson(json['main_category']) : null;
     carMade = json['car_made'] != null ? new CarMade.fromJson(json['car_made']) : null;
     if (json['car_model'] != null) {
       carModel = new List<Carmodel>();
@@ -139,18 +155,18 @@ class Product {
     }
     carType = json['car_type'] != null ? new CarType.fromJson(json['car_type']) : null;
      year = json['year'];
-    partCategory = json['part_category'] != null ? new PartCategory.fromJson(json['part_category']) : null;
+    partCategory = json['part_category'] != null ? new Part_Category.fromJson(json['part_category']) : null;
     store = json['store'] != null ? new Store.fromJson(json['store']) : null;
     vendor = json['vendor'] != null ? new Vendor.fromJson(json['vendor']) : null;
     manufacturer = json['manufacturer'] != null ? new Manufacturer.fromJson(json['manufacturer']) : null;
     originCountry = json['origin_country'] != null ? new OriginCountry.fromJson(json['origin_country']) : null;
-   // transmissionId = json['transmission_id'];
-    //transmission = json['transmission'] != null ? new Transmission.fromJson(json['transmission']) : null;
-    //producttypeId = json['producttype_id'] != null ? new ProducttypeId.fromJson(json['producttype_id']) : null;
+    transmissionId = json['transmission_id'].toString();
+    transmission = json['transmission'] != null ? new Transmission.fromJson(json['transmission']) : null;
+    producttypeId = json['producttype_id'] != null ? new ProductType.fromJson(json['producttype_id']) : null;
     serialCoding = json['serial_coding'];
     serialId = json['serial_id'];
     approved = json['approved'];
-    qtyReminder = json['qty_reminder'];
+    qtyReminder = json['qty_reminder'].toString();
     holesalePrice== null?null:holesalePrice = json['holesale_price'].toString();
     noOfOrders== null?null:noOfOrders = json['no_of_orders'].toString();
   }
@@ -163,18 +179,22 @@ class Product {
     this.discount ==null?null: data['discount'] = this.discount;
     data['car_made_id'] = this.carMadeId;
     data['category_id'] = this.CategoryId;
-    data['car_model_id'] = this.carModelId;
-    data['year_id'] = this.yearId;
-    data['models'] = 'ffffff';
+    //data['car_model_id'] = this.carModelId;
+    this.yearId ==null?null:data['year_id'] = this.yearId;
+    this.yearfrom ==null?null:data['year_from'] = this.yearfromId;
+    this.yearto ==null?null:data['year_to'] = this.yeartoId;
+    if (this.carModel != null) {
+      data['models'] = this.carModel.map((v) => v.id).toList().toString();
+    }
     data['part_category_id'] = this.partCategoryId;
     data['cartype_id'] = this.cartype_id;
-    data['maincategory_id'] = this.CategoryId;
-    data['prodcountry_id'] = this.prodcountry_id;
+    this.CategoryId==null?null:data['maincategory_id'] = this.CategoryId;
+    this.prodcountry_id ==null?null:data['prodcountry_id'] = this.prodcountry_id;
     data['producttype_id'] = this.productType_id;
-    data['maincategory_id'] = this.Main_categoryid;
+    this.Main_categoryid ==null?null: data['maincategory_id'] = this.Main_categoryid;
     data['manufacturer_id'] = this.manufacturer_id;
-    data['qty_reminder'] = this.qty_reminder;
-    data['transmission_id'] = this.transmission_id;
+    this.qty_reminder==null?null:data['qty_reminder'] = this.qty_reminder;
+    this.transmission_id ==null?null:data['transmission_id'] = this.transmission_id;
     data['store_id'] = this.storeId;
     this.quantity==null?null:data['quantity'] = this.quantity;
     this.wholesale==null?null:data['holesale_price'] = this.wholesale;
@@ -281,39 +301,6 @@ class Photo {
 
 }
 
-class PartCategory {
-  int id;
-  String categoryName;
-  String createdAt;
-  String updatedAt;
-  Null deletedAt;
-  String lang;
-  int categoryId;
-
-  PartCategory({this.id, this.categoryName, this.createdAt, this.updatedAt, this.deletedAt, this.lang, this.categoryId});
-
-  PartCategory.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    categoryName = json['category_name'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-    deletedAt = json['deleted_at'];
-    lang = json['lang'];
-    categoryId = json['category_id'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['category_name'] = this.categoryName;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['deleted_at'] = this.deletedAt;
-    data['lang'] = this.lang;
-    data['category_id'] = this.categoryId;
-    return data;
-  }
-}
 
 
 class Vendor {
@@ -418,36 +405,3 @@ class OriginCountry {
   }
 }
 
-class ProducttypeId {
-  int id;
-  String producttype;
-  String lang;
-  int status;
-  String createdAt;
-  String updatedAt;
-  Null deletedAt;
-
-  ProducttypeId({this.id, this.producttype, this.lang, this.status, this.createdAt, this.updatedAt, this.deletedAt});
-
-  ProducttypeId.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    producttype = json['producttype'];
-    lang = json['lang'];
-    status = json['status'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-    deletedAt = json['deleted_at'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['producttype'] = this.producttype;
-    data['lang'] = this.lang;
-    data['status'] = this.status;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['deleted_at'] = this.deletedAt;
-    return data;
-  }
-}

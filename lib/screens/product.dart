@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import 'package:trkar_vendor/model/products_model.dart';
 import 'package:trkar_vendor/screens/add_product.dart';
-import 'package:trkar_vendor/screens/edit_product.dart';
+import 'package:trkar_vendor/screens/Edit_product.dart';
 import 'package:trkar_vendor/screens/productPage.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';

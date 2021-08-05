@@ -167,7 +167,7 @@ class Ticket_item extends StatelessWidget {
                             child: AutoSizeText(hall_model.status,
                                 minFontSize: 10,
                                 style: TextStyle(
-                                  color: isPassed(hall_model.status),
+                                  color: isPassed(hall_model.Case),
                                   fontSize: 13,
                                   fontWeight: FontWeight.w600,
                                 )),
