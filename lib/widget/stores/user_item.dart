@@ -78,7 +78,7 @@ class _User_itemState extends State<User_item> {
                   ),
                   maxLines: 1,
                 ),
-                Text(
+                widget.hall_model.roles==null?Container():  Text(
                   "${widget.hall_model.roles.title}",
                   maxLines: 1,
                   style: TextStyle(

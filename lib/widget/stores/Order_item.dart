@@ -103,6 +103,32 @@ class OrderItem extends StatelessWidget {
               );
             },
           ),
+          SizedBox(
+            height: 2,
+          ),
+          Row(
+            children: [
+              Icon(Icons.location_on_outlined),
+              AutoSizeText(
+                orders_model.shipping == null
+                    ? ''
+                    : "${orders_model.shipping.area==null?'':orders_model.shipping.area.areaName} , "
+                    "${orders_model.shipping.city==null?'':orders_model.shipping.city.cityName} , "
+                    "${orders_model.shipping.street??''} , "
+                    "${orders_model.shipping.district??''} , "
+                    "${orders_model.shipping.floorNo??''} , "
+                    "${orders_model.shipping.apartmentNo??''}",
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w600,
+                ),
+                maxLines: 5,
+                minFontSize: 11,
+              ),
+            ],
+          ),
+
         ],
       ),
     );

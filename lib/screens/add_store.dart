@@ -99,10 +99,10 @@ class _add_StoreState extends State<add_Store> {
                           },
                         ),
                         MyTextFormField(
-                          intialLabel: store.moderatorName ?? ' ',
+                          intialLabel: store.name ?? ' ',
                           Keyboard_Type: TextInputType.phone,
                           inputFormatters: [
-                            new LengthLimitingTextInputFormatter(9),
+                            new LengthLimitingTextInputFormatter(11),
                           ],
                           labelText: getTransrlate(context, 'ModeratorPhone'),
                           hintText: getTransrlate(context, 'ModeratorPhone'),
@@ -111,8 +111,8 @@ class _add_StoreState extends State<add_Store> {
                           textDirection: TextDirection.ltr,
                           enabled: true,
                           validator: (String value) {
-                            if (value.length<=8) {
-                              return getTransrlate(context, 'ModeratorPhone');
+                            if (value.length<=9) {
+                              return getTransrlate(context, 'Required');
                             }
                             _formKey.currentState.save();
                             return null;
@@ -126,16 +126,24 @@ class _add_StoreState extends State<add_Store> {
                           Keyboard_Type: TextInputType.phone,textDirection: TextDirection.ltr,
                           labelText: getTransrlate(context, 'phone'),
                           inputFormatters: [
-                            new LengthLimitingTextInputFormatter(9),
+                            new LengthLimitingTextInputFormatter(11),
                           ],
                           hintText: getTransrlate(context, 'phone'),
                           suffixIcon: Text('  +966 ',textDirection: TextDirection.ltr,),
                           isPhone: true,
+                          validator: (String value) {
+                            if (value.length<=9) {
+                              return getTransrlate(context, 'Required');
+                            }
+                            _formKey.currentState.save();
+                            return null;
+                          },
                           enabled: true,
                           onSaved: (String value) {
                             store.moderatorAltPhone = "00966$value";
                           },
                         ),
+                        Text("${getTransrlate(context, 'address')}",style: TextStyle(color: Colors.black,fontSize: 16),),
                         contries == null
                             ? Container()
                             : Padding(
@@ -197,8 +205,8 @@ class _add_StoreState extends State<add_Store> {
                             ? Container()
                             : Padding(
                           padding: const EdgeInsets
-                              .symmetric(
-                              vertical: 10),
+                              .only(
+                              top: 10),
                           child: DropdownSearch<City>(
                             // label: getTransrlate(context, 'Countroy'),
                             validator: (City item) {

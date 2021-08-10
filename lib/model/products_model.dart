@@ -103,6 +103,7 @@ class Product {
       this.createdAt,
       this.carMadeId,
       this.carModelId,
+        this.carModel,
       this.yearId,
       this.partCategoryId,
       this.photo,this.yearto,this.yearfrom,
@@ -162,7 +163,7 @@ class Product {
     originCountry = json['origin_country'] != null ? new OriginCountry.fromJson(json['origin_country']) : null;
     transmissionId = json['transmission_id'].toString();
     transmission = json['transmission'] != null ? new Transmission.fromJson(json['transmission']) : null;
-    producttypeId = json['producttype_id'] != null ? new ProductType.fromJson(json['producttype_id']) : null;
+    producttypeId = json['product_type'] != null ? new ProductType.fromJson(json['product_type']) : null;
     serialCoding = json['serial_coding'];
     serialId = json['serial_id'];
     approved = json['approved'];
@@ -177,7 +178,7 @@ class Product {
     data['description'] = this.description;
     this.price==null?null:data['price'] = this.price;
     this.discount ==null?null: data['discount'] = this.discount;
-    data['car_made_id'] = this.carMadeId;
+    this.carMadeId==null?null:data['car_made_id'] = this.carMadeId;
     data['category_id'] = this.CategoryId;
     //data['car_model_id'] = this.carModelId;
     this.yearId ==null?null:data['year_id'] = this.yearId;

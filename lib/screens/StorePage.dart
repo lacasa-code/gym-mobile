@@ -73,67 +73,128 @@ class _StorePageState extends State<StorePage> {
         backgroundColor: themeColor.getColor(),
       ),
       body: SingleChildScrollView(
-        child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Container(
-                margin: EdgeInsets.all(8),
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: Colors.black12,
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child:  Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SvgPicture.asset(
-                    "assets/icons/store.svg",
-                    color: Colors.white,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    margin: EdgeInsets.all(8),
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: Colors.black12,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child:  Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SvgPicture.asset(
+                        "assets/icons/store.svg",
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
-                ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "${widget.store.name}",
+                      style: TextStyle(fontSize: 22),
+                    ),
+                  ),
+                  Text(
+                    "${getTransrlate(context, 'ModeratorPhone')} : ${widget.store.moderatorPhone}",
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  widget.store.moderatorAltPhone==null?Container(): Text(
+                    "${getTransrlate(context, 'moderatorAltPhone')} : ${widget.store.moderatorAltPhone}",
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  Text(
+                    "${getTransrlate(context, 'staff')} : ",
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  widget.store.members==null?Container():
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: widget.store.members.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                     //   mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Container(
+                            width: ScreenUtil.getWidth(context) / 1.5,
+                            child: Text(
+                              "${widget.store.members[index].name}",
+                              style: TextStyle(
+                                  color: themeColor.getColor(),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 13),
+                            ),
+                          ),
+                          Container(
+                            width: ScreenUtil.getWidth(context) / 1.5,
+                            child: Text(
+                              "${widget.store.members[index].email}",
+                              style: TextStyle(
+                                  color: themeColor.getColor(),
+                                  fontSize: 13),
+                            ),
+                          ),
+                          Container(
+                            width: ScreenUtil.getWidth(context) / 1.5,
+                            child: Text(
+                              "${widget.store.members[index].roleName} ",
+                              style: TextStyle(
+                                  color: themeColor.getColor(),
+                                  fontSize: 13),
+                            ),
+                          ),
+                          Container(color: Colors.black12,height: 1,),
+                          SizedBox(height: 10,),
+
+                        ],
+                      );
+                    },
+                  ),
+
+                  Text(
+                    "${getTransrlate(context, 'address')} : ${widget.store.address}",
+                    style: TextStyle(fontSize: 14),
+                  ),
+
+                  SizedBox(height: 8,),
+                ],
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "${widget.store.name}",
-                  style: TextStyle(fontSize: 22),
-                ),
-              ),
-              Text(
-                "${getTransrlate(context, 'ModeratorPhone')} : ${widget.store.moderatorPhone}",
-                style: TextStyle(fontSize: 14),
-              ),
-              Text(
-                "${getTransrlate(context, 'moderatorAltPhone')} : ${widget.store.moderatorAltPhone}",
-                style: TextStyle(fontSize: 14),
-              ),
-              Text(
-                "${getTransrlate(context, 'staff')} : ",
-                style: TextStyle(fontSize: 14),
-              ),
-              Text(
-                "${getTransrlate(context, 'address')} : ${widget.store.address}",
-                style: TextStyle(fontSize: 14),
-              ),
-              Text(
-                "${getTransrlate(context, 'Location')} :",
-                style: TextStyle(fontSize: 14),
-              ),
-              Container(
-                height: ScreenUtil.getHeight(context)/5,
-                width: ScreenUtil.getWidth(context)/1.5,
+                child: Row(mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "${getTransrlate(context, 'Location')} :",
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    Container(
+                      height: ScreenUtil.getHeight(context)/5,
+                      width: ScreenUtil.getWidth(context)/1.5,
 
-                child: GoogleMap(
-                  mapType: MapType.normal,
-                  initialCameraPosition: _kGooglePlex,
-                  onMapCreated: (GoogleMapController controller) {
-                    _controller.complete(controller);
-                  },
+                      child: GoogleMap(
+                        mapType: MapType.normal,
+                        initialCameraPosition: _kGooglePlex,
+                        onMapCreated: (GoogleMapController controller) {
+                          _controller.complete(controller);
+                        },
+                      ),
+                    ),
+
+                  ],
                 ),
               ),
-              SizedBox(height: 50,),
             ],
           ),
         ),

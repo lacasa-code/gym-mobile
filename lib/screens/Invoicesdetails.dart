@@ -6,12 +6,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/invoices.dart';
-import 'package:trkar_vendor/model/orders_model.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
-import 'package:trkar_vendor/utils/service/API.dart';
-import 'package:trkar_vendor/widget/ResultOverlay.dart';
 
 class Invoices_information extends StatefulWidget {
   Invoices_information({Key key, this.orders_model, this.orders})
@@ -102,14 +99,14 @@ class _Invoices_informationState extends State<Invoices_information> {
                     minFontSize: 11,
                   ),
                   AutoSizeText(
-                    widget.orders_model.shipping == null
+                    widget.orders_model.userAddress == null
                         ? ''
-                        : "${widget.orders_model.shipping.area.areaName} , "
-                        "${widget.orders_model.shipping.city.cityName} , "
-                        "${widget.orders_model.shipping.street} , "
-                        "${widget.orders_model.shipping.district} , "
-                        "${widget.orders_model.shipping.floorNo} , "
-                        "${widget.orders_model.shipping.apartmentNo}",
+                        : "${widget.orders_model.userAddress.area==null?'':widget.orders_model.userAddress.area.areaName} , "
+                        "${widget.orders_model.userAddress.city==null?'':widget.orders_model.userAddress.city.cityName} , "
+                        "${widget.orders_model.userAddress.street??''} , "
+                        "${widget.orders_model.userAddress.district??''} , "
+                        "${widget.orders_model.userAddress.floorNo??''} , "
+                        "${widget.orders_model.userAddress.apartmentNo??''}",
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.black,
@@ -129,7 +126,7 @@ class _Invoices_informationState extends State<Invoices_information> {
                     height: 2,
                   ),
                   AutoSizeText(
-                    "الشحنة 1",
+                    "${getTransrlate(context, 'shipping')}",
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.black,
@@ -138,76 +135,76 @@ class _Invoices_informationState extends State<Invoices_information> {
                     maxLines: 5,
                     minFontSize: 11,
                   ),
-                  // ListView.builder(
-                  //   shrinkWrap: true,
-                  //   physics: NeverScrollableScrollPhysics(),
-                  //   itemCount: widget.orders_model.orderDetails.length,
-                  //   itemBuilder: (BuildContext context, int index) {
-                  //     return Padding(
-                  //       padding: EdgeInsets.only(
-                  //         right: 7,
-                  //         left: 10,
-                  //         top: 10,
-                  //       ),
-                  //       child: Column(
-                  //         children: [
-                  //           Row(
-                  //             children: [
-                  //               Padding(
-                  //                 padding: const EdgeInsets.all(3.0),
-                  //                 child: CachedNetworkImage(
-                  //                   imageUrl: widget.orders_model
-                  //                           .orderDetails[index].photo.isEmpty
-                  //                       ? ""
-                  //                       : widget.orders_model
-                  //                           .orderDetails[index].photo[0].image,
-                  //                   width: 25,
-                  //                   height: 25,
-                  //                 ),
-                  //               ),
-                  //               Container(
-                  //                 width: ScreenUtil.getWidth(context) / 2,
-                  //                 child: Text(
-                  //                   widget.orders_model.orderDetails[index]
-                  //                       .productName,
-                  //                   style: TextStyle(
-                  //                       color: themeColor.getColor(),
-                  //                       fontWeight: FontWeight.bold,
-                  //                       fontSize: 15),
-                  //                 ),
-                  //               ),
-                  //             ],
-                  //           ),
-                  //           SizedBox(height: 10),
-                  //           Row(
-                  //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //             children: [
-                  //               AutoSizeText(
-                  //                 " كمية : ${widget.orders_model.orderDetails[index].quantity}",
-                  //                 maxLines: 2,
-                  //                 style: TextStyle(
-                  //                     fontSize: 14,
-                  //                     fontWeight: FontWeight.w600,
-                  //                     color: Colors.black),
-                  //                 minFontSize: 11,
-                  //               ),
-                  //               AutoSizeText(
-                  //                 "${widget.orders_model.invoiceTotal[index]} ${getTransrlate(context, 'Currency')}",
-                  //                 maxLines: 2,
-                  //                 style: TextStyle(
-                  //                     fontSize: 14,
-                  //                     fontWeight: FontWeight.w600,
-                  //                     color: Colors.black),
-                  //                 minFontSize: 11,
-                  //               ),
-                  //             ],
-                  //           ),
-                  //           SizedBox(height: 10),
-                  //         ],
-                  //       ),
-                  //     );
-                  //   },
-                  // ),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: widget.orders_model.order.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Padding(
+                        padding: EdgeInsets.only(
+                          right: 7,
+                          left: 10,
+                          top: 10,
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(3.0),
+                                  child: CachedNetworkImage(
+                                    imageUrl: widget.orders_model
+                                            .order[index].photo.isEmpty
+                                        ? ""
+                                        : widget.orders_model
+                                            .order[index].photo[0].image,
+                                    width: 50,
+                                    height: 50,
+                                  ),
+                                ),
+                                Container(
+                                  width: ScreenUtil.getWidth(context) / 2,
+                                  child: Text(
+                                    widget.orders_model.order[index]
+                                        .productName,
+                                    style: TextStyle(
+                                        color: themeColor.getColor(),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                AutoSizeText(
+                                  " كمية : ${widget.orders_model.order[index].quantity}",
+                                  maxLines: 2,
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black),
+                                  minFontSize: 11,
+                                ),
+                                AutoSizeText(
+                                  "${widget.orders_model.order[index].total} ${getTransrlate(context, 'Currency')}",
+                                  maxLines: 2,
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black),
+                                  minFontSize: 11,
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                   SizedBox(height: 10),
                   Align(
                     alignment: Alignment.bottomLeft,

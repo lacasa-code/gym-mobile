@@ -3,6 +3,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -235,6 +236,7 @@ class _Edit_profileState extends State<Edit_profile> {
                                 padding: EdgeInsets.only(
                                     left: 25.0, right: 25.0, top: 2.0),
                                 child: TextFormField(
+                                  textAlign: TextAlign.left,
                                   initialValue: userModal.phoneNo,
                                   inputFormatters: [
                                     new LengthLimitingTextInputFormatter(14),
@@ -243,7 +245,10 @@ class _Edit_profileState extends State<Edit_profile> {
                                   validator: (String value) {
                                     if (value.isEmpty) {
                                       return getTransrlate(
-                                          context, 'phone');
+                                          context, 'Required');
+                                    }else if (value.length<=9) {
+                                      return getTransrlate(
+                                          context, 'Required');
                                     }
                                     _formKey.currentState.save();
                                     return null;

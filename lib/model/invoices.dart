@@ -1,136 +1,180 @@
+import 'package:trkar_vendor/model/products_model.dart';
 import 'package:trkar_vendor/model/tickets_model.dart';
 
-/// data : [{"id":1,"order_id":1,"order_number":20000000,"vendor_id":1,"vendor_name":"first vendor","vendor_email":"vendor@vendor.com","invoice_number":40000000,"invoice_total":19.8,"status":1,"created_at":"2021-03-09T09:34:21.000000Z","time_created":"2021-03-09 09:34:21"},{"id":2,"order_id":5,"order_number":20000004,"vendor_id":2,"vendor_name":"second  vendor","vendor_email":"second@second.com","invoice_number":40000001,"invoice_total":40,"status":1,"created_at":"2021-03-09T09:34:22.000000Z","time_created":"2021-03-09 09:34:22"},{"id":3,"order_id":5,"order_number":20000004,"vendor_id":3,"vendor_name":"third vendor","vendor_email":"thirdv@v.com","invoice_number":40000002,"invoice_total":10,"status":1,"created_at":"2021-03-09T09:34:23.000000Z","time_created":"2021-03-09 09:34:23"},{"id":4,"order_id":2,"order_number":20000001,"vendor_id":2,"vendor_name":"second  vendor","vendor_email":"second@second.com","invoice_number":40000003,"invoice_total":110,"status":1,"created_at":"2021-03-09T09:34:24.000000Z","time_created":"2021-03-09 09:34:24"},{"id":5,"order_id":3,"order_number":20000002,"vendor_id":2,"vendor_name":"second  vendor","vendor_email":"second@second.com","invoice_number":40000004,"invoice_total":280,"status":1,"created_at":"2021-03-09T09:34:25.000000Z","time_created":"2021-03-09 09:34:25"},{"id":6,"order_id":4,"order_number":20000003,"vendor_id":3,"vendor_name":"third vendor","vendor_email":"thirdv@v.com","invoice_number":40000005,"invoice_total":250,"status":1,"created_at":"2021-03-09T09:34:26.000000Z","time_created":"2021-03-09 09:34:26"},{"id":7,"order_id":6,"order_number":20000005,"vendor_id":2,"vendor_name":"second  vendor","vendor_email":"second@second.com","invoice_number":40000006,"invoice_total":90,"status":1,"created_at":"2021-03-09T09:34:27.000000Z","time_created":"2021-03-09 09:34:27"},{"id":8,"order_id":6,"order_number":20000005,"vendor_id":3,"vendor_name":"third vendor","vendor_email":"thirdv@v.com","invoice_number":40000007,"invoice_total":160,"status":1,"created_at":"2021-03-09T09:34:28.000000Z","time_created":"2021-03-09 09:34:28"},{"id":9,"order_id":7,"order_number":20000006,"vendor_id":2,"vendor_name":"second  vendor","vendor_email":"second@second.com","invoice_number":40000008,"invoice_total":80,"status":1,"created_at":"2021-03-09T09:34:29.000000Z","time_created":"2021-03-09 09:34:29"},{"id":10,"order_id":8,"order_number":20000007,"vendor_id":2,"vendor_name":"second  vendor","vendor_email":"second@second.com","invoice_number":40000009,"invoice_total":300,"status":1,"created_at":"2021-03-09T09:34:30.000000Z","time_created":"2021-03-09 09:34:30"}]
-/// total : 14
-
 class Invoices_model {
-  List<Invoice> _data;
-  int _total;
+  int statusCode;
+  String message;
+  List<Invoice> data;
+  int total;
 
-  List<Invoice> get data => _data;
-  int get total => _total;
+  Invoices_model({this.statusCode, this.message, this.data, this.total});
 
-  Invoices_model({List<Invoice> data, int total}) {
-    _data = data;
-    _total = total;
-  }
-
-  Invoices_model.fromJson(dynamic json) {
-    if (json["data"] != null) {
-      _data = [];
-      json["data"].forEach((v) {
-        _data.add(Invoice.fromJson(v));
-      });
+  Invoices_model.fromJson(Map<String, dynamic> json) {
+    statusCode = json['status_code'];
+    message = json['message'];
+    if (json['data'] != null) {
+      data = new List<Invoice>();
+      json['data'].forEach((v) { data.add(new Invoice.fromJson(v)); });
     }
-    _total = json["total"];
+    total = json['total'];
   }
 
   Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
-    if (_data != null) {
-      map["data"] = _data.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['status_code'] = this.statusCode;
+    data['message'] = this.message;
+    if (this.data != null) {
+      data['data'] = this.data.map((v) => v.toJson()).toList();
     }
-    map["total"] = _total;
-    return map;
+    data['total'] = this.total;
+    return data;
   }
 }
-
-/// id : 1
-/// order_id : 1
-/// order_number : 20000000
-/// vendor_id : 1
-/// vendor_name : "first vendor"
-/// vendor_email : "vendor@vendor.com"
-/// invoice_number : 40000000
-/// invoice_total : 19.8
-/// status : 1
-/// created_at : "2021-03-09T09:34:21.000000Z"
-/// time_created : "2021-03-09 09:34:21"
 
 class Invoice {
-  int _id;
-  int _orderId;
-  int _orderNumber;
-  int _vendorId;
-  Shipping _shipping;
-  String _vendorName;
-  String _vendorEmail;
-  int _invoiceNumber;
-  String _invoiceTotal;
-  int _status;
-  String _createdAt;
-  String _timeCreated;
+  int id;
+  int orderId;
+  int orderNumber;
+  int vendorId;
+  String vendorName;
+  String vendorEmail;
+  int invoiceNumber;
+  String userName;
+  Shipping userAddress;
+  Payment payment;
+  int invoiceTotal;
+  int status;
+  String createdAt;
+  List<Ordersditils> order;
+  String timeCreated;
+  String company;
+  String phone;
 
-  int get id => _id;
-  int get orderId => _orderId;
-  int get orderNumber => _orderNumber;
-  int get vendorId => _vendorId;
-  String get vendorName => _vendorName;
-  String get vendorEmail => _vendorEmail;
-  Shipping get shipping => _shipping;
-  int get invoiceNumber => _invoiceNumber;
-  String get invoiceTotal => _invoiceTotal;
-  int get status => _status;
-  String get createdAt => _createdAt;
-  String get timeCreated => _timeCreated;
+  Invoice({this.id, this.orderId, this.orderNumber, this.vendorId, this.vendorName, this.vendorEmail, this.invoiceNumber, this.userName, this.userAddress, this.payment, this.invoiceTotal, this.status, this.createdAt, this.order, this.timeCreated, this.company, this.phone});
 
-  Invoice(
-      {int id,
-      int orderId,
-      int orderNumber,
-      int vendorId,
-      String vendorName,
-      String vendorEmail,
-      int invoiceNumber,
-        Shipping shipping,
-      String invoiceTotal,
-      int status,
-      String createdAt,
-      String timeCreated}) {
-    _id = id;
-    _orderId = orderId;
-    _orderNumber = orderNumber;
-    _vendorId = vendorId;
-    _vendorName = vendorName;
-    _vendorEmail = vendorEmail;
-    _shipping = shipping;
-    _invoiceNumber = invoiceNumber;
-    _invoiceTotal = invoiceTotal;
-    _status = status;
-    _createdAt = createdAt;
-    _timeCreated = timeCreated;
-  }
-
-  Invoice.fromJson(dynamic json) {
-    _id = json["id"];
-    _orderId = json["order_id"];
-    _orderNumber = json["order_number"];
-    _vendorId = json["vendor_id"];
-    _vendorName = json["vendor_name"];
-    _vendorEmail = json["vendor_email"];
-    _invoiceNumber = json["invoice_number"];
-    if(json['shipping']!=null) {
-      _shipping =Shipping.fromJson(json['user_address']) ;
+  Invoice.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    orderId = json['order_id'];
+    orderNumber = json['order_number'];
+    vendorId = json['vendor_id'];
+    vendorName = json['vendor_name'];
+    vendorEmail = json['vendor_email'];
+    invoiceNumber = json['invoice_number'];
+    userName = json['user_name'];
+    userAddress = json['user_address'] != null ? new Shipping.fromJson(json['user_address']) : null;
+    payment = json['payment'] != null ? new Payment.fromJson(json['payment']) : null;
+    invoiceTotal = json['invoice_total'];
+    status = json['status'];
+    createdAt = json['created_at'];
+    if (json['order'] != null) {
+      order = new List<Ordersditils>();
+      json['order'].forEach((v) { order.add(new Ordersditils.fromJson(v)); });
     }
-    _invoiceTotal = json["invoice_total"].toString();
-    _status = json["status"];
-    _createdAt = json["created_at"];
-    _timeCreated = json["time_created"];
+    timeCreated = json['time_created'];
+    company = json['company'];
+    phone = json['phone'];
   }
 
   Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
-    map["id"] = _id;
-    map["order_id"] = _orderId;
-    map["order_number"] = _orderNumber;
-    map["vendor_id"] = _vendorId;
-    map["vendor_name"] = _vendorName;
-    map["vendor_email"] = _vendorEmail;
-    map["invoice_number"] = _invoiceNumber;
-    map["invoice_total"] = _invoiceTotal;
-    map["status"] = _status;
-    map["created_at"] = _createdAt;
-    map["time_created"] = _timeCreated;
-    return map;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['order_id'] = this.orderId;
+    data['order_number'] = this.orderNumber;
+    data['vendor_id'] = this.vendorId;
+    data['vendor_name'] = this.vendorName;
+    data['vendor_email'] = this.vendorEmail;
+    data['invoice_number'] = this.invoiceNumber;
+    data['user_name'] = this.userName;
+    if (this.userAddress != null) {
+      data['user_address'] = this.userAddress.toJson();
+    }
+    if (this.payment != null) {
+      data['payment'] = this.payment.toJson();
+    }
+    data['invoice_total'] = this.invoiceTotal;
+    data['status'] = this.status;
+    data['created_at'] = this.createdAt;
+    if (this.order != null) {
+      data['order'] = this.order.map((v) => v.toJson()).toList();
+    }
+    data['time_created'] = this.timeCreated;
+    data['company'] = this.company;
+    data['phone'] = this.phone;
+    return data;
   }
 }
+class Ordersditils {
+  int id;
+  int orderId;
+  int productId;
+  int storeId;
+  int vendorId;
+  String productName;
+  List<Photo> photo;
+  String productSerial;
+  String storeName;
+  String vendorName;
+  int quantity;
+  int price;
+  int discount;
+  int total;
+  int approved;
+  String createdAt;
+  String vendorEmail;
+  String company;
+  String phone;
+
+  Ordersditils({this.id, this.orderId, this.productId, this.storeId, this.vendorId, this.productName, this.photo, this.productSerial, this.storeName, this.vendorName, this.quantity, this.price, this.discount, this.total, this.approved, this.createdAt, this.vendorEmail, this.company, this.phone});
+
+  Ordersditils.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    orderId = json['order_id'];
+    productId = json['product_id'];
+    storeId = json['store_id'];
+    vendorId = json['vendor_id'];
+    productName = json['product_name'];
+    if (json['photo'] != null) {
+      photo = new List<Photo>();
+      json['photo'].forEach((v) { photo.add(new Photo.fromJson(v)); });
+    }
+    productSerial = json['product_serial'];
+    storeName = json['store_name'];
+    vendorName = json['vendor_name'];
+    quantity = json['quantity'];
+    price = json['price'];
+    discount = json['discount'];
+    total = json['total'];
+    approved = json['approved'];
+    createdAt = json['created_at'];
+    vendorEmail = json['vendor_email'];
+    company = json['company'];
+    phone = json['phone'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['order_id'] = this.orderId;
+    data['product_id'] = this.productId;
+    data['store_id'] = this.storeId;
+    data['vendor_id'] = this.vendorId;
+    data['product_name'] = this.productName;
+    if (this.photo != null) {
+      data['photo'] = this.photo.map((v) => v.toJson()).toList();
+    }
+    data['product_serial'] = this.productSerial;
+    data['store_name'] = this.storeName;
+    data['vendor_name'] = this.vendorName;
+    data['quantity'] = this.quantity;
+    data['price'] = this.price;
+    data['discount'] = this.discount;
+    data['total'] = this.total;
+    data['approved'] = this.approved;
+    data['created_at'] = this.createdAt;
+    data['vendor_email'] = this.vendorEmail;
+    data['company'] = this.company;
+    data['phone'] = this.phone;
+    return data;
+  }
+}
+

@@ -7,7 +7,8 @@ import 'package:trkar_vendor/utils/navigator.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 
 class Stores_item extends StatefulWidget {
-  Stores_item({Key key,this.hall_model, this.isSelect,this.selectStores}) : super(key: key);
+  Stores_item({Key key, this.hall_model, this.isSelect, this.selectStores})
+      : super(key: key);
   final Store hall_model;
   List<int> selectStores;
   bool isSelect = false;
@@ -20,8 +21,12 @@ class _Stores_itemState extends State<Stores_item> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){
-        Nav.route(context, StorePage(store: widget.hall_model,));
+      onTap: () {
+        Nav.route(
+            context,
+            StorePage(
+              store: widget.hall_model,
+            ));
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 20),
@@ -51,21 +56,23 @@ class _Stores_itemState extends State<Stores_item> {
                 ),
                 child: widget.isSelect
                     ? Checkbox(
-                    activeColor: Colors.orange,
-                    value: widget.hall_model.isSelect,
-                    onChanged: (bool value) {
-                      setState(() {
-                        widget.hall_model.isSelect = value;
-                      });
-                      !widget.hall_model.isSelect? widget.selectStores.remove(widget.hall_model.id) :widget.selectStores.add(widget.hall_model.id);
-                    })
+                        activeColor: Colors.orange,
+                        value: widget.hall_model.isSelect,
+                        onChanged: (bool value) {
+                          setState(() {
+                            widget.hall_model.isSelect = value;
+                          });
+                          !widget.hall_model.isSelect
+                              ? widget.selectStores.remove(widget.hall_model.id)
+                              : widget.selectStores.add(widget.hall_model.id);
+                        })
                     : Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SvgPicture.asset(
-                  "assets/icons/store.svg",
-                  color: Colors.white,
-                ),
-                    ),
+                        padding: const EdgeInsets.all(8.0),
+                        child: SvgPicture.asset(
+                          "assets/icons/store.svg",
+                          color: Colors.white,
+                        ),
+                      ),
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,7 +124,7 @@ class _Stores_itemState extends State<Stores_item> {
                         ),
                       ),
                       Container(
-                        width: ScreenUtil.getWidth(context)/2,
+                        width: ScreenUtil.getWidth(context) / 2,
                         child: AutoSizeText(
                           '${widget.hall_model.address}',
                           minFontSize: 10,
@@ -132,6 +139,39 @@ class _Stores_itemState extends State<Stores_item> {
                       ),
                     ],
                   ),
+                  widget.hall_model.members == null
+                      ? Container()
+                      : Container(
+                          width: ScreenUtil.getWidth(context) / 1.5,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: widget.hall_model.members.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Container(
+                                    width: ScreenUtil.getWidth(context) / 2,
+                                    child: widget.hall_model.members[index]
+                                                .name ==
+                                            'not registered yet'
+                                        ? Container()
+                                        : Text(
+                                            "${widget.hall_model.members[index].roleName} : ${widget.hall_model.members[index].name}",
+                                            style: TextStyle(
+                                                //color: themeColor.getColor(),
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 13),
+                                          ),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                        ),
                   SizedBox(
                     height: 25,
                   ),

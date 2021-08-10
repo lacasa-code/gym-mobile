@@ -57,16 +57,16 @@ class _faq_informationState extends State<faq_information> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(" صاحب السؤال:${widget.orders_model.user_name ?? ''}",
+                  Text(" ${getTransrlate(context, 'QustOwner')}:${widget.orders_model.user_name ?? ''}",
                       style: TextStyle(color: Colors.black, fontSize: 12)),
                   Text(
-                      " تاريخ السؤال:${DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.orders_model.createdAt))}",
+                      " ${getTransrlate(context, 'QustDate')}:${DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.orders_model.createdAt))}",
                       style: TextStyle(color: Colors.black, fontSize: 12)),
                 ],
               ),
-              Text(" السؤال:${widget.orders_model.bodyQuestion ?? ''}",
+              Text(" ${getTransrlate(context, 'Qust')}:${widget.orders_model.bodyQuestion ?? ''}",
                   style: TextStyle(color: Colors.black, fontSize: 12)),
-              widget.orders_model.product==null?Container():   Text(" المنتج:${widget.orders_model.product.name ?? ''}",
+              widget.orders_model.product==null?Container():   Text(" ${getTransrlate(context, 'product')}:${widget.orders_model.product.name ?? ''}",
                   style: TextStyle(color: Colors.black, fontSize: 12)),
               widget.orders_model.answer==null?Container():  Text("${getTransrlate(context, 'answer')} :${widget.orders_model.answer ?? ''}",
                   style: TextStyle(color: Colors.black, fontSize: 12)),
@@ -77,11 +77,11 @@ class _faq_informationState extends State<faq_information> {
                   child: MyTextFormField(
                     intialLabel: '  ',
                     Keyboard_Type: TextInputType.emailAddress,
-                    labelText: "إرسال رد",
-                    hintText: 'الاجابة',
+                    labelText: "${getTransrlate(context, 'sendReplay')}",
+                    hintText: '${getTransrlate(context, 'answer')}',
                     validator: (String value) {
                       if (value.isEmpty) {
-                        return 'الاجابة';
+                        return '${getTransrlate(context, 'answer')}';
                       }
                       _formKey.currentState.save();
                       return null;
@@ -147,7 +147,7 @@ class _faq_informationState extends State<faq_information> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(" المنتج :${widget.orders_model.productId ?? ''}",
+                      Text(" ${getTransrlate(context, 'product')} :${widget.orders_model.productId ?? ''}",
                           style: TextStyle(color: Colors.black, fontSize: 12)),
                       Container(
                         margin: EdgeInsets.only(left: 5),
@@ -162,17 +162,17 @@ class _faq_informationState extends State<faq_information> {
                       ),
                     ],
                   ),
-                  Text(" الفئة الرئيسية :${widget.orders_model.product.category==null?"":
+                  Text(" ${getTransrlate(context, 'mainCategory')} :${widget.orders_model.product.category==null?"":
                   widget.orders_model.product.category.name ?? ''}",
                       style: TextStyle(color: Colors.black, fontSize: 12)),
                   Text(" الوصف :${widget.orders_model.product.description ?? ''}",
                       style: TextStyle(color: Colors.black, fontSize: 12)),
-                  Text(" بلد المنشأ :${widget.orders_model.product.originCountry==null?"":
+                  Text(" ${getTransrlate(context, 'prodcountry')} :${widget.orders_model.product.originCountry==null?"":
                   widget.orders_model.product.originCountry.countryName?? ''}",
                       style: TextStyle(color: Colors.black, fontSize: 12)),
-                  Text(" السعر :${widget.orders_model.product.actualPrice ?? ''}",
+                  Text(" ${getTransrlate(context, 'price')} :${widget.orders_model.product.actualPrice ?? ''}",
                       style: TextStyle(color: Colors.black, fontSize: 12)),
-                  Text(" المركبة :${widget.orders_model.product.carMade==null?"":widget.orders_model.product.carMade.carMade ?? ''}",
+                  Text(" ${getTransrlate(context, 'car')} :${widget.orders_model.product.carMade==null?"":widget.orders_model.product.carMade.carMade ?? ''}",
                       style: TextStyle(color: Colors.black, fontSize: 12)),
 
                 ],

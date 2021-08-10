@@ -65,9 +65,11 @@ class _add_StaffState extends State<add_Staff> {
               height: 50,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Text('إضافة عضو جديد')),
+                child: Row(
+                  children: [
+                    Text('${getTransrlate(context, 'AddNewUser')}'),
+                  ],
+                ),
               ),
             ),
             Padding(
@@ -123,7 +125,7 @@ class _add_StaffState extends State<add_Staff> {
                         SizedBox(
                           height: 10,
                         ),
-                        Text("الدور الوظيفي",style: TextStyle(color: Colors.black,fontSize: 16),),
+                        Text("${getTransrlate(context, 'role')}",style: TextStyle(color: Colors.black,fontSize: 16),),
                         SizedBox(
                           height: 10,
                         ),
@@ -143,7 +145,7 @@ class _add_StaffState extends State<add_Staff> {
                                 //  onFind: (String filter) => getData(filter),
                                 itemAsString: (Role u) => u.title,
                                 onChanged: (Role data) =>
-                                    user.rolesid = data.id),
+                                    user.rolesid = data.id.toString()),
                         SizedBox(
                           height: 10,
                         ),
@@ -167,7 +169,7 @@ class _add_StaffState extends State<add_Staff> {
                                 //  onFind: (String filter) => getData(filter),
                                 itemAsString: (Store u) => u.name,
                                 onChanged: (Store data) =>
-                                    user.storeid = data.id),
+                                    user.storeid = data.id.toString()),
                         SizedBox(
                           height: 10,
                         ),

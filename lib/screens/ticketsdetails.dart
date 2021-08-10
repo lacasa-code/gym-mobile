@@ -60,11 +60,11 @@ class _tickets_informationState extends State<tickets_information> {
                   Row(
                     children: [
                       AutoSizeText(
-                        'نوع الشكوى : ',
+                        '${getTransrlate(context, 'ticketsType')} : ',
                         minFontSize: 10,
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 16,
+                          fontSize: 13,
                           fontWeight: FontWeight.bold,
                         ),
                         maxLines: 1,
@@ -73,30 +73,14 @@ class _tickets_informationState extends State<tickets_information> {
                           minFontSize: 10,
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 16,
+                            fontSize: 13,
                             fontWeight: FontWeight.w600,
                           )),
                     ],
                   ),
                   Row(
                     children: [
-                      AutoSizeText(
-                        'حالة الشكوى : ',
-                        minFontSize: 10,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        maxLines: 1,
-                      ),
-                      AutoSizeText(widget.orders_model.status,
-                          minFontSize: 10,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          )),
+
                     ],
                   ),
                 ],
@@ -104,11 +88,11 @@ class _tickets_informationState extends State<tickets_information> {
               Row(
                 children: [
                   AutoSizeText(
-                    'الرسالة : ',
+                    '${getTransrlate(context, 'message')} : ',
                     minFontSize: 10,
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: 16,
+                      fontSize: 13,
                       fontWeight: FontWeight.bold,
                     ),
                     maxLines: 1,
@@ -116,10 +100,11 @@ class _tickets_informationState extends State<tickets_information> {
                   Container(
                     width: ScreenUtil.getWidth(context)/1.5,
                     child: AutoSizeText(widget.orders_model.message,
-                        minFontSize: 10,
+                        maxLines: 1,
+                        minFontSize: 12,
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 16,
+                          fontSize: 13,
                           fontWeight: FontWeight.w600,
                         )),
                   ),
@@ -131,11 +116,11 @@ class _tickets_informationState extends State<tickets_information> {
                   Row(
                     children: [
                       AutoSizeText(
-                        'رقم الطلب : ',
+                        '${getTransrlate(context, 'OrderNO')} : ',
                         minFontSize: 10,
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 16,
+                          fontSize: 13,
                           fontWeight: FontWeight.bold,
                         ),
                         maxLines: 1,
@@ -144,7 +129,7 @@ class _tickets_informationState extends State<tickets_information> {
                           minFontSize: 10,
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 16,
+                            fontSize: 13,
                             fontWeight: FontWeight.w600,
                           )),
                     ],
@@ -152,11 +137,11 @@ class _tickets_informationState extends State<tickets_information> {
                   Row(
                     children: [
                       AutoSizeText(
-                        'تاريخ الطلب : ',
+                        '${getTransrlate(context, 'OrderDate')} : ',
                         minFontSize: 10,
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 16,
+                          fontSize: 13,
                           fontWeight: FontWeight.bold,
                         ),
                         maxLines: 1,
@@ -167,7 +152,7 @@ class _tickets_informationState extends State<tickets_information> {
                           minFontSize: 10,
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 16,
+                            fontSize: 13,
                             fontWeight: FontWeight.w600,
                           )),
                     ],
@@ -180,11 +165,11 @@ class _tickets_informationState extends State<tickets_information> {
                   Row(
                     children: [
                       AutoSizeText(
-                        'حالة الطلب : ',
+                        '${getTransrlate(context, "ticketsStats")} : ',
                         minFontSize: 10,
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 16,
+                          fontSize: 13,
                           fontWeight: FontWeight.bold,
                         ),
                         maxLines: 1,
@@ -196,11 +181,11 @@ class _tickets_informationState extends State<tickets_information> {
                             Border.all(width: 1, color:isPassed(widget.orders_model.status))),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 5),
-                          child: AutoSizeText(widget.orders_model.status,
+                          child: AutoSizeText(widget.orders_model.Case,
                               minFontSize: 10,
                               style: TextStyle(
-                                color: isPassed(widget.orders_model.status),
-                                fontSize: 16,
+                                color: isPassed(widget.orders_model.Case),
+                                fontSize: 13,
                                 fontWeight: FontWeight.w600,
                               )),
                         ),
@@ -210,20 +195,20 @@ class _tickets_informationState extends State<tickets_information> {
                   Row(
                     children: [
                       AutoSizeText(
-                        'تاريخ الاستلام : 12-3-2021',
+                        '${getTransrlate(context, 'OrderDate')} :',
                         minFontSize: 10,
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 16,
+                          fontSize: 13,
                           fontWeight: FontWeight.bold,
                         ),
                         maxLines: 1,
                       ),
-                      AutoSizeText("",
+                      AutoSizeText("${DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.orders_model.createdAt))}",
                           minFontSize: 10,
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 16,
+                            fontSize: 13,
                             fontWeight: FontWeight.w600,
                           )),
                     ],
@@ -237,11 +222,11 @@ class _tickets_informationState extends State<tickets_information> {
                   child: MyTextFormField(
                     intialLabel: '  ',
                     Keyboard_Type: TextInputType.emailAddress,
-                    labelText: "إرسال رد",
+                    labelText: "${getTransrlate(context, 'sendReplay')}",
                     hintText: 'الاجابة',
                     validator: (String value) {
                       if (value.isEmpty) {
-                        return 'الاجابة';
+                        return '${getTransrlate(context, 'answer')}';
                       }
                       _formKey.currentState.save();
                       return null;
@@ -261,7 +246,7 @@ class _tickets_informationState extends State<tickets_information> {
                         BoxDecoration(border: Border.all(color: Colors.orange)),
                     child: Center(
                       child: AutoSizeText(
-                        getTransrlate(context, 'send'),
+                        "${getTransrlate(context, 'send')}",
                         overflow: TextOverflow.ellipsis,
                         maxFontSize: 14,
                         maxLines: 1,
@@ -299,13 +284,18 @@ class _tickets_informationState extends State<tickets_information> {
                 ),
               ),
               SizedBox(height: 10,),
-              Text(" رقم الطلب : ${widget.orders_model.orderNumber ?? ''}",
+              Text("${getTransrlate(context, 'OrderNO')} : ${widget.orders_model.orderNumber ?? ''}",
                   style: TextStyle(color: Colors.black, fontSize: 12)),
-              Text(" تاريخ الطلب : ${widget.orders_model.orderCreatedAt ?? ''}",
+              Text("${getTransrlate(context, 'OrderDate')} : ${widget.orders_model.orderCreatedAt ?? ''}",
                   style: TextStyle(color: Colors.black, fontSize: 12)),
-              Text(" طريقة الدفع :${widget.orders_model.payment.paymentName ?? ''}",
+              widget.orders_model.payment==null?Container():Text("${getTransrlate(context, 'paymentMethod')} :${widget.orders_model.payment.paymentName ?? ''}",
                   style: TextStyle(color: Colors.black, fontSize: 12)),
-              Text(" شحن بواسطة :${widget.orders_model.shipping.city ?? ''}",
+              Text(widget.orders_model.shipping==null?' ':"${getTransrlate(context, 'OrderShipping')} :${ "${widget.orders_model.shipping.area==null?'':widget.orders_model.shipping.area.areaName} , "
+                  "${widget.orders_model.shipping.city==null?'':widget.orders_model.shipping.city.cityName} , "
+                  "${widget.orders_model.shipping.street??''} , "
+                  "${widget.orders_model.shipping.district??''} , "
+                  "${widget.orders_model.shipping.floorNo??''} , "
+                  "${widget.orders_model.shipping.apartmentNo??''}"}",
                   style: TextStyle(color: Colors.black, fontSize: 12)),
               // Text(" إجمالي الطلب :${widget.orders_model.ord ?? ''}",
               //     style: TextStyle(color: Colors.black, fontSize: 12)),

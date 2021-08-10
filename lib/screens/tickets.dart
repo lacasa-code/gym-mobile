@@ -95,7 +95,7 @@ class _TicketsState extends State<Tickets> {
                     child: Column(
                       children: [
                         SizedBox(height: 20),
-                        Icon(Icons.check_box_outline_blank_sharp),
+                        Icon(Icons.hourglass_empty_outlined,size: 100,color: Colors.black26,),
                         SizedBox(height: 20),
                         Text(
                           'no Tickets found ',

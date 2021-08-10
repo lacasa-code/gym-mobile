@@ -77,10 +77,7 @@ class _Order_informationState extends State<Order_information> {
                     minFontSize: 11,
                   ),
                   AutoSizeText(
-                    getTransrlate(context, 'paymentMethod') +
-                            ' :' +
-                            widget.orders_model.paid ??
-                        'عند الاستلام',
+                   ' ${getTransrlate(context, 'paymentMethod')}  :${widget.orders_model.payment==null?'':widget.orders_model.payment.paymentName}',
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.black,
@@ -127,7 +124,7 @@ class _Order_informationState extends State<Order_information> {
                     height: 2,
                   ),
                   AutoSizeText(
-                    "الشحنة 1",
+                    "${getTransrlate(context, 'shipping')}",
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.black,

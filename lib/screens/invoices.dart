@@ -113,7 +113,7 @@ class _InvoicesState extends State<Invoices> {
           child: Column(
             children: [
               SizedBox(height: 20),
-              Icon(Icons.check_box_outline_blank_sharp),
+              Icon(Icons.hourglass_empty_outlined,size: 100,color: Colors.black26,),
               SizedBox(height: 20),
               Text(
                 'no invoices found ',
@@ -238,8 +238,7 @@ class _InvoicesState extends State<Invoices> {
                                 ),
                               ),
                               AutoSizeText(
-                                DateFormat('yyyy-MM-dd')
-                                    .format(DateTime.parse(filteredOrders[index].createdAt)),
+                                  filteredOrders[index].createdAt==null?'': DateFormat('yyyy-MM-dd').format(DateTime.parse(filteredOrders[index].createdAt)),
                                 style: TextStyle(
                                   fontSize: 13,
                                   color: Colors.black,

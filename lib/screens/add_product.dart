@@ -40,6 +40,7 @@ class Add_Product extends StatefulWidget {
 
 class _Add_ProductState extends State<Add_Product> {
   Product product = Product();
+  int Main_categoryid ;
   bool loading = false;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
@@ -121,6 +122,7 @@ class _Add_ProductState extends State<Add_Product> {
     getAllMain_category();
     getAllStore();
     getAllYear();
+    product.carModel=[];
     super.initState();
   }
 
@@ -206,7 +208,7 @@ class _Add_ProductState extends State<Add_Product> {
                     child: DropdownSearch<CarType>(
                         showSearchBox: false,
                         showClearButton: false,
-                        label: " نوع المركبة",
+                        label: "${getTransrlate(context, 'CarType')}",
                         validator: (CarType item) {
                           if (item == null) {
                             return "Required field";
@@ -239,7 +241,7 @@ class _Add_ProductState extends State<Add_Product> {
                         child: DropdownSearch<Main_Category>(
                             showSearchBox: false,
                             showClearButton: false,
-                            label: "الفئة الرئيسية",
+                            label: "${getTransrlate(context, 'mainCategory')}",
                             validator: (Main_Category item) {
                               if (item == null) {
                                 return "Required field";
@@ -251,8 +253,10 @@ class _Add_ProductState extends State<Add_Product> {
                             itemAsString: (Main_Category u) =>
                                 u.mainCategoryName,
                             onChanged: (Main_Category data) {
-                                product.Main_categoryid = data.id.toString();
                                 setState(() {
+                                  product.Main_categoryid = data.id.toString();
+                                  Main_categoryid = data.id;
+
                                   _category=null;
                                 });
                                 getAllCategory(data.id);}),
@@ -267,7 +271,7 @@ class _Add_ProductState extends State<Add_Product> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "الفئة الرئيسية",
+                          "${getTransrlate(context, 'subCategory')} ",
                           style: TextStyle(color: Colors.black, fontSize: 16),
                         ),
                         SizedBox(
@@ -314,7 +318,7 @@ class _Add_ProductState extends State<Add_Product> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "الفئة الفرعية",
+                          "${getTransrlate(context, 'PartCategory')}",
                           style: TextStyle(color: Colors.black, fontSize: 16),
                         ),
                         SizedBox(
@@ -359,158 +363,201 @@ class _Add_ProductState extends State<Add_Product> {
                   height: 10,
                 ),
                 Text(
-                  "المركبة",
+                  "${getTransrlate(context, 'car')}",
                   style: TextStyle(color: Colors.black, fontSize: 16),
                 ),
                 SizedBox(
                   height: 10,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    transmissions == null
-                        ? Container(
-                            width: ScreenUtil.getWidth(context) / 2.5,
-                            child: DropdownSearch<String>(
-                              showSearchBox: false,
-                              showClearButton: false,
-                              label: " ",
-                              items: [''],
-                              enabled: false,
-                              //  onFind: (String filter) => getData(filter),
-                            ),
-                          )
-                        : Container(
-                            width: ScreenUtil.getWidth(context) / 2.5,
-                            child: DropdownSearch<Transmission>(
-                                showSearchBox: false,
-                                showClearButton: false,
-                                label: " نوع المركبة",
-                                validator: (Transmission item) {
-                                  if (item == null) {
-                                    return "Required field";
-                                  } else
-                                    return null;
-                                },
-                                items: transmissions,
-                                //  onFind: (String filter) => getData(filter),
-                                itemAsString: (Transmission u) =>
-                                    u.transmissionName,
-                                onChanged: (Transmission data) => product
-                                    .transmission_id = data.id.toString()),
-                          ),
-                    CarMades == null
-                        ? Container(
-                            width: ScreenUtil.getWidth(context) / 2.5,
-                            child: DropdownSearch<String>(
-                              showSearchBox: false,
-                              showClearButton: false,
-                              label: " ",
-                              items: [''],
-                              enabled: false,
-                              //  onFind: (String filter) => getData(filter),
-                            ),
-                          )
-                        : Container(
-                            width: ScreenUtil.getWidth(context) / 2.5,
-                            child: DropdownSearch<CarMade>(
-                                showSearchBox: false,
-                                showClearButton: false,
-                                label: " ماركة",
-                                validator: (CarMade item) {
-                                  if (item == null) {
-                                    return "Required field";
-                                  } else
-                                    return null;
-                                },
-                                items: CarMades,
-                                //  onFind: (String filter) => getData(filter),
-                                itemAsString: (CarMade u) => u.carMade,
-                                onChanged: (CarMade data) {
-                                  product.carMadeId = data.id.toString();
-                                  getAllCareModel(data.id);
-                                }),
-                          ),
-                  ],
-                ),
+                transmissions == null
+                    ? Container(
+                        width: ScreenUtil.getWidth(context) / 1,
+                        child: DropdownSearch<String>(
+                          showSearchBox: false,
+                          showClearButton: false,
+                          label: " ",
+                          items: [''],
+                          enabled: false,
+                          //  onFind: (String filter) => getData(filter),
+                        ),
+                      )
+                    : Container(
+                        width: ScreenUtil.getWidth(context) / 1,
+                        child: DropdownSearch<Transmission>(
+                            showSearchBox: false,
+                            showClearButton: false,
+                            label: " ${getTransrlate(context, 'CarType')}",
+                            validator: (Transmission item) {
+                              if (item == null) {
+                                return "Required field";
+                              } else
+                                return null;
+                            },
+                            items: transmissions,
+                            //  onFind: (String filter) => getData(filter),
+                            itemAsString: (Transmission u) =>
+                                u.transmissionName,
+                            onChanged: (Transmission data) => product
+                                .transmission_id = data.id.toString()),
+                      ),
                 SizedBox(
                   height: 10,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                Main_categoryid==7?Container(): Column(
+                 crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    carmodels == null
+                    CarMades == null
                         ? Container(
-                            width: ScreenUtil.getWidth(context) / 2.5,
-                            child: DropdownSearch<String>(
+                      width: ScreenUtil.getWidth(context) / 1,
+                      child: DropdownSearch<String>(
+                        showSearchBox: false,
+                        showClearButton: false,
+                        label: " ",
+                        items: [''],
+                        enabled: false,
+                        //  onFind: (String filter) => getData(filter),
+                      ),
+                    )
+                        : Container(
+                      width: ScreenUtil.getWidth(context) / 1,
+                      child: DropdownSearch<CarMade>(
+                          showSearchBox: false,
+                          showClearButton: false,
+                          label: " ماركة",
+                          validator: (CarMade item) {
+                            if (item == null) {
+                              return "${getTransrlate(context, 'Required')}";
+                            } else
+                              return null;
+                          },
+                          items: CarMades,
+                          //  onFind: (String filter) => getData(filter),
+                          itemAsString: (CarMade u) => u.carMade,
+                          onChanged: (CarMade data) {
+                            product.carMadeId = data.id.toString();
+                            getAllCareModel(data.id);
+                          }),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        years == null
+                            ? Container(
+                          width: ScreenUtil.getWidth(context) / 2.5,
+                          child: DropdownSearch<String>(
+                            showSearchBox: false,
+                            showClearButton: false,
+                            label: " ",
+                            items: [''],
+                            enabled: false,
+                            //  onFind: (String filter) => getData(filter),
+                          ),
+                        )
+                            : Container(
+                          width: ScreenUtil.getWidth(context) / 2.5,
+                          child: DropdownSearch<Year>(
                               showSearchBox: false,
                               showClearButton: false,
-                              label: " ",
-                              items: [''],
-                              enabled: false,
-                              //  onFind: (String filter) => getData(filter),
-                            ),
-                          )
-                        : Container(
-                            width: ScreenUtil.getWidth(context) / 2.5,
-                            child: DropdownSearch<Carmodel>(
-                                showSearchBox: false,
-                                showClearButton: false,
-                                label: " الموديل",
-                                validator: (Carmodel item) {
-                                  if (item == null) {
-                                    return "Required field";
-                                  } else
-                                    return null;
-                                },
-                                items: carmodels,
-                                //  onFind: (String filter) => getData(filter),
-                                itemAsString: (Carmodel u) => u.carmodel,
-                                onChanged: (Carmodel data) =>
-                                    product.carModelId = data.id.toString()),
+                              label: " السنة من",
+                              validator: (Year item) {
+                                if (item == null) {
+                                  return "Required field";
+                                } else
+                                  return null;
+                              },
+                              items: years,
+                              selectedItem: product.yearfrom==null?Year():product.yearfrom,
+                              itemAsString: (Year u) => u.year??'',
+                              onChanged: (Year data) =>
+                              product.yearfromId = data.id.toString()),
+                        ),
+                        years == null
+                            ? Container(
+                          width: ScreenUtil.getWidth(context) / 2.5,
+                          child: DropdownSearch<String>(
+                            showSearchBox: false,
+                            showClearButton: false,
+                            label: " ",
+                            items: [''],
+                            enabled: false,
+                            //  onFind: (String filter) => getData(filter),
                           ),
-                    years == null
-                        ? Container(
-                            width: ScreenUtil.getWidth(context) / 2.5,
-                            child: DropdownSearch<String>(
+                        )
+                            : Container(
+                          width: ScreenUtil.getWidth(context) / 2.5,
+                          child: DropdownSearch<Year>(
                               showSearchBox: false,
                               showClearButton: false,
-                              label: " ",
-                              items: [''],
-                              enabled: false,
-                              //  onFind: (String filter) => getData(filter),
+                              label: "الى السنة",
+                              validator: (Year item) {
+                                if (item == null) {
+                                  return "Required field";
+                                } else
+                                  return null;
+                              },
+                              items: years,
+                              selectedItem: product.yearto==null?Year():product.yearto,
+                              itemAsString: (Year u) => u.year??'',
+                              onChanged: (Year data) =>
+                            product.yeartoId = data.id.toString()),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "${getTransrlate(context, 'models')}",
+                      style: TextStyle(color: Colors.black, fontSize: 16),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(width: 1, color: Colors.black26)),
+                      child: TypeAheadField(
+                        // hideOnLoading: true,
+                        // hideOnEmpty: true,
+                        getImmediateSuggestions: false,
+                        onSuggestionSelected: (val) {
+                          onModelSelected(val);
+                        },
+                        itemBuilder: (context, suggestion) {
+                          return ListTile(
+                            title: Text(
+                              suggestion.carmodel,
                             ),
-                          )
-                        : Container(
-                            width: ScreenUtil.getWidth(context) / 2.5,
-                            child: DropdownSearch<Year>(
-                                showSearchBox: false,
-                                showClearButton: false,
-                                label: " السنة",
-                                validator: (Year item) {
-                                  if (item == null) {
-                                    return "Required field";
-                                  } else
-                                    return null;
-                                },
-                                items: years,
-                                //  onFind: (String filter) => getData(filter),
-                                itemAsString: (Year u) => u.year,
-                                onChanged: (Year data) =>
-                                    product.yearId = data.id.toString()),
-                          ),
+                          );
+                        },
+                        suggestionsCallback: (val) {
+                          return _ModelList(
+                            tags: carmodels,
+                            suggestion: val,
+                          );
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      height: 7,
+                    ),
+                    _generateModels(),
+                    SizedBox(
+                      height: 10,
+                    ),
+
                   ],
                 ),
 
-                SizedBox(
-                  height: 10,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
+
                 _manufacturers == null
                     ? Container(
-                        width: ScreenUtil.getWidth(context) / 2.5,
+                        width: ScreenUtil.getWidth(context),
                         child: DropdownSearch<String>(
                           showSearchBox: false,
                           showClearButton: false,
@@ -564,13 +611,13 @@ class _Add_ProductState extends State<Add_Product> {
                 MyTextFormField(
                   intialLabel: product.serialNumber ?? ' ',
                   Keyboard_Type: TextInputType.number,
-                  labelText: 'الرقم التسلسلي',
-                  hintText: 'الرقم التسلسلي',
+                  labelText: '${getTransrlate(context, 'serial')}',
+                  hintText: '${getTransrlate(context, 'serial')}',
                   isPhone: true,
                   enabled: true,
                   validator: (String value) {
                     if (value.isEmpty) {
-                      return 'الرقم التسلسلي';
+                      return '${getTransrlate(context, 'serial')}';
                     }
                     _formKey.currentState.save();
                     return null;
@@ -580,7 +627,7 @@ class _Add_ProductState extends State<Add_Product> {
                   },
                 ),
                 Text(
-                  "المخزن",
+                  "${getTransrlate(context, 'stock')}",
                   style: TextStyle(color: Colors.black, fontSize: 16),
                 ),
                 SizedBox(
@@ -614,13 +661,24 @@ class _Add_ProductState extends State<Add_Product> {
                                 product.storeId = data.id.toString()),
                       ),
                 Text(
-                  "نوع المنتج",
+                  "${getTransrlate(context, 'productType')}",
                   style: TextStyle(color: Colors.black, fontSize: 16),
                 ),
                 SizedBox(
                   height: 10,
                 ),
                 _ProductType == null
+                    ? Container(
+                        child: DropdownSearch<String>(
+                          showSearchBox: false,
+                          showClearButton: false,
+                          label: " ",
+                          items: [''],
+                          enabled: false,
+                          //  onFind: (String filter) => getData(filter),
+                        ),
+                      )
+                    : _ProductType.isEmpty
                     ? Container(
                         child: DropdownSearch<String>(
                           showSearchBox: false,
@@ -658,13 +716,13 @@ class _Add_ProductState extends State<Add_Product> {
                           MyTextFormField(
                             intialLabel: product.price ?? ' ',
                             Keyboard_Type: TextInputType.number,
-                            labelText: 'السعر',
-                            hintText: 'السعر',
+                            labelText: '${getTransrlate(context, 'price')}',
+                            hintText: '${getTransrlate(context, 'price')}',
                             isPhone: true,
                             enabled: true,
                             validator: (String value) {
                               if (value.isEmpty) {
-                                return 'السعر';
+                                return '${getTransrlate(context, 'price')}';
                               }
                               _formKey.currentState.save();
                               return null;
@@ -676,13 +734,13 @@ class _Add_ProductState extends State<Add_Product> {
                           MyTextFormField(
                             intialLabel: ' ',
                             Keyboard_Type: TextInputType.number,
-                            labelText: "الكمية",
-                            hintText: 'الكمية',
+                            labelText: "${getTransrlate(context, 'quantity')}",
+                            hintText: '${getTransrlate(context, 'quantity')}',
                             isPhone: true,
                             enabled: true,
                             validator: (String value) {
                               if (value.isEmpty) {
-                                return 'الكمية';
+                                return '${getTransrlate(context, 'quantity')}';
                               }
                               _formKey.currentState.save();
                               return null;
@@ -694,13 +752,13 @@ class _Add_ProductState extends State<Add_Product> {
                           MyTextFormField(
                             intialLabel: ' ',
                             Keyboard_Type: TextInputType.number,
-                            labelText: "الخصم",
-                            hintText: 'الخصم',
+                            labelText: "${getTransrlate(context, 'discount')}",
+                            hintText: '${getTransrlate(context, 'discount')}',
                             isPhone: true,
                             enabled: true,
                             validator: (String value) {
                               if (value.isEmpty) {
-                                return 'الخصم';
+                                return '${getTransrlate(context, 'discount')}';
                               }
                               _formKey.currentState.save();
                               return null;
@@ -717,13 +775,13 @@ class _Add_ProductState extends State<Add_Product> {
                           MyTextFormField(
                             intialLabel: product.price ?? ' ',
                             Keyboard_Type: TextInputType.number,
-                            labelText: 'سعر الجملة',
-                            hintText: 'سعر الجملة',
+                            labelText: '${getTransrlate(context, 'Wholesaleprice')}',
+                            hintText: '${getTransrlate(context, 'Wholesaleprice')}',
                             isPhone: true,
                             enabled: true,
                             validator: (String value) {
                               if (value.isEmpty) {
-                                return 'سعر الجملة';
+                                return '${getTransrlate(context, 'Wholesaleprice')}';
                               }
                               _formKey.currentState.save();
                               return null;
@@ -735,13 +793,13 @@ class _Add_ProductState extends State<Add_Product> {
                           MyTextFormField(
                             intialLabel: ' ',
                             Keyboard_Type: TextInputType.number,
-                            labelText: "الحد الادنى للطلب ",
-                            hintText: 'الحد الادنى للطلب',
+                            labelText: "${getTransrlate(context, 'minOfOrder')} ",
+                            hintText: '${getTransrlate(context, 'minOfOrder')}',
                             isPhone: true,
                             enabled: true,
                             validator: (String value) {
                               if (value.isEmpty) {
-                                return 'الحد الادنى للطلب';
+                                return '${getTransrlate(context, 'minOfOrder')}';
                               }
                               _formKey.currentState.save();
                               return null;
@@ -756,13 +814,13 @@ class _Add_ProductState extends State<Add_Product> {
                     MyTextFormField(
                       intialLabel: product.price ?? ' ',
                       Keyboard_Type: TextInputType.number,
-                      labelText: 'السعر',
-                      hintText: 'السعر',
+                      labelText: '${getTransrlate(context, 'price')}',
+                      hintText: '${getTransrlate(context, 'price')}',
                       isPhone: true,
                       enabled: true,
                       validator: (String value) {
                         if (value.isEmpty) {
-                          return 'السعر';
+                          return '${getTransrlate(context, 'price')}';
                         }
                         _formKey.currentState.save();
                         return null;
@@ -774,13 +832,13 @@ class _Add_ProductState extends State<Add_Product> {
                     MyTextFormField(
                       intialLabel: ' ',
                       Keyboard_Type: TextInputType.number,
-                      labelText: "الكمية",
-                      hintText: 'الكمية',
+                      labelText: "${getTransrlate(context, 'quantity')}",
+                      hintText: '${getTransrlate(context, 'quantity')}',
                       isPhone: true,
                       enabled: true,
                       validator: (String value) {
                         if (value.isEmpty) {
-                          return 'الكمية';
+                          return '${getTransrlate(context, 'quantity')}';
                         }
                         _formKey.currentState.save();
                         return null;
@@ -792,13 +850,13 @@ class _Add_ProductState extends State<Add_Product> {
                     MyTextFormField(
                       intialLabel: ' ',
                       Keyboard_Type: TextInputType.number,
-                      labelText: "الخصم",
-                      hintText: 'الخصم',
+                      labelText: "${getTransrlate(context, 'discount')}",
+                      hintText: '${getTransrlate(context, 'discount')}',
                       isPhone: true,
                       enabled: true,
                       validator: (String value) {
                         if (value.isEmpty) {
-                          return 'الخصم';
+                          return '${getTransrlate(context, 'discount')}';
                         }
                         _formKey.currentState.save();
                         return null;
@@ -810,13 +868,13 @@ class _Add_ProductState extends State<Add_Product> {
                     MyTextFormField(
                       intialLabel: product.price ?? ' ',
                       Keyboard_Type: TextInputType.number,
-                      labelText: 'سعر الجملة',
-                      hintText: 'سعر الجملة',
+                      labelText: '${getTransrlate(context, 'Wholesaleprice')}',
+                      hintText: '${getTransrlate(context, 'Wholesaleprice')}',
                       isPhone: true,
                       enabled: true,
                       validator: (String value) {
                         if (value.isEmpty) {
-                          return 'سعر الجملة';
+                          return '${getTransrlate(context, 'Wholesaleprice')}';
                         }
                         _formKey.currentState.save();
                         return null;
@@ -828,13 +886,13 @@ class _Add_ProductState extends State<Add_Product> {
                     MyTextFormField(
                       intialLabel: ' ',
                       Keyboard_Type: TextInputType.number,
-                      labelText: "الحد الادنى للطلب جملة",
-                      hintText: ' الحد الادنى للطلب جملة',
+                      labelText: "${getTransrlate(context, 'minOfOrder')}",
+                      hintText: ' ${getTransrlate(context, 'minOfOrder')}',
                       isPhone: true,
                       enabled: true,
                       validator: (String value) {
                         if (value.isEmpty) {
-                          return 'الحد الادنى للطلب';
+                          return '${getTransrlate(context, 'minOfOrder')}';
                         }
                         _formKey.currentState.save();
                         return null;
@@ -848,13 +906,13 @@ class _Add_ProductState extends State<Add_Product> {
                 MyTextFormField(
                   intialLabel: ' ',
                   Keyboard_Type: TextInputType.number,
-                  labelText: "تنبيه الكمية ",
-                  hintText: 'الكمية',
+                  labelText: "${getTransrlate(context, 'qty_reminder')} ",
+                  hintText: '${getTransrlate(context, 'qty_reminder')}',
                   isPhone: true,
                   enabled: true,
                   validator: (String value) {
                     if (value.isEmpty) {
-                      return 'الكمية';
+                      return '${getTransrlate(context, 'qty_reminder')}';
                     }
                     _formKey.currentState.save();
                     return null;
@@ -864,7 +922,7 @@ class _Add_ProductState extends State<Add_Product> {
                   },
                 ),
                 Text(
-                  "بلد المنشأ",
+                  "${getTransrlate(context, 'prodcountry')}",
                   style: TextStyle(color: Colors.black, fontSize: 16),
                 ),
                 SizedBox(
@@ -892,7 +950,7 @@ class _Add_ProductState extends State<Add_Product> {
                   height: 10,
                 ),
                 Text(
-                  "الكلمات المفتاحية",
+                  "${getTransrlate(context, 'tags')}",
                   style: TextStyle(color: Colors.black, fontSize: 16),
                 ),
                 SizedBox(
@@ -931,7 +989,7 @@ class _Add_ProductState extends State<Add_Product> {
                   height: 10,
                 ),
                 Text(
-                  "صور المنتج",
+                  "${getTransrlate(context, 'productimage')}",
                   style: TextStyle(color: Colors.black, fontSize: 16),
                 ),
                 images.isEmpty
@@ -996,7 +1054,7 @@ class _Add_ProductState extends State<Add_Product> {
                             color: Colors.orange,
                           ),
                           Text(
-                            'إضافة',
+                            '${getTransrlate(context, 'add')}',
                             style: TextStyle(
                               color: Colors.orange,
                               fontSize: 14,
@@ -1307,10 +1365,85 @@ class _Add_ProductState extends State<Add_Product> {
     modifiedList.addAll(tags);
     modifiedList.retainWhere(
         (text) => text.name.toLowerCase().contains(suggestion.toLowerCase()));
-    if (suggestion.length >= 2) {
+    if (suggestion.length >= 0) {
       return modifiedList;
     } else {
       return null;
     }
   }
+  onModelSelected(Carmodel value) {
+    if (value != null) {
+      setState(() {
+        product.carModel.add(value);
+        carmodels.remove(value);
+      });
+    }
+  }
+
+  _onModelRemoved(Carmodel value) {
+    final Carmodel exist =
+    carmodels.firstWhere((text) => text.carmodel == value, orElse: () {
+      return null;
+    });
+
+    if (value != null) {
+      setState(() {
+        product.carModel.remove(value);
+        carmodels.add(exist);
+      });
+    }
+  }
+  _generateModels() {
+    return product.carModel==null
+        ? Container()
+        :product.carModel.isEmpty
+        ? Container()
+        : Container(
+      alignment: Alignment.topLeft,
+      child: Tags(
+        alignment: WrapAlignment.center,
+        itemCount: product.carModel.length,
+        itemBuilder: (index) {
+          return ItemTags(
+            index: index,
+            title: product.carModel[index].carmodel,
+            color: Colors.blue,
+            activeColor: Colors.orange.shade400,
+            onPressed: (Item item) {
+              print('pressed');
+            },
+            highlightColor: Colors.transparent,
+            splashColor: Colors.transparent,
+            elevation: 0.0,
+            borderRadius: BorderRadius.all(Radius.circular(7.0)),
+//                textColor: ,
+            textColor: Colors.white,
+            textActiveColor: Colors.white,
+            removeButton: ItemTagsRemoveButton(
+                color: Colors.white,
+                backgroundColor: Colors.transparent,
+                size: 18,
+                onRemoved: () {
+                  _onModelRemoved(product.carModel[index]);
+                  return true;
+                }),
+            textOverflow: TextOverflow.ellipsis,
+          );
+        },
+      ),
+    );
+  }
+
+  _ModelList({@required List<Carmodel> tags, @required String suggestion}) {
+    List<Carmodel> modifiedList = [];
+    modifiedList.addAll(tags);
+    modifiedList.retainWhere(
+            (text) => text.carmodel.toLowerCase().contains(suggestion.toLowerCase()));
+    if (suggestion.length >= 0) {
+      return modifiedList;
+    } else {
+      return null;
+    }
+  }
+
 }

@@ -57,53 +57,53 @@ class InvoiceItem extends StatelessWidget {
           SizedBox(
             height: 2,
           ),
-          // ListView.builder(
-          //   shrinkWrap: true,
-          //   physics: NeverScrollableScrollPhysics(),
-          //   itemCount: orders_model.orderDetails.length,
-          //   itemBuilder: (BuildContext context, int index) {
-          //     return Padding(
-          //       padding: EdgeInsets.only(right: 7, left: 10, top: 10),
-          //       child: Row(
-          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //         mainAxisSize: MainAxisSize.min,
-          //         children: <Widget>[
-          //           Row(
-          //             children: [
-          //               Padding(
-          //                 padding: const EdgeInsets.all(3.0),
-          //                 child: CachedNetworkImage(
-          //                   imageUrl:
-          //                   orders_model.orderDetails[index].photo.isEmpty
-          //                       ? ""
-          //                       : orders_model
-          //                       .orderDetails[index].photo[0].image,
-          //                   width: 25,
-          //                   height: 25,
-          //                 ),
-          //               ),
-          //               Container(
-          //                 width: ScreenUtil.getWidth(context) / 2,
-          //                 child: Text(
-          //                   orders_model.orderDetails[index].productName,
-          //                   style: TextStyle(
-          //                       color: themeColor.getColor(),
-          //                       fontWeight: FontWeight.bold,
-          //                       fontSize: 15),
-          //                 ),
-          //               ),
-          //             ],
-          //           ),
-          //           Text(
-          //             orders_model.orderDetails[index].quantity.toString() +
-          //                 ' × ',
-          //             style: TextStyle(color: Colors.black54, fontSize: 15),
-          //           ),
-          //         ],
-          //       ),
-          //     );
-          //   },
-          // ),
+          ListView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: orders_model.order.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Padding(
+                padding: EdgeInsets.only(right: 7, left: 10, top: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(3.0),
+                          child: CachedNetworkImage(
+                            imageUrl:
+                            orders_model.order[index].photo.isEmpty
+                                ? ""
+                                : orders_model
+                                .order[index].photo[0].image,
+                            width: 25,
+                            height: 25,
+                          ),
+                        ),
+                        Container(
+                          width: ScreenUtil.getWidth(context) / 2,
+                          child: Text(
+                            orders_model.order[index].productName,
+                            style: TextStyle(
+                                color: themeColor.getColor(),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Text(
+                      orders_model.order[index].quantity.toString() +
+                          ' × ',
+                      style: TextStyle(color: Colors.black54, fontSize: 15),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
         ],
       ),
     );

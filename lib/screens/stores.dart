@@ -125,7 +125,7 @@ class _StoresState extends State<Stores> {
                     child: Column(
                       children: [
                         SizedBox(height: 20),
-                        Icon(Icons.check_box_outline_blank_sharp),
+                        Icon(Icons.hourglass_empty_outlined,size: 100,color: Colors.black26,),
                         SizedBox(height: 20),
                         Text(
                           'no stores found ',

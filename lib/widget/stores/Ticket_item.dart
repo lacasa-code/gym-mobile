@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:trkar_vendor/model/tickets_model.dart';
+import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 
 class Ticket_item extends StatelessWidget {
@@ -27,7 +28,7 @@ class Ticket_item extends StatelessWidget {
                     Row(
                       children: [
                         AutoSizeText(
-                          'نوع الشكوى : ',
+                          '${getTransrlate(context, 'ticketsType')} : ',
                           minFontSize: 10,
                           style: TextStyle(
                             color: Colors.black,
@@ -47,23 +48,7 @@ class Ticket_item extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        AutoSizeText(
-                          'حالة الشكوى : ',
-                          minFontSize: 10,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          maxLines: 1,
-                        ),
-                        AutoSizeText(hall_model.status,
-                            minFontSize: 10,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                            )),
+                     Container(),
                       ],
                     ),
                   ],
@@ -71,7 +56,7 @@ class Ticket_item extends StatelessWidget {
                 Row(
                   children: [
                     AutoSizeText(
-                      'الرسالة : ',
+                      '${getTransrlate(context, 'message')} : ',
                       minFontSize: 10,
                       style: TextStyle(
                         color: Colors.black,
@@ -99,7 +84,7 @@ class Ticket_item extends StatelessWidget {
                     Row(
                       children: [
                         AutoSizeText(
-                          'رقم الطلب : ',
+                          '${getTransrlate(context, 'OrderNO')} : ',
                           minFontSize: 10,
                           style: TextStyle(
                             color: Colors.black,
@@ -120,7 +105,7 @@ class Ticket_item extends StatelessWidget {
                     Row(
                       children: [
                         AutoSizeText(
-                          'تاريخ الطلب : ',
+                          '${getTransrlate(context, 'OrderDate')} : ',
                           minFontSize: 10,
                           style: TextStyle(
                             color: Colors.black,
@@ -148,7 +133,7 @@ class Ticket_item extends StatelessWidget {
                     Row(
                       children: [
                         AutoSizeText(
-                          'حالة الطلب : ',
+                          '${getTransrlate(context, "ticketsStats")} : ',
                           minFontSize: 10,
                           style: TextStyle(
                             color: Colors.black,
@@ -164,7 +149,7 @@ class Ticket_item extends StatelessWidget {
                                   Border.all(width: 1, color:isPassed(hall_model.status))),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 5),
-                            child: AutoSizeText(hall_model.status,
+                            child: AutoSizeText(hall_model.Case,
                                 minFontSize: 10,
                                 style: TextStyle(
                                   color: isPassed(hall_model.Case),
@@ -178,7 +163,7 @@ class Ticket_item extends StatelessWidget {
                     Row(
                       children: [
                         AutoSizeText(
-                          'تاريخ الاستلام : 12-3-2021',
+                          '${getTransrlate(context, 'OrderDate')} :',
                           minFontSize: 10,
                           style: TextStyle(
                             color: Colors.black,
@@ -187,7 +172,7 @@ class Ticket_item extends StatelessWidget {
                           ),
                           maxLines: 1,
                         ),
-                        AutoSizeText("",
+                        AutoSizeText("${DateFormat('yyyy-MM-dd').format(DateTime.parse(hall_model.createdAt))}",
                             minFontSize: 10,
                             style: TextStyle(
                               color: Colors.black,

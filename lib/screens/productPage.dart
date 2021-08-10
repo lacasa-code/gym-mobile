@@ -90,120 +90,123 @@ class _ProductPageState extends State<ProductPage> {
                     });
                   }),
             ),
-            DataTable(
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: DataTable(dataRowHeight: 75,
       columns: const <DataColumn>[
         DataColumn(
           label: Text(
-            ' ',
-            style: TextStyle(fontStyle: FontStyle.italic),
+              ' ',
+              style: TextStyle(fontStyle: FontStyle.italic),
           ),
         ),
         DataColumn(
           label: Text(
-            ' ',
-            style: TextStyle(fontStyle: FontStyle.italic),
+              ' ',
+              style: TextStyle(fontStyle: FontStyle.italic),
           ),
         ),
       ],
       rows:  <DataRow>[
         DataRow(color: MaterialStateProperty.resolveWith((states) => Colors.black26) ,
           cells: <DataCell>[
-            DataCell(Text('رقم ID'),),
-            DataCell(Text("${widget.product.id}")),
+              DataCell(Text('رقم ID'),),
+              DataCell(Text("${widget.product.id}")),
           ],
         ),
         DataRow(
           cells: <DataCell>[
-            DataCell(Text('الفئة الرئيسية')),
-            DataCell(Text('${widget.product.maincategory==null?'':widget.product.maincategory}')),
+              DataCell(Text('${getTransrlate(context, 'mainCategory')}')),
+              DataCell(Text('${widget.product.maincategory==null?'':widget.product.maincategory.mainCategoryName}')),
           ],
         ),
         DataRow(color: MaterialStateProperty.resolveWith((states) => Colors.black26) ,
           cells: <DataCell>[
-            DataCell(Text('الفئة الفرعية |')),
-            DataCell(Text('${widget.product.category==null?'':widget.product.category.name}')),
+              DataCell(Text('الفئة الفرعية |')),
+              DataCell(Text('${widget.product.category==null?'':widget.product.category.name}')),
           ],
         ),
         DataRow(
           cells: <DataCell>[
-            DataCell(Text('الفئه الفرعيه | |')),
-            DataCell(Text('${widget.product.partCategory==null?'':widget.product.partCategory.categoryName}')),
+              DataCell(Text('الفئه الفرعيه | |')),
+              DataCell(Text('${widget.product.partCategory==null?'':widget.product.partCategory.categoryName}')),
           ],
         ),
         DataRow(color: MaterialStateProperty.resolveWith((states) => Colors.black26) ,
           cells: <DataCell>[
-            DataCell(Text('السيريال')),
-            DataCell(Text('${widget.product.serialNumber}')),
+              DataCell(Text('السيريال')),
+              DataCell(Text('${widget.product.serialNumber}')),
           ],
         ),
         DataRow(
           cells: <DataCell>[
-            DataCell(Text('الوصف')),
-            DataCell(Container(width: ScreenUtil.getWidth(context)/2,child: Padding(
-              padding: const EdgeInsets.only(bottom: 10),
-              child: Text('${widget.product.description}'),
-            ))),
+              DataCell(Text('الوصف')),
+              DataCell(Container(width: ScreenUtil.getWidth(context)/2,child: Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: Text('${widget.product.description}'),
+              ))),
           ],
         ),
         DataRow(color: MaterialStateProperty.resolveWith((states) => Colors.black26) ,
           cells: <DataCell>[
-            DataCell(Text('العلامة التجارية')),
-            DataCell(Text('${widget.product.carMade==null?'':widget.product.carMade.carMade}')),
+              DataCell(Text('العلامة التجارية')),
+              DataCell(Text('${widget.product.carMade==null?'':widget.product.carMade.carMade}')),
           ],
         ),
 
         DataRow(
           cells: <DataCell>[
-            DataCell(Text('بلد المنشأ')),
-            DataCell(Text('${widget.product.originCountry.countryName}')),
+              DataCell(Text('${getTransrlate(context, 'prodcountry')}')),
+              DataCell(Text('${widget.product.originCountry.countryName}')),
           ],
         ),
         DataRow(color: MaterialStateProperty.resolveWith((states) => Colors.black26) ,
           cells: <DataCell>[
-            DataCell(Text('الفرع')),
-            DataCell(Text('${widget.product.store.name}')),
+              DataCell(Text('الفرع')),
+              DataCell(Text('${widget.product.store.name}')),
           ],
         ),
         DataRow(
           cells: <DataCell>[
-            DataCell(Text('الكمية')),
-            DataCell(Text('${widget.product.quantity}')),
+              DataCell(Text('${getTransrlate(context, 'quantity')}')),
+              DataCell(Text('${widget.product.quantity}')),
           ],
         ),
         DataRow(color: MaterialStateProperty.resolveWith((states) => Colors.black26) ,
           cells: <DataCell>[
-            DataCell(Text('السعر')),
-            DataCell(Text('${widget.product.price}')),
+              DataCell(Text('${getTransrlate(context, 'price')}')),
+              DataCell(Text('${widget.product.price}')),
           ],
         ),
         DataRow(
           cells: <DataCell>[
-            DataCell(Text('الخصم')),
-            DataCell(Text('${widget.product.discount} %')),
+              DataCell(Text('${getTransrlate(context, 'discount')}')),
+              DataCell(Text('${widget.product.discount} %')),
           ],
         ),
 
 
         DataRow(color: MaterialStateProperty.resolveWith((states) => Colors.black26) ,
           cells: <DataCell>[
-            DataCell(Text('نوع البيع')),
-            DataCell(Text('${widget.product.producttypeId==null?'':widget.product.producttypeId.producttype}')),
+              DataCell(Text('نوع البيع')),
+              DataCell(Text('${widget.product.producttypeId==null?'':widget.product.producttypeId.producttype}')),
           ],
         ),
         DataRow(
           cells: <DataCell>[
-            DataCell(Text('السيارات المتوافقة')),
-            DataCell(Text('${widget.product.carModel.map((e) => e.carmodel).toList().toString()}')),
+              DataCell(Text('السيارات المتوافقة')),
+              DataCell(Text('${widget.product.carModel.map((e) => e.carmodel).toList().toString()}')),
           ],
         ),
         DataRow(color: MaterialStateProperty.resolveWith((states) => Colors.black26) ,
           cells: <DataCell>[
-            DataCell(Text('الكلمات المفتاحية')),
-            DataCell(Text('${widget.product.tags.map((e) => e.name).toList().toString()}')),
+              DataCell(Text('${getTransrlate(context, 'tags')}')),
+              DataCell(Text('${widget.product.tags.map((e) => e.name).toList().toString()}')),
           ],
         ),
       ],
     ),
+            ),
             SizedBox(height: 50,)
           ],
         ),

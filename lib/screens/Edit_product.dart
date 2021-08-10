@@ -217,7 +217,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                     child: DropdownSearch<CarType>(
                         showSearchBox: false,
                         showClearButton: false,
-                        label: " نوع المركبة",
+                        label: " ${getTransrlate(context, 'CarType')}",
                         selectedItem: widget.product.carType==null?CarType():widget.product.carType,
                         validator: (CarType item) {
                           if (item == null) {
@@ -251,7 +251,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                         child: DropdownSearch<Main_Category>(
                             showSearchBox: false,
                             showClearButton: false,
-                            label: "الفئة الرئيسية",
+                            label: "${getTransrlate(context, 'mainCategory')}",
                             validator: (Main_Category item) {
                               if (item == null) {
                                 return "Required field";
@@ -281,7 +281,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "الفئة الفرعية الاولى",
+                          "${getTransrlate(context, 'subCategory')}",
                           style: TextStyle(color: Colors.black, fontSize: 16),
                         ),
                         SizedBox(
@@ -329,7 +329,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          " الفئة الفرعية الثانية",
+                          " ${getTransrlate(context, 'PartCategory')}",
                           style: TextStyle(color: Colors.black, fontSize: 16),
                         ),
                         SizedBox(
@@ -374,7 +374,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                   height: 10,
                 ),
                 Text(
-                  "المركبة",
+                  "${getTransrlate(context, 'car')}",
                   style: TextStyle(color: Colors.black, fontSize: 16),
                 ),
                 SizedBox(
@@ -400,7 +400,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                             child: DropdownSearch<Transmission>(
                                 showSearchBox: false,
                                 showClearButton: false,
-                                label: " نوع المركبة",
+                                label: " ${getTransrlate(context, 'CarType')}",
                                 validator: (Transmission item) {
                                   if (item == null) {
                                     return "Required field";
@@ -452,7 +452,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                   height: 10,
                 ),
                 Text(
-                  "الموديلات",
+                  "${getTransrlate(context, 'models')}",
                   style: TextStyle(color: Colors.black, fontSize: 16),
                 ),
                 SizedBox(
@@ -487,7 +487,6 @@ class _Edit_ProductState extends State<Edit_Product> {
                   height: 7,
                 ),
                 _generateModels(),
-
                 SizedBox(
                   height: 10,
                 ),
@@ -615,13 +614,13 @@ class _Edit_ProductState extends State<Edit_Product> {
                 MyTextFormField(
                   intialLabel: widget.product.serialNumber ?? ' ',
                   Keyboard_Type: TextInputType.number,
-                  labelText: 'الرقم التسلسلي',
-                  hintText: 'الرقم التسلسلي',
+                  labelText: '${getTransrlate(context, 'serial')}',
+                  hintText: '${getTransrlate(context, 'serial')}',
                   isPhone: true,
                   enabled: true,
                   validator: (String value) {
                     if (value.isEmpty) {
-                      return 'الرقم التسلسلي';
+                      return '${getTransrlate(context, 'serial')}';
                     }
                     _formKey.currentState.save();
                     return null;
@@ -631,7 +630,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                   },
                 ),
                 Text(
-                  "المخزن",
+                  "${getTransrlate(context, 'stock')}",
                   style: TextStyle(color: Colors.black, fontSize: 16),
                 ),
                 SizedBox(
@@ -665,7 +664,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                                 widget.product.storeId = data.id.toString()),
                       ),
                 Text(
-                  "نوع المنتج",
+                  "${getTransrlate(context, 'productType')}",
                   style: TextStyle(color: Colors.black, fontSize: 16),
                 ),
                 SizedBox(
@@ -709,13 +708,13 @@ class _Edit_ProductState extends State<Edit_Product> {
                           MyTextFormField(
                             intialLabel: widget.product.price ?? ' ',
                             Keyboard_Type: TextInputType.number,
-                            labelText: 'السعر',
-                            hintText: 'السعر',
+                            labelText: '${getTransrlate(context, 'price')}',
+                            hintText: '${getTransrlate(context, 'price')}',
                             isPhone: true,
                             enabled: true,
                             validator: (String value) {
                               if (value.isEmpty) {
-                                return 'السعر';
+                                return '${getTransrlate(context, 'price')}';
                               }
                               _formKey.currentState.save();
                               return null;
@@ -727,13 +726,13 @@ class _Edit_ProductState extends State<Edit_Product> {
                           MyTextFormField(
                             intialLabel: ' ',
                             Keyboard_Type: TextInputType.number,
-                            labelText: "الكمية",
-                            hintText: 'الكمية',
+                            labelText: "${getTransrlate(context, 'quantity')}",
+                            hintText: '${getTransrlate(context, 'quantity')}',
                             isPhone: true,
                             enabled: true,
                             validator: (String value) {
                               if (value.isEmpty) {
-                                return 'الكمية';
+                                return '${getTransrlate(context, 'quantity')}';
                               }
                               _formKey.currentState.save();
                               return null;
@@ -745,13 +744,13 @@ class _Edit_ProductState extends State<Edit_Product> {
                           MyTextFormField(
                             intialLabel: ' ',
                             Keyboard_Type: TextInputType.number,
-                            labelText: "الخصم",
-                            hintText: 'الخصم',
+                            labelText: "${getTransrlate(context, 'discount')}",
+                            hintText: '${getTransrlate(context, 'discount')}',
                             isPhone: true,
                             enabled: true,
                             validator: (String value) {
                               if (value.isEmpty) {
-                                return 'الخصم';
+                                return '${getTransrlate(context, 'discount')}';
                               }
                               _formKey.currentState.save();
                               return null;
@@ -768,13 +767,13 @@ class _Edit_ProductState extends State<Edit_Product> {
                           MyTextFormField(
                             intialLabel: widget.product.price ?? ' ',
                             Keyboard_Type: TextInputType.number,
-                            labelText: 'سعر الجملة',
-                            hintText: 'سعر الجملة',
+                            labelText: '${getTransrlate(context, 'Wholesaleprice')}',
+                            hintText: '${getTransrlate(context, 'Wholesaleprice')}',
                             isPhone: true,
                             enabled: true,
                             validator: (String value) {
                               if (value.isEmpty) {
-                                return 'سعر الجملة';
+                                return '${getTransrlate(context, 'Wholesaleprice')}';
                               }
                               _formKey.currentState.save();
                               return null;
@@ -786,13 +785,13 @@ class _Edit_ProductState extends State<Edit_Product> {
                           MyTextFormField(
                             intialLabel: ' ',
                             Keyboard_Type: TextInputType.number,
-                            labelText: "الحد الادنى للطلب ",
-                            hintText: 'الحد الادنى للطلب',
+                            labelText: "${getTransrlate(context, 'minOfOrder')} ",
+                            hintText: '${getTransrlate(context, 'minOfOrder')}',
                             isPhone: true,
                             enabled: true,
                             validator: (String value) {
                               if (value.isEmpty) {
-                                return 'الحد الادنى للطلب';
+                                return '${getTransrlate(context, 'minOfOrder')}';
                               }
                               _formKey.currentState.save();
                               return null;
@@ -807,13 +806,13 @@ class _Edit_ProductState extends State<Edit_Product> {
                     MyTextFormField(
                       intialLabel: widget.product.price ?? ' ',
                       Keyboard_Type: TextInputType.number,
-                      labelText: 'السعر',
-                      hintText: 'السعر',
+                      labelText: '${getTransrlate(context, 'price')}',
+                      hintText: '${getTransrlate(context, 'price')}',
                       isPhone: true,
                       enabled: true,
                       validator: (String value) {
                         if (value.isEmpty) {
-                          return 'السعر';
+                          return '${getTransrlate(context, 'price')}';
                         }
                         _formKey.currentState.save();
                         return null;
@@ -825,13 +824,13 @@ class _Edit_ProductState extends State<Edit_Product> {
                     MyTextFormField(
                       intialLabel: ' ',
                       Keyboard_Type: TextInputType.number,
-                      labelText: "الكمية",
-                      hintText: 'الكمية',
+                      labelText: "${getTransrlate(context, 'quantity')}",
+                      hintText: '${getTransrlate(context, 'quantity')}',
                       isPhone: true,
                       enabled: true,
                       validator: (String value) {
                         if (value.isEmpty) {
-                          return 'الكمية';
+                          return '${getTransrlate(context, 'quantity')}';
                         }
                         _formKey.currentState.save();
                         return null;
@@ -843,13 +842,13 @@ class _Edit_ProductState extends State<Edit_Product> {
                     MyTextFormField(
                       intialLabel: ' ',
                       Keyboard_Type: TextInputType.number,
-                      labelText: "الخصم",
-                      hintText: 'الخصم',
+                      labelText: "${getTransrlate(context, 'discount')}",
+                      hintText: '${getTransrlate(context, 'discount')}',
                       isPhone: true,
                       enabled: true,
                       validator: (String value) {
                         if (value.isEmpty) {
-                          return 'الخصم';
+                          return '${getTransrlate(context, 'discount')}';
                         }
                         _formKey.currentState.save();
                         return null;
@@ -861,13 +860,13 @@ class _Edit_ProductState extends State<Edit_Product> {
                     MyTextFormField(
                       intialLabel: widget.product.price ?? ' ',
                       Keyboard_Type: TextInputType.number,
-                      labelText: 'سعر الجملة',
-                      hintText: 'سعر الجملة',
+                      labelText: '${getTransrlate(context, 'Wholesaleprice')}',
+                      hintText: '${getTransrlate(context, 'Wholesaleprice')}',
                       isPhone: true,
                       enabled: true,
                       validator: (String value) {
                         if (value.isEmpty) {
-                          return 'سعر الجملة';
+                          return '${getTransrlate(context, 'Wholesaleprice')}';
                         }
                         _formKey.currentState.save();
                         return null;
@@ -879,13 +878,13 @@ class _Edit_ProductState extends State<Edit_Product> {
                     MyTextFormField(
                       intialLabel: ' ',
                       Keyboard_Type: TextInputType.number,
-                      labelText: "الحد الادنى للطلب جملة",
-                      hintText: ' الحد الادنى للطلب جملة',
+                      labelText: "${getTransrlate(context, 'minOfOrder')}",
+                      hintText: ' ${getTransrlate(context, 'minOfOrder')}',
                       isPhone: true,
                       enabled: true,
                       validator: (String value) {
                         if (value.isEmpty) {
-                          return 'الحد الادنى للطلب';
+                          return '${getTransrlate(context, 'minOfOrder')}';
                         }
                         _formKey.currentState.save();
                         return null;
@@ -899,13 +898,13 @@ class _Edit_ProductState extends State<Edit_Product> {
                 MyTextFormField(
                   intialLabel:  widget.product.qty_reminder??' ',
                   Keyboard_Type: TextInputType.number,
-                  labelText: "تنبيه الكمية ",
-                  hintText: 'الكمية',
+                  labelText: "تنبيه ${getTransrlate(context, 'qty_reminder')} ",
+                  hintText: '${getTransrlate(context, 'qty_reminder')}',
                   isPhone: true,
                   enabled: true,
                   validator: (String value) {
                     if (value.isEmpty) {
-                      return 'الكمية';
+                      return '${getTransrlate(context, 'qty_reminder')}';
                     }
                     _formKey.currentState.save();
                     return null;
@@ -915,7 +914,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                   },
                 ),
                 Text(
-                  "بلد المنشأ",
+                  "${getTransrlate(context, 'prodcountry')}",
                   style: TextStyle(color: Colors.black, fontSize: 16),
                 ),
                 SizedBox(
@@ -943,7 +942,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                   height: 10,
                 ),
                 Text(
-                  "الكلمات المفتاحية",
+                  "${getTransrlate(context, 'tags')}",
                   style: TextStyle(color: Colors.black, fontSize: 16),
                 ),
                 SizedBox(
@@ -982,7 +981,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                   height: 10,
                 ),
                 Text(
-                  "صور المنتج",
+                  "${getTransrlate(context, 'productimage')}",
                   style: TextStyle(color: Colors.black, fontSize: 16),
                 ),
                 images.isEmpty
@@ -1092,7 +1091,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                             color: Colors.orange,
                           ),
                           Text(
-                            'إضافة',
+                            '${getTransrlate(context, 'add')}',
                             style: TextStyle(
                               color: Colors.orange,
                               fontSize: 14,

@@ -205,8 +205,8 @@ class _HomeMobileState extends State<HomeMobile> {
                                                   ScreenUtil.getWidth(context) /
                                                       3.1,
                                               child: AutoSizeText(
-                                                "طلبات تم تسليمها",
-                                                minFontSize: 10,
+                                                "${getTransrlate(context, 'total_orders')}",
+                                                minFontSize: 13,
                                                 maxLines: 1,
                                                 maxFontSize: 14,
                                                 style: TextStyle(
@@ -249,10 +249,10 @@ class _HomeMobileState extends State<HomeMobile> {
                                               MainAxisAlignment.start,
                                           children: [
                                             Text(
-                                              "طلبات قيد المعاملة",
+                                              "${getTransrlate(context, 'pending_orders')}",
                                               style: TextStyle(
                                                   color: Colors.orange,
-                                                  fontSize: 11,
+                                                  fontSize: 13,
                                                   fontWeight: FontWeight.bold),
                                             ),
                                             Text("${basic_report.pending_orders}",
@@ -290,8 +290,8 @@ class _HomeMobileState extends State<HomeMobile> {
                                                   ScreenUtil.getWidth(context) /
                                                       3.1,
                                               child: AutoSizeText(
-                                                "إجمالي المبيعات",
-                                                minFontSize: 10,
+                                                "${getTransrlate(context, 'total_sale')}",
+                                                minFontSize: 13,
                                                 maxLines: 1,
                                                 maxFontSize: 14,
                                                 style: TextStyle(
@@ -301,7 +301,7 @@ class _HomeMobileState extends State<HomeMobile> {
                                               ),
                                             ),
                                             Text(
-                                                "${basic_report.totalSale.roundToDouble()}",
+                                                "${basic_report.totalSale}",
                                                 maxLines: 1,
                                                 style: TextStyle(
                                                     color:
@@ -336,10 +336,10 @@ class _HomeMobileState extends State<HomeMobile> {
                                                   ScreenUtil.getWidth(context) /
                                                       3.1,
                                               child: AutoSizeText(
-                                                "إجمالي المنتجات",
-                                                minFontSize: 10,
+                                                "${getTransrlate(context, 'total_products')}",
+                                                minFontSize: 13,
                                                 maxLines: 1,
-                                                maxFontSize: 15,
+                                                maxFontSize: 14,
                                                 style: TextStyle(
                                                     color: Colors.brown,
                                                     fontWeight:
@@ -383,7 +383,7 @@ class _HomeMobileState extends State<HomeMobile> {
                                                   ScreenUtil.getWidth(context) /
                                                       3.1,
                                               child: AutoSizeText(
-                                                "استفسارات عامة",
+                                                "${getTransrlate(context, 'prod_questions')}",
                                                 minFontSize: 10,
                                                 maxLines: 1,
                                                 maxFontSize: 15,
@@ -429,10 +429,10 @@ class _HomeMobileState extends State<HomeMobile> {
                                                   ScreenUtil.getWidth(context) /
                                                       3.1,
                                               child: AutoSizeText(
-                                                "الشكاوى",
-                                                minFontSize: 10,
+                                                "${getTransrlate(context, 'tickets')}",
+                                                minFontSize: 13,
                                                 maxLines: 1,
-                                                maxFontSize: 15,
+                                                maxFontSize: 14,
                                                 style: TextStyle(
                                                     color: Colors.red,
                                                     fontWeight:

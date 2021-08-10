@@ -100,7 +100,7 @@ class _Edit_StoreState extends State<Edit_Store> {
                           },
                         ),
                         MyTextFormField(
-                          intialLabel: widget.store.moderatorName ?? ' ',
+                          intialLabel: widget.store.name ?? ' ',
                           Keyboard_Type: TextInputType.name,
                           labelText: getTransrlate(context, 'Moderator'),
                           hintText: getTransrlate(context, 'Moderator'),
@@ -115,7 +115,7 @@ class _Edit_StoreState extends State<Edit_Store> {
                             return null;
                           },
                           onSaved: (String value) {
-                            widget.store.moderatorName = value;
+                            widget.store.name = value;
                           },
                         ),
                         MyTextFormField(

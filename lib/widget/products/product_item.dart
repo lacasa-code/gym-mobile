@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:trkar_vendor/model/products_model.dart';
+import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 
 class Product_item extends StatefulWidget {
@@ -38,32 +39,33 @@ class _Product_itemState extends State<Product_item> {
             children: [
               CachedNetworkImage(
                 imageUrl:
-                "${widget.hall_model.photo.isNotEmpty ? widget.hall_model.photo[0].image : ''}",
+                    "${widget.hall_model.photo.isNotEmpty ? widget.hall_model.photo[0].image : ''}",
                 height: ScreenUtil.getHeight(context) / 6,
-                width: ScreenUtil.getWidth(context)/5,
+                width: ScreenUtil.getWidth(context) / 5,
                 fit: BoxFit.contain,
               ),
               widget.isSelect
                   ? Container(
-                color: Colors.white,
-                    child: Checkbox(
-                        activeColor: Colors.orange,
-                        value: widget.hall_model.isSelect,
-                        onChanged: (bool value) {
-                          setState(() {
-                            widget.hall_model.isSelect = value;
-                          });
-                          !widget.hall_model.isSelect
-                              ? widget.selectStores
-                                  .remove(widget.hall_model.id)
-                              : widget.selectStores
-                                  .add(widget.hall_model.id);
-                        }),
-                  )
+                      color: Colors.white,
+                      child: Checkbox(
+                          activeColor: Colors.orange,
+                          value: widget.hall_model.isSelect,
+                          onChanged: (bool value) {
+                            setState(() {
+                              widget.hall_model.isSelect = value;
+                            });
+                            !widget.hall_model.isSelect
+                                ? widget.selectStores
+                                    .remove(widget.hall_model.id)
+                                : widget.selectStores.add(widget.hall_model.id);
+                          }),
+                    )
                   : Container(),
             ],
           ),
-          SizedBox(width: 10,),
+          SizedBox(
+            width: 10,
+          ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -71,7 +73,7 @@ class _Product_itemState extends State<Product_item> {
                 height: 10,
               ),
               Container(
-                width: ScreenUtil.getWidth(context)/1.7,
+                width: ScreenUtil.getWidth(context) / 1.7,
                 child: AutoSizeText(
                   widget.hall_model.name,
                   minFontSize: 10,
@@ -84,7 +86,7 @@ class _Product_itemState extends State<Product_item> {
                 ),
               ),
               Text(
-                "السعر :  ${widget.hall_model.actualPrice}",
+                "${getTransrlate(context, 'price')} :  ${widget.hall_model.actualPrice}",
                 maxLines: 1,
                 style: TextStyle(
                     color: Colors.black,
@@ -92,7 +94,7 @@ class _Product_itemState extends State<Product_item> {
                     fontSize: 14),
               ),
               AutoSizeText(
-                'التقييم  : 3.5/5',
+                '${getTransrlate(context, 'rate')}  : 3.5/5',
                 minFontSize: 10,
                 style: TextStyle(
                   fontSize: 13,
@@ -101,11 +103,18 @@ class _Product_itemState extends State<Product_item> {
                 ),
               ),
               Container(
-                width: ScreenUtil.getWidth(context)/1.5,
-
+                width: ScreenUtil.getWidth(context) / 1.5,
+                child: Text(
+                  '${getTransrlate(context, 'Category')} > ${widget.hall_model.maincategory == null ? '' : widget.hall_model.maincategory.mainCategoryName}> ${widget.hall_model.category == null ? '' : widget.hall_model.category.name}> ${widget.hall_model.partCategory == null ? '' : widget.hall_model.partCategory.categoryName}',
+                  style: TextStyle(fontSize: 13,fontWeight: FontWeight.bold),
+                ),
+              ),
+              Container(
+                width: ScreenUtil.getWidth(context) / 1.5,
                 child: AutoSizeText(
                   '${widget.hall_model.description}',
-                  minFontSize: 10,maxLines: 3,
+                  minFontSize: 10,
+                  maxLines: 3,
                   style: TextStyle(
                     fontSize: 12,
                     color: Colors.black,

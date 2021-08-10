@@ -130,7 +130,7 @@ class _EditStaffState extends State<EditStaff> {
                               //  onFind: (String filter) => getData(filter),
                               itemAsString: (Role u) => u.title,
                               onChanged: (Role data) =>
-                              widget.user.rolesid = data.id),
+                              widget.user.rolesid = data.id.toString()),
                     ],
                   ),
                 ),

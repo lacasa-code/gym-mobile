@@ -116,7 +116,7 @@ class OrderDetails {
   String vendorName;
   int quantity;
   String price;
-  int discount;
+  String discount;
   String total;
   int approved;
   String createdAt;
@@ -157,7 +157,7 @@ class OrderDetails {
     vendorName = json['vendor_name'];
     quantity = json['quantity'];
     price = json['price'].toString();
-    discount = json['discount'];
+    discount = json['discount'].toString();
 
     total = json['total'].toString();
     approved = json['approved'];

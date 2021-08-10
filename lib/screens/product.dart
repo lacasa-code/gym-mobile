@@ -34,6 +34,7 @@ class _ProductsState extends State<Products> {
   String url="products";
   int i = 2;
   ScrollController _scrollController = new ScrollController();
+  String  characters= "ASC";
 
   @override
   void initState() {
@@ -134,7 +135,7 @@ class _ProductsState extends State<Products> {
                     child: Column(
                       children: [
                         SizedBox(height: 20),
-                        Icon(Icons.check_box_outline_blank_sharp),
+                        Icon(Icons.hourglass_empty_outlined,size: 100,color: Colors.black26,),
                         SizedBox(height: 20),
                         Text(
                           'no Products found ',
@@ -281,11 +282,12 @@ class _ProductsState extends State<Products> {
                                     onTap: () {
                                       showDialog(
                                               context: context,
-                                              builder: (_) => Sortdialog())
+                                              builder: (_) => Sortdialog(character:characters ,))
                                           .then((val) {
+                                            characters=val??"ASC";
                                         print(val);
                                         API(context)
-                                            .get('$url?sort_type=${val}')
+                                            .get('$url?sort_type=${characters}')
                                             .then((value) {
                                           if (value != null) {
                                             if (value['status_code'] == 200) {
