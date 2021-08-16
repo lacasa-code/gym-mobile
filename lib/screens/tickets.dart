@@ -26,10 +26,18 @@ class _TicketsState extends State<Tickets> {
   List<Ticket> stores;
   List<Ticket> filteredStores;
   final debouncer = Search(milliseconds: 1000);
+  String url="all/tickets";
+  int i = 2;
   ScrollController _scrollController = new ScrollController();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   void initState() {
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        PerStore();
+      }
+    });
     getAllStore();
     super.initState();
   }
@@ -109,6 +117,7 @@ class _TicketsState extends State<Tickets> {
                   ),
                 )
               : SingleChildScrollView(
+        controller: _scrollController,
                   child: Column(
                     children: [
                       Container(
@@ -192,7 +201,15 @@ class _TicketsState extends State<Tickets> {
       }
     });
   }
-
+  Future<void> PerStore() async {
+    API(context).get("$url?page=${i++}&ordered_by=created_at&sort_type=desc").then((value) {
+      if (value != null) {
+        setState(() {
+          stores.addAll(Tickets_model.fromJson(value).data);
+        });
+      }
+    });
+  }
   Widget row(Ticket productModel) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
