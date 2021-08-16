@@ -190,9 +190,13 @@ class _Edit_ProductState extends State<Edit_Product> {
                   enabled: true,
                   validator: (String value) {
                     if (value.isEmpty) {
-                      return getTransrlate(context, 'name');
+                      return getTransrlate(context, 'requiredempty');
+                    }else   if (value.length<=2) {
+                      return "${getTransrlate(context, 'requiredlength')}";
+                    }else if (RegExp(
+                        r"^[+-]?([0-9]*[.])?[0-9]+").hasMatch(value)) {
+                      return getTransrlate(context, 'invalidname');
                     }
-                    _formKey.currentState.save();
                     return null;
                   },
                   onSaved: (String value) {
@@ -439,7 +443,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                                     return null;
                                 },
                                 items: CarMades,
-                                selectedItem:  widget.product.carMade,
+                                selectedItem:  widget.product.carMade==null?CarMade():widget.product.carMade,
                                 itemAsString: (CarMade u) => u.carMade??'',
                                 onChanged: (CarMade data) {
                                   widget.product.carMadeId = data.id.toString();
@@ -724,7 +728,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                             },
                           ),
                           MyTextFormField(
-                            intialLabel: ' ',
+                            intialLabel:  widget.product.quantity ?? ' ',
                             Keyboard_Type: TextInputType.number,
                             labelText: "${getTransrlate(context, 'quantity')}",
                             hintText: '${getTransrlate(context, 'quantity')}',
@@ -742,7 +746,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                             },
                           ),
                           MyTextFormField(
-                            intialLabel: ' ',
+                            intialLabel:  widget.product.discount ?? ' ',
                             Keyboard_Type: TextInputType.number,
                             labelText: "${getTransrlate(context, 'discount')}",
                             hintText: '${getTransrlate(context, 'discount')}',
@@ -765,7 +769,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                     ? Column(
                         children: [
                           MyTextFormField(
-                            intialLabel: widget.product.price ?? ' ',
+                            intialLabel: widget.product.wholesale ?? ' ',
                             Keyboard_Type: TextInputType.number,
                             labelText: '${getTransrlate(context, 'Wholesaleprice')}',
                             hintText: '${getTransrlate(context, 'Wholesaleprice')}',
@@ -783,7 +787,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                             },
                           ),
                           MyTextFormField(
-                            intialLabel: ' ',
+                            intialLabel:  widget.product.minOfOrder ?? ' ',
                             Keyboard_Type: TextInputType.number,
                             labelText: "${getTransrlate(context, 'minOfOrder')} ",
                             hintText: '${getTransrlate(context, 'minOfOrder')}',
@@ -822,7 +826,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                       },
                     ),
                     MyTextFormField(
-                      intialLabel: ' ',
+                      intialLabel:  widget.product.quantity ?? ' ',
                       Keyboard_Type: TextInputType.number,
                       labelText: "${getTransrlate(context, 'quantity')}",
                       hintText: '${getTransrlate(context, 'quantity')}',
@@ -840,7 +844,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                       },
                     ),
                     MyTextFormField(
-                      intialLabel: ' ',
+                      intialLabel: widget.product.discount ?? ' ',
                       Keyboard_Type: TextInputType.number,
                       labelText: "${getTransrlate(context, 'discount')}",
                       hintText: '${getTransrlate(context, 'discount')}',
@@ -858,7 +862,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                       },
                     ),
                     MyTextFormField(
-                      intialLabel: widget.product.price ?? ' ',
+                      intialLabel: widget.product.wholesale ?? ' ',
                       Keyboard_Type: TextInputType.number,
                       labelText: '${getTransrlate(context, 'Wholesaleprice')}',
                       hintText: '${getTransrlate(context, 'Wholesaleprice')}',
@@ -876,7 +880,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                       },
                     ),
                     MyTextFormField(
-                      intialLabel: ' ',
+                      intialLabel:  widget.product.minOfOrder ?? ' ',
                       Keyboard_Type: TextInputType.number,
                       labelText: "${getTransrlate(context, 'minOfOrder')}",
                       hintText: ' ${getTransrlate(context, 'minOfOrder')}',

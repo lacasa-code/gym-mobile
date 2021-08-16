@@ -16,10 +16,11 @@ import 'package:trkar_vendor/widget/commons/drop_down_menu/find_dropdown.dart';
 
 class EditStaff extends StatefulWidget {
   EditStaff(this.user);
-  User user ;
+
+  User user;
+
   @override
   _EditStaffState createState() => _EditStaffState();
-
 }
 
 class _EditStaffState extends State<EditStaff> {
@@ -27,6 +28,7 @@ class _EditStaffState extends State<EditStaff> {
   final _formKey = GlobalKey<FormState>();
   List<Role> roles;
   bool passwordVisible = false;
+
   @override
   void initState() {
     getRoles();
@@ -74,9 +76,13 @@ class _EditStaffState extends State<EditStaff> {
                         enabled: true,
                         validator: (String value) {
                           if (value.isEmpty) {
-                            return getTransrlate(context, 'name');
+                            return getTransrlate(context, 'requiredempty');
+                          } else if (value.length <= 2) {
+                            return "${getTransrlate(context, 'requiredlength')}";
+                          } else if (RegExp(r"^[+-]?([0-9]*[.])?[0-9]+")
+                              .hasMatch(value)) {
+                            return getTransrlate(context, 'invalidname');
                           }
-                          _formKey.currentState.save();
                           return null;
                         },
                         onSaved: (String value) {
@@ -108,17 +114,20 @@ class _EditStaffState extends State<EditStaff> {
                       SizedBox(
                         height: 10,
                       ),
-                      Text("الدور الوظيفي",style: TextStyle(color: Colors.black,fontSize: 16),),
-
+                      Text(
+                        "الدور الوظيفي",
+                        style: TextStyle(color: Colors.black, fontSize: 16),
+                      ),
                       SizedBox(
                         height: 10,
                       ),
                       roles == null
                           ? Container()
                           : DropdownSearch<Role>(
+                              maxHeight: ScreenUtil.getWidth(context) / 3,
                               showSearchBox: false,
                               showClearButton: false,
-                              selectedItem:widget.user.roles ,
+                              selectedItem: widget.user.roles,
                               label: "   ",
                               validator: (Role item) {
                                 if (item == null) {
@@ -130,7 +139,7 @@ class _EditStaffState extends State<EditStaff> {
                               //  onFind: (String filter) => getData(filter),
                               itemAsString: (Role u) => u.title,
                               onChanged: (Role data) =>
-                              widget.user.rolesid = data.id.toString()),
+                                  widget.user.rolesid = data.id.toString()),
                     ],
                   ),
                 ),
@@ -156,8 +165,7 @@ class _EditStaffState extends State<EditStaff> {
                         minWidth: ScreenUtil.getWidth(context) / 2.5,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(1),
-                            side: BorderSide(
-                                color: Colors.orange, width: 1)),
+                            side: BorderSide(color: Colors.orange, width: 1)),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
@@ -212,8 +220,7 @@ class _EditStaffState extends State<EditStaff> {
                         minWidth: ScreenUtil.getWidth(context) / 2.5,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(1),
-                            side:
-                            BorderSide(color: Colors.grey, width: 1)),
+                            side: BorderSide(color: Colors.grey, width: 1)),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
@@ -232,7 +239,6 @@ class _EditStaffState extends State<EditStaff> {
               ),
             ),
           ),
-
         ],
       ),
     );

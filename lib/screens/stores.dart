@@ -29,6 +29,8 @@ class _StoresState extends State<Stores> {
   List<Store> filteredStores;
   List<int> selectStores = [];
   String url="stores";
+  int i = 2;
+  ScrollController _scrollController = new ScrollController();
 
   final debouncer = Search(milliseconds: 1000);
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -36,6 +38,12 @@ class _StoresState extends State<Stores> {
 
   @override
   void initState() {
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        PerStore();
+      }
+    });
     getAllStore();
     super.initState();
   }
@@ -139,7 +147,9 @@ class _StoresState extends State<Stores> {
                   ),
                 )
               : SingleChildScrollView(
-                  child: Column(
+        controller: _scrollController,
+
+        child: Column(
                     children: [
                       isSelect
                           ? Container(
@@ -545,5 +555,15 @@ class _StoresState extends State<Stores> {
         ),
       ],
     );
+  }
+
+  Future<void> PerStore() async {
+    API(context).get("$url?page=${i++}&ordered_by=created_at&sort_type=desc").then((value) {
+      if (value != null) {
+        setState(() {
+          stores.addAll(Store_model.fromJson(value).data);
+        });
+      }
+    });
   }
 }

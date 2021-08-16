@@ -24,7 +24,7 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   void initState() {
-    widget.product.manufacturer_id=widget.product.manufacturer.id.toString();
+    widget.product.manufacturer==null?null:widget.product.manufacturer_id=widget.product.manufacturer.id.toString();
     super.initState();
   }
   @override
@@ -153,17 +153,16 @@ class _ProductPageState extends State<ProductPage> {
               DataCell(Text('${widget.product.carMade==null?'':widget.product.carMade.carMade}')),
           ],
         ),
-
         DataRow(
           cells: <DataCell>[
               DataCell(Text('${getTransrlate(context, 'prodcountry')}')),
-              DataCell(Text('${widget.product.originCountry.countryName}')),
+              DataCell(Text('${widget.product.originCountry==null?'':widget.product.originCountry.countryName}')),
           ],
         ),
         DataRow(color: MaterialStateProperty.resolveWith((states) => Colors.black26) ,
           cells: <DataCell>[
               DataCell(Text('الفرع')),
-              DataCell(Text('${widget.product.store.name}')),
+              DataCell(Text('${widget.product.store==null?'':widget.product.store.name}')),
           ],
         ),
         DataRow(
@@ -175,7 +174,7 @@ class _ProductPageState extends State<ProductPage> {
         DataRow(color: MaterialStateProperty.resolveWith((states) => Colors.black26) ,
           cells: <DataCell>[
               DataCell(Text('${getTransrlate(context, 'price')}')),
-              DataCell(Text('${widget.product.price}')),
+              DataCell(Text('${widget.product.actualPrice}')),
           ],
         ),
         DataRow(
@@ -195,13 +194,19 @@ class _ProductPageState extends State<ProductPage> {
         DataRow(
           cells: <DataCell>[
               DataCell(Text('السيارات المتوافقة')),
-              DataCell(Text('${widget.product.carModel.map((e) => e.carmodel).toList().toString()}')),
+              DataCell(Text('${widget.product.carModel==null?'':widget.product.carModel.map((e) => e.carmodel).toList().toString()}')),
           ],
         ),
         DataRow(color: MaterialStateProperty.resolveWith((states) => Colors.black26) ,
           cells: <DataCell>[
               DataCell(Text('${getTransrlate(context, 'tags')}')),
-              DataCell(Text('${widget.product.tags.map((e) => e.name).toList().toString()}')),
+              DataCell(Text('${widget.product.tags==null?'':widget.product.tags.map((e) => e.name).toList().toString()}')),
+          ],
+        ),
+        DataRow(
+          cells: <DataCell>[
+            DataCell(Text('qty_reminder')),
+            DataCell(Text('${widget.product.qty_reminder.toString()}')),
           ],
         ),
       ],

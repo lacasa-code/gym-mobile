@@ -69,6 +69,8 @@ class InvoiceItem extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(3.0),

@@ -90,9 +90,13 @@ class _Edit_StoreState extends State<Edit_Store> {
                           enabled: true,
                           validator: (String value) {
                             if (value.isEmpty) {
-                              return getTransrlate(context, 'name');
+                              return getTransrlate(context, 'requiredempty');
+                            }else   if (value.length<=2) {
+                              return "${getTransrlate(context, 'requiredlength')}";
+                            }else if (RegExp(
+                                r"^[+-]?([0-9]*[.])?[0-9]+").hasMatch(value)) {
+                              return getTransrlate(context, 'invalidname');
                             }
-                            _formKey.currentState.save();
                             return null;
                           },
                           onSaved: (String value) {
@@ -214,6 +218,7 @@ class _Edit_StoreState extends State<Edit_Store> {
                             },
 
                             items: area,
+                            selectedItem:widget.store.areaId==null?Area(areaName:'Select Area'):area.where((element) => element.id==widget.store.areaId).first,
                             //  onFind: (String filter) => getData(filter),
                             itemAsString: (Area u) =>
                             u.areaName,
@@ -231,7 +236,7 @@ class _Edit_StoreState extends State<Edit_Store> {
                               .symmetric(
                               vertical: 10),
                           child: DropdownSearch<City>(
-                            // label: getTransrlate(context, 'Countroy'),
+                            selectedItem:widget.store.cityId==null?City(cityName:'Select City'):cities.where((element) => element.id==widget.store.cityId).first,
                             validator: (City item) {
                               if (item == null) {
                                 return "Required field";
@@ -427,7 +432,7 @@ class _Edit_StoreState extends State<Edit_Store> {
       setState(() {
         area = Area_model.fromJson(value).data;
       });
-      getCity(widget.store.cityId);
+      getCity(widget.store.areaId);
 
     });
   }

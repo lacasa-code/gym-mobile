@@ -111,52 +111,46 @@ class _tickets_informationState extends State<tickets_information> {
                 ],
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      AutoSizeText(
-                        '${getTransrlate(context, 'OrderNO')} : ',
-                        minFontSize: 10,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        maxLines: 1,
-                      ),
-                      AutoSizeText(widget.orders_model.orderNumber.toString(),
-                          minFontSize: 10,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                          )),
-                    ],
+                  AutoSizeText(
+                    '${getTransrlate(context, 'name')} : ',
+                    minFontSize: 10,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    maxLines: 1,
                   ),
-                  Row(
-                    children: [
-                      AutoSizeText(
-                        '${getTransrlate(context, 'OrderDate')} : ',
-                        minFontSize: 10,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        maxLines: 1,
-                      ),
-                      AutoSizeText(
-                          DateFormat('yyyy-MM-dd').format(
-                              DateTime.parse(widget.orders_model.orderCreatedAt)),
-                          minFontSize: 10,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                          )),
-                    ],
+                  AutoSizeText(widget.orders_model.userName,
+                      minFontSize: 10,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                      )),
+                ],
+              ),
+              Row(
+                children: [
+                  AutoSizeText(
+                    '${getTransrlate(context, 'mail')} : ',
+                    minFontSize: 10,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    maxLines: 1,
                   ),
+                  AutoSizeText(
+                      widget.orders_model.userEmail,
+                      minFontSize: 10,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                      )),
                 ],
               ),
               Row(
@@ -297,8 +291,57 @@ class _tickets_informationState extends State<tickets_information> {
                   "${widget.orders_model.shipping.floorNo??''} , "
                   "${widget.orders_model.shipping.apartmentNo??''}"}",
                   style: TextStyle(color: Colors.black, fontSize: 12)),
-              // Text(" إجمالي الطلب :${widget.orders_model.ord ?? ''}",
-              //     style: TextStyle(color: Colors.black, fontSize: 12)),
+              Text("${getTransrlate(context, 'OrderDetails')}",
+                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,
+                      fontSize: 13)),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: widget.orders_model.orderDetails.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Padding(
+                    padding: EdgeInsets.only(right: 7, left: 10, top: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(3.0),
+                              child: CachedNetworkImage(
+                                imageUrl:
+                                widget.orders_model.orderDetails[index].photo.isEmpty
+                                    ? ""
+                                    :widget.orders_model.orderDetails[index].photo[0].image,
+                                width: 25,
+                                height: 25,
+                              ),
+                            ),
+                            Container(
+                              width: ScreenUtil.getWidth(context) / 2,
+                              child: Text(
+                                widget.orders_model.orderDetails[index].productName,
+                                style: TextStyle(
+                                    color: themeColor.getColor(),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          widget.orders_model.orderDetails[index].quantity.toString() +
+                              ' × ',
+                          style: TextStyle(color: Colors.black54, fontSize: 15),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
 
             ],
           ),

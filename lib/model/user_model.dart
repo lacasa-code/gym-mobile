@@ -99,13 +99,12 @@ class Stores {
   int status;
   String createdAt;
   String updatedAt;
-  Null deletedAt;
   String lang;
   int headCenter;
-  Null countryId;
-  Null areaId;
-  Null cityId;
-  Null serialId;
+  String countryId;
+  String areaId;
+  String cityId;
+  String serialId;
   Pivot pivot;
 
   Stores(
@@ -113,7 +112,7 @@ class Stores {
         this.name,
         this.address,
         this.lat,
-        this.long,
+                      this.long,
         this.vendorId,
         this.moderatorName,
         this.moderatorPhone,
@@ -121,7 +120,6 @@ class Stores {
         this.status,
         this.createdAt,
         this.updatedAt,
-        this.deletedAt,
         this.lang,
         this.headCenter,
         this.countryId,
@@ -143,13 +141,12 @@ class Stores {
     status = json['status'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    deletedAt = json['deleted_at'];
     lang = json['lang'];
     headCenter = json['head_center'];
-    countryId = json['country_id'];
-    areaId = json['area_id'];
-    cityId = json['city_id'];
-    serialId = json['serial_id'];
+    countryId = json['country_id'].toString();
+     areaId = json['area_id'].toString();
+     cityId = json['city_id'].toString();
+    serialId = json['serial_id'].toString();
     pivot = json['pivot'] != null ? new Pivot.fromJson(json['pivot']) : null;
   }
 
@@ -167,7 +164,6 @@ class Stores {
     data['status'] = this.status;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
-    data['deleted_at'] = this.deletedAt;
     data['lang'] = this.lang;
     data['head_center'] = this.headCenter;
     data['country_id'] = this.countryId;

@@ -99,8 +99,8 @@ class _Order_informationState extends State<Order_information> {
                   AutoSizeText(
                     widget.orders_model.shipping == null
                         ? ''
-                        : "${widget.orders_model.shipping.area.areaName} , "
-                        "${widget.orders_model.shipping.city.cityName} , "
+                        : "${widget.orders_model.shipping.area==null?'':widget.orders_model.shipping.area.areaName} , "
+                        "${widget.orders_model.shipping.city==null?'':widget.orders_model.shipping.city.cityName} , "
                         "${widget.orders_model.shipping.street} , "
                         "${widget.orders_model.shipping.district} , "
                         "${widget.orders_model.shipping.floorNo} , "

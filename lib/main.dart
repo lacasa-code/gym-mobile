@@ -7,6 +7,7 @@ import 'package:trkar_vendor/screens/onboarding_page.dart';
 import 'package:trkar_vendor/splash_screen.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/local/AppLocalizations.dart';
+import 'package:device_preview/device_preview.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,7 +16,10 @@ Future<void> main() async {
   runApp(
     ChangeNotifierProvider<Provider_control>(
       create: (_) => Provider_control(),
-      child: MyApp(),
+      child: DevicePreview(
+        enabled: false,
+        builder: (context) => MyApp(), // Wrap your app
+      ),
     ),
   );
 

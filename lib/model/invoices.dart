@@ -42,7 +42,7 @@ class Invoice {
   String userName;
   Shipping userAddress;
   Payment payment;
-  int invoiceTotal;
+  String invoiceTotal;
   int status;
   String createdAt;
   List<Ordersditils> order;
@@ -63,7 +63,7 @@ class Invoice {
     userName = json['user_name'];
     userAddress = json['user_address'] != null ? new Shipping.fromJson(json['user_address']) : null;
     payment = json['payment'] != null ? new Payment.fromJson(json['payment']) : null;
-    invoiceTotal = json['invoice_total'];
+    invoiceTotal = json['invoice_total'].toString();
     status = json['status'];
     createdAt = json['created_at'];
     if (json['order'] != null) {

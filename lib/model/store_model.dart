@@ -114,35 +114,18 @@ class Store {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['address'] = this.address;
-    data['lat'] = this.lat;
-    data['long'] = this.long;
-    data['vendor_id'] = this.vendorId;
-    data['country_id'] = this.countryId;
-    data['area_id'] = this.areaId;
-    data['city_id'] = this.cityId;
-    data['country_name'] = this.countryName;
-    data['area_name'] = this.areaName;
-    data['city_name'] = this.cityName;
-    data['head_center'] = this.headCenter;
-    data['serial_id'] = this.serialId;
-    data['moderator_phone'] = this.moderatorPhone;
-    data['moderator_alt_phone'] = this.moderatorAltPhone;
-    data['status'] = this.status;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['deleted_at'] = this.deletedAt;
-    data['vendor_name'] = this.vendorName;
-    if (this.vendor != null) {
-      data['vendor'] = this.vendor.toJson();
-    }
-    if (this.members != null) {
-      data['members'] = this.members.map((v) => v.toJson()).toList();
-    }
-    return data;
+      var map = <String, dynamic>{};
+      map["name"] = name;
+      map["address"] = address;
+      map["lat"] = lat;
+      map["long"] = long;
+      map["country_id"] = countryId;
+      map["area_id"] = areaId;
+      map["city_id"] = cityId;
+      map["moderator_phone"] = moderatorPhone;
+      if (moderatorAltPhone.isNotEmpty) {
+        map["moderator_alt_phone"] = moderatorAltPhone;}
+    return map;
   }
 }
 

@@ -52,7 +52,9 @@ class MyTextFormField extends StatelessWidget {
             onTap: press,
             controller: textEditingController,
             initialValue: intialLabel ,
-            inputFormatters:inputFormatters ,
+            inputFormatters:inputFormatters??[
+              new LengthLimitingTextInputFormatter(254),
+        ],
             decoration: InputDecoration(
               fillColor: Colors.white,
               prefixIcon: prefix,
@@ -76,6 +78,7 @@ class MyTextFormField extends StatelessWidget {
             ),
             obscureText: isPassword ? true : false,
             validator: validator,
+
             textDirection: textDirection,
             onSaved: onSaved,
             enabled: enabled,

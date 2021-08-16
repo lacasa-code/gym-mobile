@@ -41,7 +41,7 @@ class _HomeMobileState extends State<HomeMobile> {
   String name;
 
   Future<void> _selectDatefrom(BuildContext context) async {
-    final DateTime picked =  await showDatePicker(
+    final DateTime picked = await showDatePicker(
         context: context,
         initialDate: date,
         firstDate: DateTime(2015, 8),
@@ -98,12 +98,16 @@ class _HomeMobileState extends State<HomeMobile> {
           width: ScreenUtil.getWidth(context) / 4,
         ),
         actions: [
-          IconButton(onPressed: () {
-            Nav.route(context, Message_show());
-          }, icon: Icon(Icons.messenger_outline)),
-          IconButton(onPressed: () {
-            Nav.route(context, Notification_show());
-          }, icon: Icon(Icons.notifications_none)),
+          IconButton(
+              onPressed: () {
+                Nav.route(context, Message_show());
+              },
+              icon: Icon(Icons.messenger_outline)),
+          IconButton(
+              onPressed: () {
+                Nav.route(context, Notification_show());
+              },
+              icon: Icon(Icons.notifications_none)),
         ],
       ),
       body: SingleChildScrollView(
@@ -133,7 +137,10 @@ class _HomeMobileState extends State<HomeMobile> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Text('${getTransrlate(context, 'duration')} : '),
+                        Container(
+                            width: ScreenUtil.getWidth(context) / 6,
+                            child: Text(
+                                '${getTransrlate(context, 'duration')} : ')),
                         InkWell(
                           onTap: () {
                             _selectDatefrom(context);
@@ -147,7 +154,12 @@ class _HomeMobileState extends State<HomeMobile> {
                               SizedBox(
                                 width: 5,
                               ),
-                              Text(" ${getTransrlate(context, 'from')} : ${_fromcontroller.text}",style: TextStyle(fontSize: 14),),
+                              Container(
+                                  width: ScreenUtil.getWidth(context) / 3.2,
+                                  child: Text(
+                                    " ${getTransrlate(context, 'from')} : ${_fromcontroller.text}",
+                                    style: TextStyle(fontSize: 14),
+                                  )),
                             ],
                           ),
                         ),
@@ -164,7 +176,11 @@ class _HomeMobileState extends State<HomeMobile> {
                               SizedBox(
                                 width: 5,
                               ),
-                              Text(" ${getTransrlate(context, 'to')} : ${_tocontroller.text}",style: TextStyle(fontSize: 14)),
+                              Container(
+                                  width: ScreenUtil.getWidth(context) / 3.2,
+                                  child: Text(
+                                      " ${getTransrlate(context, 'to')} : ${_tocontroller.text}",
+                                      style: TextStyle(fontSize: 14))),
                             ],
                           ),
                         ),
@@ -186,11 +202,13 @@ class _HomeMobileState extends State<HomeMobile> {
                                     child: Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
                                         SvgPicture.asset(
                                           'assets/icons/Bell.svg',
-                                          width: 18,height: 18,
+                                          width: 18,
+                                          height: 18,
                                           color: Colors.green,
                                         ),
                                         SizedBox(
@@ -255,7 +273,8 @@ class _HomeMobileState extends State<HomeMobile> {
                                                   fontSize: 13,
                                                   fontWeight: FontWeight.bold),
                                             ),
-                                            Text("${basic_report.pending_orders}",
+                                            Text(
+                                                "${basic_report.pending_orders}",
                                                 maxLines: 1,
                                                 style: TextStyle(
                                                     color:
@@ -300,8 +319,7 @@ class _HomeMobileState extends State<HomeMobile> {
                                                         FontWeight.bold),
                                               ),
                                             ),
-                                            Text(
-                                                "${basic_report.totalSale}",
+                                            Text("${basic_report.totalSale}",
                                                 maxLines: 1,
                                                 style: TextStyle(
                                                     color:
@@ -367,9 +385,9 @@ class _HomeMobileState extends State<HomeMobile> {
                                       children: [
                                         SvgPicture.asset(
                                           'assets/icons/Question mark.svg',
-                                           width: 18,height: 18,
+                                          width: 18,
+                                          height: 18,
                                           color: Colors.blue,
-
                                         ),
                                         SizedBox(
                                           width: 3,
@@ -454,148 +472,160 @@ class _HomeMobileState extends State<HomeMobile> {
                               ],
                             ),
                           ),
-                    labels.isEmpty?Container():Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        height: ScreenUtil.getHeight(context) / 4,
-                        child: BarChart(
-                          data: data,
-                          labels: labels,
-                          displayValue: true,
-                          reverse: true,
-                          getColor: DataRepository.getColor,
-                          //getIcon: DataRepository.getIcon,
-                          barWidth: ScreenUtil.divideWidth(context) / 5,
-                          barSeparation: 5,
-                          animationDuration: Duration(milliseconds: 5000),
-                          animationCurve: Curves.easeInOutSine,
-                          itemRadius: 1,
-                          headerValueHeight: 30,
-                          roundValuesOnText: false,
-                        ),
-                      ),
-                    ),
+                    labels.isEmpty
+                        ? Container()
+                        : Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              height: ScreenUtil.getHeight(context) / 4,
+                              child: BarChart(
+                                data: data,
+                                labels: labels,
+                                displayValue: true,
+                                reverse: true,
+                                getColor: DataRepository.getColor,
+                                //getIcon: DataRepository.getIcon,
+                                barWidth: ScreenUtil.divideWidth(context) / 5,
+                                barSeparation: 5,
+                                animationDuration: Duration(milliseconds: 5000),
+                                animationCurve: Curves.easeInOutSine,
+                                itemRadius: 1,
+                                headerValueHeight: 30,
+                                roundValuesOnText: false,
+                              ),
+                            ),
+                          ),
                   ],
                 ),
               ),
               product == null
                   ? Container()
                   : product.isEmpty
-                  ? Container()
-                  : Card(
-                      child: Container(
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black12)),
-                        padding: const EdgeInsets.all(12.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    width: ScreenUtil.getWidth(context) / 2,
-                                    child: AutoSizeText(
-                                      "مخزون على وشك النفاذ",
-                                      maxLines: 2,
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      minFontSize: 11,
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: SizedBox(
-                                      width: 10,
-                                    ),
-                                  ),
-                                  Text(
-                                    "متبقي",
-                                    style: TextStyle(color: Colors.black),
-                                  )
-                                ],
-                              ),
-                            ),
-                            ListView.builder(
-                              padding: EdgeInsets.all(1),
-                              primary: false,
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemCount: product.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Column(
-                                  children: [
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-
-                                      children: [
-                                        Container(
-                                          width: ScreenUtil.getWidth(context) / 8,
-                                          height: ScreenUtil.getWidth(context) / 8,
-                                          child: CachedNetworkImage(
-                                            imageUrl: product[index]
-                                                    .photo
-                                                    .isNotEmpty
-                                                ? product[index].photo[0].image
-                                                : '',
-                                            errorWidget:
-                                                (context, url, error) => Icon(
-                                              Icons.image,
-                                              color: Colors.black12,
-                                            ),
-                                            fit: BoxFit.contain,
+                      ? Container()
+                      : Card(
+                          child: Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.black12)),
+                            padding: const EdgeInsets.all(12.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        width: ScreenUtil.getWidth(context) / 2,
+                                        child: AutoSizeText(
+                                          "مخزون على وشك النفاذ",
+                                          maxLines: 2,
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold,
                                           ),
+                                          minFontSize: 11,
                                         ),
-                                        SizedBox(
+                                      ),
+                                      Expanded(
+                                        child: SizedBox(
                                           width: 10,
                                         ),
-                                        Container(
-                                          width:
-                                              ScreenUtil.getWidth(context) / 2,
-                                          child: AutoSizeText(
-                                            product[index].name,
-                                            maxLines: 2,
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
+                                      ),
+                                      Text(
+                                        "متبقي",
+                                        style: TextStyle(color: Colors.black),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                ListView.builder(
+                                  padding: EdgeInsets.all(1),
+                                  primary: false,
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: product.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Column(
+                                      children: [
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              width:
+                                                  ScreenUtil.getWidth(context) /
+                                                      8,
+                                              height:
+                                                  ScreenUtil.getWidth(context) /
+                                                      8,
+                                              child: CachedNetworkImage(
+                                                imageUrl: product[index]
+                                                        .photo
+                                                        .isNotEmpty
+                                                    ? product[index]
+                                                        .photo[0]
+                                                        .image
+                                                    : '',
+                                                errorWidget:
+                                                    (context, url, error) =>
+                                                        Icon(
+                                                  Icons.image,
+                                                  color: Colors.black12,
+                                                ),
+                                                fit: BoxFit.contain,
+                                              ),
                                             ),
-                                            minFontSize: 11,
-                                          ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Container(
+                                              width:
+                                                  ScreenUtil.getWidth(context) /
+                                                      2,
+                                              child: AutoSizeText(
+                                                product[index].name,
+                                                maxLines: 2,
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                                minFontSize: 11,
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: SizedBox(
+                                                width: 10,
+                                              ),
+                                            ),
+                                            Text(
+                                              "${product[index].quantity}",
+                                              style:
+                                                  TextStyle(color: Colors.red),
+                                            ),
+                                            SizedBox(
+                                              width: 20,
+                                            )
+                                          ],
                                         ),
-                                        Expanded(
-                                          child: SizedBox(
-                                            width: 10,
-                                          ),
-                                        ),
-                                        Text(
-                                          "${product[index].quantity}",
-                                          style: TextStyle(color: Colors.red),
-                                        ),
-                                        SizedBox(
-                                          width: 20,
+                                        Container(
+                                          height: 1,
+                                          color: Colors.black12,
                                         )
                                       ],
-                                    ),
-                                    Container(
-                                      height: 1,
-                                      color: Colors.black12,
-                                    )
-                                  ],
-                                );
-                              },
+                                    );
+                                  },
+                                ),
+                                Container(
+                                  height: 1,
+                                  color: Colors.black12,
+                                ),
+                              ],
                             ),
-                            Container(
-                              height: 1,
-                              color: Colors.black12,
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
+                          ),
+                        )
             ],
           ),
         ),
@@ -607,15 +637,14 @@ class _HomeMobileState extends State<HomeMobile> {
     setState(() {
       data =
           basic_report.periodDetails.map((e) => e.reports.totalSale).toList();
-      labels = basic_report.periodDetails
-          .map((e) => e.dayName)
-          .toList();
+      labels = basic_report.periodDetails.map((e) => e.dayName).toList();
     });
   }
 
   void get_report(String to, String from) {
-    API(context).post(
-        'vendor/day/month/filter', {"from": "$from", "to": "$to"}).then((value) {
+    API(context)
+        .post('vendor/day/month/filter', {"from": "$from", "to": "$to"}).then(
+            (value) {
       if (value != null) {
         setState(() {
           basic_report = Basic_report.fromJson(value);

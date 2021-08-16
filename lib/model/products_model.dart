@@ -91,7 +91,6 @@ class Product {
   String actualPrice;
   String serialId;
   int approved;
-  String qtyReminder;
   String holesalePrice;
   String noOfOrders;
   Product(
@@ -167,7 +166,7 @@ class Product {
     serialCoding = json['serial_coding'];
     serialId = json['serial_id'];
     approved = json['approved'];
-    qtyReminder = json['qty_reminder'].toString();
+    qty_reminder = json['qty_reminder'].toString();
     holesalePrice== null?null:holesalePrice = json['holesale_price'].toString();
     noOfOrders== null?null:noOfOrders = json['no_of_orders'].toString();
   }

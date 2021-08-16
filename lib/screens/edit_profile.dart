@@ -156,10 +156,13 @@ class _Edit_profileState extends State<Edit_profile> {
                                   enabled: !_status,
                                   validator: (String value) {
                                     if (value.isEmpty) {
-                                      return getTransrlate(
-                                          context, 'Firstname');
+                                      return getTransrlate(context, 'requiredempty');
+                                    }else   if (value.length<=2) {
+                                      return "${getTransrlate(context, 'requiredlength')}";
+                                    }else if (RegExp(
+                                        r"^[+-]?([0-9]*[.])?[0-9]+").hasMatch(value)) {
+                                      return getTransrlate(context, 'invalidname');
                                     }
-                                    _formKey.currentState.save();
                                     return null;
                                   },
                                   autofocus: !_status,
@@ -239,16 +242,16 @@ class _Edit_profileState extends State<Edit_profile> {
                                   textAlign: TextAlign.left,
                                   initialValue: userModal.phoneNo,
                                   inputFormatters: [
-                                    new LengthLimitingTextInputFormatter(14),
+                                    new LengthLimitingTextInputFormatter(13),
                                   ],
                                   decoration: InputDecoration(),
                                   validator: (String value) {
                                     if (value.isEmpty) {
                                       return getTransrlate(
                                           context, 'Required');
-                                    }else if (value.length<=9) {
+                                    }else if (value.length<=13) {
                                       return getTransrlate(
-                                          context, 'Required');
+                                          context, 'Requiredlength');
                                     }
                                     _formKey.currentState.save();
                                     return null;

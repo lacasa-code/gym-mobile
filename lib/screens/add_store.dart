@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:location/location.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -27,23 +27,24 @@ class add_Store extends StatefulWidget {
 }
 
 class _add_StoreState extends State<add_Store> {
-  Store store = Store(lat:  31.2060916.toString(), long:  29.9187.toString());
+  Store store = Store(lat: 31.2060916.toString(), long: 29.9187.toString());
   bool loading = false;
   final _formKey = GlobalKey<FormState>();
   Completer<GoogleMapController> _controller = Completer();
   MapPickerController mapPickerController = MapPickerController();
   List<Country> contries;
-  TextEditingController addressController=TextEditingController();
+  TextEditingController addressController = TextEditingController();
   List<City> cities;
   List<Area> area;
   CameraPosition cameraPosition = CameraPosition(
     target: LatLng(31.2060916, 29.9187),
     zoom: 14.4746,
   );
+
   @override
   void initState() {
     getCountry();
-
+    getLocation();
     super.initState();
   }
 
@@ -89,9 +90,13 @@ class _add_StoreState extends State<add_Store> {
                           enabled: true,
                           validator: (String value) {
                             if (value.isEmpty) {
-                              return getTransrlate(context, 'name');
+                              return getTransrlate(context, 'requiredempty');
+                            } else if (value.length <= 3) {
+                              return "${getTransrlate(context, 'requiredlength')}";
+                            } else if (RegExp(r"^[+-]?([0-9]*[.])?[0-9]+")
+                                .hasMatch(value)) {
+                              return getTransrlate(context, 'invalidname');
                             }
-                            _formKey.currentState.save();
                             return null;
                           },
                           onSaved: (String value) {
@@ -102,16 +107,17 @@ class _add_StoreState extends State<add_Store> {
                           intialLabel: store.name ?? ' ',
                           Keyboard_Type: TextInputType.phone,
                           inputFormatters: [
-                            new LengthLimitingTextInputFormatter(11),
+                            new LengthLimitingTextInputFormatter(9),
                           ],
                           labelText: getTransrlate(context, 'ModeratorPhone'),
                           hintText: getTransrlate(context, 'ModeratorPhone'),
-                          suffixIcon: Text('  +966 ',textDirection: TextDirection.ltr),
+                          suffixIcon:
+                              Text('  +966 ', textDirection: TextDirection.ltr),
                           isPhone: true,
                           textDirection: TextDirection.ltr,
                           enabled: true,
                           validator: (String value) {
-                            if (value.length<=9) {
+                            if (value.length < 9) {
                               return getTransrlate(context, 'Required');
                             }
                             _formKey.currentState.save();
@@ -123,16 +129,20 @@ class _add_StoreState extends State<add_Store> {
                         ),
                         MyTextFormField(
                           intialLabel: store.moderatorAltPhone ?? ' ',
-                          Keyboard_Type: TextInputType.phone,textDirection: TextDirection.ltr,
+                          Keyboard_Type: TextInputType.phone,
+                          textDirection: TextDirection.ltr,
                           labelText: getTransrlate(context, 'phone'),
                           inputFormatters: [
-                            new LengthLimitingTextInputFormatter(11),
+                            new LengthLimitingTextInputFormatter(9),
                           ],
                           hintText: getTransrlate(context, 'phone'),
-                          suffixIcon: Text('  +966 ',textDirection: TextDirection.ltr,),
+                          suffixIcon: Text(
+                            '  +966 ',
+                            textDirection: TextDirection.ltr,
+                          ),
                           isPhone: true,
                           validator: (String value) {
-                            if (value.length<=9) {
+                            if (value.length < 9) {
                               return getTransrlate(context, 'Required');
                             }
                             _formKey.currentState.save();
@@ -143,88 +153,83 @@ class _add_StoreState extends State<add_Store> {
                             store.moderatorAltPhone = "00966$value";
                           },
                         ),
-                        Text("${getTransrlate(context, 'address')}",style: TextStyle(color: Colors.black,fontSize: 16),),
+                        Text(
+                          "${getTransrlate(context, 'address')}",
+                          style: TextStyle(color: Colors.black, fontSize: 16),
+                        ),
                         contries == null
                             ? Container()
                             : Padding(
-                          padding: const EdgeInsets
-                              .symmetric(
-                              vertical: 10),
-                          child:
-                          DropdownSearch<Country>(
-                            // label: getTransrlate(context, 'Countroy'),
-                            validator:
-                                (Country item) {
-                              if (item == null) {
-                                return "Required field";
-                              } else
-                                return null;
-                            },
-                            selectedItem:store.countryId==null?Country(countryName: 'select country'):contries.where((element) => element.id==store.countryId).first,
-                            showSearchBox: true,
-                            items: contries,
-                            //  onFind: (String filter) => getData(filter),
-                            itemAsString:
-                                (Country u) =>
-                            u.countryName,
-                            onChanged:
-                                (Country data) {
-                             store.countryId =
-                                  data.id;
-                              getArea(data.id);
-                            },
-                          ),
-                        ),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                child: DropdownSearch<Country>(
+                                  // label: getTransrlate(context, 'Countroy'),
+                                  validator: (Country item) {
+                                    if (item == null) {
+                                      return "Required field";
+                                    } else
+                                      return null;
+                                  },
+                                  selectedItem: store.countryId == null
+                                      ? Country(countryName: 'select country')
+                                      : contries
+                                          .where((element) =>
+                                              element.id == store.countryId)
+                                          .first,
+                                  showSearchBox: true,
+                                  items: contries,
+                                  //  onFind: (String filter) => getData(filter),
+                                  itemAsString: (Country u) => u.countryName,
+                                  onChanged: (Country data) {
+                                    store.countryId = data.id;
+                                    getArea(data.id);
+                                  },
+                                ),
+                              ),
                         area == null
                             ? Container()
                             : Padding(
-                          padding: const EdgeInsets
-                              .symmetric(
-                              vertical: 10),
-                          child: DropdownSearch<Area>(
-                            // label: getTransrlate(context, 'Countroy'),
-                            validator: (Area item) {
-                              if (item == null) {
-                                return "Required field";
-                              } else
-                                return null;
-                            },
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                child: DropdownSearch<Area>(
+                                  // label: getTransrlate(context, 'Countroy'),
+                                  validator: (Area item) {
+                                    if (item == null) {
+                                      return "Required field";
+                                    } else
+                                      return null;
+                                  },
 
-                            items: area,
-                            //  onFind: (String filter) => getData(filter),
-                            itemAsString: (Area u) =>
-                            u.areaName,
-                            onChanged: (Area data) {
-                         store.areaId =
-                                  data.id;
-                              getCity(data.id);
-                            },
-                          ),
-                        ),
+                                  items: area,
+                                  //  onFind: (String filter) => getData(filter),
+                                  itemAsString: (Area u) => u.areaName,
+                                  onChanged: (Area data) {
+                                    store.areaId = data.id;
+                                    getCity(data.id);
+                                  },
+                                ),
+                              ),
                         cities == null
                             ? Container()
                             : Padding(
-                          padding: const EdgeInsets
-                              .only(
-                              top: 10),
-                          child: DropdownSearch<City>(
-                            // label: getTransrlate(context, 'Countroy'),
-                            validator: (City item) {
-                              if (item == null) {
-                                return "Required field";
-                              } else
-                                return null;
-                            },
+                                padding: const EdgeInsets.only(top: 10),
+                                child: DropdownSearch<City>(
+                                  // label: getTransrlate(context, 'Countroy'),
+                                  validator: (City item) {
+                                    if (item == null) {
+                                      return "Required field";
+                                    } else
+                                      return null;
+                                  },
 
-                            items: cities,
-                            //  onFind: (String filter) => getData(filter),
-                            itemAsString: (City u) =>
-                            u.cityName,
-                            onChanged: (City data) {
-                          store.cityId =data.id;
-                            },
-                          ),
-                        ),
+                                  items: cities,
+                                  //  onFind: (String filter) => getData(filter),
+                                  itemAsString: (City u) => u.cityName,
+                                  onChanged: (City data) {
+                                    store.cityId = data.id;
+                                  },
+                                ),
+                              ),
                         MyTextFormField(
                           textEditingController: addressController,
                           Keyboard_Type: TextInputType.text,
@@ -248,7 +253,7 @@ class _add_StoreState extends State<add_Store> {
                           child: MapPicker(
                             // pass icon widget
                             iconWidget: Icon(
-                              Icons.location_pin,
+                              Icons.store,
                               size: 50,
                             ),
                             //add map picker controller
@@ -257,6 +262,8 @@ class _add_StoreState extends State<add_Store> {
                               zoomControlsEnabled: true,
                               // hide location button
                               myLocationButtonEnabled: true,
+                              myLocationEnabled: true,
+
                               mapType: MapType.normal,
                               //  camera position
                               initialCameraPosition: cameraPosition,
@@ -274,18 +281,20 @@ class _add_StoreState extends State<add_Store> {
                                 // notify map stopped moving
                                 mapPickerController.mapFinishedMoving();
                                 //get address name from camera position
-                                store.lat = cameraPosition.target.latitude.toString();
-                                store.long = cameraPosition.target.longitude.toString();
+                                store.lat =
+                                    cameraPosition.target.latitude.toString();
+                                store.long =
+                                    cameraPosition.target.longitude.toString();
                                 List<Address> addresses = await Geocoder.local
                                     .findAddressesFromCoordinates(Coordinates(
                                         cameraPosition.target.latitude,
                                         cameraPosition.target.longitude));
                                 // update the ui with the address
 
-                                addressController.text = '${addresses.first?.addressLine ?? ''}';
-                                  store.address = '${addresses.first?.addressLine ?? ''}';
-
-
+                                addressController.text =
+                                    '${addresses.first?.addressLine ?? ''}';
+                                store.address =
+                                    '${addresses.first?.addressLine ?? ''}';
                               },
                             ),
                           ),
@@ -319,8 +328,7 @@ class _add_StoreState extends State<add_Store> {
                       minWidth: ScreenUtil.getWidth(context) / 2.5,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(1),
-                          side: BorderSide(
-                              color: Colors.orange, width: 1)),
+                          side: BorderSide(color: Colors.orange, width: 1)),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
@@ -337,9 +345,7 @@ class _add_StoreState extends State<add_Store> {
                           setState(() => loading = true);
 
                           API(context)
-                              .post(
-                              "add/stores",
-                              store.toJson())
+                              .post("add/stores", store.toJson())
                               .then((value) {
                             setState(() {
                               loading = false;
@@ -367,8 +373,7 @@ class _add_StoreState extends State<add_Store> {
                       minWidth: ScreenUtil.getWidth(context) / 2.5,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(1),
-                          side:
-                          BorderSide(color: Colors.grey, width: 1)),
+                          side: BorderSide(color: Colors.grey, width: 1)),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
@@ -386,11 +391,11 @@ class _add_StoreState extends State<add_Store> {
               ),
             ),
           ),
-
         ],
       ),
     );
   }
+
   void getCity(int id) {
     API(context).get('cities/list/all/$id').then((value) {
       setState(() {
@@ -413,6 +418,38 @@ class _add_StoreState extends State<add_Store> {
       setState(() {
         contries = Country_model.fromJson(value).data;
       });
+    });
+  }
+
+  Future<void> getLocation() async {
+    Location location = new Location();
+
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+    LocationData _locationData;
+
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+
+    _locationData = await location.getLocation();
+    setState(() {
+      cameraPosition = CameraPosition(
+        target: LatLng(31.2060916, 29.9187),
+        zoom: 14.4746,
+      );
     });
   }
 }

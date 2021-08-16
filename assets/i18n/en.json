@@ -88,7 +88,8 @@
   "add": "Add",
   "rate": "Rate",
   "models": "Models",
-
+  "NoNotification": "No Found Notification",
+  "Nomessage": "No Found Message",
   "subCategory": "Sub Category",
   "PartCategory": "Part Category",
   "showAll": "Show all",
@@ -173,6 +174,8 @@
   "Email": "Email ",
   "password": "Password",
   "Required": "Required",
+  "Requiredlength": "Small length ",
+
   "paymentMethod": "Payment Method",
   "MethodShipping": "Shipping Method",
   "total_tax": "tax",
