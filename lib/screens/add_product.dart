@@ -761,9 +761,7 @@ class _Add_ProductState extends State<Add_Product> {
                             isPhone: true,
                             enabled: true,
                             validator: (String value) {
-                              if (value.isEmpty) {
-                                return '${getTransrlate(context, 'discount')}';
-                              }
+
                               _formKey.currentState.save();
                               return null;
                             },

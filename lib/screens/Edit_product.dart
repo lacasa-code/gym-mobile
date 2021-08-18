@@ -129,6 +129,7 @@ class _Edit_ProductState extends State<Edit_Product> {
     getAllCareModel(widget.product.carMadeId);
     widget.product.yearto==null?null: widget.product.yeartoId=widget.product.yearto.id.toString();
     widget.product.yearfrom==null?null: widget.product.yearfromId=widget.product.yearfrom.id.toString();
+    widget.product.maincategory==null?null: widget.product.Main_categoryid=widget.product.maincategory.id.toString();
 
     widget.product.manufacturer_id=widget.product.manufacturer.id.toString();
     widget.product.prodcountry_id=widget.product.originCountry.id.toString();

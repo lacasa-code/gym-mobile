@@ -106,7 +106,7 @@ class OrderItem extends StatelessWidget {
           SizedBox(
             height: 2,
           ),
-          Row(
+          orders_model.shipping == null?Container():Row(
             crossAxisAlignment: CrossAxisAlignment.start,
 
             children: [
@@ -133,7 +133,6 @@ width: ScreenUtil.getWidth(context)/1.5,
               ),
             ],
           ),
-
         ],
       ),
     );

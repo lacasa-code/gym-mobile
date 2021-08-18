@@ -36,6 +36,8 @@ class _add_StoreState extends State<add_Store> {
   TextEditingController addressController = TextEditingController();
   List<City> cities;
   List<Area> area;
+  String  code=' ';
+
   CameraPosition cameraPosition = CameraPosition(
     target: LatLng(31.2060916, 29.9187),
     zoom: 14.4746,
@@ -107,12 +109,11 @@ class _add_StoreState extends State<add_Store> {
                           intialLabel: store.name ?? ' ',
                           Keyboard_Type: TextInputType.phone,
                           inputFormatters: [
-                            new LengthLimitingTextInputFormatter(9),
+                            new LengthLimitingTextInputFormatter(10),
                           ],
                           labelText: getTransrlate(context, 'ModeratorPhone'),
                           hintText: getTransrlate(context, 'ModeratorPhone'),
-                          suffixIcon:
-                              Text('  +966 ', textDirection: TextDirection.ltr),
+                          suffixIcon: Container(width: 50,child: Center(child: Text(' $code', textDirection: TextDirection.ltr))),
                           isPhone: true,
                           textDirection: TextDirection.ltr,
                           enabled: true,
@@ -124,7 +125,8 @@ class _add_StoreState extends State<add_Store> {
                             return null;
                           },
                           onSaved: (String value) {
-                            store.moderatorPhone = "00966$value";
+                            store.moderatorPhone = "+$code$value";
+                            print("+$code$value");
                           },
                         ),
                         MyTextFormField(
@@ -133,13 +135,10 @@ class _add_StoreState extends State<add_Store> {
                           textDirection: TextDirection.ltr,
                           labelText: getTransrlate(context, 'phone'),
                           inputFormatters: [
-                            new LengthLimitingTextInputFormatter(9),
+                            new LengthLimitingTextInputFormatter(10),
                           ],
                           hintText: getTransrlate(context, 'phone'),
-                          suffixIcon: Text(
-                            '  +966 ',
-                            textDirection: TextDirection.ltr,
-                          ),
+                          suffixIcon: Container(width: 50,child: Center(child: Text(' $code', textDirection: TextDirection.ltr))),
                           isPhone: true,
                           validator: (String value) {
                             if (value.length < 9) {
@@ -150,7 +149,7 @@ class _add_StoreState extends State<add_Store> {
                           },
                           enabled: true,
                           onSaved: (String value) {
-                            store.moderatorAltPhone = "00966$value";
+                            store.moderatorAltPhone = "+$code$value";
                           },
                         ),
                         Text(
@@ -182,6 +181,9 @@ class _add_StoreState extends State<add_Store> {
                                   itemAsString: (Country u) => u.countryName,
                                   onChanged: (Country data) {
                                     store.countryId = data.id;
+                                    setState(() {
+                                      code=data.phonecode.toString();
+                                    });
                                     getArea(data.id);
                                   },
                                 ),
@@ -362,7 +364,7 @@ class _add_StoreState extends State<add_Store> {
                               showDialog(
                                 context: context,
                                 builder: (_) => ResultOverlay(
-                                  'تم إضافة المتجر بنجاح',
+                                  '${value['message']}',
                                 ),
                               );
                             }

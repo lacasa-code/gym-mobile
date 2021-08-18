@@ -249,7 +249,7 @@ class _Edit_profileState extends State<Edit_profile> {
                                     if (value.isEmpty) {
                                       return getTransrlate(
                                           context, 'Required');
-                                    }else if (value.length<=13) {
+                                    }else if (value.length<13) {
                                       return getTransrlate(
                                           context, 'Requiredlength');
                                     }
@@ -270,8 +270,8 @@ class _Edit_profileState extends State<Edit_profile> {
                                 )),
                             InkWell(
                               onTap: (){
+                                _status?null:
                                 _selectDateto(context);
-
                               },
                               child: Padding(
                                   padding: EdgeInsets.only(
@@ -279,7 +279,7 @@ class _Edit_profileState extends State<Edit_profile> {
                                   child: TextFormField(
                                     controller:birthdate,
                                     decoration: InputDecoration(),
-                                    enabled: false,
+                                    enabled: !_status,
                                     onSaved: (String val) =>
                                     userModal.birthdate = val,
                                     onChanged: (String val) =>

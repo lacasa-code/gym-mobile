@@ -75,19 +75,19 @@ class _Invoices_informationState extends State<Invoices_information> {
                     maxLines: 2,
                     minFontSize: 11,
                   ),
-                  // AutoSizeText(
-                  //   getTransrlate(context, 'paymentMethod') +
-                  //           ' :' +
-                  //           widget.orders_model.paid ??
-                  //       'عند الاستلام',
-                  //   style: TextStyle(
-                  //     fontSize: 16,
-                  //     color: Colors.black,
-                  //     fontWeight: FontWeight.w600,
-                  //   ),
-                  //   maxLines: 2,
-                  //   minFontSize: 11,
-                  // ),
+                  AutoSizeText(
+                    getTransrlate(context, 'paymentMethod') +
+                            ' :' +
+                            "${widget.orders_model.payment.paymentName}" ??
+                        ' ',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    maxLines: 2,
+                    minFontSize: 11,
+                  ),
                   AutoSizeText(
                     getTransrlate(context, 'addressShipping') + " : ",
                     style: TextStyle(
