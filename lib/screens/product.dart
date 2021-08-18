@@ -190,18 +190,22 @@ class _ProductsState extends State<Products> {
                                   InkWell(
                                     onTap: () {
                                       print(selectProduct.toString());
-                                      API(context).post("users/mass/delete", {
+                                      API(context).post("products/mass/delete", {
                                         "ids": selectProduct.toString()
                                       }).then((value) {
+                                        print(value.toString());
+
                                         if (value != null) {
                                           showDialog(
                                             context: context,
                                             builder: (_) => ResultOverlay(
-                                              value.containsKey('errors')
-                                                  ? "${value['errors']}"
-                                                  : 'تم حذف العامل بنجاح',
+                                             "${value['message']??value['errors']?? getTransrlate(context, 'doneDelete')}"
                                             ),
                                           );
+                                          setState(() {
+                                            selectProduct=null;
+                                            isSelect=false;
+                                          });
                                         }
                                         getProducts();
                                       });
@@ -414,11 +418,10 @@ class _ProductsState extends State<Products> {
   Future<void> Delete_Products(int id) async {
     API(context).Delete('products/$id').then((value) {
       if (value != null) {
-        print(value.containsKey('errors'));
         showDialog(
           context: context,
           builder: (_) => ResultOverlay(
-            value.containsKey('errors') ? value['errors'] : 'Done',
+              "${value['message']??value['errors']?? getTransrlate(context, 'doneDelete')}"
           ),
         );
       }

@@ -93,7 +93,7 @@ class _add_StoreState extends State<add_Store> {
                           validator: (String value) {
                             if (value.isEmpty) {
                               return getTransrlate(context, 'requiredempty');
-                            } else if (value.length <= 3) {
+                            } else if (value.length <2) {
                               return "${getTransrlate(context, 'requiredlength')}";
                             } else if (RegExp(r"^[+-]?([0-9]*[.])?[0-9]+")
                                 .hasMatch(value)) {
@@ -104,6 +104,44 @@ class _add_StoreState extends State<add_Store> {
                           onSaved: (String value) {
                             store.name = value;
                           },
+                        ),
+                        Text(
+                          "${getTransrlate(context, 'country')}",
+                          style: TextStyle(color: Colors.black, fontSize: 16),
+                        ),
+                        contries == null
+                            ? Container()
+                            : Padding(
+                          padding:
+                          const EdgeInsets.symmetric(vertical: 10),
+                          child: DropdownSearch<Country>(
+                            // label: getTransrlate(context, 'Countroy'),
+                            validator: (Country item) {
+                              if (item == null) {
+                                return "Required field";
+                              } else
+                                return null;
+                            },
+                            selectedItem: store.countryId == null
+                                ? Country(countryName: 'select country')
+                                : contries
+                                .where((element) =>
+                            element.id == store.countryId)
+                                .first,
+                            showSearchBox: true,
+                            items: contries,
+                            //  onFind: (String filter) => getData(filter),
+                            itemAsString: (Country u) => u.countryName,
+                            onChanged: (Country data) {
+                              store.countryId = data.id;
+                              setState(() {
+                                code=data.phonecode.toString();
+                                area=null;
+                                cities=null;
+                              });
+                              getArea(data.id);
+                            },
+                          ),
                         ),
                         MyTextFormField(
                           intialLabel: store.name ?? ' ',
@@ -141,7 +179,7 @@ class _add_StoreState extends State<add_Store> {
                           suffixIcon: Container(width: 50,child: Center(child: Text(' $code', textDirection: TextDirection.ltr))),
                           isPhone: true,
                           validator: (String value) {
-                            if (value.length < 9) {
+                            if (value.length > 1&&value.length < 9) {
                               return getTransrlate(context, 'Required');
                             }
                             _formKey.currentState.save();
@@ -156,38 +194,6 @@ class _add_StoreState extends State<add_Store> {
                           "${getTransrlate(context, 'address')}",
                           style: TextStyle(color: Colors.black, fontSize: 16),
                         ),
-                        contries == null
-                            ? Container()
-                            : Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
-                                child: DropdownSearch<Country>(
-                                  // label: getTransrlate(context, 'Countroy'),
-                                  validator: (Country item) {
-                                    if (item == null) {
-                                      return "Required field";
-                                    } else
-                                      return null;
-                                  },
-                                  selectedItem: store.countryId == null
-                                      ? Country(countryName: 'select country')
-                                      : contries
-                                          .where((element) =>
-                                              element.id == store.countryId)
-                                          .first,
-                                  showSearchBox: true,
-                                  items: contries,
-                                  //  onFind: (String filter) => getData(filter),
-                                  itemAsString: (Country u) => u.countryName,
-                                  onChanged: (Country data) {
-                                    store.countryId = data.id;
-                                    setState(() {
-                                      code=data.phonecode.toString();
-                                    });
-                                    getArea(data.id);
-                                  },
-                                ),
-                              ),
                         area == null
                             ? Container()
                             : Padding(
@@ -207,6 +213,10 @@ class _add_StoreState extends State<add_Store> {
                                   itemAsString: (Area u) => u.areaName,
                                   onChanged: (Area data) {
                                     store.areaId = data.id;
+                                    setState(() {
+                                      cities=null;
+
+                                    });
                                     getCity(data.id);
                                   },
                                 ),

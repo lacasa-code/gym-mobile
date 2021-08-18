@@ -157,7 +157,7 @@ class _Edit_profileState extends State<Edit_profile> {
                                   validator: (String value) {
                                     if (value.isEmpty) {
                                       return getTransrlate(context, 'requiredempty');
-                                    }else   if (value.length<=2) {
+                                    }else   if (value.length<2) {
                                       return "${getTransrlate(context, 'requiredlength')}";
                                     }else if (RegExp(
                                         r"^[+-]?([0-9]*[.])?[0-9]+").hasMatch(value)) {
@@ -189,10 +189,13 @@ class _Edit_profileState extends State<Edit_profile> {
                                   enabled: !_status,
                                   validator: (String value) {
                                     if (value.isEmpty) {
-                                      return getTransrlate(
-                                          context, 'Lastname');
+                                      return getTransrlate(context, 'requiredempty');
+                                    }else   if (value.length<2) {
+                                      return "${getTransrlate(context, 'requiredlength')}";
+                                    }else if (RegExp(
+                                        r"^[+-]?([0-9]*[.])?[0-9]+").hasMatch(value)) {
+                                      return getTransrlate(context, 'invalidname');
                                     }
-                                    _formKey.currentState.save();
                                     return null;
                                   },
                                   autofocus: !_status,
@@ -241,15 +244,16 @@ class _Edit_profileState extends State<Edit_profile> {
                                 child: TextFormField(
                                   textAlign: TextAlign.left,
                                   initialValue: userModal.phoneNo,
+                                  keyboardType: TextInputType.number,
                                   inputFormatters: [
-                                    new LengthLimitingTextInputFormatter(13),
+                                    new LengthLimitingTextInputFormatter(12),
                                   ],
                                   decoration: InputDecoration(),
                                   validator: (String value) {
                                     if (value.isEmpty) {
                                       return getTransrlate(
                                           context, 'Required');
-                                    }else if (value.length<13) {
+                                    }else if (value.length<12) {
                                       return getTransrlate(
                                           context, 'Requiredlength');
                                     }
@@ -258,9 +262,9 @@ class _Edit_profileState extends State<Edit_profile> {
                                   },
                                   enabled: !_status,
                                   onSaved: (String val) =>
-                                  userModal.phoneNo = val,
+                                  userModal.phoneNo = "+$val",
                                   onChanged: (String val) =>
-                                  userModal.phoneNo = val,
+                                  userModal.phoneNo =  "+$val",
                                 )),
                             Padding(
                                 padding: EdgeInsets.only(
@@ -269,14 +273,14 @@ class _Edit_profileState extends State<Edit_profile> {
                                   '${getTransrlate(context, 'birthDate')}',
                                 )),
                             InkWell(
-                              onTap: (){
-                                _status?null:
-                                _selectDateto(context);
-                              },
                               child: Padding(
                                   padding: EdgeInsets.only(
                                       left: 25.0, right: 25.0, top: 2.0),
                                   child: TextFormField(
+                                    onTap: (){
+                                    _status?null:
+                                      _selectDateto(context);
+                                    },
                                     controller:birthdate,
                                     decoration: InputDecoration(),
                                     enabled: !_status,

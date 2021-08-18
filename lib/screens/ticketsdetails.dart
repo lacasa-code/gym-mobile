@@ -254,8 +254,8 @@ class _tickets_informationState extends State<tickets_information> {
                     if (_formKey.currentState.validate()) {
                       _formKey.currentState.save();
                       //setState(() => _isLoading = true);
-                      API(context).post('vendor/answer/question', {
-                        "question_id": widget.orders_model.id,
+                      API(context).post('vendor/answer/ticket', {
+                        "ticket_id": widget.orders_model.id,
                         "answer": answer
                       }).then((value) {
                         if (value != null) {

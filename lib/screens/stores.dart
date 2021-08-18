@@ -188,18 +188,20 @@ class _StoresState extends State<Stores> {
                             InkWell(
                               onTap: () {
                                 print(selectStores.toString());
-                                API(context).post("users/mass/delete", {
+                                API(context).post("stores/mass/delete", {
                                   "ids": selectStores.toString()
                                 }).then((value) {
                                   if (value != null) {
                                     showDialog(
                                       context: context,
                                       builder: (_) => ResultOverlay(
-                                        value.containsKey('errors')
-                                            ? "${value['errors']}"
-                                            : 'تم حذف العامل بنجاح',
+                                        "${value['message']??value['errors']??''}",
                                       ),
                                     );
+                                    setState(() {
+                                      selectStores=[];
+                                      isSelect=false;
+                                    });
                                   }
                                   getAllStore();
                                 });
@@ -283,7 +285,7 @@ class _StoresState extends State<Stores> {
                                     .then((val) {
                                   print(val);
                                   API(context)
-                                      .get('$url?sort_type=${val}')
+                                      .get('$url?sort_type=${val??'ASC'}')
                                       .then((value) {
                                     if (value != null) {
                                       if (value['status_code'] == 200) {

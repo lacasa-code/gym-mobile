@@ -147,7 +147,7 @@ class _faq_informationState extends State<faq_information> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(" ${getTransrlate(context, 'product')} :${widget.orders_model.productId ?? ''}",
+                      Text(" ${getTransrlate(context, 'product')} :${widget.orders_model.product ==null? '':widget.orders_model.product.name}",
                           style: TextStyle(color: Colors.black, fontSize: 12)),
                       Container(
                         margin: EdgeInsets.only(left: 5),
@@ -162,10 +162,9 @@ class _faq_informationState extends State<faq_information> {
                       ),
                     ],
                   ),
-                  Text(" ${getTransrlate(context, 'mainCategory')} :${widget.orders_model.product.category==null?"":
-                  widget.orders_model.product.category.name ?? ''}",
+                  Text(" ${getTransrlate(context, 'mainCategory')} :${widget.orders_model.product==null?"": widget.orders_model.product.category==null?"":widget.orders_model.product.category.name ?? ''}",
                       style: TextStyle(color: Colors.black, fontSize: 12)),
-                  Text(" الوصف :${widget.orders_model.product.description ?? ''}",
+                  Text(" ${getTransrlate(context, 'description')} :${widget.orders_model.product.description ?? ''}",
                       style: TextStyle(color: Colors.black, fontSize: 12)),
                   Text(" ${getTransrlate(context, 'prodcountry')} :${widget.orders_model.product.originCountry==null?"":
                   widget.orders_model.product.originCountry.countryName?? ''}",

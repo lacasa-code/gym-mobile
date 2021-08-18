@@ -87,6 +87,7 @@
 
   "SeeAllComments": "عرض جميع التعليقات",
   "countrySelected": "برجاء حدد  المدينة",
+  "country": "البلد",
   "shorterphone": "ارقم الهاتف قصير جدا",
   "registration": "لم يتم التسجيل برجاء التسجيل",
   "haveanaccount": "هل لديك حساب ؟",
@@ -118,6 +119,10 @@
   "message": "الرسائل",
   "NoNotification": "لا يوجد إشعارات",
   "Nomessage": "لا يوجد  رسائل",
+  "transmissionName": "ناقل الحركة",
+  "Percentage": "النسبة المئوية",
+
+  "messageProduct": "يرجي إضافة فرع لتتمكن من إضافة منتجاتك",
   "AllowNotification": "السماح بالاشعارات",
   "Order": "الطلب",
   "Orders": "طلبات",

@@ -30,7 +30,7 @@ class _OrdersState extends State<Orders> {
   final debouncer = Search(milliseconds: 1000);
   ScrollController _scrollController = new ScrollController();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  String url="show/orders?ordered_by=created_at&";
+  String url="show/orders";
   int i = 2;
 
   @override
@@ -154,13 +154,12 @@ class _OrdersState extends State<Orders> {
                                     builder: (_) => Sortdialog()).then((val) {
                                   print(val);
                                   API(context)
-                                      .post('$url?sort_type=${val}',{})
+                                      .post('$url?ordered_by=created_at&sort_type=${val??'ASC'}',{})
                                       .then((value) {
                                     if (value != null) {
                                       if (value['status_code'] == 200) {
                                         setState(() {
-                                          filteredOrders = orders =
-                                              Orders_model.fromJson(value).data;
+                                          filteredOrders = orders = Orders_model.fromJson(value).data;
                                         });
                                       } else {
                                         showDialog(
@@ -416,7 +415,7 @@ class _OrdersState extends State<Orders> {
 
   Future<void> getAllStore() async {
     API(context)
-        .post('${url}sort_type=desc',{})
+        .post('${url}?ordered_by=created_at&sort_type=desc',{})
         .then((value) {
       if (value != null) {
         setState(() {

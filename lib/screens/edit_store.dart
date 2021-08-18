@@ -91,7 +91,7 @@ class _Edit_StoreState extends State<Edit_Store> {
                           validator: (String value) {
                             if (value.isEmpty) {
                               return getTransrlate(context, 'requiredempty');
-                            }else   if (value.length<=2) {
+                            }else   if (value.length<2) {
                               return "${getTransrlate(context, 'requiredlength')}";
                             }else if (RegExp(
                                 r"^[+-]?([0-9]*[.])?[0-9]+").hasMatch(value)) {
@@ -373,7 +373,7 @@ class _Edit_StoreState extends State<Edit_Store> {
                               showDialog(
                                 context: context,
                                 builder: (_) => ResultOverlay(
-                                  value['errors'].toString(),
+                                  "${value['errors']}",
                                 ),
                               );
                             } else {
@@ -381,7 +381,7 @@ class _Edit_StoreState extends State<Edit_Store> {
                               showDialog(
                                 context: context,
                                 builder: (_) => ResultOverlay(
-                                  'تم تعديل المتجر بنجاح',
+                                  "${value['message']}",
                                 ),
                               );
                             }

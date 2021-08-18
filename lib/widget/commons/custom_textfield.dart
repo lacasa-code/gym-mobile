@@ -8,6 +8,7 @@ class MyTextFormField extends StatelessWidget {
   final String labelText;
   final Function validator;
   final Function onSaved;
+  final Function onChanged;
   final List<TextInputFormatter> inputFormatters;
   final TextDirection textDirection;
   final Widget suffixIcon;
@@ -35,6 +36,7 @@ class MyTextFormField extends StatelessWidget {
         this.textDirection,
         this.prefix,
         this.Keyboard_Type,
+        this.onChanged,
         this.intialLabel,
         this.textStyle,
         this.inputFormatters,
@@ -78,7 +80,7 @@ class MyTextFormField extends StatelessWidget {
             ),
             obscureText: isPassword ? true : false,
             validator: validator,
-
+            onChanged: onChanged,
             textDirection: textDirection,
             onSaved: onSaved,
             enabled: enabled,
