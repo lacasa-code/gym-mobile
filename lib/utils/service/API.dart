@@ -54,7 +54,10 @@ class API {
       }
     } catch (e) {
       print(e);
-      Nav.route(context, Maintenance());
+      Nav.route(context, Maintenance(
+        erorr: "${url}\n${e.toString()}",
+
+      ));
     } finally {}
   }
 
@@ -79,10 +82,10 @@ class API {
 
       if (response.statusCode == 500) {
         Nav.route(
-            context, Maintenance(erorr: jsonDecode(response.body).toString()));
+            context, Maintenance(erorr:"${url}\n${response.body}",));
       } else if (response.statusCode == 404) {
         Nav.route(
-            context, Maintenance(erorr: jsonDecode(response.body).toString()));
+            context, Maintenance(erorr:"${url}\n${response.body}",));
       } else if (response.statusCode == 401) {
         showDialog(
           context: context,
@@ -97,7 +100,7 @@ class API {
       Nav.route(
           context,
           Maintenance(
-            erorr: e.toString(),
+            erorr: "${url}\n${e.toString()}",
           ));
       print(e);
     } finally {}
@@ -122,7 +125,7 @@ class API {
         Nav.route(
             context,
             Maintenance(
-              erorr: jsonDecode(response.body).toString(),
+              erorr: "${url}\n${response.body}",
             ));
       } else {
         return jsonDecode(response.body);
@@ -147,7 +150,9 @@ class API {
       print(response.body);
       if (response.statusCode == 500) {
         Nav.route(
-            context, Maintenance(erorr: jsonDecode(response.body).toString()));
+            context, Maintenance(
+          erorr: "${url}\n${response.body}",
+        ));
       } else {
         return jsonDecode(response.body);
       }

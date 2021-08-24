@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/roles_model.dart';
@@ -85,7 +86,9 @@ class _add_StaffState extends State<add_Staff> {
                         MyTextFormField(
                           intialLabel: user.name ?? ' ',
                           Keyboard_Type: TextInputType.name,
-                          labelText: getTransrlate(context, 'name'),
+                             labelText: getTransrlate(context, 'name'),inputFormatters: [
+                            new LengthLimitingTextInputFormatter(200),
+                          ],
                           hintText: getTransrlate(context, 'name'),
                           isPhone: true,
                           enabled: true,
@@ -110,6 +113,9 @@ class _add_StaffState extends State<add_Staff> {
                           labelText: getTransrlate(context, 'Email'),
                           hintText: getTransrlate(context, 'Email'),
                           isPhone: true,
+                          inputFormatters: [
+                            new LengthLimitingTextInputFormatter(200),
+                          ],
                           enabled: true,
                           validator: (String value) {
                             if (value.isEmpty) {
@@ -171,7 +177,7 @@ class _add_StaffState extends State<add_Staff> {
                                 },
                                 items: _listStore,
                                 //  onFind: (String filter) => getData(filter),
-                                itemAsString: (Store u) => u.name,
+                                itemAsString: (Store u) => u.nameStore,
                                 onChanged: (Store data) =>
                                     user.storeid = data.id.toString()),
                         SizedBox(

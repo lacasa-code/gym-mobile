@@ -45,7 +45,7 @@ class _Product_itemState extends State<Product_item> {
                 fit: BoxFit.contain,
               ),
               widget.isSelect
-                  ? Container(
+                  ? widget.hall_model.approved==0?Container(): Container(
                       color: Colors.white,
                       child: Checkbox(
                           activeColor: Colors.orange,

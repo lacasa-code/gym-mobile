@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
@@ -127,7 +129,7 @@ class _FaqPageState extends State<FaqPage> {
                       itemBuilder: (BuildContext context, int index) {
                         return InkWell(
                            onTap: (){
-                             Nav.route(context, faq_information(orders_model: faq[index],));
+                             _navigate_edit_hell(context,faq[index]);
                            },
                           child: Container(
                               padding: EdgeInsets.all(16.0),
@@ -172,15 +174,15 @@ class _FaqPageState extends State<FaqPage> {
 
   void getFaq() {
     SharedPreferences.getInstance().then((value) => {
-    API(context).post('vendor/fetch/question', {"vendor_id": value.getInt('user_id')}).then(
-    (value) {
+    API(context).post('vendor/fetch/question', {"vendor_id": value.getInt('user_id')}).then((value) {
     if (value != null) {
     setState(() {
     faq = Faq_model.fromJson(value).data;
-    });
-    }
-    })
-    });
-
+    });}})});
+  }
+  _navigate_edit_hell(BuildContext context, Faq faq) async {
+    await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => faq_information(orders_model:faq,)));
+    Timer(Duration(seconds: 3), () => getFaq());
   }
 }

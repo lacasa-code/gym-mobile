@@ -84,9 +84,11 @@ class _add_StoreState extends State<add_Store> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         MyTextFormField(
-                          intialLabel: store.name ?? ' ',
+                          intialLabel: store.nameStore ?? ' ',
                           Keyboard_Type: TextInputType.name,
-                          labelText: getTransrlate(context, 'name'),
+                             labelText: getTransrlate(context, 'name'),inputFormatters: [
+                            new LengthLimitingTextInputFormatter(200),
+                          ],
                           hintText: getTransrlate(context, 'name'),
                           isPhone: true,
                           enabled: true,
@@ -102,7 +104,7 @@ class _add_StoreState extends State<add_Store> {
                             return null;
                           },
                           onSaved: (String value) {
-                            store.name = value;
+                            store.nameStore = value;
                           },
                         ),
                         Text(
@@ -144,7 +146,7 @@ class _add_StoreState extends State<add_Store> {
                           ),
                         ),
                         MyTextFormField(
-                          intialLabel: store.name ?? ' ',
+                          intialLabel: store.nameStore ?? ' ',
                           Keyboard_Type: TextInputType.phone,
                           inputFormatters: [
                             new LengthLimitingTextInputFormatter(10),
@@ -187,7 +189,7 @@ class _add_StoreState extends State<add_Store> {
                           },
                           enabled: true,
                           onSaved: (String value) {
-                            store.moderatorAltPhone = "+$code$value";
+                            store.moderatorAltPhone = value==''?'':"+$code$value";
                           },
                         ),
                         Text(

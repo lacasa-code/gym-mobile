@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/roles_model.dart';
@@ -70,7 +71,9 @@ class _EditStaffState extends State<EditStaff> {
                       MyTextFormField(
                         intialLabel: widget.user.name ?? ' ',
                         Keyboard_Type: TextInputType.name,
-                        labelText: getTransrlate(context, 'name'),
+                           labelText: getTransrlate(context, 'name'),inputFormatters: [
+                            new LengthLimitingTextInputFormatter(200),
+                          ],
                         hintText: getTransrlate(context, 'name'),
                         isPhone: true,
                         enabled: true,
@@ -208,7 +211,7 @@ class _EditStaffState extends State<EditStaff> {
                                   showDialog(
                                     context: context,
                                     builder: (_) => ResultOverlay(
-                                      'Done',
+                                      '${getTransrlate(context,'Done')}',
                                     ),
                                   );
                                 }

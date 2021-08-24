@@ -32,7 +32,7 @@ class Store_model {
 
 class Store {
   int id;
-  String name;
+  String nameStore;
   String address;
   bool isSelect=false;
   String lat;
@@ -58,7 +58,7 @@ class Store {
 
   Store(
       {this.id,
-        this.name,
+        this.nameStore,
         this.address,
         this.lat,
         this.long,
@@ -83,7 +83,7 @@ class Store {
 
   Store.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    name = json['name'];
+    nameStore = json['name'];
     address = json['address'];
     lat = json['lat'];
     long = json['long'];
@@ -115,7 +115,7 @@ class Store {
 
   Map<String, dynamic> toJson() {
       var map = <String, dynamic>{};
-      map["name"] = name;
+      map["name"] = nameStore;
       map["address"] = address;
       map["lat"] = lat;
       map["long"] = long;

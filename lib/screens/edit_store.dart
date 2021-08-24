@@ -82,9 +82,11 @@ class _Edit_StoreState extends State<Edit_Store> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         MyTextFormField(
-                          intialLabel: widget.store.name ?? ' ',
+                          intialLabel: widget.store.nameStore ?? ' ',
                           Keyboard_Type: TextInputType.name,
-                          labelText: getTransrlate(context, 'name'),
+                             labelText: getTransrlate(context, 'name'),inputFormatters: [
+                            new LengthLimitingTextInputFormatter(200),
+                          ],
                           hintText: getTransrlate(context, 'name'),
                           isPhone: true,
                           enabled: true,
@@ -99,27 +101,12 @@ class _Edit_StoreState extends State<Edit_Store> {
                             }
                             return null;
                           },
-                          onSaved: (String value) {
-                            widget.store.name = value;
-                          },
-                        ),
-                        MyTextFormField(
-                          intialLabel: widget.store.name ?? ' ',
-                          Keyboard_Type: TextInputType.name,
-                          labelText: getTransrlate(context, 'Moderator'),
-                          hintText: getTransrlate(context, 'Moderator'),
-                          isPhone: true,
-                          enabled: true,
-                          validator: (String value) {
-                            if (value.isEmpty) {
-                              return getTransrlate(context, 'Moderator');
-                            }
-                            
-                            _formKey.currentState.save();
-                            return null;
-                          },
-                          onSaved: (String value) {
-                            widget.store.name = value;
+                          onChanged: (String value) {
+                            widget.store.nameStore=value;
+                            print("value $value");
+                            print("value ${widget.store.nameStore}");
+                          }, onSaved: (String value) {
+                            widget.store.nameStore = value;
                           },
                         ),
                         MyTextFormField(
@@ -154,8 +141,8 @@ class _Edit_StoreState extends State<Edit_Store> {
                           ],
                           enabled: true,
                           validator: (String value) {
-                            if (value.isEmpty) {
-                              return getTransrlate(context, 'phone');
+                            if (value.length > 1&&value.length < 9) {
+                              return getTransrlate(context, 'Required');
                             }
                             _formKey.currentState.save();
                             return null;
@@ -360,6 +347,7 @@ class _Edit_StoreState extends State<Edit_Store> {
                         if (_formKey.currentState.validate()) {
                           _formKey.currentState.save();
                           setState(() => loading = true);
+                          print(widget.store.nameStore);
 
                           API(context)
                               .post(

@@ -81,7 +81,7 @@ class _Stores_itemState extends State<Stores_item> {
                     height: 10,
                   ),
                   AutoSizeText(
-                    widget.hall_model.name,
+                    widget.hall_model.nameStore,
                     minFontSize: 10,
                     style: TextStyle(
                       color: Colors.black,

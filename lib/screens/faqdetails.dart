@@ -75,8 +75,8 @@ class _faq_informationState extends State<faq_information> {
                 child: Form(
                   key: _formKey,
                   child: MyTextFormField(
-                    intialLabel: '  ',
-                    Keyboard_Type: TextInputType.emailAddress,
+                    intialLabel: widget.orders_model.answer??'',
+                    Keyboard_Type: TextInputType.text,
                     labelText: "${getTransrlate(context, 'sendReplay')}",
                     hintText: '${getTransrlate(context, 'answer')}',
                     validator: (String value) {

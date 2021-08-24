@@ -33,7 +33,8 @@
   "Moderator": "المدير",
   "ModeratorPhone": "رقم جوال المدير",
   "moderatorAltPhone": "رقم جوال المدير 2",
-  "description": "الوصف",
+  "description": "الوصف (عربى)",
+  "descriptionEn": "الوصف (أنجليزى)",
   "id": "رقم id",
 
   "OrderNote": "ملاحظات",
@@ -85,6 +86,7 @@
 
   "ticket": "الشكاوى",
 
+  "SelectImage": "برجاء تحديد صور للمنتج",
   "SeeAllComments": "عرض جميع التعليقات",
   "countrySelected": "برجاء حدد  المدينة",
   "country": "البلد",
@@ -206,6 +208,7 @@
   "doneDelete": "تم إزالة المنتج",
   "Alert": "تنبية",
   "AskDelete": "هل تريد حذف المنتج من العربة",
+  "NotDelete": " لا يمكنك  حذف ",
   "yes": "نعم",
   "browsing": "تصفح الأن",
   "login": "تسجيل دخول",
@@ -301,7 +304,8 @@
   "to": "إلى",
   "OrderShipping": "بيانات الشحن",
   "custCode": "كود العميل",
-  "name": "ألاسم",
+  "name": "ألاسم (عربى)",
+  "nameEn": "ألاسم (أنجليزى)",
   "shipingclass": "شريحة الشحن",
   "orderTotal": "مدفوعات الطلب",
   "OrderContent": "محتويات الطلب",

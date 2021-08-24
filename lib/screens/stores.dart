@@ -546,7 +546,7 @@ class _StoresState extends State<Stores> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text(
-          productModel.name,
+          productModel.nameStore,
           style: TextStyle(fontSize: 16.0),
         ),
         SizedBox(

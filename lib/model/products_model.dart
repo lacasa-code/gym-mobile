@@ -51,7 +51,7 @@ class Product {
   String maincategory_id;
   Main_Category maincategory;
   String carModelId;
-  List<Photo> photo;
+  List<PhotoProduct> photo;
   List<Asset> photos;
   List<Tag> tags;
   String yearId;
@@ -138,8 +138,8 @@ class Product {
       quantity = json['quantity'].toString();
     serialNumber = json['serial_number'];
     if (json['photo'] != null) {
-      photo = new List<Photo>();
-      json['photo'].forEach((v) { photo.add(new Photo.fromJson(v)); });
+      photo = new List<PhotoProduct>();
+      json['photo'].forEach((v) { photo.add(new PhotoProduct.fromJson(v)); });
     }
     if (json['tags'] != null) {
       tags = new List<Tag>();
@@ -186,7 +186,7 @@ class Product {
     if (this.carModel != null) {
       data['models'] = this.carModel.map((v) => v.id).toList().toString();
     }
-    data['part_category_id'] = this.partCategoryId;
+    this.partCategoryId==null?null:this.partCategoryId.isEmpty?null: data['part_category_id'] = this.partCategoryId;
     data['cartype_id'] = this.cartype_id;
     this.CategoryId==null?null:data['maincategory_id'] = this.CategoryId;
     this.prodcountry_id ==null?null:data['prodcountry_id'] = this.prodcountry_id;
@@ -196,7 +196,7 @@ class Product {
     this.qty_reminder==null?null:data['qty_reminder'] = this.qty_reminder;
     this.transmission_id ==null?null:data['transmission_id'] = this.transmission_id;
     data['store_id'] = this.storeId;
-    this.quantity==null?null:data['quantity'] = this.quantity;
+    this.quantity==null?data['quantity']="1":data['quantity'] = this.quantity;
     this.wholesale==null?null:data['holesale_price'] = this.wholesale;
     this.minOfOrder==null?null: data['no_of_orders'] = this.minOfOrder;
     data['serial_number'] = this.serialNumber;
@@ -215,7 +215,7 @@ class Product {
   }
 }
 
-class Photo {
+class PhotoProduct {
   int id;
   int modelId;
   String uuid;
@@ -235,7 +235,7 @@ class Photo {
   String thumbnail;
   String preview;
 
-  Photo(
+  PhotoProduct(
       {this.id,
       this.modelId,
       this.uuid,
@@ -255,7 +255,7 @@ class Photo {
       this.thumbnail,
       this.preview});
 
-  Photo.fromJson(Map<String, dynamic> json) {
+  PhotoProduct.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     modelId = json['model_id'];
     uuid = json['uuid'];

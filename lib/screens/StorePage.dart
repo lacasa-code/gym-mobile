@@ -100,7 +100,7 @@ class _StorePageState extends State<StorePage> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      "${widget.store.name}",
+                      "${widget.store.nameStore}",
                       style: TextStyle(fontSize: 22),
                     ),
                   ),

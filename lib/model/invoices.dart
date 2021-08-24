@@ -1,3 +1,4 @@
+
 import 'package:trkar_vendor/model/products_model.dart';
 import 'package:trkar_vendor/model/tickets_model.dart';
 
@@ -110,14 +111,14 @@ class Ordersditils {
   int storeId;
   int vendorId;
   String productName;
-  List<Photo> photo;
+  List<PhotoProduct> photo;
   String productSerial;
   String storeName;
   String vendorName;
   int quantity;
   int price;
-  int discount;
-  int total;
+  String discount;
+  String total;
   int approved;
   String createdAt;
   String vendorEmail;
@@ -134,16 +135,16 @@ class Ordersditils {
     vendorId = json['vendor_id'];
     productName = json['product_name'];
     if (json['photo'] != null) {
-      photo = new List<Photo>();
-      json['photo'].forEach((v) { photo.add(new Photo.fromJson(v)); });
+      photo = new List<PhotoProduct>();
+      json['photo'].forEach((v) { photo.add(new PhotoProduct.fromJson(v)); });
     }
     productSerial = json['product_serial'];
     storeName = json['store_name'];
     vendorName = json['vendor_name'];
     quantity = json['quantity'];
     price = json['price'];
-    discount = json['discount'];
-    total = json['total'];
+    discount = json['discount'].toString();
+    total = json['total'].toString();
     approved = json['approved'];
     createdAt = json['created_at'];
     vendorEmail = json['vendor_email'];

@@ -8,6 +8,7 @@ import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/navigator.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
+import 'package:trkar_vendor/widget/ResultOverlay.dart';
 import 'package:trkar_vendor/widget/commons/custom_textfield.dart';
 import 'package:trkar_vendor/widget/login/login_form_model.dart';
 
@@ -21,15 +22,15 @@ class _LoginFormState extends State<LoginForm> {
   Model_login model = Model_login();
   bool passwordVisible = false;
   String CountryNo = '';
+
   @override
   void initState() {
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final  themeColor = Provider.of<Provider_control>(context);
+    final themeColor = Provider.of<Provider_control>(context);
 
     return Container(
       padding: EdgeInsets.only(top: 24, right: 42, left: 42),
@@ -38,7 +39,7 @@ class _LoginFormState extends State<LoginForm> {
         child: Column(
           children: <Widget>[
             MyTextFormField(
-              textStyle:  TextStyle(color: Colors.white,fontSize: 16),
+              textStyle: TextStyle(color: Colors.white, fontSize: 16),
               intialLabel: '',
               Keyboard_Type: TextInputType.emailAddress,
               labelText: getTransrlate(context, 'mail'),
@@ -60,12 +61,10 @@ class _LoginFormState extends State<LoginForm> {
               },
             ),
             MyTextFormField(
-              textStyle:  TextStyle(color: Colors.white,fontSize: 16),
-
+              textStyle: TextStyle(color: Colors.white, fontSize: 16),
               intialLabel: '',
               labelText: getTransrlate(context, 'password'),
               hintText: getTransrlate(context, 'password'),
-
               suffixIcon: IconButton(
                 icon: Icon(
                   // Based on passwordVisible state choose the icon
@@ -111,14 +110,21 @@ class _LoginFormState extends State<LoginForm> {
                       'password': model.password,
                     }).then((value) {
                       if (value != null) {
-                        var user = value['data'];
-                        prefs.setString("user_email", user['email']);
-                        prefs.setString("user_name", user['name']);
-                        prefs.setString("token", user['token']);
-                        prefs.setInt("user_id", user['id']);
-                        themeColor.setLogin(true);
-                        Nav.routeReplacement(context, Home());
-                      }
+                        if (value['status_code'] == 200) {
+                          var user = value['data'];
+                          prefs.setString("user_email", user['email']);
+                          prefs.setString("user_name", user['name']);
+                          prefs.setString("token", user['token']);
+                          prefs.setInt("user_id", user['id']);
+                          themeColor.setLogin(true);
+                          Nav.routeReplacement(context, Home());
+
+                      } else {
+                        showDialog(
+                            context: context,
+                            builder: (_) => ResultOverlay(
+                                "${value['message'] ?? value['errors']}"));
+                      }}
                     });
                   }
                 },
@@ -138,9 +144,8 @@ class _LoginFormState extends State<LoginForm> {
               margin: EdgeInsets.only(top: 12, bottom: 12),
               child: FlatButton(
                 shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(1.0),
-                  side: BorderSide(color: Colors.orange)
-                ),
+                    borderRadius: new BorderRadius.circular(1.0),
+                    side: BorderSide(color: Colors.orange)),
                 color: Colors.white,
                 onPressed: () async {
                   Nav.route(context, LostPassword());
@@ -160,5 +165,4 @@ class _LoginFormState extends State<LoginForm> {
       ),
     );
   }
-
 }

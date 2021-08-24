@@ -6,6 +6,7 @@ import 'package:trkar_vendor/model/products_model.dart';
 import 'package:trkar_vendor/screens/Edit_product.dart';
 import 'package:trkar_vendor/screens/productPage.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
+import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/navigator.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
 import 'package:trkar_vendor/widget/products/product_item.dart';
@@ -279,7 +280,7 @@ class SearchOverlayState extends State<SearchOverlay>
         showDialog(
           context: context,
           builder: (_) => ResultOverlay(
-            value.containsKey('errors') ? value['errors'] : 'Done',
+            value.containsKey('errors') ? value['errors'] : '${getTransrlate(context,'Done')}',
           ),
         );
       }

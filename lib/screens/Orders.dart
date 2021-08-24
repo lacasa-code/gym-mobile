@@ -304,7 +304,7 @@ class _OrdersState extends State<Orders> {
                                                                       'message')
                                                                   ? value[
                                                                       'message']
-                                                                  : 'Done',
+                                                                  : '${getTransrlate(context,'Done')}',
                                                             ),
                                                           );
                                                           getAllStore();
@@ -357,7 +357,7 @@ class _OrdersState extends State<Orders> {
                                                                       'message')
                                                                   ? value[
                                                                       'message']
-                                                                  : 'Done',
+                                                                  : '${getTransrlate(context,'Done')}',
                                                             ),
                                                           );
                                                         }

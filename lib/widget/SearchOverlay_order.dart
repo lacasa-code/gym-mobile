@@ -291,7 +291,7 @@ class SearchOverlay_OrderState extends State<SearchOverlay_Order>
                                                 showDialog(
                                                   context: context,
                                                   builder: (_) =>
-                                                      ResultOverlay(value.containsKey('message') ? value['message'] : 'Done',),
+                                                      ResultOverlay(value.containsKey('message') ? value['message'] : '${getTransrlate(context,'Done')}',),
                                                 );
                                                 Navigator.pop(context);
                                               }
@@ -343,7 +343,7 @@ class SearchOverlay_OrderState extends State<SearchOverlay_Order>
                                                             'message')
                                                             ? value[
                                                         'message']
-                                                            : 'Done',
+                                                            : '${getTransrlate(context,'Done')}',
                                                       ),
                                                 );
                                               }
@@ -407,7 +407,7 @@ class SearchOverlay_OrderState extends State<SearchOverlay_Order>
         showDialog(
           context: context,
           builder: (_) => ResultOverlay(
-            value.containsKey('errors') ? value['errors'] : 'Done',
+            value.containsKey('errors') ? value['errors'] : '${getTransrlate(context,'Done')}',
           ),
         );
       }

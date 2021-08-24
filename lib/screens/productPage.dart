@@ -162,7 +162,7 @@ class _ProductPageState extends State<ProductPage> {
         DataRow(color: MaterialStateProperty.resolveWith((states) => Colors.black26) ,
           cells: <DataCell>[
               DataCell(Text('الفرع')),
-              DataCell(Text('${widget.product.store==null?'':widget.product.store.name}')),
+              DataCell(Text('${widget.product.store==null?'':widget.product.store.nameStore}')),
           ],
         ),
         DataRow(

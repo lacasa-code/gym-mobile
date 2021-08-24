@@ -66,7 +66,7 @@ class ResultOverlayState extends State<ResultOverlay>
                 ),
                 SizedBox(height: 10),
                 Text(
-                  '${widget.message}',
+                  '${widget.message??' '}',
                   style: TextStyle(
                       color: themeColor.getColor(),
                       fontSize: 16,

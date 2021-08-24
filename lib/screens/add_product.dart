@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_tags/flutter_tags.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
@@ -71,7 +72,7 @@ class _Add_ProductState extends State<Add_Product> {
   String base64Image;
   final search = Search(milliseconds: 1000);
   final picker = ImagePicker();
-
+int CheckBox=0;
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
@@ -184,25 +185,104 @@ class _Add_ProductState extends State<Add_Product> {
                           MyTextFormField(
                             intialLabel: product.name ?? ' ',
                             Keyboard_Type: TextInputType.name,
-                            labelText: getTransrlate(context, 'name'),
+                               labelText: getTransrlate(context, 'name'),inputFormatters: [
+                            new LengthLimitingTextInputFormatter(200),
+                          ],
                             hintText: getTransrlate(context, 'name'),
                             isPhone: true,
                             enabled: true,
                             validator: (String value) {
-                              if (value.isEmpty) {
-                                return getTransrlate(context, 'requiredempty');
-                              } else if (value.length <= 2) {
-                                return "${getTransrlate(context, 'requiredlength')}";
-                              } else if (RegExp(r"^[+-]?([0-9]*[.])?[0-9]+")
-                                  .hasMatch(value)) {
-                                return getTransrlate(context, 'invalidname');
+                            if(themeColor.local=='ar')  {
+                                if (value.isEmpty) {
+                                  return getTransrlate(
+                                      context, 'requiredempty');
+                                } else if (value.length <= 2) {
+                                  return "${getTransrlate(context, 'requiredlength')}";
+                                } else if (RegExp(r"^[+-]?([0-9]*[.])?[0-9]+")
+                                    .hasMatch(value)) {
+                                  return getTransrlate(context, 'invalidname');
+                                }
+                                return null;
                               }
-                              return null;
                             },
                             onSaved: (String value) {
                               product.name = value;
                             },
                           ),
+                          MyTextFormField(
+                            intialLabel: product.name ?? ' ',
+                            Keyboard_Type: TextInputType.name,
+                               labelText: getTransrlate(context, 'nameEn'),inputFormatters: [
+                            new LengthLimitingTextInputFormatter(200),
+                          ],
+                            hintText: getTransrlate(context, 'name'),
+                            isPhone: true,
+                            enabled: true,
+                            validator: (String value) {
+                              if(themeColor.local=='en'){
+                                if (value.isEmpty) {
+                                  return getTransrlate(
+                                      context, 'requiredempty');
+                                } else if (value.length <= 2) {
+                                  return "${getTransrlate(context, 'requiredlength')}";
+                                } else if (RegExp(r"^[+-]?([0-9]*[.])?[0-9]+")
+                                    .hasMatch(value)) {
+                                  return getTransrlate(context, 'invalidname');
+                                }
+                                return null;
+                              }
+                            },
+                            onSaved: (String value) {
+                             // product.name = value;
+                            },
+                          ),
+                          MyTextFormField(
+                            intialLabel: product.description ?? ' ',
+                            Keyboard_Type: TextInputType.name,
+                            labelText: getTransrlate(context, 'description'),
+                            hintText: getTransrlate(context, 'description'),
+                            isPhone: true,
+                            enabled: true,
+                            validator: (String value) {
+                              if(themeColor.local=='ar'){
+                                if (value.isEmpty) {
+                                  return getTransrlate(context, 'description');
+                                } else if (value.length < 6) {
+                                  return getTransrlate(context, 'description');
+                                }
+                                _formKey.currentState.save();
+                                return null;
+                              }
+                            },
+                            onSaved: (String value) {
+                              product.description = value;
+                            },
+                          ),
+                          MyTextFormField(
+                            intialLabel: product.description ?? ' ',
+                            Keyboard_Type: TextInputType.name,
+                            labelText: getTransrlate(context, 'descriptionEn'),
+                            hintText: getTransrlate(context, 'descriptionEn'),
+                            isPhone: true,
+                            enabled: true,
+                            validator: (String value) {
+                              if(themeColor.local=='en'){
+                                if (value.isEmpty) {
+                                  return getTransrlate(
+                                      context, 'requiredempty');
+                                } else if (value.length < 6) {
+                                  return getTransrlate(
+                                      context, 'requiredlength');
+                                }
+                                _formKey.currentState.save();
+                                return null;
+                              }
+                            },
+                            onSaved: (String value) {
+                            //  product.description = value;
+                            },
+                          ),
+
                           SizedBox(
                             height: 10,
                           ),
@@ -334,12 +414,7 @@ class _Add_ProductState extends State<Add_Product> {
                                               showSearchBox: false,
                                               showClearButton: false,
                                               label: "   ",
-                                              validator: (Part_Category item) {
-                                                if (item == null) {
-                                                  return "Required field";
-                                                } else
-                                                  return null;
-                                              },
+
                                               items: part_Categories,
                                               //  onFind: (String filter) => getData(filter),
                                               itemAsString: (Part_Category u) =>
@@ -637,26 +712,6 @@ class _Add_ProductState extends State<Add_Product> {
                             height: 10,
                           ),
                           MyTextFormField(
-                            intialLabel: product.name ?? ' ',
-                            Keyboard_Type: TextInputType.name,
-                            labelText: getTransrlate(context, 'description'),
-                            hintText: getTransrlate(context, 'description'),
-                            isPhone: true,
-                            enabled: true,
-                            validator: (String value) {
-                              if (value.isEmpty) {
-                                return getTransrlate(context, 'description');
-                              } else if (value.length < 6) {
-                                return getTransrlate(context, 'description');
-                              }
-                              _formKey.currentState.save();
-                              return null;
-                            },
-                            onSaved: (String value) {
-                              product.description = value;
-                            },
-                          ),
-                          MyTextFormField(
                             intialLabel: product.serialNumber ?? ' ',
                             Keyboard_Type: TextInputType.number,
                             labelText: '${getTransrlate(context, 'serial')}',
@@ -704,7 +759,7 @@ class _Add_ProductState extends State<Add_Product> {
                                       },
                                       items: _store,
                                       //  onFind: (String filter) => getData(filter),
-                                      itemAsString: (Store u) => u.name,
+                                      itemAsString: (Store u) => u.nameStore,
                                       onChanged: (Store data) =>
                                           product.storeId = data.id.toString()),
                                 ),
@@ -819,6 +874,9 @@ class _Add_ProductState extends State<Add_Product> {
                                             hintText:
                                                 '${getTransrlate(context, 'Percentage')}',
                                             isPhone: true,
+                                            inputFormatters: [
+                                              new LengthLimitingTextInputFormatter(2),
+                                            ],
                                             enabled: true,
                                             validator: (String value) {
                                               _formKey.currentState.save();
@@ -1087,7 +1145,7 @@ class _Add_ProductState extends State<Add_Product> {
                               itemBuilder: (context, suggestion) {
                                 return ListTile(
                                   title: Text(
-                                    suggestion.name,
+                                    suggestion.nameStore,
                                   ),
                                 );
                               },
@@ -1125,7 +1183,7 @@ class _Add_ProductState extends State<Add_Product> {
                                           AssetThumb(
                                             asset: asset,
                                             width: 500,
-                                            height: 400,
+                                            height: 500,
                                           ),
                                           Positioned(
                                             left: 5,
@@ -1147,7 +1205,7 @@ class _Add_ProductState extends State<Add_Product> {
                                                 ),
                                               ),
                                             ),
-                                          )
+                                          ),
                                         ],
                                       ),
                                     );
@@ -1224,7 +1282,6 @@ class _Add_ProductState extends State<Add_Product> {
                                             setState(() {
                                               loading = false;
                                             });
-                                            print(value.containsKey('errors'));
                                             if (value.containsKey('errors')) {
                                               showDialog(
                                                 context: context,
@@ -1238,7 +1295,7 @@ class _Add_ProductState extends State<Add_Product> {
                                               showDialog(
                                                 context: context,
                                                 builder: (_) => ResultOverlay(
-                                                  "${value['message']}",
+                                                  "${value['message']??'${getTransrlate(context,'Done')}'}",
                                                 ),
                                               );
                                             }

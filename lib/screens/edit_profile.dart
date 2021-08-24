@@ -243,7 +243,7 @@ class _Edit_profileState extends State<Edit_profile> {
                                     left: 25.0, right: 25.0, top: 2.0),
                                 child: TextFormField(
                                   textAlign: TextAlign.left,
-                                  initialValue: userModal.phoneNo,
+                                  initialValue: userModal.phoneNo.replaceAll('+', ''),
                                   keyboardType: TextInputType.number,
                                   inputFormatters: [
                                     new LengthLimitingTextInputFormatter(12),
@@ -253,7 +253,7 @@ class _Edit_profileState extends State<Edit_profile> {
                                     if (value.isEmpty) {
                                       return getTransrlate(
                                           context, 'Required');
-                                    }else if (value.length<12) {
+                                    }else if (value.length<11) {
                                       return getTransrlate(
                                           context, 'Requiredlength');
                                     }
