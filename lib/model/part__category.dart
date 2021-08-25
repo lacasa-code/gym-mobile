@@ -54,6 +54,7 @@ class Parts_Category {
 class Part_Category {
   int _id;
   String _categoryName;
+  String _categoryName_en;
   dynamic _createdAt;
   dynamic _updatedAt;
   dynamic _deletedAt;
@@ -62,6 +63,7 @@ class Part_Category {
 
   int get id => _id;
   String get categoryName => _categoryName;
+  String get categoryname_en => _categoryName_en;
   dynamic get createdAt => _createdAt;
   dynamic get updatedAt => _updatedAt;
   dynamic get deletedAt => _deletedAt;
@@ -88,6 +90,7 @@ class Part_Category {
   Part_Category.fromJson(dynamic json) {
     _id = json["id"];
     _categoryName = json["category_name"];
+    _categoryName_en = json["name_en"];
     _createdAt = json["created_at"];
     _updatedAt = json["updated_at"];
     _deletedAt = json["deleted_at"];

@@ -151,7 +151,7 @@ class _StaffState extends State<Staff> {
                                 children: [
                                   Row(
                                     children: [
-                                      Text('تم اختيار '),
+                                      Text('تم ${getTransrlate(context, 'select')} '),
                                       Text('( ${selectStores.length} )'),
                                     ],
                                   ),
@@ -197,7 +197,7 @@ class _StaffState extends State<Staff> {
                                     },
                                     child: Row(
                                       children: [
-                                        Text('حذف'),
+                                        Text('${getTransrlate(context, 'delete')}'),
                                         Icon(
                                           CupertinoIcons.delete,
                                           size: 20,
@@ -226,7 +226,7 @@ class _StaffState extends State<Staff> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: [
-                                  Text('${staff.length} عضو'),
+                                  Text('${staff.length} ${getTransrlate(context, 'staf')}'),
                                   InkWell(
                                     onTap: () {
                                       setState(() {
@@ -245,7 +245,7 @@ class _StaffState extends State<Staff> {
                                         SizedBox(
                                           width: 5,
                                         ),
-                                        Text('اختيار')
+                                        Text('${getTransrlate(context, 'select')}')
                                       ],
                                     ),
                                     // color: Color(0xffE4E4E4),
@@ -293,7 +293,7 @@ class _StaffState extends State<Staff> {
                                     },
                                     child: Row(
                                       children: [
-                                        Text('ترتيب'),
+                                        Text('${getTransrlate(context, 'Sort')}'),
                                         Icon(
                                           Icons.keyboard_arrow_down,
                                           size: 20,
@@ -333,8 +333,9 @@ class _StaffState extends State<Staff> {
                                         selectStores: selectStores,
                                       ),
                                       Positioned(
-                                          left: 40,
-                                          top: 20,
+                                          left:themeColor.getlocal()=='ar'?20: null,
+                                          right:themeColor.getlocal()=='en'?20:null,
+                                          top: 10,
                                           child: PopupMenuButton<int>(
                                             itemBuilder: (context) => [
                                               PopupMenuItem(
@@ -348,7 +349,7 @@ class _StaffState extends State<Staff> {
                                                     mainAxisAlignment:
                                                         MainAxisAlignment.spaceAround,
                                                     children: [
-                                                      Text("تعديل"),
+                                                      Text("${getTransrlate(context, 'edit')}"),
                                                       Icon(
                                                         Icons.edit_outlined,
                                                         color: Colors.black54,
@@ -381,7 +382,7 @@ class _StaffState extends State<Staff> {
                                                     mainAxisAlignment:
                                                         MainAxisAlignment.spaceAround,
                                                     children: [
-                                                      Text("حذف"),
+                                                      Text("${getTransrlate(context, 'delete')}"),
                                                       Icon(
                                                         CupertinoIcons.delete,
                                                         color: Colors.black54,

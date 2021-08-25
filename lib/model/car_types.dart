@@ -54,6 +54,7 @@ class CarTypes {
 class CarType {
   int _id;
   String _typeName;
+  String _name_en;
   String _lang;
   int _status;
   String _createdAt;
@@ -62,6 +63,7 @@ class CarType {
 
   int get id => _id;
   String get typeName => _typeName;
+  String get name_en => _name_en;
   String get lang => _lang;
   int get status => _status;
   String get createdAt => _createdAt;
@@ -78,6 +80,7 @@ class CarType {
       String someImage}){
     _id = id;
     _typeName = typeName;
+    _name_en =  name_en;
     _lang = lang;
     _status = status;
     _createdAt = createdAt;
@@ -88,6 +91,7 @@ class CarType {
   CarType.fromJson(dynamic json) {
     _id = json["id"];
     _typeName = json["type_name"];
+    _name_en = json["name_en"];
     _lang = json["lang"];
     _status = json["status"];
     _createdAt = json["created_at"];

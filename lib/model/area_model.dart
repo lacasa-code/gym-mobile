@@ -56,6 +56,8 @@ class Area {
   int _id;
   String _areaName;
   int _countryId;
+  String _name_en;
+
   int _status;
   String _lang;
   String _createdAt;
@@ -63,6 +65,8 @@ class Area {
   dynamic _deletedAt;
 
   int get id => _id;
+  String get name_en => _name_en;
+
   String get areaName => _areaName;
   int get countryId => _countryId;
   int get status => _status;
@@ -92,6 +96,7 @@ class Area {
 
   Area.fromJson(dynamic json) {
     _id = json["id"];
+    _name_en = json["name_en"];
     _areaName = json["area_name"];
     _countryId = json["country_id"];
     _status = json["status"];

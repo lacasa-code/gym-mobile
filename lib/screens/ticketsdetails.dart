@@ -323,7 +323,13 @@ class _tickets_informationState extends State<tickets_information> {
                             Container(
                               width: ScreenUtil.getWidth(context) / 2,
                               child: Text(
-                                widget.orders_model.orderDetails[index].productName,
+                  themeColor.getlocal() == 'ar'
+                  ? widget.orders_model
+                      .orderDetails[index].productName
+                      : widget.orders_model
+                      .orderDetails[index].name_en ??
+                  widget.orders_model.orderDetails[index]
+                      .productName,
                                 style: TextStyle(
                                     color: themeColor.getColor(),
                                     fontWeight: FontWeight.bold,

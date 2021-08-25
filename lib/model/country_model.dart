@@ -59,6 +59,7 @@ class Country_model {
 class Country {
   int _id;
   String _countryName;
+  String _name_en;
   String _countryCode;
   String _nicename;
   String _iso3;
@@ -72,6 +73,7 @@ class Country {
 
   int get id => _id;
   String get countryName => _countryName;
+  String get name_en => _name_en;
   String get countryCode => _countryCode;
   String get nicename => _nicename;
   String get iso3 => _iso3;
@@ -113,6 +115,7 @@ class Country {
   Country.fromJson(dynamic json) {
     _id = json["id"];
     _countryName = json["country_name"];
+    _name_en = json["name_en"];
     _countryCode = json["country_code"];
     _nicename = json["nicename"];
     _iso3 = json["iso3"];

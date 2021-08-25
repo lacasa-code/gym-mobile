@@ -37,10 +37,12 @@ class Role {
   int _id;
   String _title;
   int _addedById;
+  String _name_en;
 
   int get id => _id;
   String get title => _title;
   int get addedById => _addedById;
+  String get name_en => _name_en;
 
   Role({
       int id, 
@@ -53,6 +55,7 @@ class Role {
 
   Role.fromJson(dynamic json) {
     _id = json["id"];
+    _name_en = json["name_en"];
     _title = json["title"];
     _addedById = json["added_by_id"];
   }

@@ -153,7 +153,8 @@ class _add_StaffState extends State<add_Staff> {
                                 },
                                 items: roles,
                                 //  onFind: (String filter) => getData(filter),
-                                itemAsString: (Role u) => u.title,
+                                itemAsString: (Role u) =>
+                                themeColor.getlocal()=='ar'?u.title??u.name_en:u.name_en??u.title,
                                 onChanged: (Role data) =>
                                     user.rolesid = data.id.toString()),
                         SizedBox(

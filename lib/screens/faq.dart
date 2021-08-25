@@ -91,7 +91,7 @@ class _FaqPageState extends State<FaqPage> {
                             },
                             child: Row(
                               children: [
-                                Text('تصفية'),
+                                Text('${getTransrlate(context, 'filter')}'),
                                 Icon(
                                   Icons.keyboard_arrow_down,
                                   size: 20,
@@ -111,7 +111,7 @@ class _FaqPageState extends State<FaqPage> {
                             },
                             child: Row(
                               children: [
-                                Text('ترتيب'),
+                                Text('${getTransrlate(context, 'Sort')}'),
                                 Icon(
                                   Icons.keyboard_arrow_down,
                                   size: 20,

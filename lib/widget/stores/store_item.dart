@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trkar_vendor/model/store_model.dart';
 import 'package:trkar_vendor/screens/StorePage.dart';
+import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/navigator.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 
@@ -93,7 +94,7 @@ class _Stores_itemState extends State<Stores_item> {
                   Row(
                     children: [
                       Text(
-                        "رقم الجوال : ",
+                        " ${getTransrlate(context, 'phone')} : ",
                         maxLines: 1,
                         style: TextStyle(
                             color: Colors.black,
@@ -113,7 +114,7 @@ class _Stores_itemState extends State<Stores_item> {
                   Row(
                     children: [
                       AutoSizeText(
-                        'العنوان : ',
+                        '${getTransrlate(context, 'address')} : ',
                         minFontSize: 10,
                         overflow: TextOverflow.clip,
                         maxLines: 1,

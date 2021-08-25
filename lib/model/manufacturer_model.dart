@@ -50,10 +50,12 @@ class Manufacturer_model {
 class Manufacturer {
   int _id;
   String _manufacturerName;
+  String _name_en;
   int _status;
 
   int get id => _id;
   String get manufacturerName => _manufacturerName;
+  String get name_en => _name_en;
   int get status => _status;
 
   Manufacturer({
@@ -62,12 +64,14 @@ class Manufacturer {
       int status}){
     _id = id;
     _manufacturerName = manufacturerName;
+    _name_en = name_en;
     _status = status;
 }
 
   Manufacturer.fromJson(dynamic json) {
     _id = json["id"];
     _manufacturerName = json["manufacturer_name"];
+    _name_en = json["name_en"];
     _status = json["status"];
   }
 

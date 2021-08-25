@@ -35,17 +35,20 @@ class Category_model {
 class Categories {
   int _id;
   String _name;
+  String _name_en;
   String _description;
   Photo _photo;
 
   int get id => _id;
   String get name => _name;
+  String get name_en => _name_en;
   String get description => _description;
   Photo get photo => _photo;
 
-  Categories({int id, String name, String description, Photo photo}) {
+  Categories({int id, String name,String name_en, String description, Photo photo}) {
     _id = id;
     _name = name;
+    _name_en = name_en;
     _description = description;
     _photo = photo;
   }
@@ -53,6 +56,7 @@ class Categories {
   Categories.fromJson(dynamic json) {
     _id = json["id"];
     _name = json["name"];
+    _name_en = json["name_en"];
     _description = json["description"];
     _photo = json["photo"] != null ? Photo.fromJson(json["photo"]) : null;
   }

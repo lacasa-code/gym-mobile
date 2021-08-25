@@ -180,7 +180,8 @@ class _Edit_StoreState extends State<Edit_Store> {
                             //  onFind: (String filter) => getData(filter),
                             itemAsString:
                                 (Country u) =>
-                            u.countryName,
+                                themeColor.getlocal()=='ar'?u.countryName??u.name_en:u.name_en??u.countryName,
+
                             onChanged:
                                 (Country data) {
                                  widget.store.countryId =
@@ -208,7 +209,7 @@ class _Edit_StoreState extends State<Edit_Store> {
                             selectedItem:widget.store.areaId==null?Area(areaName:'Select Area'):area.where((element) => element.id==widget.store.areaId).first,
                             //  onFind: (String filter) => getData(filter),
                             itemAsString: (Area u) =>
-                            u.areaName,
+                            themeColor.getlocal()=='ar'?u.areaName??u.name_en:u.name_en??u.areaName,
                             onChanged: (Area data) {
                               widget.store.areaId =
                                   data.id;
@@ -234,7 +235,7 @@ class _Edit_StoreState extends State<Edit_Store> {
                             items: cities,
                             //  onFind: (String filter) => getData(filter),
                             itemAsString: (City u) =>
-                            u.cityName,
+                            themeColor.getlocal()=='ar'?u.cityName??u.name_en:u.name_en??u.cityName,
                             onChanged: (City data) {
                               widget.store.cityId =data.id;
                             },

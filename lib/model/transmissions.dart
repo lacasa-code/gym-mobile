@@ -45,9 +45,11 @@ class Transmissions {
 class Transmission {
   int _id;
   String _transmissionName;
+  String _name_en;
 
   int get id => _id;
   String get transmissionName => _transmissionName;
+  String get name_en => this._name_en;
 
   Transmission({int id, String transmissionName}) {
     _id = id;
@@ -57,6 +59,7 @@ class Transmission {
   Transmission.fromJson(dynamic json) {
     _id = json["id"];
     _transmissionName = json["transmission_name"];
+    _name_en = json["name_en"];
   }
 
   Map<String, dynamic> toJson() {

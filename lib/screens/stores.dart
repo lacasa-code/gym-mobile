@@ -208,7 +208,7 @@ class _StoresState extends State<Stores> {
                               },
                               child: Row(
                                 children: [
-                                  Text('حذف'),
+                                  Text('${getTransrlate(context, 'delete')}'),
                                   Icon(
                                     CupertinoIcons.delete,
                                     size: 20,
@@ -237,7 +237,7 @@ class _StoresState extends State<Stores> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Text('${stores.length} عضو'),
+                            Text('${stores.length} ${getTransrlate(context, 'staf')}'),
                             InkWell(
                               onTap: () {
                                 setState(() {
@@ -256,7 +256,7 @@ class _StoresState extends State<Stores> {
                                   SizedBox(
                                     width: 5,
                                   ),
-                                  Text('اختيار')
+                                  Text('${getTransrlate(context, 'select')}')
                                 ],
                               ),
                               // color: Color(0xffE4E4E4),
@@ -305,7 +305,7 @@ class _StoresState extends State<Stores> {
                               },
                               child: Row(
                                 children: [
-                                  Text('ترتيب'),
+                                  Text('${getTransrlate(context, 'Sort')}'),
                                   Icon(
                                     Icons.keyboard_arrow_down,
                                     size: 20,
@@ -406,8 +406,8 @@ class _StoresState extends State<Stores> {
                                 selectStores: selectStores,
                               ),
                               Positioned(
-                                  left: 40,
-                                  top: 20,
+                                  left:themeColor.getlocal()=='ar'?20: null,
+                                  right:themeColor.getlocal()=='en'?20:null,                                  top: 20,
                                   child: PopupMenuButton<int>(
                                     itemBuilder: (context) => [
                                       PopupMenuItem(
@@ -421,7 +421,7 @@ class _StoresState extends State<Stores> {
                                             mainAxisAlignment:
                                             MainAxisAlignment.spaceAround,
                                             children: [
-                                              Text("تعديل"),
+                                              Text("${getTransrlate(context, 'edit')}"),
                                               Icon(
                                                 Icons.edit_outlined,
                                                 color: Colors.black54,
@@ -450,7 +450,7 @@ class _StoresState extends State<Stores> {
                                             mainAxisAlignment:
                                             MainAxisAlignment.spaceAround,
                                             children: [
-                                              Text("حذف"),
+                                              Text("${getTransrlate(context, 'delete')}"),
                                               Icon(
                                                 CupertinoIcons.delete,
                                                 color: Colors.black54,

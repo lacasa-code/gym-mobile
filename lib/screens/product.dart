@@ -212,7 +212,7 @@ class _ProductsState extends State<Products> {
                                     },
                                     child: Row(
                                       children: [
-                                        Text('حذف'),
+                                        Text('${getTransrlate(context, 'delete')}'),
                                         Icon(
                                           CupertinoIcons.delete,
                                           size: 20,
@@ -242,7 +242,7 @@ class _ProductsState extends State<Products> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
                                 children: [
-                                  Text('${products.length} منتج '),
+                                  Text('${products.length} ${getTransrlate(context, 'product')} '),
                                   InkWell(
                                     onTap: () {
                                       setState(() {
@@ -261,7 +261,7 @@ class _ProductsState extends State<Products> {
                                         SizedBox(
                                           width: 5,
                                         ),
-                                        Text('اختيار')
+                                        Text('${getTransrlate(context, 'select')}')
                                       ],
                                     ),
                                     // color: Color(0xffE4E4E4),
@@ -274,7 +274,7 @@ class _ProductsState extends State<Products> {
                                     },
                                     child: Row(
                                       children: [
-                                        Text('تصفية'),
+                                        Text('${getTransrlate(context, 'filter')}'),
                                         Icon(
                                           Icons.keyboard_arrow_down,
                                           size: 20,
@@ -313,7 +313,7 @@ class _ProductsState extends State<Products> {
                                     },
                                     child: Row(
                                       children: [
-                                        Text('ترتيب'),
+                                        Text('${getTransrlate(context, 'Sort')}'),
                                         Icon(
                                           Icons.keyboard_arrow_down,
                                           size: 20,
@@ -344,7 +344,8 @@ class _ProductsState extends State<Products> {
                                       isSelect: isSelect,selectStores: selectProduct,
                                     ),
                                     products[index].approved==0?Container():Positioned(
-                                        left: 20,
+                                        left:themeColor.getlocal()=='ar'?20: null,
+                                        right:themeColor.getlocal()=='en'?1:null,
                                         top: 20,
                                         child: PopupMenuButton<int>(
                                           itemBuilder: (context) => [
@@ -359,7 +360,7 @@ class _ProductsState extends State<Products> {
                                                   mainAxisAlignment:
                                                   MainAxisAlignment.spaceAround,
                                                   children: [
-                                                    Text("تعديل"),
+                                                    Text("${getTransrlate(context, 'edit')}"),
                                                     Icon(
                                                       Icons.edit_outlined,
                                                       color: Colors.black54,
@@ -379,7 +380,7 @@ class _ProductsState extends State<Products> {
                                                   mainAxisAlignment:
                                                   MainAxisAlignment.spaceAround,
                                                   children: [
-                                                    Text("حذف"),
+                                                    Text("${getTransrlate(context, 'delete')}"),
                                                     Icon(
                                                       CupertinoIcons.delete,
                                                       color: Colors.black54,

@@ -56,8 +56,6 @@ class _Add_ProductState extends State<Add_Product> {
   List<Categories> _category;
   List<String> categories;
   List<Part_Category> part_Categories;
-  List<Carmodel> filteredcarmodels_data = List();
-  List<CarMade> filteredCarMades_data = List();
   List<Manufacturer> _manufacturers;
   List<ProdCountry> _prodcountries;
   List<Transmission> transmissions;
@@ -233,7 +231,7 @@ int CheckBox=0;
                               }
                             },
                             onSaved: (String value) {
-                             // product.name = value;
+                              product.nameEn = value;
                             },
                           ),
                           MyTextFormField(
@@ -279,7 +277,7 @@ int CheckBox=0;
                               }
                             },
                             onSaved: (String value) {
-                            //  product.description = value;
+                             product.descriptionEn = value;
                             },
                           ),
 
@@ -313,7 +311,7 @@ int CheckBox=0;
                                       items: _listCategory,
                                       //  onFind: (String filter) => getData(filter),
                                       itemAsString: (Main_Category u) =>
-                                          u.mainCategoryName,
+                                      themeColor.getlocal()=='ar'?u.mainCategoryName??u.mainCategoryNameen:u.mainCategoryNameen??u.mainCategoryName,
                                       onChanged: (Main_Category data) {
                                         setState(() {
                                           product.Main_categoryid =
@@ -371,7 +369,7 @@ int CheckBox=0;
                                               items: _category,
                                               //  onFind: (String filter) => getData(filter),
                                               itemAsString: (Categories u) =>
-                                                  u.name,
+                                              themeColor.getlocal()=='ar'?u.name??u.name_en:u.name_en??u.name,
                                               onChanged: (Categories data) {
                                                 product.CategoryId =
                                                     data.id.toString();
@@ -413,12 +411,11 @@ int CheckBox=0;
                                           child: DropdownSearch<Part_Category>(
                                               showSearchBox: false,
                                               showClearButton: false,
-                                              label: "   ",
-
+                                              label: " ",
                                               items: part_Categories,
                                               //  onFind: (String filter) => getData(filter),
                                               itemAsString: (Part_Category u) =>
-                                                  u.categoryName,
+                                              themeColor.getlocal()=='ar'?u.categoryName??u.categoryname_en:u.categoryname_en??u.categoryName,
                                               onChanged: (Part_Category data) =>
                                                   product.partCategoryId =
                                                       data.id.toString()),
@@ -463,9 +460,13 @@ int CheckBox=0;
                                   },
                                   items: cartypes,
                                   //  onFind: (String filter) => getData(filter),
-                                  itemAsString: (CarType u) => u.typeName,
+                                  itemAsString: (CarType u) =>
+                                  "${ themeColor.getlocal()=='ar'?u.typeName??u.name_en:u.name_en??u.typeName}",
                                   onChanged: (CarType data) {
                                     product.cartype_id = data.id.toString();
+                                    setState(() {
+                                      CarMades==null;
+                                    });
                                     getAllCarMade(data.id.toString());
                                   })),
                           SizedBox(
@@ -499,7 +500,8 @@ int CheckBox=0;
                                       },
                                       items: transmissions,
                                       //  onFind: (String filter) => getData(filter),
-                                      itemAsString: (Transmission u) => u.transmissionName,
+                                      itemAsString: (Transmission u) =>
+                                      themeColor.getlocal()=='ar'?u.transmissionName??u.name_en:u.name_en??u.transmissionName,
                                       onChanged: (Transmission data) =>
                                           product.transmission_id =
                                               data.id.toString()),
@@ -543,7 +545,7 @@ int CheckBox=0;
                                                 items: CarMades,
                                                 //  onFind: (String filter) => getData(filter),
                                                 itemAsString: (CarMade u) =>
-                                                    u.carMade,
+                                                themeColor.getlocal()=='ar'?u.carMade??u.name_en:u.name_en??u.carMade,
                                                 onChanged: (CarMade data) {
                                                   product.carMadeId =
                                                       data.id.toString();
@@ -588,7 +590,7 @@ int CheckBox=0;
                                                     items: years,
                                                  // selectedItem: product.yearfrom == null ? Year() : product.yearfrom,
                                                     itemAsString: (Year u) =>
-                                                        u.year ?? '',
+                                                    themeColor.getlocal()=='ar'?u.year??u.name_en:u.name_en??u.year,
                                                     onChanged: (Year data) =>
                                                         product.yearfromId =
                                                             data.id.toString()),
@@ -624,7 +626,7 @@ int CheckBox=0;
                                                     items: years,
                                                     //selectedItem: product.yearto == null ? Year() : product.yearto,
                                                     itemAsString: (Year u) =>
-                                                        u.year ?? '',
+                                                    themeColor.getlocal()=='ar'?u.year??u.name_en:u.name_en??u.year,
                                                     onChanged: (Year data) =>
                                                         product.yeartoId =
                                                             data.id.toString()),
@@ -656,7 +658,7 @@ int CheckBox=0;
                                         itemBuilder: (context, suggestion) {
                                           return ListTile(
                                             title: Text(
-                                              suggestion.carmodel,
+                                              themeColor.getlocal()=='ar'?suggestion.carmodel??suggestion.name_en:suggestion.name_en??suggestion.carmodel,
                                             ),
                                           );
                                         },
@@ -671,7 +673,7 @@ int CheckBox=0;
                                     SizedBox(
                                       height: 7,
                                     ),
-                                    _generateModels(),
+                                    _generateModels(themeColor),
                                     SizedBox(
                                       height: 10,
                                     ),
@@ -703,7 +705,7 @@ int CheckBox=0;
                                       items: _manufacturers,
                                       //  onFind: (String filter) => getData(filter),
                                       itemAsString: (Manufacturer u) =>
-                                          u.manufacturerName,
+                                      themeColor.getlocal()=='ar'?u.manufacturerName??u.name_en:u.name_en??u.manufacturerName,
                                       onChanged: (Manufacturer data) =>
                                           product.manufacturer_id =
                                               data.id.toString()),
@@ -806,7 +808,7 @@ int CheckBox=0;
                                           selectedItem: _ProductType[0],
                                           //  onFind: (String filter) => getData(filter),
                                           itemAsString: (ProductType u) =>
-                                              u.producttype,
+                                          themeColor.getlocal()=='ar'?u.producttype??u.name_en:u.name_en??u.producttype,
                                           onChanged: (ProductType data) {
                                             setState(() {
                                               product.productType_id =
@@ -867,7 +869,6 @@ int CheckBox=0;
                                           width: ScreenUtil.getWidth(context) /
                                               2.5,
                                           child: MyTextFormField(
-                                            intialLabel: ' ',
                                             Keyboard_Type: TextInputType.number,
                                             labelText:
                                                 "${getTransrlate(context, 'Percentage')}",
@@ -1113,7 +1114,7 @@ int CheckBox=0;
                                       items: _prodcountries,
                                       //  onFind: (String filter) => getData(filter),
                                       itemAsString: (ProdCountry u) =>
-                                          u.countryName,
+                                      themeColor.getlocal()=='ar'?u.countryName??u.name_en:u.name_en??u.countryName,
                                       onChanged: (ProdCountry data) => product
                                           .prodcountry_id = data.id.toString()),
                                 ),
@@ -1127,7 +1128,7 @@ int CheckBox=0;
                           SizedBox(
                             height: 5,
                           ),
-                          _generateTags(),
+                          _generateTags(themeColor),
                           SizedBox(
                             height: 5,
                           ),
@@ -1145,7 +1146,7 @@ int CheckBox=0;
                               itemBuilder: (context, suggestion) {
                                 return ListTile(
                                   title: Text(
-                                    suggestion.nameStore,
+                                    themeColor.getlocal()=='ar'?suggestion.name??suggestion.name_en:suggestion.name_en??suggestion.name,
                                   ),
                                 );
                               },
@@ -1485,7 +1486,7 @@ int CheckBox=0;
     getAllproducttypes();
   }
 
-  _generateTags() {
+  _generateTags(Provider_control themeColor) {
     return _tagSelect.isEmpty
         ? Container()
         : Container(
@@ -1496,7 +1497,7 @@ int CheckBox=0;
               itemBuilder: (index) {
                 return ItemTags(
                   index: index,
-                  title: _tagSelect[index].name,
+                  title: themeColor.getlocal()=='ar'?_tagSelect[index].name??_tagSelect[index].name_en:_tagSelect[index].name_en??_tagSelect[index].name,
                   color: Colors.blue,
                   activeColor: Colors.black26,
                   onPressed: (Item item) {
@@ -1582,7 +1583,7 @@ int CheckBox=0;
     }
   }
 
-  _generateModels() {
+  _generateModels(Provider_control themeColor) {
     return product.carModel == null
         ? Container()
         : product.carModel.isEmpty
@@ -1595,7 +1596,9 @@ int CheckBox=0;
                   itemBuilder: (index) {
                     return ItemTags(
                       index: index,
-                      title: product.carModel[index].carmodel,
+
+                      title:
+                      themeColor.getlocal()=='ar'?product.carModel[index].carmodel??product.carModel[index].name_en:product.carModel[index].name_en??product.carModel[index].carmodel,
                       color: Colors.blue,
                       activeColor: Colors.orange.shade400,
                       onPressed: (Item item) {

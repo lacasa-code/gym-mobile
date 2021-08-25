@@ -87,7 +87,7 @@ class InvoiceItem extends StatelessWidget {
                         Container(
                           width: ScreenUtil.getWidth(context) / 2,
                           child: Text(
-                            orders_model.order[index].productName,
+                           themeColor.getlocal()=='ar'? orders_model.order[index].productName:orders_model.order[index].name_en??orders_model.order[index].productName,
                             style: TextStyle(
                                 color: themeColor.getColor(),
                                 fontWeight: FontWeight.bold,

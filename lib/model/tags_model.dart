@@ -33,18 +33,22 @@ class Tags_model {
 class Tag {
   int _id;
   String _name;
+  String _name_en;
 
   int get id => _id;
   String get name => _name;
+  String get name_en => _name_en;
 
   Tag({int id, String name}) {
     _id = id;
     _name = name;
+    _name_en = name_en;
   }
 
   Tag.fromJson(dynamic json) {
     _id = json["id"];
     _name = json["name"];
+    _name_en = json["name_en"];
   }
 
   Map<String, dynamic> toJson() {

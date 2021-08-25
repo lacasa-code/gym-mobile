@@ -165,8 +165,7 @@ class _Invoices_informationState extends State<Invoices_information> {
                                 Container(
                                   width: ScreenUtil.getWidth(context) / 2,
                                   child: Text(
-                                    widget.orders_model.order[index]
-                                        .productName,
+                                    themeColor.getlocal()=='ar'? widget.orders_model.order[index].productName:widget.orders_model.order[index].name_en??widget.orders_model.order[index].productName,
                                     style: TextStyle(
                                         color: themeColor.getColor(),
                                         fontWeight: FontWeight.bold,

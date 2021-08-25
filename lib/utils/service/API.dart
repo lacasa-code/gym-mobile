@@ -31,7 +31,7 @@ class API {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'Authorization': 'Bearer ${prefs.getString('token')}',
-        'Accept-Language': Provider.of<Provider_control>(context,listen: false).getlocal(),
+       // 'Accept-Language': Provider.of<Provider_control>(context,listen: false).getlocal(),
       });
       print(response.body);
       if (response.statusCode == 500) {
@@ -75,7 +75,7 @@ class API {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
             'Authorization': 'Bearer ${prefs.getString('token')}',
-            //  'Accept-Language': Provider.of<Provider_control>(context).getlocal(),
+            'Accept-Language': "${Provider.of<Provider_control>(context,listen: false).getlocal()}",
           },
           body: json.encode(body));
       print("body =${jsonDecode(response.body)}");
@@ -118,6 +118,8 @@ class API {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
             'Authorization': 'Bearer ${prefs.getString('token')}',
+            'Accept-Language': "${Provider.of<Provider_control>(context,listen: false).getlocal()}",
+
           },
           body: json.encode(body));
       print(jsonDecode(response.body));
@@ -145,6 +147,8 @@ class API {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
           'Authorization': 'Bearer ${prefs.getString('token')}',
+          'Accept-Language': "${Provider.of<Provider_control>(context,listen: false).getlocal()}",
+
         },
       );
       print(response.body);
@@ -161,11 +165,13 @@ class API {
 
   postFile(String url, Map<String, String> body,
       {List<Asset> attachment}) async {
+    print(Provider.of<Provider_control>(context,listen: false).getlocal());
     final full_url =
         Uri.parse('${GlobalConfiguration().getString('api_base_url')}$url');
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var headers = {
-      'Authorization': 'Bearer  ${prefs.getString('token')}'
+      'Authorization': 'Bearer  ${prefs.getString('token')}',
+    'Accept-Language': "${Provider.of<Provider_control>(context,listen: false).getlocal()}",
     }; // remove headers if not wanted
     var request = http.MultipartRequest(
         'POST', Uri.parse(full_url.toString())); // your server url

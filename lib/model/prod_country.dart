@@ -51,12 +51,14 @@ class ProdCountry_model {
 class ProdCountry {
   int _id;
   String _countryName;
+  String _name_en;
   String _countryCode;
   int _status;
 
   int get id => _id;
   String get countryName => _countryName;
   String get countryCode => _countryCode;
+  String get name_en =>_name_en;
   int get status => _status;
 
   ProdCountry({
@@ -66,6 +68,7 @@ class ProdCountry {
       int status}){
     _id = id;
     _countryName = countryName;
+    _name_en = name_en;
     _countryCode = countryCode;
     _status = status;
 }
@@ -74,6 +77,7 @@ class ProdCountry {
     _id = json["id"];
     _countryName = json["country_name"];
     _countryCode = json["country_code"];
+    _name_en = json["name_en"];
     _status = json["status"];
   }
 

@@ -216,7 +216,7 @@ class SearchOverlay_StaffState extends State<SearchOverlay_Staff>
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceAround,
                                         children: [
-                                          Text("تعديل"),
+                                          Text("${getTransrlate(context, 'edit')}"),
                                           Icon(
                                             Icons.edit_outlined,
                                             color: Colors.black54,
@@ -249,7 +249,7 @@ class SearchOverlay_StaffState extends State<SearchOverlay_Staff>
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceAround,
                                         children: [
-                                          Text("حذف"),
+                                          Text("${getTransrlate(context, 'delete')}"),
                                           Icon(
                                             CupertinoIcons.delete,
                                             color: Colors.black54,

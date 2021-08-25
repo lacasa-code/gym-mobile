@@ -84,7 +84,7 @@ class OrderItem extends StatelessWidget {
                         Container(
                           width: ScreenUtil.getWidth(context) / 2,
                           child: Text(
-                            orders_model.orderDetails[index].productName,
+                          themeColor.getlocal()=='ar'?  orders_model.orderDetails[index].productName: orders_model.orderDetails[index].name_en??orders_model.orderDetails[index].productName,
                             style: TextStyle(
                                 color: themeColor.getColor(),
                                 fontWeight: FontWeight.bold,
@@ -116,8 +116,8 @@ width: ScreenUtil.getWidth(context)/1.5,
                 child: AutoSizeText(
                   orders_model.shipping == null
                       ? ''
-                      : "${orders_model.shipping.area==null?'':orders_model.shipping.area.areaName} , "
-                      "${orders_model.shipping.city==null?'':orders_model.shipping.city.cityName} , "
+                      : "${orders_model.shipping.area==null?'':themeColor.getlocal()=='ar'?orders_model.shipping.area.areaName:orders_model.shipping.area.name_en??orders_model.shipping.area.areaName} , "
+                      "${orders_model.shipping.city==null?'':themeColor.getlocal()=='ar'?orders_model.shipping.city.cityName:orders_model.shipping.city.name_en??orders_model.shipping.city.cityName} , "
                       "${orders_model.shipping.street??''} , "
                       "${orders_model.shipping.district??''} , "
                       "${orders_model.shipping.floorNo??''} , "

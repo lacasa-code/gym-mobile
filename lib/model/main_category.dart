@@ -51,11 +51,13 @@ class Main_category {
 class Main_Category {
   int _id;
   String _mainCategoryName;
+  String _mainCategoryNameen;
   int _status;
   String _lang;
 
   int get id => _id;
   String get mainCategoryName => _mainCategoryName;
+  String get mainCategoryNameen => _mainCategoryNameen;
   int get status => _status;
   String get lang => _lang;
 
@@ -73,6 +75,7 @@ class Main_Category {
   Main_Category.fromJson(dynamic json) {
     _id = json["id"];
     _mainCategoryName = json["main_category_name"];
+    _mainCategoryNameen = json["name_en"];
     _status = json["status"];
     _lang = json["lang"];
   }

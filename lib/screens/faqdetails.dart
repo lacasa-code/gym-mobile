@@ -66,7 +66,7 @@ class _faq_informationState extends State<faq_information> {
               ),
               Text(" ${getTransrlate(context, 'Qust')}:${widget.orders_model.bodyQuestion ?? ''}",
                   style: TextStyle(color: Colors.black, fontSize: 12)),
-              widget.orders_model.product==null?Container():   Text(" ${getTransrlate(context, 'product')}:${widget.orders_model.product.name ?? ''}",
+              widget.orders_model.product==null?Container():   Text(" ${getTransrlate(context, 'product')}:${themeColor.getlocal()=='ar'?widget.orders_model.product.name:widget.orders_model.product.nameEn ?? widget.orders_model.product.name}",
                   style: TextStyle(color: Colors.black, fontSize: 12)),
               widget.orders_model.answer==null?Container():  Text("${getTransrlate(context, 'answer')} :${widget.orders_model.answer ?? ''}",
                   style: TextStyle(color: Colors.black, fontSize: 12)),
@@ -147,7 +147,7 @@ class _faq_informationState extends State<faq_information> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(" ${getTransrlate(context, 'product')} :${widget.orders_model.product ==null? '':widget.orders_model.product.name}",
+                      Text(" ${getTransrlate(context, 'product')} :${widget.orders_model.product ==null? '':themeColor.getlocal()=='ar'?widget.orders_model.product.name:widget.orders_model.product.nameEn ?? widget.orders_model.product.name}",
                           style: TextStyle(color: Colors.black, fontSize: 12)),
                       Container(
                         margin: EdgeInsets.only(left: 5),
@@ -164,7 +164,7 @@ class _faq_informationState extends State<faq_information> {
                   ),
                   Text(" ${getTransrlate(context, 'mainCategory')} :${widget.orders_model.product==null?"": widget.orders_model.product.category==null?"":widget.orders_model.product.category.name ?? ''}",
                       style: TextStyle(color: Colors.black, fontSize: 12)),
-                  Text(" ${getTransrlate(context, 'description')} :${widget.orders_model.product.description ?? ''}",
+                  Text(" ${getTransrlate(context, 'description')} :${themeColor.getlocal()=='ar'?widget.orders_model.product.description:widget.orders_model.product.descriptionEn ?? widget.orders_model.product.description}",
                       style: TextStyle(color: Colors.black, fontSize: 12)),
                   Text(" ${getTransrlate(context, 'prodcountry')} :${widget.orders_model.product.originCountry==null?"":
                   widget.orders_model.product.originCountry.countryName?? ''}",

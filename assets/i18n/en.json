@@ -51,6 +51,10 @@
   "message": "Message",
   "ticketsType": "TicketsType",
   "sendReplay": "Send Replay",
+  "delete": "Delete ",
+  "select": "Select ",
+  "filter": "Filter ",
+  "staf": " Staff ",
 
   "total_orders": "Approved Orders",
   "total_sale": "Sales",

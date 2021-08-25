@@ -110,6 +110,7 @@ class OrderDetails {
   int storeId;
   int vendorId;
   String productName;
+  String name_en;
   List<Photo> photo;
   String productSerial;
   String storeName;
@@ -128,6 +129,7 @@ class OrderDetails {
         this.storeId,
         this.vendorId,
         this.productName,
+        this.name_en,
         this.photo,
         this.productSerial,
         this.storeName,
@@ -143,6 +145,7 @@ class OrderDetails {
     id = json['id'];
     orderId = json['order_id'];
     productId = json['product_id'];
+    name_en = json['name_en'];
     storeId = json['store_id'];
     vendorId = json['vendor_id'];
     productName = json['product_name'];

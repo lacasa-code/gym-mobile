@@ -8,6 +8,7 @@
 class Carmodel {
   int _id;
   String _carmodel;
+  String _name_en;
   String _createdAt;
   dynamic _updatedAt;
   dynamic _deletedAt;
@@ -15,6 +16,7 @@ class Carmodel {
 
   int get id => _id;
   String get carmodel => _carmodel;
+  String get name_en => _name_en;
   String get createdAt => _createdAt;
   dynamic get updatedAt => _updatedAt;
   dynamic get deletedAt => _deletedAt;
@@ -29,6 +31,7 @@ class Carmodel {
       int carmadeId}){
     _id = id;
     _carmodel = carmodel;
+    _name_en = name_en;
     _createdAt = createdAt;
     _updatedAt = updatedAt;
     _deletedAt = deletedAt;
@@ -38,6 +41,7 @@ class Carmodel {
   Carmodel.fromJson(dynamic json) {
     _id = json["id"];
     _carmodel = json["carmodel"];
+    _name_en = json["name_en"];
     _createdAt = json["created_at"];
     _updatedAt = json["updated_at"];
     _deletedAt = json["deleted_at"];

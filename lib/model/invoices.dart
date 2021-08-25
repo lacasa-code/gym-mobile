@@ -111,6 +111,7 @@ class Ordersditils {
   int storeId;
   int vendorId;
   String productName;
+  String name_en;
   List<PhotoProduct> photo;
   String productSerial;
   String storeName;
@@ -131,6 +132,7 @@ class Ordersditils {
     id = json['id'];
     orderId = json['order_id'];
     productId = json['product_id'];
+    name_en = json['name_en'];
     storeId = json['store_id'];
     vendorId = json['vendor_id'];
     productName = json['product_name'];

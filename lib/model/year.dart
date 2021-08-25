@@ -49,9 +49,11 @@ class Years {
 class Year {
   int _id;
   String _year;
+  String _name_en;
 
   int get id => _id;
   String get year => _year;
+  String get name_en => _name_en;
 
   Year({
       int id, 
@@ -63,6 +65,7 @@ class Year {
   Year.fromJson(dynamic json) {
     _id = json["id"];
     _year = json["year"];
+    _name_en = json["name_en"];
   }
 
   Map<String, dynamic> toJson() {

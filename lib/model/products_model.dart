@@ -41,7 +41,9 @@ class Products_model {
 class Product {
   int id;
   String name;
+  String nameEn;
   String description;
+  String descriptionEn;
   String price;
   String discount;
   String qty_reminder;
@@ -96,7 +98,9 @@ class Product {
   Product(
       {this.id,
       this.name,
+      this.nameEn,
       this.description,
+      this.descriptionEn,
       this.price,
       this.discount,
       this.createdAt,
@@ -121,6 +125,8 @@ class Product {
     id = json['id'];
     name = json['name'];
     description = json['description'];
+    nameEn = json['name_en'];
+    descriptionEn = json['description_en'];
     price = json['price'];
     actualPrice = json['actual_price'].toString();
    discount = json['discount'].toString();
@@ -173,10 +179,17 @@ class Product {
 
   Map<String, String> toJson() {
     final Map<String, String> data = new Map<String, String>();
-    data['name'] = this.name;
-    data['description'] = this.description;
+
+    this.name==null?null:data['name'] = this.name;
+    this.description==null?null:data['description'] = this.description;
+    this.nameEn==null?null:data['name_en'] = this.nameEn;
+    this.descriptionEn==null?null:data['description_en'] = this.descriptionEn;
+
     this.price==null?null:data['price'] = this.price;
-    this.discount ==null?null: data['discount'] = this.discount;
+    if(this.productType_id=='1'){
+    this.discount ==null||this.discount =='0.0'?null: data['discount'] = this.discount;
+print(this.discount);
+    }
     this.carMadeId==null?null:data['car_made_id'] = this.carMadeId;
     data['category_id'] = this.CategoryId;
     //data['car_model_id'] = this.carModelId;
@@ -196,7 +209,7 @@ class Product {
     this.qty_reminder==null?null:data['qty_reminder'] = this.qty_reminder;
     this.transmission_id ==null?null:data['transmission_id'] = this.transmission_id;
     data['store_id'] = this.storeId;
-    this.quantity==null?data['quantity']="1":data['quantity'] = this.quantity;
+    this.quantity==null||this.quantity=="0"?data['quantity']="1":data['quantity'] = this.quantity;
     this.wholesale==null?null:data['holesale_price'] = this.wholesale;
     this.minOfOrder==null?null: data['no_of_orders'] = this.minOfOrder;
     data['serial_number'] = this.serialNumber;

@@ -77,7 +77,7 @@ class _Order_informationState extends State<Order_information> {
                     minFontSize: 11,
                   ),
                   AutoSizeText(
-                   ' ${getTransrlate(context, 'paymentMethod')}  :${widget.orders_model.payment==null?'':widget.orders_model.payment.paymentName}',
+                    ' ${getTransrlate(context, 'paymentMethod')}  :${widget.orders_model.payment == null ? '' : widget.orders_model.payment.paymentName}',
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.black,
@@ -99,12 +99,12 @@ class _Order_informationState extends State<Order_information> {
                   AutoSizeText(
                     widget.orders_model.shipping == null
                         ? ''
-                        : "${widget.orders_model.shipping.area==null?'':widget.orders_model.shipping.area.areaName} , "
-                        "${widget.orders_model.shipping.city==null?'':widget.orders_model.shipping.city.cityName} , "
-                        "${widget.orders_model.shipping.street} , "
-                        "${widget.orders_model.shipping.district} , "
-                        "${widget.orders_model.shipping.floorNo} , "
-                        "${widget.orders_model.shipping.apartmentNo}",
+                        : "${widget.orders_model.shipping.area == null ? '' : widget.orders_model.shipping.area.areaName} , "
+                            "${widget.orders_model.shipping.city == null ? '' : widget.orders_model.shipping.city.cityName} , "
+                            "${widget.orders_model.shipping.street} , "
+                            "${widget.orders_model.shipping.district} , "
+                            "${widget.orders_model.shipping.floorNo} , "
+                            "${widget.orders_model.shipping.apartmentNo}",
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.black,
@@ -163,8 +163,13 @@ class _Order_informationState extends State<Order_information> {
                                 Container(
                                   width: ScreenUtil.getWidth(context) / 2,
                                   child: Text(
-                                    widget.orders_model.orderDetails[index]
-                                        .productName,
+                                    themeColor.getlocal() == 'ar'
+                                        ? widget.orders_model
+                                            .orderDetails[index].productName
+                                        : widget.orders_model
+                                                .orderDetails[index].name_en ??
+                                        widget.orders_model.orderDetails[index]
+                                                .productName,
                                     style: TextStyle(
                                         color: themeColor.getColor(),
                                         fontWeight: FontWeight.bold,

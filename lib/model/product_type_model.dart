@@ -37,11 +37,13 @@ class ProductTypeModel {
 class ProductType {
   int _id;
   String _producttype;
+  String _name_en;
   String _lang;
   int _status;
 
   int get id => _id;
   String get producttype => _producttype;
+  String get name_en => _name_en;
   String get lang => _lang;
   int get status => _status;
 
@@ -52,6 +54,7 @@ class ProductType {
       int status}){
     _id = id;
     _producttype = producttype;
+    _name_en = name_en;
     _lang = lang;
     _status = status;
 }
@@ -59,6 +62,7 @@ class ProductType {
   ProductType.fromJson(dynamic json) {
     _id = json["id"];
     _producttype = json["producttype"];
+    _name_en = json["name_en"];
     _lang = json["lang"];
     _status = json["status"];
   }

@@ -1,7 +1,9 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/products_model.dart';
+import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 
@@ -19,6 +21,8 @@ class Product_item extends StatefulWidget {
 class _Product_itemState extends State<Product_item> {
   @override
   Widget build(BuildContext context) {
+    final themeColor = Provider.of<Provider_control>(context);
+
     return Container(
       width: ScreenUtil.getWidth(context),
       decoration: BoxDecoration(
@@ -43,6 +47,7 @@ class _Product_itemState extends State<Product_item> {
                 height: ScreenUtil.getHeight(context) / 6,
                 width: ScreenUtil.getWidth(context) / 5,
                 fit: BoxFit.contain,
+                errorWidget: (context, url, error) =>Image.asset("assets/images/logo.png",color: Colors.grey,),
               ),
               widget.isSelect
                   ? widget.hall_model.approved==0?Container(): Container(
@@ -75,7 +80,7 @@ class _Product_itemState extends State<Product_item> {
               Container(
                 width: ScreenUtil.getWidth(context) / 1.7,
                 child: AutoSizeText(
-                  widget.hall_model.name,
+                 "${themeColor.getlocal()=='ar'? widget.hall_model.name ??widget.hall_model.nameEn:widget.hall_model.nameEn??widget.hall_model.name}",
                   minFontSize: 10,
                   style: TextStyle(
                     color: Colors.black,
@@ -105,14 +110,14 @@ class _Product_itemState extends State<Product_item> {
               Container(
                 width: ScreenUtil.getWidth(context) / 1.5,
                 child: Text(
-                  '${getTransrlate(context, 'Category')} > ${widget.hall_model.maincategory == null ? '' : widget.hall_model.maincategory.mainCategoryName}> ${widget.hall_model.category == null ? '' : widget.hall_model.category.name}> ${widget.hall_model.partCategory == null ? '' : widget.hall_model.partCategory.categoryName}',
+                  '${getTransrlate(context, 'Category')} > ${widget.hall_model.maincategory == null ? '' : themeColor.getlocal()=='ar'?widget.hall_model.maincategory.mainCategoryName:widget.hall_model.maincategory.mainCategoryNameen}> ${widget.hall_model.category == null ? '' : themeColor.getlocal()=='ar'?widget.hall_model.category.name:widget.hall_model.category.name_en}> ${widget.hall_model.partCategory == null ? '' : themeColor.getlocal()=='ar'?widget.hall_model.partCategory.categoryName:widget.hall_model.partCategory.categoryname_en??widget.hall_model.partCategory.categoryName}',
                   style: TextStyle(fontSize: 13,fontWeight: FontWeight.bold),
                 ),
               ),
               Container(
                 width: ScreenUtil.getWidth(context) / 1.5,
                 child: AutoSizeText(
-                  '${widget.hall_model.description}',
+                  "${themeColor.getlocal()=='ar'? widget.hall_model.description??widget.hall_model.descriptionEn:widget.hall_model.descriptionEn??widget.hall_model.description}",
                   minFontSize: 10,
                   maxLines: 3,
                   style: TextStyle(
