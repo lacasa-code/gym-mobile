@@ -11,6 +11,7 @@ import 'package:trkar_vendor/screens/add_product.dart';
 import 'package:trkar_vendor/screens/Edit_product.dart';
 import 'package:trkar_vendor/screens/productPage.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
+import 'package:trkar_vendor/utils/Provider/provider_data.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/navigator.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
@@ -27,24 +28,22 @@ class Products extends StatefulWidget {
 }
 
 class _ProductsState extends State<Products> {
-  List<Product> products;
+  String url="products";
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   bool isSelect = false;
   List<int> selectProduct = [];
-  String url="products";
-  int i = 2;
   ScrollController _scrollController = new ScrollController();
   String  characters= "ASC";
-
+  Provider_Data data;
   @override
   void initState() {
+    data=Provider.of<Provider_Data>(context,listen: false);
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        PerProducts();
+       data.PerProducts(context);
       }
     });
-    getProducts();
     super.initState();
   }
 
@@ -121,7 +120,7 @@ class _ProductsState extends State<Products> {
               )),
         ),
       ),
-      body: products == null
+      body: data.products == null
           ? Container(
               height: ScreenUtil.getHeight(context) / 3,
               child: Center(
@@ -129,7 +128,7 @@ class _ProductsState extends State<Products> {
                 valueColor:
                     AlwaysStoppedAnimation<Color>(themeColor.getColor()),
               )))
-          : products.isEmpty
+          : data.products.isEmpty
               ? Center(
                   child: Container(
                     child: Column(
@@ -207,7 +206,7 @@ class _ProductsState extends State<Products> {
                                             isSelect=false;
                                           });
                                         }
-                                        getProducts();
+                                        data.getProducts(context);
                                       });
                                     },
                                     child: Row(
@@ -242,7 +241,7 @@ class _ProductsState extends State<Products> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
                                 children: [
-                                  Text('${products.length} ${getTransrlate(context, 'product')} '),
+                                  Text('${data.products.length} ${getTransrlate(context, 'product')} '),
                                   InkWell(
                                     onTap: () {
                                       setState(() {
@@ -296,7 +295,7 @@ class _ProductsState extends State<Products> {
                                           if (value != null) {
                                             if (value['status_code'] == 200) {
                                               setState(() {
-                                                products =
+                                                data.products =
                                                     Products_model.fromJson(
                                                             value)
                                                         .product;
@@ -325,25 +324,25 @@ class _ProductsState extends State<Products> {
                               ),
                             ),
                       ListView.builder(
-                          itemCount: products == null && products.isEmpty
+                          itemCount: data.products == null && data.products.isEmpty
                               ? 0
-                              : products.length,
+                              : data.products.length,
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
                           itemBuilder: (BuildContext context, int index) {
                             return InkWell(
                               onTap: (){
-                                Nav.route(context, ProductPage(product: products[index],));
+                                Nav.route(context, ProductPage(product: data.products[index],));
                               },
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(vertical: 8,horizontal: 16),
                                 child: Stack(
                                   children: [
                                     Product_item(
-                                      hall_model: products[index],
+                                      hall_model: data.products[index],
                                       isSelect: isSelect,selectStores: selectProduct,
                                     ),
-                                    products[index].approved==0?Container():Positioned(
+                                    data.products[index].approved==0?Container():Positioned(
                                         left:themeColor.getlocal()=='ar'?20: null,
                                         right:themeColor.getlocal()=='en'?1:null,
                                         top: 20,
@@ -354,7 +353,7 @@ class _ProductsState extends State<Products> {
                                               child: InkWell(
                                                 onTap: (){
                                                   _navigate_edit_hell(
-                                                      context, products[index]);
+                                                      context, data.products[index]);
                                                 },
                                                 child: Row(
                                                   mainAxisAlignment:
@@ -373,7 +372,7 @@ class _ProductsState extends State<Products> {
                                               value: 2,
                                               child:  InkWell(
                                                 onTap: (){
-                                                  Delete_Products(products[index].id);
+                                                  Delete_Products(data.products[index].id);
 
                                                 },
                                                 child: Row(
@@ -408,13 +407,13 @@ class _ProductsState extends State<Products> {
   _navigate_add_hell(BuildContext context) async {
     await Navigator.push(
         context, MaterialPageRoute(builder: (context) => Add_Product()));
-    Timer(Duration(seconds: 3), () => getProducts());
+    Timer(Duration(seconds: 3), () => data.getProducts(context));
   }
 
   _navigate_edit_hell(BuildContext context, Product hall) async {
     await Navigator.push(
         context, MaterialPageRoute(builder: (context) => Edit_Product(hall)));
-    Timer(Duration(seconds: 3), () => getProducts());
+    Timer(Duration(seconds: 3), () => data.getProducts(context));
   }
   Future<void> Delete_Products(int id) async {
     API(context).Delete('products/$id').then((value) {
@@ -426,28 +425,10 @@ class _ProductsState extends State<Products> {
           ),
         );
       }
-      getProducts();
+      data.getProducts(context);
     });
   }
 
-  Future<void> getProducts() async {
-    API(context).get(url).then((value) {
-      if (value != null) {
-        setState(() {
-          products = Products_model.fromJson(value).product;
-        });
-        print(products.toString());
-      }
-    });
-  }
-  Future<void> PerProducts() async {
-    API(context).get("$url?page=${i++}&ordered_by=created_at&sort_type=desc").then((value) {
-      if (value != null) {
-        setState(() {
-          products.addAll(Products_model.fromJson(value).product);
-        });
-      }
-    });
-  }
+
 
 }

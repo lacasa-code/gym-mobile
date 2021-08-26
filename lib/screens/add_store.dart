@@ -170,7 +170,7 @@ class _add_StoreState extends State<add_Store> {
                           },
                         ),
                         MyTextFormField(
-                          intialLabel: store.moderatorAltPhone ?? ' ',
+                          intialLabel: store.moderatorAltPhone??'',
                           Keyboard_Type: TextInputType.phone,
                           textDirection: TextDirection.ltr,
                           labelText: getTransrlate(context, 'phone'),
@@ -189,7 +189,7 @@ class _add_StoreState extends State<add_Store> {
                           },
                           enabled: true,
                           onSaved: (String value) {
-                            store.moderatorAltPhone = value==''?'':"+$code$value";
+                            store.moderatorAltPhone = value.isEmpty?'':"+$code$value";
                           },
                         ),
                         Text(

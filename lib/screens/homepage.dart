@@ -519,7 +519,7 @@ class _HomeMobileState extends State<HomeMobile> {
                                       Container(
                                         width: ScreenUtil.getWidth(context) / 2,
                                         child: AutoSizeText(
-                                          "مخزون على وشك النفاذ",
+                                          "${getTransrlate(context, 'Inventoryplay')}",
                                           maxLines: 2,
                                           style: TextStyle(
                                             fontSize: 14,
@@ -534,7 +534,7 @@ class _HomeMobileState extends State<HomeMobile> {
                                         ),
                                       ),
                                       Text(
-                                        "متبقي",
+                                        "${getTransrlate(context, 'residual')}",
                                         style: TextStyle(color: Colors.black),
                                       )
                                     ],

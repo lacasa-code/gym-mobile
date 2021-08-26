@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:trkar_vendor/screens/home.dart';
 import 'package:trkar_vendor/screens/login.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
+import 'package:trkar_vendor/utils/Provider/provider_data.dart';
 import 'package:trkar_vendor/utils/navigator.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:provider/provider.dart';
@@ -90,6 +91,7 @@ class _SplashScreenState extends State<SplashScreen>
         prefs.setString("user_name", user['name']);
         prefs.setInt("user_id", user['id']);
         Provider.of<Provider_control>(context,listen: false).setLogin(true);
+        Provider.of<Provider_Data>(context,listen: false).getProducts(context);
         Nav.routeReplacement(context, Home());
       } else {
         Provider.of<Provider_control>(context,listen: false).setLogin(false);

@@ -56,7 +56,7 @@ class _SortdialogState extends State<Sortdialog> {
           Container(
             color: Colors.white,
             child: RadioListTile<String>(
-              title: const Text('من الأعلى'),
+              title:  Text('${getTransrlate(context, 'SortByNew')}'),
               value: characters[0],
               activeColor: Colors.orange,
               groupValue: widget.character,
@@ -72,7 +72,7 @@ class _SortdialogState extends State<Sortdialog> {
           Container(
             color: Colors.white,
             child: RadioListTile<String>(
-              title: const Text(' من الاسفل'),
+              title:  Text('${getTransrlate(context, "SortByold")}'),
               value: characters[1],
               activeColor: Colors.orange,
 

@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trkar_vendor/screens/onboarding_page.dart';
 import 'package:trkar_vendor/splash_screen.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
+import 'package:trkar_vendor/utils/Provider/provider_data.dart';
 import 'package:trkar_vendor/utils/local/AppLocalizations.dart';
 import 'package:device_preview/device_preview.dart';
 
@@ -13,15 +14,14 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GlobalConfiguration().loadFromAsset("configurations");
   print("base_url: ${GlobalConfiguration().getString('base_url')}");
-  runApp(
+  runApp(MultiProvider(providers: [
     ChangeNotifierProvider<Provider_control>(
       create: (_) => Provider_control(),
-      child: DevicePreview(
-        enabled: false,
-        builder: (context) => MyApp(), // Wrap your app
-      ),
     ),
-  );
+    ChangeNotifierProvider<Provider_Data>(
+      create: (_) => Provider_Data(),
+    ),
+  ], child:MyApp()));
 
   // OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
   // OneSignal.shared.init(

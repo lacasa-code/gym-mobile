@@ -212,6 +212,9 @@
   "delete": "حذف ",
   "select": "اختيار ",
   "filter": "تصفية ",
+  "Inventoryplay": "مخزون على وشك النفاذ",
+  "residual": "المتبقى ",
+
   "NotDelete": " لا يمكنك  حذف ",
   "yes": "نعم",
   "browsing": "تصفح الأن",
@@ -300,6 +303,7 @@
   "QustDate": "تاريخ السؤال",
   "QustOwner": "صاحب السؤال",
   "Qust": "السؤال",
+  "Qustions": "سؤال",
   "product": "منتج",
   "rate": "التقييم",
   "answer": "الاجابة",

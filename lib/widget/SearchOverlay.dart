@@ -208,16 +208,15 @@ class SearchOverlayState extends State<SearchOverlay>
                                 //selectStores: selectProduct,
                               ),
                               Positioned(
-                                  left: 20,
-                                  top: 20,
+                                  left:themeColor.getlocal()=='ar'?20: null,
+                                  right:themeColor.getlocal()=='en'?20:null,
                                   child: PopupMenuButton<int>(
                                     itemBuilder: (context) => [
                                       PopupMenuItem(
                                         value: 1,
                                         child: InkWell(
                                           onTap: (){
-                                            _navigate_edit_hell(
-                                                context, products[index]);
+                                            _navigate_edit_hell(context, products[index]);
                                           },
                                           child: Row(
                                             mainAxisAlignment:

@@ -126,7 +126,7 @@ class _TicketsState extends State<Tickets> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Text('${stores.length<=1?'${stores.length} ${getTransrlate(context,'ticket')}':stores.length<=2?' شكوتين':'${stores.length} شكاوى'}'),
+                            Text('${stores.length} ${getTransrlate(context,'ticket')}'),
                             SizedBox(
                               width: 5,
                             ),

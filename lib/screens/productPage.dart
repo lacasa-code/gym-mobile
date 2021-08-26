@@ -6,9 +6,15 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/products_model.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
+import 'package:trkar_vendor/utils/Provider/provider_data.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
+import 'package:trkar_vendor/utils/navigator.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
+import 'package:trkar_vendor/utils/service/API.dart';
+import 'package:trkar_vendor/widget/ResultOverlay.dart';
 import 'package:trkar_vendor/widget/SearchOverlay.dart';
+
+import 'Edit_product.dart';
 
 class ProductPage extends StatefulWidget {
   Product product;
@@ -65,12 +71,81 @@ class _ProductPageState extends State<ProductPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Text(
-                "${widget.product.name}",
-                style: TextStyle(fontSize: 22),
-              ),
+
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Container(
+                    width: ScreenUtil.getWidth(context)/1.5,
+                    child: Text(
+                      "${themeColor.getlocal()=='ar'?widget.product.name??widget.product.nameEn:widget.product.nameEn??widget.product.name}",
+                      style: TextStyle(fontSize: 22),
+                    ),
+                  ),
+                ),
+                if (widget.product.approved==0) Container() else Positioned(
+                    left:themeColor.getlocal()=='ar'?20: null,
+                    right:themeColor.getlocal()=='en'?1:null,
+                    top: 20,
+                    child: PopupMenuButton<int>(
+                      itemBuilder: (context) => [
+                        PopupMenuItem(
+                          value: 1,
+                          child: InkWell(
+                            onTap: (){
+                              Nav.route(context, Edit_Product( widget.product));
+                            },
+                            child: Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceAround,
+                              children: [
+                                Text("${getTransrlate(context, 'edit')}"),
+                                Icon(
+                                  Icons.edit_outlined,
+                                  color: Colors.black54,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        PopupMenuItem(
+                          value: 2,
+                          child:  InkWell(
+                            onTap: (){
+                              API(context).Delete('products/${widget.product.id}').then((value) {
+                                if (value != null) {
+                                  showDialog(
+                                    context: context,
+                                    builder: (_) => ResultOverlay(
+                                        "${value['message']??value['errors']?? getTransrlate(context, 'doneDelete')}"
+                                    ),
+                                  );
+                                }
+                                Provider.of<Provider_Data>(context,listen: false).getProducts(context);
+                              });
+                            },
+                            child: Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceAround,
+                              children: [
+                                Text("${getTransrlate(context, 'delete')}"),
+                                Icon(
+                                  CupertinoIcons.delete,
+                                  color: Colors.black54,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+
+                ),
+
+              ],
             ),
             CarouselSlider(
               items: widget.product.photo

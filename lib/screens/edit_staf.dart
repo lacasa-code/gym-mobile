@@ -118,7 +118,7 @@ class _EditStaffState extends State<EditStaff> {
                         height: 10,
                       ),
                       Text(
-                        "الدور الوظيفي",
+                        "${getTransrlate(context, 'role')}",
                         style: TextStyle(color: Colors.black, fontSize: 16),
                       ),
                       SizedBox(
@@ -192,7 +192,7 @@ class _EditStaffState extends State<EditStaff> {
                             API(context).Put("users/${widget.user.id}", {
                               "name": widget.user.name,
                               "email": widget.user.email,
-                              "roles": widget.user.rolesid
+                              "roles": widget.user.rolesid??widget.user.roles.id
                             }).then((value) {
                               if (value != null) {
                                 setState(() {

@@ -274,6 +274,8 @@ class _HiddenMenuState extends State<HiddenMenu> {
                                 SharedPreferences.getInstance().then((prefs) {
                                   prefs.setString('local', themeColor.local);
                                 });
+                                Navigator.pop(context);
+
                               },
                               child: ItemHiddenMenu(
                                 icon: SvgPicture.asset(

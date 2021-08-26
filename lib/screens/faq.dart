@@ -79,25 +79,9 @@ class _FaqPageState extends State<FaqPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Text('${faq.length<=1?'${faq.length} سؤال':faq.length<=2?' سؤالين':'${faq.length} أسئلة'}'),
+                          Text('${faq.length} ${getTransrlate(context, 'Qustions')}'),
                           SizedBox(
                             width: 5,
-                          ),
-                          InkWell(
-                            onTap: () {
-                              // showDialog(
-                              //     context: context,
-                              //     builder: (_) => Filterdialog());
-                            },
-                            child: Row(
-                              children: [
-                                Text('${getTransrlate(context, 'filter')}'),
-                                Icon(
-                                  Icons.keyboard_arrow_down,
-                                  size: 20,
-                                )
-                              ],
-                            ),
                           ),
                           InkWell(
                             onTap: () {

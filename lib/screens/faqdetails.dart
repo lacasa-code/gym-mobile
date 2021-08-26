@@ -27,7 +27,7 @@ class faq_information extends StatefulWidget {
 
 class _faq_informationState extends State<faq_information> {
   final _formKey = GlobalKey<FormState>();
-  String answer;
+  TextEditingController answer=TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -68,14 +68,26 @@ class _faq_informationState extends State<faq_information> {
                   style: TextStyle(color: Colors.black, fontSize: 12)),
               widget.orders_model.product==null?Container():   Text(" ${getTransrlate(context, 'product')}:${themeColor.getlocal()=='ar'?widget.orders_model.product.name:widget.orders_model.product.nameEn ?? widget.orders_model.product.name}",
                   style: TextStyle(color: Colors.black, fontSize: 12)),
-              widget.orders_model.answer==null?Container():  Text("${getTransrlate(context, 'answer')} :${widget.orders_model.answer ?? ''}",
-                  style: TextStyle(color: Colors.black, fontSize: 12)),
+              widget.orders_model.answer==null?Container():  Row(
+                children: [
+                  Container(
+                    width: ScreenUtil.getWidth(context)/1.3,
+                    child: Text("${getTransrlate(context, 'answer')} :${widget.orders_model.answer ?? ''}",
+                        style: TextStyle(color: Colors.black, fontSize: 12)),
+                  ),
+                  IconButton(onPressed: (){
+                    answer.text= widget.orders_model.answer;
+                  }, icon:Icon(
+                      Icons.edit,color: Colors.black45,
+                  ))
+                ],
+              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Form(
                   key: _formKey,
                   child: MyTextFormField(
-                    intialLabel: widget.orders_model.answer??'',
+                    textEditingController:answer,
                     Keyboard_Type: TextInputType.text,
                     labelText: "${getTransrlate(context, 'sendReplay')}",
                     hintText: '${getTransrlate(context, 'answer')}',
@@ -87,7 +99,7 @@ class _faq_informationState extends State<faq_information> {
                       return null;
                     },
                     onSaved: (String value) {
-                      answer = value;
+                      answer.text = value;
                     },
                   ),
                 ),
@@ -117,7 +129,7 @@ class _faq_informationState extends State<faq_information> {
                       //setState(() => _isLoading = true);
                       API(context).post('vendor/answer/question', {
                         "question_id": widget.orders_model.id,
-                        "answer": answer
+                        "answer": answer.text
                       }).then((value) {
                         if (value != null) {
                           if (value['status_code'] == 200) {

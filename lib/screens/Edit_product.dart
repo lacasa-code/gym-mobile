@@ -27,6 +27,7 @@ import 'package:trkar_vendor/model/tags_model.dart';
 import 'package:trkar_vendor/model/transmissions.dart';
 import 'package:trkar_vendor/model/year.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
+import 'package:trkar_vendor/utils/Provider/provider_data.dart';
 import 'package:trkar_vendor/utils/SerachLoading.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
@@ -131,8 +132,8 @@ class _Edit_ProductState extends State<Edit_Product> {
     getAllCategory(widget.product.maincategory == null
         ? ''
         : widget.product.maincategory.id.toString());
-    getAllParts_Category(widget.product.category.id);
-    getAllCarMade(widget.product.carType.id.toString());
+    widget.product.category==null?null: getAllParts_Category(widget.product.category.id);
+    widget.product.carType==null?null: getAllCarMade(widget.product.carType.id.toString());
     getAllCareModel(widget.product.carMadeId);
     widget.product.yearto == null
         ? null
@@ -151,8 +152,8 @@ class _Edit_ProductState extends State<Edit_Product> {
     });
     widget.product.carMadeId =widget.product.carMade!=null? widget.product.carMade.id.toString(): null;
     widget.product.productType_id =widget.product.producttypeId!=null? widget.product.producttypeId.id.toString(): null;
-    widget.product.manufacturer_id = widget.product.manufacturer.id.toString();
-    widget.product.prodcountry_id = widget.product.originCountry.id.toString();
+    widget.product.manufacturer_id = widget.product.manufacturer==null?'':widget.product.manufacturer.id.toString();
+    widget.product.maincategory_id = widget.product.maincategory==null?'':widget.product.maincategory.id.toString();
     super.initState();
   }
 
@@ -369,7 +370,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                                 ? Main_Category()
                                 : widget.product.maincategory,
                             itemAsString: (Main_Category u) =>
-                            themeColor.getlocal()=='ar'?u.mainCategoryName??u.mainCategoryNameen:u.mainCategoryNameen??u.mainCategoryName,
+                            "${themeColor.getlocal()=='ar'?u.mainCategoryName??u.mainCategoryNameen:u.mainCategoryNameen??u.mainCategoryName}",
                             onChanged: (Main_Category data) {
                               widget.product.Main_categoryid =
                                   data.id.toString();
@@ -427,7 +428,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                                             : widget.product.category,
                                     //  onFind: (String filter) => getData(filter),
                                     itemAsString: (Categories u) =>
-                                    themeColor.getlocal()=='ar'?u.name??u.name_en:u.name_en??u.name,
+                                    "${themeColor.getlocal()=='ar'?u.name??u.name_en:u.name_en??u.name}",
                                     onChanged: (Categories data) {
                                       widget.product.CategoryId =
                                           data.id.toString();
@@ -491,7 +492,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                 SizedBox(
                   height: 10,
                 ),
-                widget.product.maincategory.id == 7
+                widget.product.maincategory_id == 7
                     ? Container()
                     : Column(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -615,7 +616,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                           SizedBox(
                             height: 7,
                           ),
-                          _generateModels(themeColor),
+                          widget.product.carModel==null?Container(): _generateModels(themeColor),
                           SizedBox(
                             height: 10,
                           ),
@@ -727,7 +728,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                                 ? Manufacturer()
                                 : widget.product.manufacturer,
                             itemAsString: (Manufacturer u) =>
-                            themeColor.getlocal()=='ar'?u.manufacturerName??u.name_en:u.name_en??u.manufacturerName,
+                            "${themeColor.getlocal()=='ar'?u.manufacturerName??u.name_en:u.name_en??u.manufacturerName}",
                             onChanged: (Manufacturer data) => widget
                                 .product.manufacturer_id = data.id.toString()),
                       ),
@@ -821,7 +822,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                             selectedItem: widget.product.producttypeId?? ProductType(),
                             // onFind: (String filter) => getData(filter),
                             itemAsString: (ProductType u) =>
-                            themeColor.getlocal()=='ar'?u.producttype??u.name_en:u.name_en??u.producttype,
+                            "${themeColor.getlocal()=='ar'?u.producttype??u.name_en:u.name_en??u.producttype}",
                             onChanged: (ProductType data) {
 
                               setState(() {
@@ -926,7 +927,6 @@ class _Edit_ProductState extends State<Edit_Product> {
                                     return null;
                                   },
                                   onSaved: (String value) {
-                                    widget.product.discount = value;
                                   },
                                 ),
                               ),
@@ -1124,7 +1124,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                                 ? ProdCountry()
                                 : widget.product.prodCountry,
                             itemAsString: (ProdCountry u) =>
-                            themeColor.getlocal()=='ar'?u.countryName??u.name_en:u.name_en??u.countryName,
+                            "${themeColor.getlocal()=='ar'?u.countryName??u.name_en:u.name_en??u.countryName}",
                             onChanged: (ProdCountry data) => widget
                                 .product.prodcountry_id = data.id.toString()),
                       ),
@@ -1374,17 +1374,9 @@ class _Edit_ProductState extends State<Edit_Product> {
                         onPressed: () async {
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
-                            widget.product.photos = images;
                             setState(() => loading = true);
                             print(widget.product.toJson());
-                            if(widget.product.photos.isEmpty||images.isEmpty){
-                              showDialog(
-                                context: context,
-                                builder: (_) => ResultOverlay(
-                                  "Select Image",
-                                ),
-                              );
-                            }else{
+                            if(widget.product.photo.isNotEmpty||images.isNotEmpty){
                               API(context)
                                   .postFile("products/${widget.product.id}",
                                   widget.product.toJson(),
@@ -1394,7 +1386,6 @@ class _Edit_ProductState extends State<Edit_Product> {
                                   setState(() {
                                     loading = false;
                                   });
-                                  print(value.containsKey('errors'));
                                   if (value.containsKey('errors')) {
                                     showDialog(
                                       context: context,
@@ -1404,7 +1395,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                                     );
                                   } else {
                                     Navigator.pop(context);
-
+                                    Provider.of<Provider_Data>(context,listen: false).getProducts(context);
                                     showDialog(
                                       context: context,
                                       builder: (_) => ResultOverlay(
@@ -1413,6 +1404,13 @@ class _Edit_ProductState extends State<Edit_Product> {
                                   }
                                 }
                               });
+                            }else{
+                              showDialog(
+                                context: context,
+                                builder: (_) => ResultOverlay(
+                                  "Select Image",
+                                ),
+                              );
                             }
 
                           }
