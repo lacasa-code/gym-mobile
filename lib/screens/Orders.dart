@@ -278,7 +278,7 @@ class _OrdersState extends State<Orders> {
                                                   ],
                                                 ),
                                               )
-                                            : Row(
+                                            :filteredOrders[index].need_approval==0?Container(): Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
                                                         .spaceAround,

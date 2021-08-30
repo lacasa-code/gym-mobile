@@ -144,7 +144,7 @@ class _Edit_ProductState extends State<Edit_Product> {
 
 
     setState(() {
-      widget.product.productType_id =widget.product.producttypeId!=null? widget.product.producttypeId.id.toString(): null;
+      widget.product.prodcountry_id =widget.product.prodCountry!=null? widget.product.prodCountry.id.toString(): null;
       widget.product.maincategory == null
           ? null
           : widget.product.Main_categoryid =

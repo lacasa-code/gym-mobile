@@ -319,7 +319,7 @@ class _HomeMobileState extends State<HomeMobile> {
                                                         FontWeight.bold),
                                               ),
                                             ),
-                                            Text("${basic_report.totalSale}",
+                                            Text("${basic_report.totalSale.roundToDouble()}",
                                                 maxLines: 1,
                                                 style: TextStyle(
                                                     color:

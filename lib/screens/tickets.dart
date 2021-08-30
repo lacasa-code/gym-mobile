@@ -12,6 +12,7 @@ import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/navigator.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
+import 'package:trkar_vendor/widget/ResultOverlay.dart';
 import 'package:trkar_vendor/widget/SearchOverlay.dart';
 import 'package:trkar_vendor/widget/Sort.dart';
 import 'package:trkar_vendor/widget/hidden_menu.dart';
@@ -152,8 +153,23 @@ class _TicketsState extends State<Tickets> {
                                     context: context,
                                     builder: (_) => Sortdialog())
                                     .then((val) {
-                                  print(val);
-
+                                  print('$url?sort_type=${val??'ASC'}');
+                                  API(context)
+                                      .get('$url?sort_type=${val??'ASC'}')
+                                      .then((value) {
+                                    if (value != null) {
+                                      if (value['status_code'] == 200) {
+                                        setState(() {
+                                          filteredStores = stores = Tickets_model.fromJson(value).data;
+                                        });
+                                      } else {
+                                        showDialog(
+                                            context: context,
+                                            builder: (_) => ResultOverlay(
+                                                value['errors']));
+                                      }
+                                    }
+                                  });
                                 });
                               },
                               child: Row(

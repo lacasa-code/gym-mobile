@@ -43,6 +43,7 @@ class Product {
   String name;
   String nameEn;
   String description;
+  String avg_valuations;
   String descriptionEn;
   String price;
   String discount;
@@ -105,6 +106,7 @@ class Product {
       this.discount,
       this.createdAt,
       this.carMadeId,
+      this.avg_valuations,
       this.carModelId,
         this.carModel,
       this.yearId,
@@ -125,6 +127,7 @@ class Product {
     id = json['id'];
     name = json['name'];
     description = json['description'];
+    avg_valuations = json['avg_valuations'].toString();
     nameEn = json['name_en'];
     descriptionEn = json['description_en'];
     price = json['price'];

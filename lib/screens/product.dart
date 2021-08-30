@@ -38,6 +38,8 @@ class _ProductsState extends State<Products> {
   @override
   void initState() {
     data=Provider.of<Provider_Data>(context,listen: false);
+    data.getProducts(context);
+
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
@@ -265,22 +267,22 @@ class _ProductsState extends State<Products> {
                                     ),
                                     // color: Color(0xffE4E4E4),
                                   ),
-                                  InkWell(
-                                    onTap: () {
-                                      // showDialog(
-                                      //     context: context,
-                                      //     builder: (_) => Filterdialog());
-                                    },
-                                    child: Row(
-                                      children: [
-                                        Text('${getTransrlate(context, 'filter')}'),
-                                        Icon(
-                                          Icons.keyboard_arrow_down,
-                                          size: 20,
-                                        )
-                                      ],
-                                    ),
-                                  ),
+                                  // InkWell(
+                                  //   onTap: () {
+                                  //     // showDialog(
+                                  //     //     context: context,
+                                  //     //     builder: (_) => Filterdialog());
+                                  //   },
+                                  //   child: Row(
+                                  //     children: [
+                                  //       Text('${getTransrlate(context, 'filter')}'),
+                                  //       Icon(
+                                  //         Icons.keyboard_arrow_down,
+                                  //         size: 20,
+                                  //       )
+                                  //     ],
+                                  //   ),
+                                  // ),
                                   InkWell(
                                     onTap: () {
                                       showDialog(
@@ -324,9 +326,7 @@ class _ProductsState extends State<Products> {
                               ),
                             ),
                       ListView.builder(
-                          itemCount: data.products == null && data.products.isEmpty
-                              ? 0
-                              : data.products.length,
+                          itemCount: data.products.length,
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
                           itemBuilder: (BuildContext context, int index) {

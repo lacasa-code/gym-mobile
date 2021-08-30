@@ -1,8 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/store_model.dart';
 import 'package:trkar_vendor/screens/StorePage.dart';
+import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/navigator.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
@@ -19,8 +21,11 @@ class Stores_item extends StatefulWidget {
 }
 
 class _Stores_itemState extends State<Stores_item> {
+
   @override
   Widget build(BuildContext context) {
+    final themeColor = Provider.of<Provider_control>(context);
+
     return InkWell(
       onTap: () {
         Nav.route(
@@ -140,6 +145,20 @@ class _Stores_itemState extends State<Stores_item> {
                       ),
                     ],
                   ),
+                  widget.hall_model.headCenter==1? Container(
+                    width: ScreenUtil.getWidth(context) / 2,
+                    child: AutoSizeText(
+                      'Billing Address',
+                      minFontSize: 10,
+                      overflow: TextOverflow.clip,
+                      maxLines: 1,
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.orange,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ):Container(),
                   widget.hall_model.members == null
                       ? Container()
                       : Container(

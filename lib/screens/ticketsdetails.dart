@@ -209,35 +209,92 @@ class _tickets_informationState extends State<tickets_information> {
                   ),
                 ],
               ),
+
+              ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: widget.orders_model.comments.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Padding(
+                    padding: EdgeInsets.only(right: 7, left: 10, top: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+
+                          children: [
+                            Column(
+                              children: [
+                                Container(
+                                  width: ScreenUtil.getWidth(context) / 2,
+                                  child: Text(
+                                    widget.orders_model.comments[index].userName,
+                                    style: TextStyle(
+                                        color: themeColor.getColor(),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 12),
+                                  ),
+                                ),
+                                Container(
+                                  width: ScreenUtil.getWidth(context) / 2,
+                                  child: Text(
+                                    widget.orders_model.comments[index].comment,
+                                    style: TextStyle(
+                                        color: themeColor.getColor(),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 12),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Text(
+                          widget.orders_model.comments[index].createdAt,
+                          style: TextStyle(color: Colors.black54, fontSize: 15),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Form(
-                  key: _formKey,
-                  child: MyTextFormField(
-                    intialLabel: '  ',
-                    Keyboard_Type: TextInputType.emailAddress,
-                    labelText: "${getTransrlate(context, 'sendReplay')}",
-                    hintText: 'الاجابة',
-                    validator: (String value) {
-                      if (value.isEmpty) {
-                        return '${getTransrlate(context, 'answer')}';
-                      }
-                      _formKey.currentState.save();
-                      return null;
-                    },
-                    onSaved: (String value) {
-                      answer = value;
-                    },
-                  ),
-                ),
+                child: Container(height: 1,color: Colors.black12,),
               ),
+              widget.orders_model.Case!='pending'?Container():Column(
+            children: [
+              Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Form(
+                      key: _formKey,
+                      child: MyTextFormField(
+                        intialLabel: '  ',
+                        Keyboard_Type: TextInputType.emailAddress,
+                        labelText: "${getTransrlate(context, 'sendReplay')}",
+                        hintText: 'الاجابة',
+                        validator: (String value) {
+                          if (value.isEmpty) {
+                            return '${getTransrlate(context, 'answer')}';
+                          }
+                          _formKey.currentState.save();
+                          return null;
+                        },
+                        onSaved: (String value) {
+                          answer = value;
+                        },
+                      ),
+                    ),
+                  ),
               Center(
                 child: GestureDetector(
                   child: Container(
                     width: ScreenUtil.getWidth(context) / 2.5,
                     padding: const EdgeInsets.all(10.0),
                     decoration:
-                        BoxDecoration(border: Border.all(color: Colors.orange)),
+                    BoxDecoration(border: Border.all(color: Colors.orange)),
                     child: Center(
                       child: AutoSizeText(
                         "${getTransrlate(context, 'send')}",
@@ -277,6 +334,8 @@ class _tickets_informationState extends State<tickets_information> {
                   },
                 ),
               ),
+            ],
+          ),
               SizedBox(height: 10,),
               Text("${getTransrlate(context, 'OrderNO')} : ${widget.orders_model.orderNumber ?? ''}",
                   style: TextStyle(color: Colors.black, fontSize: 12)),

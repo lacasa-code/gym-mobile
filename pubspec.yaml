@@ -51,6 +51,8 @@ dependencies:
   device_preview: ^0.7.3
   provider: ^5.0.0
   location: ^4.3.0
+  sentry_flutter: ^5.1.0
+  sentry: ^5.1.0
 
 dev_dependencies:
   flutter_test:

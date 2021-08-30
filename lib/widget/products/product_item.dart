@@ -99,7 +99,7 @@ class _Product_itemState extends State<Product_item> {
                     fontSize: 14),
               ),
               AutoSizeText(
-                '${getTransrlate(context, 'rate')}  : 3.5/5',
+                '${getTransrlate(context, 'rate')}  : ${widget.hall_model.avg_valuations??0}/5',
                 minFontSize: 10,
                 style: TextStyle(
                   fontSize: 13,

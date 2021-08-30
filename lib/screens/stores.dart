@@ -430,7 +430,10 @@ class _StoresState extends State<Stores> {
                                           ),
                                         ),
                                       ),
-                                      PopupMenuItem(
+                                      filteredStores[index].headCenter==1?PopupMenuItem(
+                                        value: 2,
+
+                                      ):    PopupMenuItem(
                                         value: 2,
                                         child:  InkWell(
                                           onTap: (){

@@ -43,6 +43,7 @@ class Order {
   Payment payment;
   String paid;
   int status;
+  int need_approval;
   String createdAt;
   String orderStatus;
   List<OrderDetails> orderDetails;
@@ -58,12 +59,14 @@ class Order {
         this.status,this.payment,this.shipping,
         this.createdAt,
         this.orderStatus,
+        this.need_approval,
         this.orderDetails});
 
   Order.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userId = json['user_id'];
     orderNumber = json['order_number'];
+    need_approval = json['need_approval'];
     orderTotal = (json['order_total'].round()).toString();
     expired = json['expired'];
     approved = json['approved'];

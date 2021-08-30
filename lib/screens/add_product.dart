@@ -317,7 +317,7 @@ int CheckBox=0;
                                           product.Main_categoryid =
                                               data.id.toString();
                                           Main_categoryid = data.id;
-
+                                          product.CategoryId==null;
                                           _category = null;
                                         });
                                         getAllCategory(data.id);
@@ -371,10 +371,11 @@ int CheckBox=0;
                                               itemAsString: (Categories u) =>
                                               themeColor.getlocal()=='ar'?u.name??u.name_en:u.name_en??u.name,
                                               onChanged: (Categories data) {
-                                                product.CategoryId =
-                                                    data.id.toString();
                                                 setState(() {
+                                                  product.CategoryId = data.id.toString();
+
                                                   part_Categories = null;
+
                                                 });
                                                 getAllParts_Category(data.id);
                                               }),
@@ -417,103 +418,66 @@ int CheckBox=0;
                                               itemAsString: (Part_Category u) =>
                                               themeColor.getlocal()=='ar'?u.categoryName??u.categoryname_en:u.categoryname_en??u.categoryName,
                                               onChanged: (Part_Category data) =>
-                                                  product.partCategoryId =
-                                                      data.id.toString()),
+                                                  product.partCategoryId = data.id.toString()),
                                         ),
                                 ],
                               ),
                             ],
                           ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            "${getTransrlate(context, 'car')}",
-                            style: TextStyle(color: Colors.black, fontSize: 16),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          cartypes == null
-                              ? Container(
-                            child: DropdownSearch<String>(
-                              showSearchBox: false,
-                              showClearButton: false,
-                              label: " ",
-                              items: [''],
-                              enabled: false,
-                              //  onFind: (String filter) => getData(filter),
-                            ),
-                          )
-                              : Container(
-                              child: DropdownSearch<CarType>(
-                                  showSearchBox: false,
-                                  maxHeight: ScreenUtil.getHeight(context)/4,
-                                  showClearButton: false,
-                                  label:
-                                  "${getTransrlate(context, 'CarType')}",
-                                  validator: (CarType item) {
-                                    if (item == null) {
-                                      return "Required field";
-                                    } else
-                                      return null;
-                                  },
-                                  items: cartypes,
-                                  //  onFind: (String filter) => getData(filter),
-                                  itemAsString: (CarType u) =>
-                                  "${ themeColor.getlocal()=='ar'?u.typeName??u.name_en:u.name_en??u.typeName}",
-                                  onChanged: (CarType data) {
-                                    product.cartype_id = data.id.toString();
-                                    setState(() {
-                                      CarMades==null;
-                                    });
-                                    getAllCarMade(data.id.toString());
-                                  })),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          transmissions == null
-                              ? Container(
-                                  width: ScreenUtil.getWidth(context) / 1,
-                                  child: DropdownSearch<String>(
-                                    showSearchBox: false,
-                                    showClearButton: false,
-                                    label: " ",
-                                    items: [''],
-                                    enabled: false,
-                                    //  onFind: (String filter) => getData(filter),
-                                  ),
-                                )
-                              : Container(
-                                  width: ScreenUtil.getWidth(context) / 1,
-                                  child: DropdownSearch<Transmission>(
-                                      maxHeight:
-                                          ScreenUtil.getHeight(context) / 4,
-                                      showSearchBox: false,
-                                      showClearButton: false,
-                                      label: " ${getTransrlate(context, 'transmissionName')}",
-                                      validator: (Transmission item) {
-                                        if (item == null) {
-                                          return "Required field";
-                                        } else
-                                          return null;
-                                      },
-                                      items: transmissions,
-                                      //  onFind: (String filter) => getData(filter),
-                                      itemAsString: (Transmission u) =>
-                                      themeColor.getlocal()=='ar'?u.transmissionName??u.name_en:u.name_en??u.transmissionName,
-                                      onChanged: (Transmission data) =>
-                                          product.transmission_id =
-                                              data.id.toString()),
-                                ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Main_categoryid == 7
+                          Main_categoryid == 7||Main_categoryid == 5||product.CategoryId == "43"
                               ? Container()
                               : Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
+
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(
+                                      "${getTransrlate(context, 'car')}",
+                                      style: TextStyle(color: Colors.black, fontSize: 16),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    cartypes == null
+                                        ? Container(
+                                      child: DropdownSearch<String>(
+                                        showSearchBox: false,
+                                        showClearButton: false,
+                                        label: " ",
+                                        items: [''],
+                                        enabled: false,
+                                        //  onFind: (String filter) => getData(filter),
+                                      ),
+                                    )
+                                        : Container(
+                                        child: DropdownSearch<CarType>(
+                                            showSearchBox: false,
+                                            maxHeight: ScreenUtil.getHeight(context)/4,
+                                            showClearButton: false,
+                                            label:
+                                            "${getTransrlate(context, 'CarType')}",
+                                            validator: (CarType item) {
+                                              if (item == null) {
+                                                return "Required field";
+                                              } else
+                                                return null;
+                                            },
+                                            items: cartypes,
+                                            //  onFind: (String filter) => getData(filter),
+                                            itemAsString: (CarType u) =>
+                                            "${ themeColor.getlocal()=='ar'?u.typeName??u.name_en:u.name_en??u.typeName}",
+                                            onChanged: (CarType data) {
+                                              product.cartype_id = data.id.toString();
+                                              setState(() {
+                                                CarMades==null;
+                                              });
+                                              getAllCarMade(data.id.toString());
+                                            })),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
                                     CarMades == null
                                         ? Container(
                                             width:
@@ -552,6 +516,86 @@ int CheckBox=0;
                                                   getAllCareModel(data.id);
                                                 }),
                                           ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(
+                                      "${getTransrlate(context, 'models')}",
+                                      style: TextStyle(
+                                          color: Colors.black, fontSize: 16),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              width: 1, color: Colors.black26)),
+                                      child: TypeAheadField(
+                                        // hideOnLoading: true,
+                                        // hideOnEmpty: true,
+                                        getImmediateSuggestions: false,
+                                        onSuggestionSelected: (val) {
+                                          onModelSelected(val);
+                                        },
+                                        itemBuilder: (context, suggestion) {
+                                          return ListTile(
+                                            title: Text(
+                                              themeColor.getlocal()=='ar'?suggestion.carmodel??suggestion.name_en:suggestion.name_en??suggestion.carmodel,
+                                            ),
+                                          );
+                                        },
+                                        suggestionsCallback: (val) {
+                                          return _ModelList(
+                                            tags: carmodels,
+                                            suggestion: val,
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 7,
+                                    ),
+                                    _generateModels(themeColor),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+
+
+                                    transmissions == null
+                                        ? Container(
+                                      width: ScreenUtil.getWidth(context) / 1,
+                                      child: DropdownSearch<String>(
+                                        showSearchBox: false,
+                                        showClearButton: false,
+                                        label: " ",
+                                        items: [''],
+                                        enabled: false,
+                                        //  onFind: (String filter) => getData(filter),
+                                      ),
+                                    )
+                                        : Container(
+                                      width: ScreenUtil.getWidth(context) / 1,
+                                      child: DropdownSearch<Transmission>(
+                                          maxHeight:
+                                          ScreenUtil.getHeight(context) / 4,
+                                          showSearchBox: false,
+                                          showClearButton: false,
+                                          label: " ${getTransrlate(context, 'transmissionName')}",
+                                          validator: (Transmission item) {
+                                            if (item == null) {
+                                              return "Required field";
+                                            } else
+                                              return null;
+                                          },
+                                          items: transmissions,
+                                          //  onFind: (String filter) => getData(filter),
+                                          itemAsString: (Transmission u) =>
+                                          themeColor.getlocal()=='ar'?u.transmissionName??u.name_en:u.name_en??u.transmissionName,
+                                          onChanged: (Transmission data) =>
+                                          product.transmission_id =
+                                              data.id.toString()),
+                                    ),
                                     SizedBox(
                                       height: 10,
                                     ),
@@ -633,52 +677,11 @@ int CheckBox=0;
                                               ),
                                       ],
                                     ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(
-                                      "${getTransrlate(context, 'models')}",
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 16),
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Container(
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              width: 1, color: Colors.black26)),
-                                      child: TypeAheadField(
-                                        // hideOnLoading: true,
-                                        // hideOnEmpty: true,
-                                        getImmediateSuggestions: false,
-                                        onSuggestionSelected: (val) {
-                                          onModelSelected(val);
-                                        },
-                                        itemBuilder: (context, suggestion) {
-                                          return ListTile(
-                                            title: Text(
-                                              themeColor.getlocal()=='ar'?suggestion.carmodel??suggestion.name_en:suggestion.name_en??suggestion.carmodel,
-                                            ),
-                                          );
-                                        },
-                                        suggestionsCallback: (val) {
-                                          return _ModelList(
-                                            tags: carmodels,
-                                            suggestion: val,
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 7,
-                                    ),
-                                    _generateModels(themeColor),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
                                   ],
                                 ),
+                          SizedBox(
+                            height: 10,
+                          ),
                           _manufacturers == null
                               ? Container(
                                   width: ScreenUtil.getWidth(context),
@@ -915,7 +918,6 @@ int CheckBox=0;
                                               return null;
                                             },
                                             onSaved: (String value) {
-                                              product.discount = value;
                                             },
                                           ),
                                         ),
