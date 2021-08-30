@@ -1,13 +1,16 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chart_components/bar_chart_component.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trkar_vendor/main.dart';
 import 'package:trkar_vendor/model/basic_report.dart';
+import 'package:trkar_vendor/model/products_model.dart';
 import 'package:trkar_vendor/screens/Orders.dart';
 import 'package:trkar_vendor/screens/edit_profile.dart';
 import 'package:trkar_vendor/screens/faq.dart';
@@ -23,7 +26,6 @@ import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/navigator.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
-import 'package:trkar_vendor/widget/commons/default_button.dart';
 import 'package:trkar_vendor/widget/item_hidden_menu.dart';
 
 class HomeDesktop extends StatefulWidget {
@@ -39,12 +41,15 @@ class _HomeDesktopState extends State<HomeDesktop> {
   Basic_report basic_report;
   DateTime date = DateTime.now();
   DateTime from = DateTime.now();
-  TextEditingController _tocontroller = TextEditingController();
-  TextEditingController _fromcontroller = TextEditingController();
+  TextEditingController _tocontroller = TextEditingController(
+      text: DateFormat('yyyy-MM-dd').format(DateTime.now()));
+  TextEditingController _fromcontroller = TextEditingController(
+      text: DateFormat('yyyy-MM-dd').format(DateTime.now()));
   bool isconfiguredListern = false;
   int id;
   String username, name, last, photo;
   String am_pm;
+  List<Product> product;
 
   Future<void> _selectDatefrom(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -81,6 +86,13 @@ class _HomeDesktopState extends State<HomeDesktop> {
         name = prefs.getString('user_name');
       });
     });
+    API(context).get('vendor/about/rare/products').then((value) {
+      if (value != null) {
+        setState(() {
+          product = Products_model.fromJson(value).product;
+        });
+      }
+    });
     super.initState();
   }
 
@@ -95,7 +107,7 @@ class _HomeDesktopState extends State<HomeDesktop> {
           Container(
             width: ScreenUtil.getWidth(context) / 5,
             height: ScreenUtil.getHeight(context) / 1,
-            color: themeColor.getColor(),
+            // color: themeColor.getColor(),
             child: SingleChildScrollView(
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -109,8 +121,8 @@ class _HomeDesktopState extends State<HomeDesktop> {
                         children: [
                           Center(
                             child: Image.asset(
-                              'assets/images/logo.png',
-                              color: Colors.white,
+                              'assets/images/trkar_logo_white.png',
+                              // color: Colors.orange,
                               height: ScreenUtil.getHeight(context) / 8,
                               fit: BoxFit.contain,
                             ),
@@ -122,7 +134,7 @@ class _HomeDesktopState extends State<HomeDesktop> {
                                 : getTransrlate(context, 'good_night'),
                             style: TextStyle(
                                 fontSize: 20,
-                                color: Colors.white,
+                                color: Colors.black,
                                 fontWeight: FontWeight.bold),
                           ),
                           AutoSizeText(
@@ -131,7 +143,7 @@ class _HomeDesktopState extends State<HomeDesktop> {
                                 : name,
                             style: TextStyle(
                                 fontSize: 17,
-                                color: Colors.white,
+                                color: Colors.orange,
                                 fontWeight: FontWeight.w400),
                           )
                         ],
@@ -148,11 +160,11 @@ class _HomeDesktopState extends State<HomeDesktop> {
                           icon: Icon(
                             Icons.supervised_user_circle,
                             size: 25,
-                            color: Colors.white.withOpacity(0.8),
+                            color: Colors.orange.withOpacity(0.8),
                           ),
                           name: getTransrlate(context, 'staff'),
                           baseStyle: TextStyle(
-                              color: Colors.white.withOpacity(0.6),
+                              color: Colors.orange.withOpacity(0.6),
                               fontSize: 19.0,
                               fontWeight: FontWeight.w800),
                           colorLineSelected: Colors.orange,
@@ -166,11 +178,11 @@ class _HomeDesktopState extends State<HomeDesktop> {
                           icon: Icon(
                             Icons.store,
                             size: 25,
-                            color: Colors.white.withOpacity(0.8),
+                            color: Colors.orange.withOpacity(0.8),
                           ),
                           name: getTransrlate(context, 'stores'),
                           baseStyle: TextStyle(
-                              color: Colors.white.withOpacity(0.6),
+                              color: Colors.orange.withOpacity(0.6),
                               fontSize: 19.0,
                               fontWeight: FontWeight.w800),
                           colorLineSelected: Colors.orange,
@@ -184,11 +196,11 @@ class _HomeDesktopState extends State<HomeDesktop> {
                           icon: Icon(
                             Icons.shopping_bag,
                             size: 25,
-                            color: Colors.white.withOpacity(0.8),
+                            color: Colors.orange.withOpacity(0.8),
                           ),
                           name: getTransrlate(context, 'product'),
                           baseStyle: TextStyle(
-                              color: Colors.white.withOpacity(0.6),
+                              color: Colors.orange.withOpacity(0.6),
                               fontSize: 19.0,
                               fontWeight: FontWeight.w800),
                           colorLineSelected: Colors.orange,
@@ -202,11 +214,11 @@ class _HomeDesktopState extends State<HomeDesktop> {
                           icon: Icon(
                             Icons.shopping_cart,
                             size: 25,
-                            color: Colors.white.withOpacity(0.8),
+                            color: Colors.orange.withOpacity(0.8),
                           ),
                           name: getTransrlate(context, 'Myorders'),
                           baseStyle: TextStyle(
-                              color: Colors.white.withOpacity(0.6),
+                              color: Colors.orange.withOpacity(0.6),
                               fontSize: 19.0,
                               fontWeight: FontWeight.w800),
                           colorLineSelected: Colors.orange,
@@ -220,11 +232,11 @@ class _HomeDesktopState extends State<HomeDesktop> {
                           icon: Icon(
                             Icons.assignment_sharp,
                             size: 25,
-                            color: Colors.white.withOpacity(0.8),
+                            color: Colors.orange.withOpacity(0.8),
                           ),
                           name: getTransrlate(context, 'invoices'),
                           baseStyle: TextStyle(
-                              color: Colors.white.withOpacity(0.6),
+                              color: Colors.orange.withOpacity(0.6),
                               fontSize: 19.0,
                               fontWeight: FontWeight.w800),
                           colorLineSelected: Colors.orange,
@@ -238,11 +250,11 @@ class _HomeDesktopState extends State<HomeDesktop> {
                           icon: Icon(
                             Icons.message,
                             size: 25,
-                            color: Colors.white.withOpacity(0.8),
+                            color: Colors.orange.withOpacity(0.8),
                           ),
                           name: getTransrlate(context, 'ticket'),
                           baseStyle: TextStyle(
-                              color: Colors.white.withOpacity(0.6),
+                              color: Colors.orange.withOpacity(0.6),
                               fontSize: 19.0,
                               fontWeight: FontWeight.w800),
                           colorLineSelected: Colors.orange,
@@ -252,7 +264,7 @@ class _HomeDesktopState extends State<HomeDesktop> {
                           height: 28,
                           margin: EdgeInsets.only(left: 24, right: 48),
                           child: Divider(
-                            color: Colors.white.withOpacity(0.5),
+                            color: Colors.orange.withOpacity(0.5),
                           )),
                       InkWell(
                         onTap: () {
@@ -262,11 +274,11 @@ class _HomeDesktopState extends State<HomeDesktop> {
                           icon: Icon(
                             Icons.person,
                             size: 25,
-                            color: Colors.white.withOpacity(0.8),
+                            color: Colors.orange.withOpacity(0.8),
                           ),
                           name: getTransrlate(context, 'ProfileSettings'),
                           baseStyle: TextStyle(
-                              color: Colors.white.withOpacity(0.6),
+                              color: Colors.orange.withOpacity(0.6),
                               fontSize: 19.0,
                               fontWeight: FontWeight.w800),
                           colorLineSelected: Colors.orange,
@@ -278,11 +290,11 @@ class _HomeDesktopState extends State<HomeDesktop> {
                           icon: Icon(
                             Icons.call,
                             size: 25,
-                            color: Colors.white.withOpacity(0.8),
+                            color: Colors.orange.withOpacity(0.8),
                           ),
                           name: getTransrlate(context, 'contact'),
                           baseStyle: TextStyle(
-                              color: Colors.white.withOpacity(0.6),
+                              color: Colors.orange.withOpacity(0.6),
                               fontSize: 19.0,
                               fontWeight: FontWeight.w800),
                           colorLineSelected: Colors.orange,
@@ -296,11 +308,11 @@ class _HomeDesktopState extends State<HomeDesktop> {
                           icon: Icon(
                             Icons.info_outline,
                             size: 25,
-                            color: Colors.white.withOpacity(0.8),
+                            color: Colors.orange.withOpacity(0.8),
                           ),
                           name: getTransrlate(context, 'FAQ'),
                           baseStyle: TextStyle(
-                              color: Colors.white.withOpacity(0.6),
+                              color: Colors.orange.withOpacity(0.6),
                               fontSize: 19.0,
                               fontWeight: FontWeight.w800),
                           colorLineSelected: Colors.orange,
@@ -323,13 +335,13 @@ class _HomeDesktopState extends State<HomeDesktop> {
                           icon: Icon(
                             Icons.exit_to_app,
                             size: 19,
-                            color: Colors.white.withOpacity(0.8),
+                            color: Colors.orange.withOpacity(0.8),
                           ),
                           name: themeColor.isLogin
                               ? getTransrlate(context, 'Logout')
                               : getTransrlate(context, 'login'),
                           baseStyle: TextStyle(
-                              color: Colors.white.withOpacity(0.6),
+                              color: Colors.orange.withOpacity(0.6),
                               fontSize: 19.0,
                               fontWeight: FontWeight.w800),
                           colorLineSelected: Colors.orange,
@@ -361,7 +373,7 @@ class _HomeDesktopState extends State<HomeDesktop> {
                                   icon: Icon(
                                     Icons.language,
                                     size: 25,
-                                    color: Colors.white.withOpacity(0.8),
+                                    color: Colors.orange.withOpacity(0.8),
                                   ),
                                   name: Provider.of<Provider_control>(context)
                                               .local ==
@@ -369,7 +381,7 @@ class _HomeDesktopState extends State<HomeDesktop> {
                                       ? 'English'
                                       : 'عربى',
                                   baseStyle: TextStyle(
-                                      color: Colors.white.withOpacity(0.6),
+                                      color: Colors.orange.withOpacity(0.6),
                                       fontSize: 19.0,
                                       fontWeight: FontWeight.w800),
                                   colorLineSelected: Colors.orange,
@@ -397,224 +409,539 @@ class _HomeDesktopState extends State<HomeDesktop> {
                 ])),
           ),
           Expanded(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: ScreenUtil.getHeight(context) / 10,
-                ),
-                Text(DateFormat('yyyy-MM-dd').format(DateTime.now())),
-                Container(
-                  width: ScreenUtil.getWidth(context) / 3,
-                  child: DefaultButton(
-                      text: getTransrlate(context, 'filter'),
-                      press: () {
-                        final _formKey = GlobalKey<FormState>();
-
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext contex) {
-                            return AlertDialog(
-                              title: Text('Filter Sales by period'),
-                              content: Form(
-                                key: _formKey,
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    SizedBox(height: 10),
-                                    TextFormField(
-                                        readOnly: true,
-                                        onTap: () => _selectDatefrom(context),
-                                        controller: _fromcontroller,
-                                        decoration: InputDecoration(
-                                          suffixIcon:
-                                              Icon(Icons.calendar_today),
-                                          hintText: 'date',
-                                          contentPadding: EdgeInsets.all(15.0),
-                                          border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            borderSide: BorderSide(
-                                              width: 0,
-                                              style: BorderStyle.none,
-                                            ),
-                                          ),
-                                          fillColor: Color(0xFFEEEEF3),
-                                          labelText: 'from',
-                                          filled: true,
-                                        ),
-                                        validator: (String value) {
-                                          if (value.isEmpty) {
-                                            return 'from required';
-                                          }
-                                          _formKey.currentState.save();
-
-                                          return null;
-                                        }),
-                                    SizedBox(height: 10),
-                                    TextFormField(
-                                        readOnly: true,
-                                        onTap: () => _selectDateto(context),
-                                        controller: _tocontroller,
-                                        decoration: InputDecoration(
-                                          suffixIcon:
-                                              Icon(Icons.calendar_today),
-                                          hintText: 'date',
-                                          contentPadding: EdgeInsets.all(15.0),
-                                          border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            borderSide: BorderSide(
-                                              width: 0,
-                                              style: BorderStyle.none,
-                                            ),
-                                          ),
-                                          fillColor: Color(0xFFEEEEF3),
-                                          labelText: 'to',
-                                          filled: true,
-                                        )),
-                                    SizedBox(height: 10),
-                                  ],
-                                ),
-                              ),
-                              actions: [
-                                FlatButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                      get_report(_tocontroller.text,
-                                          _fromcontroller.text);
-                                    },
-                                    child:
-                                        Text(getTransrlate(context, 'Submit'))),
-                              ],
-                            );
-                          },
-                        );
-                      }),
-                ),
-                Divider(),
-                basic_report == null
-                    ? Container()
-                    : Container(
-                        child: ResponsiveGridList(
-                          rowMainAxisAlignment: MainAxisAlignment.center,
-                          scroll: false,
-                          desiredItemWidth: 120,
-                          minSpacing: 10,
-                          children: [
-                            Card(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text("Total Sale"),
-                                    Text(
-                                        "${basic_report.totalSale.roundToDouble()}",
-                                        maxLines: 1,
-                                        style: TextStyle(
-                                            color: themeColor.getColor())),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Card(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text("Total Invoices"),
-                                    Text("${basic_report.totalInvoices}",
-                                        style: TextStyle(
-                                            color: themeColor.getColor())),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Card(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text("Total Customers"),
-                                    Text("${basic_report.pending_orders ?? 0}",
-                                        style: TextStyle(
-                                            color: themeColor.getColor())),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Card(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text("Total Orders"),
-                                    Text("${basic_report.totalOrders}",
-                                        style: TextStyle(
-                                            color: themeColor.getColor())),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Card(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text("Total Vendors"),
-                                    Text("${basic_report.tickets ?? 0}",
-                                        style: TextStyle(
-                                            color: themeColor.getColor())),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Card(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text("Total Products"),
-                                    Text(
-                                      "${basic_report.totalProducts}",
-                                      style: TextStyle(
-                                          color: themeColor.getColor()),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    height: ScreenUtil.getHeight(context) / 2,
-                    child: BarChart(
-                      data: data,
-                      labels: labels,
-                      displayValue: true,
-                      reverse: true,
-                      getColor: DataRepository.getColor,
-                      //getIcon: DataRepository.getIcon,
-                      barWidth:
-                          ScreenUtil.divideWidth(context) / (labels.length + 2),
-                      barSeparation: 12,
-                      animationDuration: Duration(milliseconds: 1800),
-                      animationCurve: Curves.easeInOutSine,
-                      itemRadius: 30,
-                      headerValueHeight: 30,
-                      roundValuesOnText: false,
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 5,
                     ),
-                  ),
-                )
-              ],
+                    AutoSizeText(
+                      "${getTransrlate(context, 'welcome')}  ${name == null ? ' ' : name}",
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      color: Color(0xffF6F6F6),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Container(
+                                  width: ScreenUtil.getWidth(context) / 10,
+                                  child: Text(
+                                      '${getTransrlate(context, 'duration')} : ')),
+                              InkWell(
+                                onTap: () {
+                                  _selectDatefrom(context);
+                                },
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.calendar_today_outlined,
+                                      color: Colors.black26,
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Container(
+                                        width:
+                                            ScreenUtil.getWidth(context) / 3.2,
+                                        child: Text(
+                                          " ${getTransrlate(context, 'from')} : ${_fromcontroller.text}",
+                                          style: TextStyle(fontSize: 14),
+                                        )),
+                                  ],
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  _selectDateto(context);
+                                },
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.calendar_today_outlined,
+                                      color: Colors.black26,
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Container(
+                                        width:
+                                            ScreenUtil.getWidth(context) / 3.2,
+                                        child: Text(
+                                            " ${getTransrlate(context, 'to')} : ${_tocontroller.text}",
+                                            style: TextStyle(fontSize: 14))),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          Divider(),
+                          basic_report == null
+                              ? Container()
+                              : Container(
+                                  child: ResponsiveGridList(
+                                    scroll: false,
+                                    desiredItemWidth:
+                                        ScreenUtil.getWidth(context) / 5,
+                                    minSpacing: 10,
+                                    children: [
+                                      Card(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              SvgPicture.asset(
+                                                'assets/icons/Bell.svg',
+                                                width: 18,
+                                                height: 18,
+                                                color: Colors.green,
+                                              ),
+                                              SizedBox(
+                                                width: 3,
+                                              ),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Container(
+                                                    width: ScreenUtil.getWidth(
+                                                            context) /
+                                                        5.1,
+                                                    child: AutoSizeText(
+                                                      "${getTransrlate(context, 'total_orders')}",
+                                                      minFontSize: 13,
+                                                      maxLines: 1,
+                                                      maxFontSize: 14,
+                                                      style: TextStyle(
+                                                          color: Colors.green,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                      "${basic_report.totalOrders}",
+                                                      maxLines: 1,
+                                                      style: TextStyle(
+                                                          color: themeColor
+                                                              .getColor())),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Card(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Icon(
+                                                Icons.local_shipping_outlined,
+                                                color: Colors.orange,
+                                              ),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "${getTransrlate(context, 'pending_orders')}",
+                                                    style: TextStyle(
+                                                        color: Colors.orange,
+                                                        fontSize: 13,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  Text(
+                                                      "${basic_report.pending_orders}",
+                                                      maxLines: 1,
+                                                      style: TextStyle(
+                                                          color: themeColor
+                                                              .getColor())),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Card(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Icon(
+                                                Icons.money,
+                                                color: Colors.lightGreen,
+                                                size: 18,
+                                              ),
+                                              SizedBox(
+                                                width: 3,
+                                              ),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Container(
+                                                    width: ScreenUtil.getWidth(
+                                                            context) /
+                                                        5.1,
+                                                    child: AutoSizeText(
+                                                      "${getTransrlate(context, 'total_sale')}",
+                                                      minFontSize: 13,
+                                                      maxLines: 1,
+                                                      maxFontSize: 14,
+                                                      style: TextStyle(
+                                                          color:
+                                                              Colors.lightGreen,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                      "${basic_report.totalSale}",
+                                                      maxLines: 1,
+                                                      style: TextStyle(
+                                                          color: themeColor
+                                                              .getColor())),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Card(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Icon(
+                                                Icons.shopping_bag_outlined,
+                                                color: Colors.brown,
+                                                size: 18,
+                                              ),
+                                              SizedBox(
+                                                width: 3,
+                                              ),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Container(
+                                                    width: ScreenUtil.getWidth(
+                                                            context) /
+                                                        5.1,
+                                                    child: AutoSizeText(
+                                                      "${getTransrlate(context, 'total_products')}",
+                                                      minFontSize: 13,
+                                                      maxLines: 1,
+                                                      maxFontSize: 14,
+                                                      style: TextStyle(
+                                                          color: Colors.brown,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                      "${basic_report.totalProducts.roundToDouble()}",
+                                                      maxLines: 1,
+                                                      style: TextStyle(
+                                                          color: themeColor
+                                                              .getColor())),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Card(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              SvgPicture.asset(
+                                                'assets/icons/Question mark.svg',
+                                                width: 18,
+                                                height: 18,
+                                                color: Colors.blue,
+                                              ),
+                                              SizedBox(
+                                                width: 3,
+                                              ),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Container(
+                                                    width: ScreenUtil.getWidth(
+                                                            context) /
+                                                        5.1,
+                                                    child: AutoSizeText(
+                                                      "${getTransrlate(context, 'prod_questions')}",
+                                                      minFontSize: 10,
+                                                      maxLines: 1,
+                                                      maxFontSize: 15,
+                                                      style: TextStyle(
+                                                          color: Colors.blue,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                      "${basic_report.prod_questions ?? '0'}",
+                                                      maxLines: 1,
+                                                      style: TextStyle(
+                                                          color: themeColor
+                                                              .getColor())),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Card(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Icon(
+                                                Icons.error_outline,
+                                                color: Colors.red,
+                                                size: 18,
+                                              ),
+                                              SizedBox(
+                                                width: 3,
+                                              ),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Container(
+                                                    width: ScreenUtil.getWidth(
+                                                            context) /
+                                                        5.1,
+                                                    child: AutoSizeText(
+                                                      "${getTransrlate(context, 'tickets')}",
+                                                      minFontSize: 13,
+                                                      maxLines: 1,
+                                                      maxFontSize: 14,
+                                                      style: TextStyle(
+                                                          color: Colors.red,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                      "${basic_report.tickets ?? '0'}",
+                                                      maxLines: 1,
+                                                      style: TextStyle(
+                                                          color: themeColor
+                                                              .getColor())),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                          labels.isEmpty
+                              ? Container()
+                              : Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                    height: ScreenUtil.getHeight(context) / 4,
+                                    child: BarChart(
+                                      data: data,
+                                      labels: labels,
+                                      displayValue: true,
+                                      reverse: true,
+                                      getColor: DataRepository.getColor,
+                                      //getIcon: DataRepository.getIcon,
+                                      barWidth:
+                                          ScreenUtil.divideWidth(context) / 5,
+                                      barSeparation: 5,
+                                      animationDuration:
+                                          Duration(milliseconds: 5000),
+                                      animationCurve: Curves.easeInOutSine,
+                                      itemRadius: 1,
+                                      headerValueHeight: 30,
+                                      roundValuesOnText: false,
+                                    ),
+                                  ),
+                                ),
+                        ],
+                      ),
+                    ),
+                    product == null
+                        ? Container()
+                        : product.isEmpty
+                            ? Container()
+                            : Card(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      border:
+                                          Border.all(color: Colors.black12)),
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              width:
+                                                  ScreenUtil.getWidth(context) /
+                                                      2,
+                                              child: AutoSizeText(
+                                                "${getTransrlate(context, 'Inventoryplay')}",
+                                                maxLines: 2,
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                                minFontSize: 11,
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: SizedBox(
+                                                width: 10,
+                                              ),
+                                            ),
+                                            Text(
+                                              "${getTransrlate(context, 'residual')}",
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      ListView.builder(
+                                        padding: EdgeInsets.all(1),
+                                        primary: false,
+                                        shrinkWrap: true,
+                                        physics: NeverScrollableScrollPhysics(),
+                                        itemCount: product.length,
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          return Column(
+                                            children: [
+                                              Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    width: ScreenUtil.getWidth(
+                                                            context) /
+                                                        10,
+                                                    height: ScreenUtil.getWidth(
+                                                            context) /
+                                                        20,
+                                                    child: CachedNetworkImage(
+                                                      imageUrl: product[index]
+                                                              .photo
+                                                              .isNotEmpty
+                                                          ? product[index]
+                                                              .photo[0]
+                                                              .image
+                                                          : '',
+                                                      errorWidget: (context,
+                                                              url, error) =>
+                                                          Icon(
+                                                        Icons.image,
+                                                        color: Colors.black12,
+                                                      ),
+                                                      fit: BoxFit.contain,
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  Container(
+                                                    width: ScreenUtil.getWidth(
+                                                            context) /
+                                                        2,
+                                                    child: AutoSizeText(
+                                                      product[index].name,
+                                                      maxLines: 2,
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                      minFontSize: 11,
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    child: SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    "${product[index].quantity}",
+                                                    style: TextStyle(
+                                                        color: Colors.red),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 20,
+                                                  )
+                                                ],
+                                              ),
+                                              Container(
+                                                height: 1,
+                                                color: Colors.black12,
+                                              )
+                                            ],
+                                          );
+                                        },
+                                      ),
+                                      Container(
+                                        height: 1,
+                                        color: Colors.black12,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                  ],
+                ),
+              ),
             ),
           ),
         ],
@@ -626,13 +953,14 @@ class _HomeDesktopState extends State<HomeDesktop> {
     setState(() {
       data =
           basic_report.periodDetails.map((e) => e.reports.totalSale).toList();
-      labels = basic_report.periodDetails.map((e) => e.day).toList();
+      labels = basic_report.periodDetails.map((e) => e.dayName).toList();
     });
   }
 
   void get_report(String to, String from) {
-    API(context).post(
-        'fetch/basic/report', {"from": "$from", "to": "$to"}).then((value) {
+    API(context)
+        .post('vendor/day/month/filter', {"from": "$from", "to": "$to"}).then(
+            (value) {
       if (value != null) {
         setState(() {
           basic_report = Basic_report.fromJson(value);
