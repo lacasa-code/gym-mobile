@@ -25,6 +25,7 @@ class FaqPage extends StatefulWidget {
 
 class _FaqPageState extends State<FaqPage> {
   List<Faq> faq;
+  String url = "products";
 
   @override
   void initState() {
@@ -79,7 +80,8 @@ class _FaqPageState extends State<FaqPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Text('${faq.length} ${getTransrlate(context, 'Qustions')}'),
+                          Text(
+                              '${faq.length} ${getTransrlate(context, 'Qustions')}'),
                           SizedBox(
                             width: 5,
                           ),
@@ -87,10 +89,32 @@ class _FaqPageState extends State<FaqPage> {
                             onTap: () {
                               showDialog(
                                   context: context,
-                                  builder: (_) => Sortdialog())
-                                  .then((val) {
+                                  builder: (_) => Sortdialog()).then((val) {
                                 print(val);
 
+                                SharedPreferences.getInstance()
+                                    .then((value) => {
+                                          API(context).post(
+                                              'vendor/fetch/question?sort_type=${val}', {
+                                            "vendor_id": value.getInt('user_id')
+                                          }).then((value) {
+                                            if (value != null) {
+                                              if (value['status_code'] == 200) {
+                                                setState(() {
+                                                  faq =
+                                                      Faq_model.fromJson(value)
+                                                          .data;
+                                                });
+                                              } else {
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (_) =>
+                                                        ResultOverlay(
+                                                            value['message']));
+                                              }
+                                            }
+                                          })
+                                        });
                               });
                             },
                             child: Row(
@@ -112,38 +136,52 @@ class _FaqPageState extends State<FaqPage> {
                       physics: NeverScrollableScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
                         return InkWell(
-                           onTap: (){
-                             _navigate_edit_hell(context,faq[index]);
-                           },
+                          onTap: () {
+                            _navigate_edit_hell(context, faq[index]);
+                          },
                           child: Container(
                               padding: EdgeInsets.all(16.0),
-                              color:index.isEven ?Colors.white:Color(0xffF6F6F6),
+                              color: index.isEven
+                                  ? Colors.white
+                                  : Color(0xffF6F6F6),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(" ${getTransrlate(context, 'QustOwner')}: ${faq[index].user_name??''}",
+                                      Text(
+                                          " ${getTransrlate(context, 'QustOwner')}: ${faq[index].user_name ?? ''}",
                                           style: TextStyle(
-                                              color: Colors.black, fontSize: 12)),
-                                      Text(" ${getTransrlate(context, 'QustDate')}:${DateFormat('yyyy-MM-dd').format(DateTime.parse(faq[index].createdAt))}",
+                                              color: Colors.black,
+                                              fontSize: 12)),
+                                      Text(
+                                          " ${getTransrlate(context, 'QustDate')}:${DateFormat('yyyy-MM-dd').format(DateTime.parse(faq[index].createdAt))}",
                                           style: TextStyle(
-                                              color: Colors.black, fontSize: 12)),
+                                              color: Colors.black,
+                                              fontSize: 12)),
                                     ],
                                   ),
-                                  Text(" ${getTransrlate(context, 'Qust')}:${faq[index].bodyQuestion??''}",
+                                  Text(
+                                      " ${getTransrlate(context, 'Qust')}:${faq[index].bodyQuestion ?? ''}",
                                       style: TextStyle(
                                           color: Colors.black, fontSize: 12)),
-                                  faq[index].product==null?Container(): Text(" ${getTransrlate(context, 'product')}: ${faq[index].product.name??''}",
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 12)),
-                                  faq[index].answer==null?Container(): Text(" ${getTransrlate(context, 'answer')} : ${faq[index].answer??''}",
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 12)),
-
-
+                                  faq[index].product == null
+                                      ? Container()
+                                      : Text(
+                                          " ${getTransrlate(context, 'product')}: ${faq[index].product.name ?? ''}",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 12)),
+                                  faq[index].answer == null
+                                      ? Container()
+                                      : Text(
+                                          " ${getTransrlate(context, 'answer')} : ${faq[index].answer ?? ''}",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 12)),
                                 ],
                               )),
                         );
@@ -158,15 +196,24 @@ class _FaqPageState extends State<FaqPage> {
 
   void getFaq() {
     SharedPreferences.getInstance().then((value) => {
-    API(context).post('vendor/fetch/question', {"vendor_id": value.getInt('user_id')}).then((value) {
-    if (value != null) {
-    setState(() {
-    faq = Faq_model.fromJson(value).data;
-    });}})});
+          API(context).post('vendor/fetch/question',
+              {"vendor_id": value.getInt('user_id')}).then((value) {
+            if (value != null) {
+              setState(() {
+                faq = Faq_model.fromJson(value).data;
+              });
+            }
+          })
+        });
   }
+
   _navigate_edit_hell(BuildContext context, Faq faq) async {
     await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => faq_information(orders_model:faq,)));
+        context,
+        MaterialPageRoute(
+            builder: (context) => faq_information(
+                  orders_model: faq,
+                )));
     Timer(Duration(seconds: 3), () => getFaq());
   }
 }

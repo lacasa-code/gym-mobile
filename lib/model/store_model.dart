@@ -1,3 +1,7 @@
+import 'area_model.dart';
+import 'city_model.dart';
+import 'country_model.dart';
+
 class Store_model {
   int statusCode;
   String message;
@@ -51,8 +55,12 @@ class Store {
   int status;
   String createdAt;
   String updatedAt;
-  Null deletedAt;
   String vendorName;
+
+  Country country;
+  City city;
+  Area area;
+
   Vendor vendor;
   List<Members> members;
 
@@ -76,7 +84,6 @@ class Store {
         this.status,
         this.createdAt,
         this.updatedAt,
-        this.deletedAt,
         this.vendorName,
         this.vendor,
         this.members});
@@ -101,7 +108,6 @@ class Store {
     status = json['status'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    deletedAt = json['deleted_at'];
     vendorName = json['vendor_name'];
     vendor =
     json['vendor'] != null ? new Vendor.fromJson(json['vendor']) : null;

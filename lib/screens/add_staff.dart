@@ -99,7 +99,7 @@ class _add_StaffState extends State<add_Staff> {
                               return "${getTransrlate(context, 'requiredlength')}";
                             }else if (RegExp(
                                 r"^[+-]?([0-9]*[.])?[0-9]+").hasMatch(value)) {
-                              return getTransrlate(context, 'invalidname');
+                              return "${getTransrlate(context, 'invalidname')}";
                             }
                             return null;
                           },

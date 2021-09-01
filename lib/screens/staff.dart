@@ -391,6 +391,43 @@ class _StaffState extends State<Staff> {
                                                   ),
                                                 ),
                                               ),
+                                              staff[index].approved==0? PopupMenuItem(
+                                                value: 3,
+                                                child:InkWell(
+                                                  onTap: (){
+                                                    API(context)
+                                                        .post("vendor/approve/staff",{
+                                                          "staff_id":"${staff[index].id}"
+                                                    })
+                                                        .then((value) {
+                                                      if (value != null) {
+                                                        Nav.route(context, Staff());
+                                                        showDialog(
+                                                          context: context,
+                                                          builder: (_) => ResultOverlay(
+                                                            value.containsKey('errors')
+                                                                ? "${value['errors']}"
+                                                                : '${value['message']}',
+                                                          ),
+                                                        );
+
+                                                      }
+                                                      getAllStore();
+                                                    });
+                                                  },
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.spaceAround,
+                                                    children: [
+                                                      Text("Approved"),
+                                                      Icon(
+                                                        CupertinoIcons.check_mark_circled_solid,
+                                                        color: Colors.lightGreen,
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ): null,
                                             ],
                                           )
                                           // DropdownButton<String>(

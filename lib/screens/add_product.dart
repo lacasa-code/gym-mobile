@@ -171,10 +171,12 @@ int CheckBox=0;
           child: _store == null
               ? Center(child: Custom_Loading())
               : _store.isEmpty
-                  ? Container(
-                      child:
-                          Text('${getTransrlate(context, 'messageProduct')}'),
-                    )
+                  ? Center(
+                    child: Container(
+                        child:
+                            Text('${getTransrlate(context, 'messageProduct')}'),
+                      ),
+                  )
                   : Form(
                       key: _formKey,
                       child: Column(
@@ -280,7 +282,44 @@ int CheckBox=0;
                              product.descriptionEn = value;
                             },
                           ),
-
+                          SizedBox(
+                            height: 10,
+                          ),
+                          cartypes == null
+                              ? Container(
+                            child: DropdownSearch<String>(
+                              showSearchBox: false,
+                              showClearButton: false,
+                              label: " ",
+                              items: [''],
+                              enabled: false,
+                              //  onFind: (String filter) => getData(filter),
+                            ),
+                          )
+                              : Container(
+                              child: DropdownSearch<CarType>(
+                                  showSearchBox: false,
+                                  maxHeight: ScreenUtil.getHeight(context)/4,
+                                  showClearButton: false,
+                                  label:
+                                  "${getTransrlate(context, 'CarType')}",
+                                  validator: (CarType item) {
+                                    if (item == null) {
+                                      return "Required field";
+                                    } else
+                                      return null;
+                                  },
+                                  items: cartypes,
+                                  //  onFind: (String filter) => getData(filter),
+                                  itemAsString: (CarType u) =>
+                                  "${ themeColor.getlocal()=='ar'?u.typeName??u.name_en:u.name_en??u.typeName}",
+                                  onChanged: (CarType data) {
+                                    product.cartype_id = data.id.toString();
+                                    setState(() {
+                                      CarMades==null;
+                                    });
+                                    getAllCarMade(data.id.toString());
+                                  })),
                           SizedBox(
                             height: 10,
                           ),
@@ -437,44 +476,7 @@ int CheckBox=0;
                                       "${getTransrlate(context, 'car')}",
                                       style: TextStyle(color: Colors.black, fontSize: 16),
                                     ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    cartypes == null
-                                        ? Container(
-                                      child: DropdownSearch<String>(
-                                        showSearchBox: false,
-                                        showClearButton: false,
-                                        label: " ",
-                                        items: [''],
-                                        enabled: false,
-                                        //  onFind: (String filter) => getData(filter),
-                                      ),
-                                    )
-                                        : Container(
-                                        child: DropdownSearch<CarType>(
-                                            showSearchBox: false,
-                                            maxHeight: ScreenUtil.getHeight(context)/4,
-                                            showClearButton: false,
-                                            label:
-                                            "${getTransrlate(context, 'CarType')}",
-                                            validator: (CarType item) {
-                                              if (item == null) {
-                                                return "Required field";
-                                              } else
-                                                return null;
-                                            },
-                                            items: cartypes,
-                                            //  onFind: (String filter) => getData(filter),
-                                            itemAsString: (CarType u) =>
-                                            "${ themeColor.getlocal()=='ar'?u.typeName??u.name_en:u.name_en??u.typeName}",
-                                            onChanged: (CarType data) {
-                                              product.cartype_id = data.id.toString();
-                                              setState(() {
-                                                CarMades==null;
-                                              });
-                                              getAllCarMade(data.id.toString());
-                                            })),
+
                                     SizedBox(
                                       height: 10,
                                     ),
@@ -499,7 +501,7 @@ int CheckBox=0;
                                             child: DropdownSearch<CarMade>(
                                                 showSearchBox: false,
                                                 showClearButton: false,
-                                                label: " ماركة",
+                                                label: " ${getTransrlate(context, 'brand')}",
                                                 validator: (CarMade item) {
                                                   if (item == null) {
                                                     return "${getTransrlate(context, 'Required')}";
@@ -923,6 +925,27 @@ int CheckBox=0;
                                         ),
                                       ],
                                     ),
+                                    MyTextFormField(
+                                      intialLabel: ' ',
+                                      Keyboard_Type: TextInputType.number,
+                                      labelText:
+                                      "${getTransrlate(context, 'qty_reminder')} ",
+                                      hintText:
+                                      '${getTransrlate(context, 'qty_reminder')}',
+                                      isPhone: true,
+                                      enabled: true,
+                                      validator: (String value) {
+                                        if (value.isEmpty) {
+                                          return '${getTransrlate(context, 'qty_reminder')}';
+                                        }
+                                        _formKey.currentState.save();
+                                        return null;
+                                      },
+                                      onSaved: (String value) {
+                                        product.qty_reminder = value;
+                                      },
+                                    ),
+
                                   ],
                                 )
                               : product.productType_id == "2"
@@ -945,10 +968,10 @@ int CheckBox=0;
                                             return null;
                                           },
                                           onSaved: (String value) {
-                                            product.wholesale = value;
+                                            product.holesalePrice = value;
                                           },
                                         ),
-                                        MyTextFormField(
+                                         MyTextFormField(
                                           intialLabel: ' ',
                                           Keyboard_Type: TextInputType.number,
                                           labelText:
@@ -965,7 +988,7 @@ int CheckBox=0;
                                             return null;
                                           },
                                           onSaved: (String value) {
-                                            product.minOfOrder = value;
+                                            product.noOfOrders = value;
                                           },
                                         ),
                                       ],
@@ -1012,25 +1035,64 @@ int CheckBox=0;
                                             product.quantity = value;
                                           },
                                         ),
-                                        MyTextFormField(
-                                          intialLabel: ' ',
-                                          Keyboard_Type: TextInputType.number,
-                                          labelText:
-                                              "${getTransrlate(context, 'discount')}",
-                                          hintText:
-                                              '${getTransrlate(context, 'discount')}',
-                                          isPhone: true,
-                                          enabled: true,
-                                          validator: (String value) {
-                                            if (value.isEmpty) {
-                                              return '${getTransrlate(context, 'discount')}';
-                                            }
-                                            _formKey.currentState.save();
-                                            return null;
-                                          },
-                                          onSaved: (String value) {
-                                            product.discount = value;
-                                          },
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Container(
+                                              width: ScreenUtil.getWidth(context) /
+                                                  2.5,
+                                              child: MyTextFormField(
+                                                Keyboard_Type: TextInputType.number,
+                                                labelText:
+                                                "${getTransrlate(context, 'Percentage')}",
+                                                hintText:
+                                                '${getTransrlate(context, 'Percentage')}',
+                                                isPhone: true,
+                                                inputFormatters: [
+                                                  new LengthLimitingTextInputFormatter(2),
+                                                ],
+                                                enabled: true,
+                                                validator: (String value) {
+                                                  _formKey.currentState.save();
+                                                  return null;
+                                                },
+                                                onSaved: (String value) {
+                                                  product.discount = value;
+                                                },
+                                                onChanged: (String value) {
+                                                  product.discount = value;
+                                                  if (value != null) {
+                                                    if (value.isNotEmpty) {
+                                                      if (product.price!=null) {
+                                                        if (product.price.isNotEmpty) {
+                                                          totaldiscount.text = "${(double.parse(value) / 100) * double.parse(product.price)}";
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                },
+                                              ),
+                                            ),
+                                            Container(
+                                              width: ScreenUtil.getWidth(context) /
+                                                  2.5,
+                                              child: MyTextFormField(
+                                                textEditingController: totaldiscount,
+                                                Keyboard_Type: TextInputType.number,
+                                                labelText: "${getTransrlate(context, 'totaldiscount')}",
+                                                hintText: '${getTransrlate(context, 'totaldiscount')}',
+                                                isPhone: true,
+                                                enabled: true,
+                                                validator: (String value) {
+                                                  _formKey.currentState.save();
+                                                  return null;
+                                                },
+                                                onSaved: (String value) {
+                                                },
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                         MyTextFormField(
                                           intialLabel: product.price ?? ' ',
@@ -1049,7 +1111,7 @@ int CheckBox=0;
                                             return null;
                                           },
                                           onSaved: (String value) {
-                                            product.wholesale = value;
+                                            product.holesalePrice = value;
                                           },
                                         ),
                                         MyTextFormField(
@@ -1069,31 +1131,32 @@ int CheckBox=0;
                                             return null;
                                           },
                                           onSaved: (String value) {
-                                            product.minOfOrder = value;
+                                            product.noOfOrders = value;
                                           },
                                         ),
+                                        MyTextFormField(
+                                          intialLabel: ' ',
+                                          Keyboard_Type: TextInputType.number,
+                                          labelText:
+                                          "${getTransrlate(context, 'qty_reminder')} ",
+                                          hintText:
+                                          '${getTransrlate(context, 'qty_reminder')}',
+                                          isPhone: true,
+                                          enabled: true,
+                                          validator: (String value) {
+                                            if (value.isEmpty) {
+                                              return '${getTransrlate(context, 'qty_reminder')}';
+                                            }
+                                            _formKey.currentState.save();
+                                            return null;
+                                          },
+                                          onSaved: (String value) {
+                                            product.qty_reminder = value;
+                                          },
+                                        ),
+
                                       ],
                                     ),
-                          MyTextFormField(
-                            intialLabel: ' ',
-                            Keyboard_Type: TextInputType.number,
-                            labelText:
-                                "${getTransrlate(context, 'qty_reminder')} ",
-                            hintText:
-                                '${getTransrlate(context, 'qty_reminder')}',
-                            isPhone: true,
-                            enabled: true,
-                            validator: (String value) {
-                              if (value.isEmpty) {
-                                return '${getTransrlate(context, 'qty_reminder')}';
-                              }
-                              _formKey.currentState.save();
-                              return null;
-                            },
-                            onSaved: (String value) {
-                              product.qty_reminder = value;
-                            },
-                          ),
                           Text(
                             "${getTransrlate(context, 'prodcountry')}",
                             style: TextStyle(color: Colors.black, fontSize: 16),

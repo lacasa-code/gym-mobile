@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
+import 'package:trkar_vendor/utils/service/API.dart';
+import 'package:trkar_vendor/widget/ResultOverlay.dart';
 import 'package:trkar_vendor/widget/commons/custom_textfield.dart';
 
 class LostPassword extends StatefulWidget {
@@ -14,7 +16,7 @@ class LostPassword extends StatefulWidget {
 
 class _LostPasswordState extends State<LostPassword> {
   final _formKey = GlobalKey<FormState>();
-
+String email;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,6 +42,7 @@ class _LostPasswordState extends State<LostPassword> {
                    return null;
                  },
                  onSaved: (String value) {
+                   email=value;
                  },
                ),
                SizedBox(height: 25 ),
@@ -62,7 +65,25 @@ class _LostPasswordState extends State<LostPassword> {
                      ),
                    ),
                    onTap: () {
-
+                     if (_formKey.currentState.validate()) {
+                       _formKey.currentState.save();
+                       API(context).post('user/forget/password',
+                           {"email": email}).then((value) {
+                         if (value != null) {
+                           if (value.containsKey('error')) {
+                             showDialog(
+                                 context: context,
+                                 builder: (_) =>
+                                     ResultOverlay(value['error']));
+                           } else {
+                             showDialog(
+                                 context: context,
+                                 builder: (_) =>
+                                     ResultOverlay(value['data']));
+                           }
+                         }
+                       });
+                     }
                    },
                  ),
                ),

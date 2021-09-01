@@ -37,6 +37,8 @@
   "Moderator": "Moderator",
   "ModeratorPhone": "Moderator Phone",
   "moderatorAltPhone": "Moderator Phone 2",
+  "Compatiblecars": "Compatible cars",
+  "brand": "Brand ",
 
   "Select": "Select Now",
   "am": "AM",
@@ -47,6 +49,8 @@
   "description": "description (Arabic)",
   "descriptionEn": "description (English)",
   "send": "Send",
+  "invalidname": "field cannot accept floating point",
+
   "ticketsStats": "Tickets Status",
   "message": "Message",
   "Inventoryplay": "Inventory is Low",

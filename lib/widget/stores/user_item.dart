@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/user_model.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
+import 'package:trkar_vendor/utils/service/API.dart';
 
 class User_item extends StatefulWidget {
   User_item({Key key, this.hall_model, this.isSelect,this.selectStores}) : super(key: key);
@@ -78,6 +79,7 @@ class _User_itemState extends State<User_item> {
                   ),
                   maxLines: 1,
                 ),
+
                 widget.hall_model.roles==null?Container():  Text(
                   "${widget.hall_model.roles.title}",
                   maxLines: 1,
@@ -107,6 +109,7 @@ class _User_itemState extends State<User_item> {
                 SizedBox(
                   height: 15,
                 ),
+
               ],
             ),
           ],

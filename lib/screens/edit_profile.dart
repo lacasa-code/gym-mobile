@@ -243,7 +243,7 @@ class _Edit_profileState extends State<Edit_profile> {
                                     left: 25.0, right: 25.0, top: 2.0),
                                 child: TextFormField(
                                   textAlign: TextAlign.left,
-                                  initialValue: userModal.phoneNo.replaceAll('+', ''),
+                                  initialValue: userModal.phoneNo!=null?userModal.phoneNo.contains('+')?userModal.phoneNo.replaceAll('+', ''):'':'',
                                   keyboardType: TextInputType.number,
                                   inputFormatters: [
                                     new LengthLimitingTextInputFormatter(12),
@@ -394,7 +394,7 @@ class _Edit_profileState extends State<Edit_profile> {
                             showDialog(
                                 context: context,
                                 builder: (_) =>
-                                    ResultOverlay(value['message']));
+                                    ResultOverlay("${value['message']} \n ${value['errors']} "));
                           }
                         }
                       });

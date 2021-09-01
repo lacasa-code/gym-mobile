@@ -86,10 +86,8 @@ class _ProductPageState extends State<ProductPage> {
                     ),
                   ),
                 ),
-                if (widget.product.approved==0) Container() else Positioned(
-                    left:themeColor.getlocal()=='ar'?20: null,
-                    right:themeColor.getlocal()=='en'?1:null,
-                    top: 20,
+                if (widget.product.approved==0) Container() else Container(
+
                     child: PopupMenuButton<int>(
                       itemBuilder: (context) => [
                         PopupMenuItem(
@@ -197,25 +195,25 @@ class _ProductPageState extends State<ProductPage> {
         ),
         DataRow(color: MaterialStateProperty.resolveWith((states) => Colors.black26) ,
           cells: <DataCell>[
-              DataCell(Text('الفئة الفرعية |')),
+              DataCell(Text('${getTransrlate(context, 'subCategory')}')),
               DataCell(Text('${widget.product.category==null?'':widget.product.category.name}')),
           ],
         ),
         DataRow(
           cells: <DataCell>[
-              DataCell(Text('الفئه الفرعيه | |')),
+              DataCell(Text('${getTransrlate(context, 'PartCategory')}')),
               DataCell(Text('${widget.product.partCategory==null?'':widget.product.partCategory.categoryName}')),
           ],
         ),
         DataRow(color: MaterialStateProperty.resolveWith((states) => Colors.black26) ,
           cells: <DataCell>[
-              DataCell(Text('السيريال')),
+              DataCell(Text('${getTransrlate(context, 'serial')}')),
               DataCell(Text('${widget.product.serialNumber}')),
           ],
         ),
         DataRow(
           cells: <DataCell>[
-              DataCell(Text('الوصف')),
+              DataCell(Text('${getTransrlate(context, 'description')}')),
               DataCell(Container(width: ScreenUtil.getWidth(context)/2,child: Padding(
                 padding: const EdgeInsets.only(bottom: 10),
                 child: Text('${widget.product.description}'),
@@ -224,7 +222,7 @@ class _ProductPageState extends State<ProductPage> {
         ),
         DataRow(color: MaterialStateProperty.resolveWith((states) => Colors.black26) ,
           cells: <DataCell>[
-              DataCell(Text('العلامة التجارية')),
+              DataCell(Text('${getTransrlate(context, 'brand')}')),
               DataCell(Text('${widget.product.carMade==null?'':widget.product.carMade.carMade}')),
           ],
         ),
@@ -236,7 +234,7 @@ class _ProductPageState extends State<ProductPage> {
         ),
         DataRow(color: MaterialStateProperty.resolveWith((states) => Colors.black26) ,
           cells: <DataCell>[
-              DataCell(Text('الفرع')),
+              DataCell(Text('${getTransrlate(context, 'store')}')),
               DataCell(Text('${widget.product.store==null?'':widget.product.store.nameStore}')),
           ],
         ),
@@ -262,13 +260,13 @@ class _ProductPageState extends State<ProductPage> {
 
         DataRow(color: MaterialStateProperty.resolveWith((states) => Colors.black26) ,
           cells: <DataCell>[
-              DataCell(Text('نوع البيع')),
+              DataCell(Text('${getTransrlate(context, 'productType')}')),
               DataCell(Text('${widget.product.producttypeId==null?'':widget.product.producttypeId.producttype}')),
           ],
         ),
         DataRow(
           cells: <DataCell>[
-              DataCell(Text('السيارات المتوافقة')),
+              DataCell(Text('${getTransrlate(context, 'Compatiblecars')}')),
               DataCell(Text('${widget.product.carModel==null?'':widget.product.carModel.map((e) => e.carmodel).toList().toString()}')),
           ],
         ),
@@ -280,7 +278,7 @@ class _ProductPageState extends State<ProductPage> {
         ),
         DataRow(
           cells: <DataCell>[
-            DataCell(Text('qty_reminder')),
+            DataCell(Text('${getTransrlate(context, 'qty_reminder')}')),
             DataCell(Text('${widget.product.qty_reminder.toString()}')),
           ],
         ),

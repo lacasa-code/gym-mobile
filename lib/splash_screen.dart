@@ -86,6 +86,7 @@ class _SplashScreenState extends State<SplashScreen>
     await SharedPreferences.getInstance();
     API(context).post('token/data', {}).then((value) {
       if (value != null) {
+      if (value['data']['status'] == 'ON') {
         var user = value['data']['user'];
         prefs.setString("user_email", user['email']);
         prefs.setString("user_name", user['name']);
@@ -93,10 +94,13 @@ class _SplashScreenState extends State<SplashScreen>
         Provider.of<Provider_control>(context,listen: false).setLogin(true);
         Provider.of<Provider_Data>(context,listen: false).getProducts(context);
         Nav.routeReplacement(context, Home());
-      } else {
+      }else {
         Provider.of<Provider_control>(context,listen: false).setLogin(false);
         Nav.routeReplacement(context, LoginPage());
 
+      }} else {
+        Provider.of<Provider_control>(context,listen: false).setLogin(false);
+        Nav.routeReplacement(context, LoginPage());
       }
     });
   }

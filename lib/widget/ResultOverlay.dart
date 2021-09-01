@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
@@ -65,12 +66,21 @@ class ResultOverlayState extends State<ResultOverlay>
                   color: Colors.lightGreen,
                 ),
                 SizedBox(height: 10),
-                Text(
-                  '${widget.message??' '}',
-                  style: TextStyle(
-                      color: themeColor.getColor(),
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    width: ScreenUtil.getWidth(context)/1.2,
+                    child: Center(
+                      child: AutoSizeText(
+                        '${widget.message??' '}',
+                        style: TextStyle(
+                            color: themeColor.getColor(),
+                            fontWeight: FontWeight.bold),
+                        maxFontSize: 20,
+                        minFontSize: 14,
+                      ),
+                    ),
+                  ),
                 ),
                 SizedBox(height: 10),
                 InkWell(

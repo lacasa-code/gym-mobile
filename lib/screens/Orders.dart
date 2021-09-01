@@ -225,8 +225,7 @@ class _OrdersState extends State<Orders> {
                                             fontWeight: FontWeight.w600,
                                           ),
                                         ),
-                                        filteredOrders[index].orderStatus !=
-                                                'pending'
+                            filteredOrders[index].need_approval==0
                                             ? Container(
                                                 child: Row(
                                                   mainAxisAlignment:
@@ -278,7 +277,7 @@ class _OrdersState extends State<Orders> {
                                                   ],
                                                 ),
                                               )
-                                            :filteredOrders[index].need_approval==0?Container(): Row(
+                                            :Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
                                                         .spaceAround,

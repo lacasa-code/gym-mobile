@@ -174,7 +174,8 @@ class _Edit_StoreState extends State<Edit_Store> {
                               } else
                                 return null;
                             },
-                            selectedItem:widget.store.countryId==null?Country(countryName: 'select country'):contries.where((element) => element.id==widget.store.countryId).first,
+                            selectedItem:widget.store.country??Country(countryName: " ${widget.store.countryName??' '}"),
+                            //selectedItem:widget.store.countryId==null?Country(countryName: 'select country'):contries.where((element) => element.id==widget.store.countryId).first,
                             showSearchBox: true,
                             items: contries,
                             //  onFind: (String filter) => getData(filter),
@@ -184,8 +185,14 @@ class _Edit_StoreState extends State<Edit_Store> {
 
                             onChanged:
                                 (Country data) {
-                                 widget.store.countryId =
-                                  data.id;
+                              setState(() {
+                                widget.store.country=data;
+                                widget.store.country=data;
+                                widget.store.countryId = data.id;
+                                widget.store.area = Area(areaName: '');
+                                widget.store.city = City(cityName: '');
+                                area=null;
+                              });
                               getArea(data.id);
                             },
                           ),
@@ -206,13 +213,20 @@ class _Edit_StoreState extends State<Edit_Store> {
                             },
 
                             items: area,
-                            selectedItem:widget.store.areaId==null?Area(areaName:'Select Area'):area.where((element) => element.id==widget.store.areaId).first,
+                            selectedItem:widget.store.area??Area(areaName: " ${widget.store.areaName??' '}"),
+
+                            //  selectedItem:widget.store.areaId==null?Area(areaName:'Select Area'):area.where((element) => element.id==widget.store.areaId).first,
                             //  onFind: (String filter) => getData(filter),
                             itemAsString: (Area u) =>
                             themeColor.getlocal()=='ar'?u.areaName??u.name_en:u.name_en??u.areaName,
                             onChanged: (Area data) {
-                              widget.store.areaId =
-                                  data.id;
+                              setState(() {
+                                widget.store.areaId = data.id;
+                                widget.store.city = City(cityName: '');
+                                widget.store.area =data;
+
+                                cities=null;
+                              });
                               getCity(data.id);
                             },
                           ),
@@ -224,7 +238,8 @@ class _Edit_StoreState extends State<Edit_Store> {
                               .symmetric(
                               vertical: 10),
                           child: DropdownSearch<City>(
-                            selectedItem:widget.store.cityId==null?City(cityName:'Select City'):cities.where((element) => element.id==widget.store.cityId).first,
+                           // selectedItem:widget.store.cityId==null?City(cityName:'Select City'):cities.where((element) => element.id==widget.store.cityId).first,
+                            selectedItem:widget.store.city??City(cityName:' ${widget.store.cityName??' '}'),
                             validator: (City item) {
                               if (item == null) {
                                 return "Required field";
@@ -238,6 +253,7 @@ class _Edit_StoreState extends State<Edit_Store> {
                             themeColor.getlocal()=='ar'?u.cityName??u.name_en:u.name_en??u.cityName,
                             onChanged: (City data) {
                               widget.store.cityId =data.id;
+                              widget.store.city=data;
                             },
                           ),
                         ),

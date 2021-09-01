@@ -443,7 +443,7 @@ class _StoresState extends State<Stores> {
                                               showDialog(
                                                 context: context,
                                                 builder: (_) => ResultOverlay(
-                                                  "${value['errors'] ?? 'تم حذف المتجر بنجاح'}",
+                                                  "${value['message']??value['errors'] ?? 'تم حذف المتجر بنجاح'}",
                                                 ),
                                               );
                                               getAllStore();

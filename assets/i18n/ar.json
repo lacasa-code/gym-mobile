@@ -214,7 +214,10 @@
   "filter": "تصفية ",
   "Inventoryplay": "مخزون على وشك النفاذ",
   "residual": "المتبقى ",
+  "brand": "العلامة التجارية ",
+  "invalidname": "النص يحتوى على ارقام عشريه",
 
+  "Compatiblecars": "السيارات المتوافقة",
   "NotDelete": " لا يمكنك  حذف ",
   "yes": "نعم",
   "browsing": "تصفح الأن",

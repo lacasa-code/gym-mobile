@@ -61,7 +61,7 @@ class _Stores_itemState extends State<Stores_item> {
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: widget.isSelect
-                    ? Checkbox(
+                    ?widget.hall_model.headCenter!=1?  Checkbox(
                         activeColor: Colors.orange,
                         value: widget.hall_model.isSelect,
                         onChanged: (bool value) {
@@ -73,6 +73,12 @@ class _Stores_itemState extends State<Stores_item> {
                               : widget.selectStores.add(widget.hall_model.id);
                         })
                     : Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SvgPicture.asset(
+                          "assets/icons/store.svg",
+                          color: Colors.white,
+                        ),
+                      ): Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: SvgPicture.asset(
                           "assets/icons/store.svg",
