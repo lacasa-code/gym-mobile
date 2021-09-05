@@ -586,7 +586,7 @@ class _HomeMobileState extends State<HomeMobile> {
                                                   ScreenUtil.getWidth(context) /
                                                       2,
                                               child: AutoSizeText(
-                                                product[index].name,
+                                               "${themeColor.getlocal()=='ar'?product[index].name??product[index].nameEn: product[index].nameEn??product[index].name}",
                                                 maxLines: 2,
                                                 style: TextStyle(
                                                   fontSize: 14,

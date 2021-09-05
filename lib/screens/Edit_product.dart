@@ -73,6 +73,7 @@ class _Edit_ProductState extends State<Edit_Product> {
   final picker = ImagePicker();
   int CheckBox = 0;
   TextEditingController totaldiscount = TextEditingController();
+  bool isqty_reminder = false;
 
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
@@ -122,6 +123,9 @@ class _Edit_ProductState extends State<Edit_Product> {
 
   @override
   void initState() {
+    setState(() {
+      isqty_reminder =widget.product.qty_reminder!=null;
+    });
     getAllType();
     getAllproducttypes();
     getAllMain_category();
@@ -658,7 +662,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                           child: DropdownSearch<Year>(
                               showSearchBox: false,
                               showClearButton: false,
-                              label: " السنة من",
+                              label: " ${getTransrlate(context, 'yearfrom')}",
                               validator: (Year item) {
                                 if (item == null) {
                                   return "Required field";
@@ -693,7 +697,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                           child: DropdownSearch<Year>(
                               showSearchBox: false,
                               showClearButton: false,
-                              label: "الى السنة",
+                              label: "${getTransrlate(context, 'yearto')}",
                               validator: (Year item) {
                                 if (item == null) {
                                   return "Required field";
@@ -734,7 +738,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                   child: DropdownSearch<Manufacturer>(
                       showSearchBox: false,
                       showClearButton: false,
-                      label: " المصنع",
+                      label: " ${getTransrlate(context, 'manufacturer')}",
                       validator: (Manufacturer item) {
                         if (item == null) {
                           return "Required field";
@@ -951,7 +955,24 @@ class _Edit_ProductState extends State<Edit_Product> {
                         ),
                       ],
                     ),
-                    MyTextFormField(
+                    Row(
+                      children: [
+                        Checkbox(
+                          checkColor: Colors.white,
+                          activeColor:Colors.orange ,
+                          //fillColor:Colors.orange,
+                          value: isqty_reminder,
+                          onChanged: (bool value) {
+                            setState(() {
+                              isqty_reminder = value;
+
+                            });
+                          },
+                        ),
+                         Text("${getTransrlate(context, 'reminder')}"),
+                      ],
+                    ),
+                    !isqty_reminder?Container():  MyTextFormField(
                       intialLabel: widget.product.qty_reminder ?? ' ',
                       Keyboard_Type: TextInputType.number,
                       labelText: " ${getTransrlate(context, 'qty_reminder')} ",
@@ -1455,6 +1476,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                         onPressed: () async {
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
+                            widget.product.qty_reminder=isqty_reminder?widget.product.qty_reminder:'1';
                             setState(() => loading = true);
                             print(widget.product.toJson());
                             if (widget.product.photo.isNotEmpty ||

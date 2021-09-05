@@ -74,7 +74,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
    SharedPreferences.getInstance().then((prefs) {
      setState(() {
-       onboard = prefs.getBool("onboard") ?? false;
+       onboard = prefs.getBool("onboard") ?? true;
 
      });
    });
@@ -123,7 +123,7 @@ class _MyAppState extends State<MyApp> {
 
         ),
       ),
-      home:onboard?OnboardingPage(): SplashScreen(),
+      home:onboard?OnboardingPage():SplashScreen(),
     );
   }
 }

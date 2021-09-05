@@ -9,6 +9,7 @@ import 'package:trkar_vendor/screens/add_staff.dart';
 import 'package:trkar_vendor/screens/edit_staf.dart';
 import 'package:trkar_vendor/screens/userPage.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
+import 'package:trkar_vendor/utils/Provider/provider_data.dart';
 import 'package:trkar_vendor/utils/SerachLoading.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/navigator.dart';
@@ -27,9 +28,7 @@ class Staff extends StatefulWidget {
 }
 
 class _StaffState extends State<Staff> {
-  List<User> staff;
   List<int> selectStores = [];
-  List<User> filteredStores;
   final debouncer = Search(milliseconds: 1000);
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   bool isSelect = false;
@@ -37,13 +36,14 @@ class _StaffState extends State<Staff> {
 
   @override
   void initState() {
-    getAllStore();
+    
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final themeColor = Provider.of<Provider_control>(context);
+    final data = Provider.of<Provider_Data>(context);
 
     return Scaffold(
       key: _scaffoldKey,
@@ -92,7 +92,7 @@ class _StaffState extends State<Staff> {
           child: FlatButton(
               color: Colors.orange,
               onPressed: () {
-                _navigate_add_hell(context);
+                Nav.route(context, add_Staff());
               },
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -112,7 +112,7 @@ class _StaffState extends State<Staff> {
               )),
         ),
       ),
-      body: staff == null
+      body: data.staff == null
           ? Container(
               height: ScreenUtil.getHeight(context) / 3,
               child: Center(
@@ -120,7 +120,7 @@ class _StaffState extends State<Staff> {
                 valueColor:
                     AlwaysStoppedAnimation<Color>(themeColor.getColor()),
               )))
-          : staff.isEmpty
+          : data.staff.isEmpty
               ? Center(
                   child: Container(
                     child: Column(
@@ -192,7 +192,7 @@ class _StaffState extends State<Staff> {
                                             ),
                                           );
                                         }
-                                        getAllStore();
+                                        data.getAllstaff(context);
                                       });
                                     },
                                     child: Row(
@@ -226,7 +226,7 @@ class _StaffState extends State<Staff> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: [
-                                  Text('${staff.length} ${getTransrlate(context, 'staf')}'),
+                                  Text('${data.staff.length} ${getTransrlate(context, 'staf')}'),
                                   InkWell(
                                     onTap: () {
                                       setState(() {
@@ -274,18 +274,12 @@ class _StaffState extends State<Staff> {
                                           .then((val) {
                                         print(val);
                                         if(val!=null){
+                                          data.setstaff(null);
                                           API(context)
                                               .get('$url?sort_type=${val}')
                                               .then((value) {
                                             if (value != null) {
-                                              if (value['status_code'] == 200) {
-                                                setState(() {
-                                                  filteredStores = staff =
-                                                      User_model.fromJson(value)
-                                                          .data;
-                                                });
-                                              } else {
-                                              }
+                                                  data.setstaff(User_model.fromJson(value).data);
                                             }
                                           });
                                         }
@@ -315,168 +309,18 @@ class _StaffState extends State<Staff> {
                               ],
                             ),
                             ListView.builder(
-                              itemCount: filteredStores == null && staff.isEmpty
-                                  ? 0
-                                  : filteredStores.length,
+                              itemCount:data.staff.length,
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
                               itemBuilder: (BuildContext context, int index) {
                                 return InkWell(
                                   onTap: (){
-                                    Nav.route(context, UserPage(user: filteredStores[index],));
+                                    Nav.route(context, UserPage(user: data.staff[index],));
                                   },
-                                  child: Stack(
-                                    children: [
-                                      User_item(
-                                        isSelect: isSelect,
-                                        hall_model: filteredStores[index],
-                                        selectStores: selectStores,
-                                      ),
-                                      Positioned(
-                                          left:themeColor.getlocal()=='ar'?20: null,
-                                          right:themeColor.getlocal()=='en'?20:null,
-                                          top: 10,
-                                          child: PopupMenuButton<int>(
-                                            itemBuilder: (context) => [
-                                              PopupMenuItem(
-                                                value: 1,
-                                                child: InkWell(
-                                                  onTap: (){
-                                                          _navigate_edit_hell(
-                                                              context, filteredStores[index]);
-                                                  },
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.spaceAround,
-                                                    children: [
-                                                      Text("${getTransrlate(context, 'edit')}"),
-                                                      Icon(
-                                                        Icons.edit_outlined,
-                                                        color: Colors.black54,
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              PopupMenuItem(
-                                                value: 2,
-                                                child:  InkWell(
-                                                  onTap: (){
-                                                    API(context)
-                                                        .Delete("users/${staff[index].id}")
-                                                        .then((value) {
-                                                      if (value != null) {
-                                                        showDialog(
-                                                          context: context,
-                                                          builder: (_) => ResultOverlay(
-                                                            value.containsKey('errors')
-                                                                ? "${value['errors']}"
-                                                                : 'تم حذف العامل بنجاح',
-                                                          ),
-                                                        );
-                                                      }
-                                                      getAllStore();
-                                                    });
-                                                  },
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.spaceAround,
-                                                    children: [
-                                                      Text("${getTransrlate(context, 'delete')}"),
-                                                      Icon(
-                                                        CupertinoIcons.delete,
-                                                        color: Colors.black54,
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              staff[index].approved==0? PopupMenuItem(
-                                                value: 3,
-                                                child:InkWell(
-                                                  onTap: (){
-                                                    API(context)
-                                                        .post("vendor/approve/staff",{
-                                                          "staff_id":"${staff[index].id}"
-                                                    })
-                                                        .then((value) {
-                                                      if (value != null) {
-                                                        Nav.route(context, Staff());
-                                                        showDialog(
-                                                          context: context,
-                                                          builder: (_) => ResultOverlay(
-                                                            value.containsKey('errors')
-                                                                ? "${value['errors']}"
-                                                                : '${value['message']}',
-                                                          ),
-                                                        );
-
-                                                      }
-                                                      getAllStore();
-                                                    });
-                                                  },
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.spaceAround,
-                                                    children: [
-                                                      Text("Approved"),
-                                                      Icon(
-                                                        CupertinoIcons.check_mark_circled_solid,
-                                                        color: Colors.lightGreen,
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              ): null,
-                                            ],
-                                          )
-                                          // DropdownButton<String>(
-                                          //   //  value: dropdownValue,
-                                          //   icon: Container(
-                                          //     child: Icon(Icons.more_vert),
-                                          //   ),
-                                          //   iconSize: 24,
-                                          //   elevation: 16,
-                                          //   style: const TextStyle(
-                                          //       color: Colors.deepPurple),
-                                          //   underline: Container(
-                                          //     color: Colors.deepPurpleAccent,
-                                          //   ),
-                                          //   onChanged: (String newValue) {
-                                          //     if (newValue == "Edit") {
-                                          //       _navigate_edit_hell(
-                                          //           context, filteredStores[index]);
-                                          //     } else {
-                                          //       API(context)
-                                          //           .Delete("users/${stores[index].id}")
-                                          //           .then((value) {
-                                          //         if (value != null) {
-                                          //           showDialog(
-                                          //             context: context,
-                                          //             builder: (_) => ResultOverlay(
-                                          //               value.containsKey('errors')
-                                          //                   ? "${value['errors']}"
-                                          //                   : 'تم حذف العامل بنجاح',
-                                          //             ),
-                                          //           );
-                                          //         }
-                                          //         getAllStore();
-                                          //       });
-                                          //     }
-                                          //   },
-                                          //   items: <String>[
-                                          //     'Edit',
-                                          //     'Delete',
-                                          //   ].map<DropdownMenuItem<String>>(
-                                          //       (String value) {
-                                          //     return DropdownMenuItem<String>(
-                                          //       value: value,
-                                          //       child: Text(value),
-                                          //     );
-                                          //   }).toList(),
-                                          // ),
-                                          ),
-                                    ],
+                                  child: User_item(
+                                    isSelect: isSelect,
+                                    hall_model: data.staff[index],
+                                    selectStores: selectStores,
                                   ),
                                 );
                               },
@@ -490,27 +334,8 @@ class _StaffState extends State<Staff> {
     );
   }
 
-  _navigate_add_hell(BuildContext context) async {
-    await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => add_Staff()));
-    Timer(Duration(seconds: 3), () => getAllStore());
-  }
 
-  _navigate_edit_hell(BuildContext context, User hall) async {
-    await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => EditStaff(hall)));
-    Timer(Duration(seconds: 3), () => getAllStore());
-  }
-
-  Future<void> getAllStore() async {
-    API(context).get(url).then((value) {
-      if (value != null) {
-        setState(() {
-          filteredStores = staff = User_model.fromJson(value).data;
-        });
-      }
-    });
-  }
+ 
 
   Widget row(User productModel) {
     return Row(

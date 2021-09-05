@@ -62,7 +62,11 @@
   "shipping": "الشحنة",
   "car": "المركبة",
   "year": "السنة",
+  "yearto": "الى السنة",
+  "yearfrom": "من السنة",
   "serial": "الرقم التسلسلي",
+  "manufacturer": "المصنع",
+
   "productType": "نوع المنتج",
   "quantity": "الكمية",
   "models": "الموديلات",
@@ -70,6 +74,7 @@
   "Wholesaleprice": "سعر الجملة",
   "minOfOrder": "الحد الادنى للطلب جملة",
   "qty_reminder": "تنبيه الكمية",
+  "reminder": "تنبيه عند انخفاض المخزون إلى",
   "prodcountry": "بلد المنشأ",
   "tags": "الكلمات المفتاحية",
   "productimage": "صور المنتج",
@@ -164,6 +169,7 @@
   "message": "الرسالة",
   "sendReplay": "إرسال رد",
   "role": "الدور الوظيفي",
+  "approved": " قبول ",
 
   "total_orders": "طلبات تم تسليمها",
   "total_sale": "إجمالي المبيعات",

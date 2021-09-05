@@ -81,18 +81,24 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   void _auth() async {
+
     //themeColor.setCar_made(getTransrlate(context, 'selectCar'));
     final SharedPreferences prefs =
     await SharedPreferences.getInstance();
     API(context).post('token/data', {}).then((value) {
       if (value != null) {
-      if (value['data']['status'] == 'ON') {
+      if (value['data']['status'] == 'ON')
+      {
+        Provider.of<Provider_Data>(context,listen: false).getAllstaff(context);
+        Provider.of<Provider_Data>(context,listen: false).getAllStore(context);
+        Provider.of<Provider_Data>(context,listen: false).getProducts(context);
+
         var user = value['data']['user'];
         prefs.setString("user_email", user['email']);
         prefs.setString("user_name", user['name']);
         prefs.setInt("user_id", user['id']);
         Provider.of<Provider_control>(context,listen: false).setLogin(true);
-        Provider.of<Provider_Data>(context,listen: false).getProducts(context);
+
         Nav.routeReplacement(context, Home());
       }else {
         Provider.of<Provider_control>(context,listen: false).setLogin(false);

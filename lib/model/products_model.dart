@@ -260,7 +260,7 @@ class Product {
         ? null
         : data['maincategory_id'] = this.Main_categoryid;
     data['manufacturer_id'] = this.manufacturer_id;
-    this.qty_reminder == null ? '1' : data['qty_reminder'] = this.qty_reminder;
+    this.qty_reminder == null ? data['qty_reminder'] = '1' : data['qty_reminder'] = this.qty_reminder;
     this.transmission_id == null
         ? null
         : data['transmission_id'] = this.transmission_id;

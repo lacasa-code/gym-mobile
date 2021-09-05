@@ -61,6 +61,7 @@
   "select": "Select ",
   "filter": "Filter ",
   "staf": " Staff ",
+  "approved": " Approved ",
 
   "total_orders": "Approved Orders",
   "total_sale": "Sales",
@@ -83,7 +84,10 @@
   "CarType": "Car Type",
   "car": "Car",
   "year": "Year",
+  "yearto": "Year to",
+  "yearfrom": "Year from",
   "serial": "Serial",
+  "manufacturer": "Manufacturer",
   "stock": "Stock",
   "productType": "Product Type",
   "quantity": "Quantity",
@@ -91,6 +95,8 @@
   "Wholesaleprice": "Wholesale price",
   "minOfOrder": "minimum Of Order",
   "qty_reminder": "Quantity Reminder",
+  "reminder": "Alert when inventory is low",
+
   "prodcountry": "Product Country",
   "tags": "Tags",
   "mainCategory": "MainCategory",

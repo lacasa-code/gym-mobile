@@ -37,13 +37,13 @@ class _ProductsState extends State<Products> {
   Provider_Data data;
   @override
   void initState() {
-    data=Provider.of<Provider_Data>(context,listen: false);
-    data.getProducts(context);
+    //data=Provider.of<Provider_Data>(context,listen: false);
+    //data.getProducts(context);
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-       data.PerProducts(context);
+        Provider.of<Provider_Data>(context,listen: false).PerProducts(context);
       }
     });
     super.initState();
@@ -52,6 +52,8 @@ class _ProductsState extends State<Products> {
   @override
   Widget build(BuildContext context) {
     final themeColor = Provider.of<Provider_control>(context);
+    final data = Provider.of<Provider_Data>(context);
+
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -290,18 +292,13 @@ class _ProductsState extends State<Products> {
                                               builder: (_) => Sortdialog(character:characters ,))
                                           .then((val) {
                                             characters=val??"ASC";
-                                        print(val);
+                                            data.setproducts(null);
                                         API(context)
                                             .get('$url?sort_type=${characters}')
                                             .then((value) {
                                           if (value != null) {
                                             if (value['status_code'] == 200) {
-                                              setState(() {
-                                                data.products =
-                                                    Products_model.fromJson(
-                                                            value)
-                                                        .product;
-                                              });
+                                                data.setproducts(Products_model.fromJson(value).product);
                                             } else {
                                               showDialog(
                                                   context: context,

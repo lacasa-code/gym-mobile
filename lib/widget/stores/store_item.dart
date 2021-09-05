@@ -1,13 +1,18 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/store_model.dart';
 import 'package:trkar_vendor/screens/StorePage.dart';
+import 'package:trkar_vendor/screens/edit_store.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
+import 'package:trkar_vendor/utils/Provider/provider_data.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/navigator.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
+import 'package:trkar_vendor/utils/service/API.dart';
+import 'package:trkar_vendor/widget/ResultOverlay.dart';
 
 class Stores_item extends StatefulWidget {
   Stores_item({Key key, this.hall_model, this.isSelect, this.selectStores})
@@ -35,7 +40,7 @@ class _Stores_itemState extends State<Stores_item> {
             ));
       },
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 20),
+        padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 10),
         child: Container(
           width: ScreenUtil.getWidth(context),
           decoration: BoxDecoration(
@@ -200,6 +205,61 @@ class _Stores_itemState extends State<Stores_item> {
                         ),
                   SizedBox(
                     height: 25,
+                  ),
+                ],
+              ),
+              PopupMenuButton<int>(
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    value: 1,
+                    child: InkWell(
+                      onTap: (){
+                        Nav.route(context, Edit_Store(widget.hall_model));
+                      },
+                      child: Row(
+                        mainAxisAlignment:
+                        MainAxisAlignment.spaceAround,
+                        children: [
+                          Text("${getTransrlate(context, 'edit')}"),
+                          Icon(
+                            Icons.edit_outlined,
+                            color: Colors.black54,
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  widget.hall_model.headCenter==1?PopupMenuItem(
+                    value: 2,
+
+                  ):    PopupMenuItem(
+                    value: 2,
+                    child:  InkWell(
+                      onTap: (){
+                        API(context)
+                            .Delete("stores/${widget.hall_model.id}")
+                            .then((value) {
+                          showDialog(
+                            context: context,
+                            builder: (_) => ResultOverlay(
+                              "${value['message']??value['errors'] ?? 'تم حذف المتجر بنجاح'}",
+                            ),
+                          );
+                          Provider.of<Provider_Data>(context,listen: false).getAllStore(context);
+                        });
+                      },
+                      child: Row(
+                        mainAxisAlignment:
+                        MainAxisAlignment.spaceAround,
+                        children: [
+                          Text("${getTransrlate(context, 'delete')}"),
+                          Icon(
+                            CupertinoIcons.delete,
+                            color: Colors.black54,
+                          )
+                        ],
+                      ),
+                    ),
                   ),
                 ],
               ),

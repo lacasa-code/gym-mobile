@@ -8,8 +8,10 @@ import 'package:trkar_vendor/model/store_model.dart';
 import 'package:trkar_vendor/screens/add_store.dart';
 import 'package:trkar_vendor/screens/edit_store.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
+import 'package:trkar_vendor/utils/Provider/provider_data.dart';
 import 'package:trkar_vendor/utils/SerachLoading.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
+import 'package:trkar_vendor/utils/navigator.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
 import 'package:trkar_vendor/widget/ResultOverlay.dart';
@@ -25,8 +27,7 @@ class Stores extends StatefulWidget {
 }
 
 class _StoresState extends State<Stores> {
-  List<Store> stores;
-  List<Store> filteredStores;
+
   List<int> selectStores = [];
   String url="stores";
   int i = 2;
@@ -41,15 +42,15 @@ class _StoresState extends State<Stores> {
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        PerStore();
+        Provider.of<Provider_Data>(context,listen: false).PerStore(context);
       }
     });
-    getAllStore();
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
     final themeColor = Provider.of<Provider_control>(context);
+    final Data = Provider.of<Provider_Data>(context);
     return Scaffold(
       key: _scaffoldKey,
       drawer: HiddenMenu(),
@@ -99,7 +100,7 @@ class _StoresState extends State<Stores> {
           child: FlatButton(
               color: Colors.orange,
               onPressed: () {
-                _navigate_add_store(context);
+               Nav.route(context, add_Store());
               },
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -119,7 +120,7 @@ class _StoresState extends State<Stores> {
               )),
         ),
       ),
-      body: stores == null
+      body: Data.stores == null
           ? Container(
               height: ScreenUtil.getHeight(context) / 3,
               child: Center(
@@ -127,7 +128,7 @@ class _StoresState extends State<Stores> {
                 valueColor:
                     AlwaysStoppedAnimation<Color>(themeColor.getColor()),
               )))
-          : stores.isEmpty
+          : Data.stores.isEmpty
               ? Center(
                   child: Container(
                     child: Column(
@@ -203,7 +204,7 @@ class _StoresState extends State<Stores> {
                                       isSelect=false;
                                     });
                                   }
-                                  getAllStore();
+                                  Provider.of<Provider_Data>(context,listen: false).getAllStore(context);
                                 });
                               },
                               child: Row(
@@ -237,7 +238,7 @@ class _StoresState extends State<Stores> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Text('${stores.length} ${getTransrlate(context, 'staf')}'),
+                            Text('${Data.stores.length} ${getTransrlate(context, 'staf')}'),
                             InkWell(
                               onTap: () {
                                 setState(() {
@@ -290,7 +291,7 @@ class _StoresState extends State<Stores> {
                                     if (value != null) {
                                       if (value['status_code'] == 200) {
                                         setState(() {
-                                          filteredStores = stores =
+                                          Data.stores =
                                               Store_model.fromJson(value).data;
                                         });
                                       } else {
@@ -392,157 +393,25 @@ class _StoresState extends State<Stores> {
                       //   ],
                       // ),
                       ListView.builder(
-                        itemCount: filteredStores == null && stores.isEmpty
-                            ? 0
-                            : filteredStores.length,
+                        itemCount: Data.stores.length,
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (BuildContext context, int index) {
-                          return Stack(
-                            children: [
-                              Stores_item(
-                                hall_model: filteredStores[index],
-                                isSelect: isSelect,
-                                selectStores: selectStores,
-                              ),
-                              Positioned(
-                                  left:themeColor.getlocal()=='ar'?20: null,
-                                  right:themeColor.getlocal()=='en'?20:null,                                  top: 20,
-                                  child: PopupMenuButton<int>(
-                                    itemBuilder: (context) => [
-                                      PopupMenuItem(
-                                        value: 1,
-                                        child: InkWell(
-                                          onTap: (){
-                                            _navigate_edit_hell(
-                                                context, filteredStores[index]);
-                                          },
-                                          child: Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                            children: [
-                                              Text("${getTransrlate(context, 'edit')}"),
-                                              Icon(
-                                                Icons.edit_outlined,
-                                                color: Colors.black54,
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      filteredStores[index].headCenter==1?PopupMenuItem(
-                                        value: 2,
-
-                                      ):    PopupMenuItem(
-                                        value: 2,
-                                        child:  InkWell(
-                                          onTap: (){
-                                            API(context)
-                                                .Delete("stores/${stores[index].id}")
-                                                .then((value) {
-                                              showDialog(
-                                                context: context,
-                                                builder: (_) => ResultOverlay(
-                                                  "${value['message']??value['errors'] ?? 'تم حذف المتجر بنجاح'}",
-                                                ),
-                                              );
-                                              getAllStore();
-                                            });
-                                          },
-                                          child: Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                            children: [
-                                              Text("${getTransrlate(context, 'delete')}"),
-                                              Icon(
-                                                CupertinoIcons.delete,
-                                                color: Colors.black54,
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                // DropdownButton<String>(
-                                //   //  value: dropdownValue,
-                                //   icon: Container(
-                                //     child: Icon(Icons.more_vert),
-                                //   ),
-                                //   iconSize: 24,
-                                //   elevation: 16,
-                                //   style: const TextStyle(
-                                //       color: Colors.deepPurple),
-                                //   underline: Container(
-                                //     color: Colors.deepPurpleAccent,
-                                //   ),
-                                //   onChanged: (String newValue) {
-                                //     if (newValue == "Edit") {
-                                //       _navigate_edit_hell(
-                                //           context, filteredStores[index]);
-                                //     } else {
-                                //       API(context)
-                                //           .Delete("users/${stores[index].id}")
-                                //           .then((value) {
-                                //         if (value != null) {
-                                //           showDialog(
-                                //             context: context,
-                                //             builder: (_) => ResultOverlay(
-                                //               value.containsKey('errors')
-                                //                   ? "${value['errors']}"
-                                //                   : 'تم حذف العامل بنجاح',
-                                //             ),
-                                //           );
-                                //         }
-                                //         getAllStore();
-                                //       });
-                                //     }
-                                //   },
-                                //   items: <String>[
-                                //     'Edit',
-                                //     'Delete',
-                                //   ].map<DropdownMenuItem<String>>(
-                                //       (String value) {
-                                //     return DropdownMenuItem<String>(
-                                //       value: value,
-                                //       child: Text(value),
-                                //     );
-                                //   }).toList(),
-                                // ),
-                              ),
-
-                            ],
+                          return Stores_item(
+                            hall_model:Data.stores[index],
+                            isSelect: isSelect,
+                            selectStores: selectStores,
                           );
                         },
                       ),
+                      SizedBox(height: 50,)
                     ],
                   ),
                 ),
     );
   }
 
-  _navigate_add_store(BuildContext context) async {
-    await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => add_Store()));
-    Timer(Duration(seconds: 3), () => getAllStore());
-  }
 
-  _navigate_edit_hell(BuildContext context, Store hall) async {
-    await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => Edit_Store(hall)));
-    Timer(Duration(seconds: 3), () => getAllStore());
-  }
-
-  Future<void> getAllStore() async {
-    API(context).get(url).then((value) {
-      if (value != null) {
-        setState(() {
-          filteredStores = stores = [];
-          filteredStores = stores = Store_model.fromJson(value).data;
-        });
-      }
-    });
-  }
 
   Widget row(Store productModel) {
     return Row(
@@ -562,13 +431,4 @@ class _StoresState extends State<Stores> {
     );
   }
 
-  Future<void> PerStore() async {
-    API(context).get("$url?page=${i++}&ordered_by=created_at&sort_type=desc").then((value) {
-      if (value != null) {
-        setState(() {
-          stores.addAll(Store_model.fromJson(value).data);
-        });
-      }
-    });
-  }
 }

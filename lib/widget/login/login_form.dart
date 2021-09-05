@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trkar_vendor/screens/home.dart';
 import 'package:trkar_vendor/screens/lost_password.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
+import 'package:trkar_vendor/utils/Provider/provider_data.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/navigator.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
@@ -111,12 +112,17 @@ class _LoginFormState extends State<LoginForm> {
                     }).then((value) {
                       if (value != null) {
                         if (value['status_code'] == 200) {
+
                           var user = value['data'];
                           prefs.setString("user_email", user['email']);
                           prefs.setString("user_name", user['name']);
                           prefs.setString("token", user['token']);
                           prefs.setInt("user_id", user['id']);
                           themeColor.setLogin(true);
+                          Provider.of<Provider_Data>(context,listen: false).getAllstaff(context);
+                          Provider.of<Provider_Data>(context,listen: false).getAllStore(context);
+                          Provider.of<Provider_Data>(context,listen: false).getProducts(context);
+
                           Nav.routeReplacement(context, Home());
 
                       } else {

@@ -7,9 +7,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/store_model.dart';
+import 'package:trkar_vendor/screens/edit_store.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
+import 'package:trkar_vendor/utils/Provider/provider_data.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
+import 'package:trkar_vendor/utils/navigator.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
+import 'package:trkar_vendor/utils/service/API.dart';
+import 'package:trkar_vendor/widget/ResultOverlay.dart';
 import 'package:trkar_vendor/widget/SearchOverlay.dart';
 
 class StorePage extends StatefulWidget {
@@ -81,21 +86,82 @@ class _StorePageState extends State<StorePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Container(
-                    margin: EdgeInsets.all(8),
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: Colors.black12,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child:  Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SvgPicture.asset(
-                        "assets/icons/store.svg",
-                        color: Colors.white,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.all(8),
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Colors.black12,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child:  Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SvgPicture.asset(
+                            "assets/icons/store.svg",
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
-                    ),
+                      PopupMenuButton<int>(
+                        itemBuilder: (context) => [
+                          PopupMenuItem(
+                            value: 1,
+                            child: InkWell(
+                              onTap: (){
+                                Nav.route(context, Edit_Store(widget.store));
+                              },
+                              child: Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceAround,
+                                children: [
+                                  Text("${getTransrlate(context, 'edit')}"),
+                                  Icon(
+                                    Icons.edit_outlined,
+                                    color: Colors.black54,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                          widget.store.headCenter==1?PopupMenuItem(
+                            value: 2,
+
+                          ):
+                          PopupMenuItem(
+                            value: 2,
+                            child:  InkWell(
+                              onTap: (){
+                                API(context)
+                                    .Delete("stores/${widget.store.id}")
+                                    .then((value) {
+                                  showDialog(
+                                    context: context,
+                                    builder: (_) => ResultOverlay(
+                                      "${value['message']??value['errors'] ?? 'تم حذف المتجر بنجاح'}",
+                                    ),
+                                  );
+                                  Provider.of<Provider_Data>(context,listen: false).getAllStore(context);
+                                });
+                              },
+                              child: Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceAround,
+                                children: [
+                                  Text("${getTransrlate(context, 'delete')}"),
+                                  Icon(
+                                    CupertinoIcons.delete,
+                                    color: Colors.black54,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -161,12 +227,10 @@ class _StorePageState extends State<StorePage> {
                       );
                     },
                   ),
-
                   Text(
                     "${getTransrlate(context, 'address')} : ${widget.store.address}",
                     style: TextStyle(fontSize: 14),
                   ),
-
                   SizedBox(height: 8,),
                 ],
               ),
@@ -195,11 +259,11 @@ class _StorePageState extends State<StorePage> {
                   ],
                 ),
               ),
+              SizedBox(height: 10,)
             ],
           ),
         ),
       ),
-
     );
   }
 }

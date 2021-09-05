@@ -15,6 +15,7 @@ import 'package:trkar_vendor/model/city_model.dart';
 import 'package:trkar_vendor/model/country_model.dart';
 import 'package:trkar_vendor/model/store_model.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
+import 'package:trkar_vendor/utils/Provider/provider_data.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
@@ -382,6 +383,8 @@ class _Edit_StoreState extends State<Edit_Store> {
                                 ),
                               );
                             } else {
+                              Provider.of<Provider_Data>(context,listen: false).getAllStore(context);
+
                               Navigator.pop(context);
                               showDialog(
                                 context: context,

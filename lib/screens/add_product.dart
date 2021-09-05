@@ -45,6 +45,7 @@ class _Add_ProductState extends State<Add_Product> {
   int Main_categoryid;
   TextEditingController totaldiscount = TextEditingController();
   bool loading = false;
+  bool isqty_reminder = false;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
   List<Carmodel> carmodels;
@@ -626,7 +627,7 @@ int CheckBox=0;
                                                 child: DropdownSearch<Year>(
                                                     showSearchBox: false,
                                                     showClearButton: false,
-                                                    label: " السنة من",
+                                                    label: " ${getTransrlate(context, 'yearfrom')}",
                                                     validator: (Year item) {
                                                       if (item == null) {
                                                         return "Required field";
@@ -662,7 +663,7 @@ int CheckBox=0;
                                                 child: DropdownSearch<Year>(
                                                     showSearchBox: false,
                                                     showClearButton: false,
-                                                    label: "الى السنة",
+                                                    label: "${getTransrlate(context, 'yearto')}",
                                                     validator: (Year item) {
                                                       if (item == null) {
                                                         return "Required field";
@@ -700,7 +701,7 @@ int CheckBox=0;
                                   child: DropdownSearch<Manufacturer>(
                                       showSearchBox: false,
                                       showClearButton: false,
-                                      label: " المصنع",
+                                      label: " ${getTransrlate(context, 'manufacturer')}",
                                       validator: (Manufacturer item) {
                                         if (item == null) {
                                           return "Required field";
@@ -719,7 +720,7 @@ int CheckBox=0;
                             height: 10,
                           ),
                           MyTextFormField(
-                            intialLabel: product.serialNumber ?? ' ',
+                            intialLabel: product.serialNumber ?? '',
                             Keyboard_Type: TextInputType.number,
                             labelText: '${getTransrlate(context, 'serial')}',
                             hintText: '${getTransrlate(context, 'serial')}',
@@ -925,7 +926,24 @@ int CheckBox=0;
                                         ),
                                       ],
                                     ),
-                                    MyTextFormField(
+
+                                    Row(
+                                      children: [
+                                        Checkbox(
+                                          checkColor: Colors.white,
+                                          activeColor:Colors.orange ,
+                                          //fillColor:Colors.orange,
+                                          value: isqty_reminder,
+                                          onChanged: (bool value) {
+                                            setState(() {
+                                              isqty_reminder = value;
+                                            });
+                                          },
+                                        ),
+                                        Text("${getTransrlate(context, 'reminder')}"),
+                                      ],
+                                    ),
+                                    !isqty_reminder?Container(): MyTextFormField(
                                       intialLabel: ' ',
                                       Keyboard_Type: TextInputType.number,
                                       labelText:

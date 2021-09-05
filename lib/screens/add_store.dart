@@ -15,6 +15,7 @@ import 'package:trkar_vendor/model/city_model.dart';
 import 'package:trkar_vendor/model/country_model.dart';
 import 'package:trkar_vendor/model/store_model.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
+import 'package:trkar_vendor/utils/Provider/provider_data.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
@@ -108,7 +109,7 @@ class _add_StoreState extends State<add_Store> {
                           },
                         ),
                         Text(
-                          "${getTransrlate(context, 'country')}",
+                          "${getTransrlate(context, 'Countroy')}",
                           style: TextStyle(color: Colors.black, fontSize: 16),
                         ),
                         contries == null
@@ -125,7 +126,7 @@ class _add_StoreState extends State<add_Store> {
                                 return null;
                             },
                             selectedItem: store.countryId == null
-                                ? Country(countryName: 'select country')
+                                ? Country(countryName: ' ')
                                 : contries
                                 .where((element) =>
                             element.id == store.countryId)
@@ -144,6 +145,71 @@ class _add_StoreState extends State<add_Store> {
                               getArea(data.id);
                             },
                           ),
+                        ),
+                        area == null
+                            ? Container()
+                            : Padding(
+                          padding:
+                          const EdgeInsets.symmetric(vertical: 10),
+                          child: DropdownSearch<Area>(
+                             label: getTransrlate(context, 'Countroy'),
+                            validator: (Area item) {
+                              if (item == null) {
+                                return "Required field";
+                              } else
+                                return null;
+                            },
+
+                            items: area,
+                            //  onFind: (String filter) => getData(filter),
+                            itemAsString: (Area u) => u.areaName,
+                            onChanged: (Area data) {
+                              store.areaId = data.id;
+                              setState(() {
+                                cities=null;
+
+                              });
+                              getCity(data.id);
+                            },
+                          ),
+                        ),
+                        cities == null
+                            ? Container()
+                            : Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: DropdownSearch<City>(
+                            // label: getTransrlate(context, 'Countroy'),
+                            validator: (City item) {
+                              if (item == null) {
+                                return "Required field";
+                              } else
+                                return null;
+                            },
+
+                            items: cities,
+                            //  onFind: (String filter) => getData(filter),
+                            itemAsString: (City u) => u.cityName,
+                            onChanged: (City data) {
+                              store.cityId = data.id;
+                            },
+                          ),
+                        ),
+                        MyTextFormField(
+                          textEditingController: addressController,
+                          Keyboard_Type: TextInputType.text,
+                          labelText: getTransrlate(context, 'address'),
+                          hintText: getTransrlate(context, 'address'),
+                          enabled: true,
+                          validator: (String value) {
+                            if (value.isEmpty) {
+                              return getTransrlate(context, 'address');
+                            }
+                            _formKey.currentState.save();
+                            return null;
+                          },
+                          onSaved: (String value) {
+                            store.address = value;
+                          },
                         ),
                         MyTextFormField(
                           intialLabel: store.nameStore ?? ' ',
@@ -192,127 +258,63 @@ class _add_StoreState extends State<add_Store> {
                             store.moderatorAltPhone = value.isEmpty?'':"+$code$value";
                           },
                         ),
-                        Text(
-                          "${getTransrlate(context, 'address')}",
-                          style: TextStyle(color: Colors.black, fontSize: 16),
-                        ),
-                        area == null
-                            ? Container()
-                            : Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
-                                child: DropdownSearch<Area>(
-                                  // label: getTransrlate(context, 'Countroy'),
-                                  validator: (Area item) {
-                                    if (item == null) {
-                                      return "Required field";
-                                    } else
-                                      return null;
-                                  },
+                        // Text(
+                        //   "${getTransrlate(context, 'address')}",
+                        //   style: TextStyle(color: Colors.black, fontSize: 16),
+                        // ),
 
-                                  items: area,
-                                  //  onFind: (String filter) => getData(filter),
-                                  itemAsString: (Area u) => u.areaName,
-                                  onChanged: (Area data) {
-                                    store.areaId = data.id;
-                                    setState(() {
-                                      cities=null;
-
-                                    });
-                                    getCity(data.id);
-                                  },
-                                ),
-                              ),
-                        cities == null
-                            ? Container()
-                            : Padding(
-                                padding: const EdgeInsets.only(top: 10),
-                                child: DropdownSearch<City>(
-                                  // label: getTransrlate(context, 'Countroy'),
-                                  validator: (City item) {
-                                    if (item == null) {
-                                      return "Required field";
-                                    } else
-                                      return null;
-                                  },
-
-                                  items: cities,
-                                  //  onFind: (String filter) => getData(filter),
-                                  itemAsString: (City u) => u.cityName,
-                                  onChanged: (City data) {
-                                    store.cityId = data.id;
-                                  },
-                                ),
-                              ),
-                        MyTextFormField(
-                          textEditingController: addressController,
-                          Keyboard_Type: TextInputType.text,
-                          labelText: getTransrlate(context, 'address'),
-                          hintText: getTransrlate(context, 'address'),
-                          enabled: true,
-                          validator: (String value) {
-                            if (value.isEmpty) {
-                              return getTransrlate(context, 'address');
-                            }
-                            _formKey.currentState.save();
-                            return null;
-                          },
-                          onSaved: (String value) {
-                            store.address = value;
-                          },
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(vertical: 10),
-                          height: ScreenUtil.getHeight(context) / 5,
-                          child: MapPicker(
-                            // pass icon widget
-                            iconWidget: Icon(
-                              Icons.store,
-                              size: 50,
-                            ),
-                            //add map picker controller
-                            mapPickerController: mapPickerController,
-                            child: GoogleMap(
-                              zoomControlsEnabled: true,
-                              // hide location button
-                              myLocationButtonEnabled: true,
-                              myLocationEnabled: true,
-
-                              mapType: MapType.normal,
-                              //  camera position
-                              initialCameraPosition: cameraPosition,
-                              onMapCreated: (GoogleMapController controller) {
-                                _controller.complete(controller);
-                              },
-                              onCameraMoveStarted: () {
-                                // notify map is moving
-                                mapPickerController.mapMoving();
-                              },
-                              onCameraMove: (cameraPosition) {
-                                this.cameraPosition = cameraPosition;
-                              },
-                              onCameraIdle: () async {
-                                // notify map stopped moving
-                                mapPickerController.mapFinishedMoving();
-                                //get address name from camera position
-                                store.lat =
-                                    cameraPosition.target.latitude.toString();
-                                store.long =
-                                    cameraPosition.target.longitude.toString();
-                                List<Address> addresses = await Geocoder.local
-                                    .findAddressesFromCoordinates(Coordinates(
-                                        cameraPosition.target.latitude,
-                                        cameraPosition.target.longitude));
-                                // update the ui with the address
-
-                                addressController.text =
-                                    '${addresses.first?.addressLine ?? ''}';
-                                store.address =
-                                    '${addresses.first?.addressLine ?? ''}';
-                              },
-                            ),
-                          ),
-                        ),
+                        // Container(
+                        //   margin: EdgeInsets.symmetric(vertical: 10),
+                        //   height: ScreenUtil.getHeight(context) / 5,
+                        //   child: MapPicker(
+                        //     // pass icon widget
+                        //     iconWidget: Icon(
+                        //       Icons.store,
+                        //       size: 50,
+                        //     ),
+                        //     //add map picker controller
+                        //     mapPickerController: mapPickerController,
+                        //     child: GoogleMap(
+                        //       zoomControlsEnabled: true,
+                        //       // hide location button
+                        //       myLocationButtonEnabled: true,
+                        //       myLocationEnabled: true,
+                        //
+                        //       mapType: MapType.normal,
+                        //       //  camera position
+                        //       initialCameraPosition: cameraPosition,
+                        //       onMapCreated: (GoogleMapController controller) {
+                        //         _controller.complete(controller);
+                        //       },
+                        //       onCameraMoveStarted: () {
+                        //         // notify map is moving
+                        //         mapPickerController.mapMoving();
+                        //       },
+                        //       onCameraMove: (cameraPosition) {
+                        //         this.cameraPosition = cameraPosition;
+                        //       },
+                        //       onCameraIdle: () async {
+                        //         // notify map stopped moving
+                        //         mapPickerController.mapFinishedMoving();
+                        //         //get address name from camera position
+                        //         store.lat =
+                        //             cameraPosition.target.latitude.toString();
+                        //         store.long =
+                        //             cameraPosition.target.longitude.toString();
+                        //         List<Address> addresses = await Geocoder.local
+                        //             .findAddressesFromCoordinates(Coordinates(
+                        //                 cameraPosition.target.latitude,
+                        //                 cameraPosition.target.longitude));
+                        //         // update the ui with the address
+                        //
+                        //         addressController.text =
+                        //             '${addresses.first?.addressLine ?? ''}';
+                        //         store.address =
+                        //             '${addresses.first?.addressLine ?? ''}';
+                        //       },
+                        //     ),
+                        //   ),
+                        // ),
                         SizedBox(
                           height: 20,
                         ),
@@ -372,6 +374,8 @@ class _add_StoreState extends State<add_Store> {
                                 ),
                               );
                             } else {
+                              Provider.of<Provider_Data>(context,listen: false).getAllStore(context);
+
                               Navigator.pop(context);
                               showDialog(
                                 context: context,

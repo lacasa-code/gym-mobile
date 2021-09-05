@@ -40,7 +40,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   Future saveOnboardPageShared() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
-    await sp.setBool("onboard", true);
+    await sp.setBool("onboard", false);
   }
 
   @override

@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/roles_model.dart';
 import 'package:trkar_vendor/model/user_model.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
+import 'package:trkar_vendor/utils/Provider/provider_data.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
@@ -39,6 +40,7 @@ class _EditStaffState extends State<EditStaff> {
   @override
   Widget build(BuildContext context) {
     final themeColor = Provider.of<Provider_control>(context);
+    final data = Provider.of<Provider_Data>(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -207,6 +209,7 @@ class _EditStaffState extends State<EditStaff> {
                                     ),
                                   );
                                 } else {
+                                  data.getAllstaff(context);
                                   Navigator.pop(context);
                                   showDialog(
                                     context: context,

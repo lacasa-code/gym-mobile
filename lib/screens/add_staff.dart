@@ -9,12 +9,15 @@ import 'package:trkar_vendor/model/roles_model.dart';
 import 'package:trkar_vendor/model/store_model.dart';
 import 'package:trkar_vendor/model/user_model.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
+import 'package:trkar_vendor/utils/Provider/provider_data.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
 import 'package:trkar_vendor/widget/ResultOverlay.dart';
 import 'package:trkar_vendor/widget/commons/custom_textfield.dart';
 import 'package:trkar_vendor/widget/commons/drop_down_menu/find_dropdown.dart';
+import 'package:trkar_vendor/widget/custom_loading.dart';
+import 'package:trkar_vendor/widget/no_found_item.dart';
 
 class add_Staff extends StatefulWidget {
   @override
@@ -40,6 +43,7 @@ class _add_StaffState extends State<add_Staff> {
   @override
   Widget build(BuildContext context) {
     final themeColor = Provider.of<Provider_control>(context);
+    final data = Provider.of<Provider_Data>(context);
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -57,7 +61,7 @@ class _add_StaffState extends State<add_Staff> {
         backgroundColor: themeColor.getColor(),
       ),
       body: SingleChildScrollView(
-        child: Column(
+        child:_listStore==null?Custom_Loading():_listStore.isEmpty?NotFoundItem(title: 'No stores found',) :Column(
           children: [
             Container(
               decoration: BoxDecoration(
@@ -144,6 +148,7 @@ class _add_StaffState extends State<add_Staff> {
                             : DropdownSearch<Role>(
                                 showSearchBox: false,
                                 showClearButton: false,
+                                maxHeight: ScreenUtil.getHeight(context)/3,
                                 label: "   ",
                                 validator: (Role item) {
                                   if (item == null) {
@@ -246,6 +251,7 @@ class _add_StaffState extends State<add_Staff> {
                                       ),
                                     );
                                   } else {
+                                    data.getAllstaff(context);
                                     Navigator.pop(context);
                                     showDialog(
                                       context: context,
