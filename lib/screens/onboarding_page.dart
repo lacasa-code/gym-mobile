@@ -83,7 +83,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
               _buildPageContent(
                   image: 'assets/images/logo.png',
                   title: 'هيا بنا',
-                  body: 'للمزيد من المعلومات قم بزيارة موقعنا ww w.trkar.com'),
+                  body: 'للمزيد من المعلومات قم بزيارة موقعنا www.trkar.com'),
             ],
           ),
         ),
@@ -151,26 +151,26 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         SizedBox(
                           height: ScreenUtil.getHeight(context) / 25,
                         ),
-                        Container(
-                          height: 50,
-                          width: ScreenUtil.getWidth(context) / 1.4,
-                          child: FlatButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(1),
-                                side:
-                                    BorderSide(color: Colors.orange, width: 2)),
-                            color: Colors.white,
-                            onPressed: () {
-                              Nav.routeReplacement(context, LoginPage());
-                            },
-                            child: Text(
-                              "سجل كبائع",
-                              style: TextStyle(
-                                  color: Colors.orange,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                          ),
-                        ),
+                        // Container(
+                        //   height: 50,
+                        //   width: ScreenUtil.getWidth(context) / 1.4,
+                        //   child: FlatButton(
+                        //     shape: RoundedRectangleBorder(
+                        //         borderRadius: BorderRadius.circular(1),
+                        //         side:
+                        //             BorderSide(color: Colors.orange, width: 2)),
+                        //     color: Colors.white,
+                        //     onPressed: () {
+                        //       Nav.routeReplacement(context, LoginPage());
+                        //     },
+                        //     child: Text(
+                        //       "سجل كبائع",
+                        //       style: TextStyle(
+                        //           color: Colors.orange,
+                        //           fontWeight: FontWeight.w700),
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
@@ -207,7 +207,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
               maxFontSize: 35,
               maxLines: 3,
               textAlign: TextAlign.center,
-              style: TextStyle(fontWeight: FontWeight.w600, color: Colors.white),
+              style: TextStyle(fontWeight: FontWeight.w600,
+                  color: Colors.white),
             ),
           ),
           SizedBox(height: 32),

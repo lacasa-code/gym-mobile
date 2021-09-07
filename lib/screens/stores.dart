@@ -39,6 +39,8 @@ class _StoresState extends State<Stores> {
 
   @override
   void initState() {
+    Provider.of<Provider_Data>(context,listen: false).getAllStore(context);
+
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
@@ -238,7 +240,7 @@ class _StoresState extends State<Stores> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Text('${Data.stores.length} ${getTransrlate(context, 'staf')}'),
+                            Text('${Data.stores.length} ${getTransrlate(context, 'store')}'),
                             InkWell(
                               onTap: () {
                                 setState(() {

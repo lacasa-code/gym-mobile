@@ -35,7 +35,7 @@ class _StorePageState extends State<StorePage> {
 
  setState(() {
    _kGooglePlex = CameraPosition(
-     target: LatLng(double.parse(widget.store.lat), double.parse(widget.store.long)),
+     target: LatLng(double.parse(widget.store.lat??'0.0'), double.parse(widget.store.long??'0.0')),
      zoom: 9.4746,
    );
  });

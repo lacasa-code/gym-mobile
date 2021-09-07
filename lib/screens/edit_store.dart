@@ -39,12 +39,17 @@ class _Edit_StoreState extends State<Edit_Store> {
   List<Country> contries;
   List<City> cities;
   List<Area> area;
+  TextEditingController phone1;
+  TextEditingController phone2;
+
   CameraPosition cameraPosition = CameraPosition(
     target: LatLng(31.2060916, 29.9187),
     zoom: 14.4746,
   );
   @override
   void initState() {
+    phone1=TextEditingController(text: widget.store.moderatorPhone??'');
+    phone2=TextEditingController(text: widget.store.moderatorAltPhone??'');
     getCountry();
     super.initState();
   }
@@ -72,6 +77,52 @@ class _Edit_StoreState extends State<Edit_Store> {
       ),
       body: Column(
         children: [
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 10),
+            height: ScreenUtil.getHeight(context) / 5,
+            child: MapPicker(
+              // pass icon widget
+              iconWidget: Icon(
+                Icons.store,
+                size: 50,
+              ),
+              //add map picker controller
+              mapPickerController: mapPickerController,
+              child: GoogleMap(
+                zoomControlsEnabled: true,
+                // hide location button
+                myLocationButtonEnabled: true,
+                mapType: MapType.normal,
+                //  camera position
+                initialCameraPosition: cameraPosition,
+                onMapCreated: (GoogleMapController controller) {
+                  _controller.complete(controller);
+                },
+                onCameraMoveStarted: () {
+                  // notify map is moving
+                  mapPickerController.mapMoving();
+                },
+                onCameraMove: (cameraPosition) {
+                  this.cameraPosition = cameraPosition;
+                },
+                onCameraIdle: () async {
+                  // notify map stopped moving
+                  mapPickerController.mapFinishedMoving();
+                  //get address name from camera position
+                  widget.store.lat = cameraPosition.target.latitude.toString();
+                  widget.store.long = cameraPosition.target.longitude.toString();
+                  List<Address> addresses = await Geocoder.local
+                      .findAddressesFromCoordinates(Coordinates(
+                      cameraPosition.target.latitude,
+                      cameraPosition.target.longitude));
+                  // update the ui with the address
+                  widget.store.address =
+                  '${addresses.first?.addressLine ?? ''}';
+                },
+              ),
+            ),
+          ),
+
           Expanded(
             child: Container(
               child: SingleChildScrollView(
@@ -110,48 +161,7 @@ class _Edit_StoreState extends State<Edit_Store> {
                             widget.store.nameStore = value;
                           },
                         ),
-                        MyTextFormField(
-                          intialLabel: widget.store.moderatorPhone ?? ' ',
-                          Keyboard_Type: TextInputType.phone,
-                          labelText: getTransrlate(context, 'ModeratorPhone'),
-                          hintText: getTransrlate(context, 'ModeratorPhone'),
-                          isPhone: true,
-                          inputFormatters: [
-                            new LengthLimitingTextInputFormatter(15),
-                          ],
-                          enabled: true,
-                          validator: (String value) {
-                            if (value.length<=8) {
-                              return getTransrlate(context, 'ModeratorPhone');
-                            }
-                            _formKey.currentState.save();
-                            return null;
-                          },
-                          onSaved: (String value) {
-                            widget.store.moderatorPhone = value;
-                          },
-                        ),
-                        MyTextFormField(
-                          intialLabel: widget.store.moderatorAltPhone ?? ' ',
-                          Keyboard_Type: TextInputType.phone,
-                          labelText: getTransrlate(context, 'phone'),
-                          hintText: getTransrlate(context, 'phone'),
-                          isPhone: true,
-                          inputFormatters: [
-                            new LengthLimitingTextInputFormatter(15),
-                          ],
-                          enabled: true,
-                          validator: (String value) {
-                            if (value.length > 1&&value.length < 9) {
-                              return getTransrlate(context, 'Required');
-                            }
-                            _formKey.currentState.save();
-                            return null;
-                          },
-                          onSaved: (String value) {
-                            widget.store.moderatorAltPhone = value;
-                          },
-                        ),
+
                         Text(
                           getTransrlate(
                               context, 'Countroy'),
@@ -187,7 +197,8 @@ class _Edit_StoreState extends State<Edit_Store> {
                             onChanged:
                                 (Country data) {
                               setState(() {
-                                widget.store.country=data;
+                                widget.store.moderatorPhone='';
+                                widget.store.moderatorAltPhone='';
                                 widget.store.country=data;
                                 widget.store.countryId = data.id;
                                 widget.store.area = Area(areaName: '');
@@ -198,6 +209,13 @@ class _Edit_StoreState extends State<Edit_Store> {
                             },
                           ),
                         ),
+                        Text(
+                          "${getTransrlate(context, 'Area')}",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16),
+                        ),
+
                         area == null
                             ? Container()
                             : Padding(
@@ -232,6 +250,14 @@ class _Edit_StoreState extends State<Edit_Store> {
                             },
                           ),
                         ),
+                        Text(
+                          getTransrlate(
+                              context, 'City'),
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16),
+                        ),
+
                         cities == null
                             ? Container()
                             : Padding(
@@ -275,50 +301,47 @@ class _Edit_StoreState extends State<Edit_Store> {
                             widget.store.address = value;
                           },
                         ),
-                        Container(
-                          margin: EdgeInsets.symmetric(vertical: 10),
-                          height: ScreenUtil.getHeight(context) / 5,
-                          child: MapPicker(
-                            // pass icon widget
-                            iconWidget: Icon(
-                              Icons.location_pin,
-                              size: 50,
-                            ),
-                            //add map picker controller
-                            mapPickerController: mapPickerController,
-                            child: GoogleMap(
-                              zoomControlsEnabled: true,
-                              // hide location button
-                              myLocationButtonEnabled: true,
-                              mapType: MapType.normal,
-                              //  camera position
-                              initialCameraPosition: cameraPosition,
-                              onMapCreated: (GoogleMapController controller) {
-                                _controller.complete(controller);
-                              },
-                              onCameraMoveStarted: () {
-                                // notify map is moving
-                                mapPickerController.mapMoving();
-                              },
-                              onCameraMove: (cameraPosition) {
-                                this.cameraPosition = cameraPosition;
-                              },
-                              onCameraIdle: () async {
-                                // notify map stopped moving
-                                mapPickerController.mapFinishedMoving();
-                                //get address name from camera position
-                                widget.store.lat = cameraPosition.target.latitude.toString();
-                                widget.store.long = cameraPosition.target.longitude.toString();
-                                List<Address> addresses = await Geocoder.local
-                                    .findAddressesFromCoordinates(Coordinates(
-                                    cameraPosition.target.latitude,
-                                    cameraPosition.target.longitude));
-                                // update the ui with the address
-                                widget.store.address =
-                                '${addresses.first?.addressLine ?? ''}';
-                              },
-                            ),
-                          ),
+                        MyTextFormField(
+                          textEditingController:phone1,
+                          Keyboard_Type: TextInputType.phone,
+                          labelText: getTransrlate(context, 'ModeratorPhone'),
+                          hintText: getTransrlate(context, 'ModeratorPhone'),
+                          isPhone: true,
+                          inputFormatters: [
+                            new LengthLimitingTextInputFormatter(15),
+                          ],
+                          enabled: true,
+                          validator: (String value) {
+                            if (value.length<=8) {
+                              return getTransrlate(context, 'ModeratorPhone');
+                            }
+                            _formKey.currentState.save();
+                            return null;
+                          },
+                          onSaved: (String value) {
+                            widget.store.moderatorPhone = value;
+                          },
+                        ),
+                        MyTextFormField(
+                          textEditingController:phone2,
+                          Keyboard_Type: TextInputType.phone,
+                          labelText: getTransrlate(context, 'phone'),
+                          hintText: getTransrlate(context, 'phone'),
+                          isPhone: true,
+                          inputFormatters: [
+                            new LengthLimitingTextInputFormatter(15),
+                          ],
+                          enabled: true,
+                          validator: (String value) {
+                            if (value.length > 1&&value.length < 9) {
+                              return getTransrlate(context, 'Required');
+                            }
+                            _formKey.currentState.save();
+                            return null;
+                          },
+                          onSaved: (String value) {
+                            widget.store.moderatorAltPhone = value;
+                          },
                         ),
                         SizedBox(
                           height: 20,

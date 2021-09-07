@@ -20,6 +20,7 @@ import 'package:trkar_vendor/widget/ResultOverlay.dart';
 import 'package:trkar_vendor/widget/SearchOverlay.dart';
 import 'package:trkar_vendor/widget/Sort.dart';
 import 'package:trkar_vendor/widget/hidden_menu.dart';
+import 'package:trkar_vendor/widget/no_found_item.dart';
 import 'package:trkar_vendor/widget/products/product_item.dart';
 
 class Products extends StatefulWidget {
@@ -37,7 +38,7 @@ class _ProductsState extends State<Products> {
   Provider_Data data;
   @override
   void initState() {
-    //data=Provider.of<Provider_Data>(context,listen: false);
+    Provider.of<Provider_Data>(context,listen: false).getProducts(context);
     //data.getProducts(context);
 
     _scrollController.addListener(() {
@@ -135,20 +136,7 @@ class _ProductsState extends State<Products> {
           : data.products.isEmpty
               ? Center(
                   child: Container(
-                    child: Column(
-                      children: [
-                        SizedBox(height: 20),
-                        Icon(Icons.hourglass_empty_outlined,size: 100,color: Colors.black26,),
-                        SizedBox(height: 20),
-                        Text(
-                          'no Products found ',
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.grey,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
+                    child: NotFoundItem(title: '${getTransrlate(context, 'Empty')}',),
                   ),
                 )
               : SingleChildScrollView(

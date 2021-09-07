@@ -8,6 +8,7 @@
   },
   "gust": "Gust",
   "Empty": "No found product !",
+  "NoOrder": "No found Order ",
   "store": "Store",
 
   "duration": "duration",
@@ -32,6 +33,7 @@
       "else": "You have pushed the button {{value}} times."
     }
   },
+  "title": "name",
   "welcome": " Welcome ",
   "addProduct": "Add Product",
   "Moderator": "Moderator",
@@ -39,6 +41,8 @@
   "moderatorAltPhone": "Moderator Phone 2",
   "Compatiblecars": "Compatible cars",
   "brand": "Brand ",
+  "nofoundtickit": "no tickit found ",
+  "nofoundinvoices": "no invoices found ",
 
   "Select": "Select Now",
   "am": "AM",
@@ -111,6 +115,7 @@
   "NoNotification": "No Found Notification",
   "Nomessage": "No Found Message",
   "messageProduct": "Please add a branch to be able to add your products",
+  "messagestaff": "Please add a branch to be able to add your Staff",
   "transmissionName": "Transmission",
   "Percentage": "Percentage",
   "subCategory": "Sub Category",
@@ -142,6 +147,7 @@
   "ProfileSettings": "Profile Settings",
   "FAQ": "General inquiries",
 
+  "NoFAQ": "No General inquiries founded ",
 
   "products": "Products",
   "filter": "Filter",
@@ -225,6 +231,7 @@
   "AddNewAddress": "Add New Address",
   "Countroy": "Country",
   "City": "City",
+  "Area": "Area",
   "Addres": "Address",
   "Street": "Street",
   "Building": "Building No",

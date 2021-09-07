@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 
@@ -27,6 +28,7 @@ String title;
               ),
               Text(
                 "$title",
+                textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.black45,fontSize: 25),
               ),
 

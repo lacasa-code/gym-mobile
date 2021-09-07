@@ -61,7 +61,7 @@ class _add_StaffState extends State<add_Staff> {
         backgroundColor: themeColor.getColor(),
       ),
       body: SingleChildScrollView(
-        child:_listStore==null?Custom_Loading():_listStore.isEmpty?NotFoundItem(title: 'No stores found',) :Column(
+        child:_listStore==null?Custom_Loading():_listStore.isEmpty?NotFoundItem(title: '${getTransrlate(context, 'messagestaff')}',) :Column(
           children: [
             Container(
               decoration: BoxDecoration(
@@ -252,6 +252,7 @@ class _add_StaffState extends State<add_Staff> {
                                     );
                                   } else {
                                     data.getAllstaff(context);
+                                    data.getAllStore(context);
                                     Navigator.pop(context);
                                     showDialog(
                                       context: context,
@@ -305,7 +306,7 @@ class _add_StaffState extends State<add_Staff> {
     });
   }
   Future<void> getAllStore() async {
-    API(context).get('stores').then((value) {
+    API(context).get('storeslist').then((value) {
       if (value != null) {
         setState(() {
           _listStore= Store_model.fromJson(value).data;

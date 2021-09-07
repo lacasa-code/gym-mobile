@@ -231,8 +231,7 @@ class SearchOverlay_OrderState extends State<SearchOverlay_Order>
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
-                                    products[index].orderStatus !=
-                                        'pending'
+                                    products[index].need_approval==0
                                         ? Container(
                                       child: Row(
                                         mainAxisAlignment:

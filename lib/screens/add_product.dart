@@ -34,6 +34,7 @@ import 'package:trkar_vendor/widget/ResultOverlay.dart';
 import 'package:trkar_vendor/widget/SearchOverlay.dart';
 import 'package:trkar_vendor/widget/commons/custom_textfield.dart';
 import 'package:trkar_vendor/widget/custom_loading.dart';
+import 'package:trkar_vendor/widget/no_found_item.dart';
 
 class Add_Product extends StatefulWidget {
   @override
@@ -173,10 +174,7 @@ int CheckBox=0;
               ? Center(child: Custom_Loading())
               : _store.isEmpty
                   ? Center(
-                    child: Container(
-                        child:
-                            Text('${getTransrlate(context, 'messageProduct')}'),
-                      ),
+                    child:NotFoundItem(title: '${getTransrlate(context, 'messageProduct')}',),
                   )
                   : Form(
                       key: _formKey,
@@ -248,8 +246,11 @@ int CheckBox=0;
                               if(themeColor.local=='ar'){
                                 if (value.isEmpty) {
                                   return getTransrlate(context, 'description');
-                                } else if (value.length < 6) {
-                                  return getTransrlate(context, 'description');
+                                }  else if (value.length <= 2) {
+                                  return "${getTransrlate(context, 'requiredlength')}";
+                                } else if (RegExp(r"^[+-]?([0-9]*[.])?[0-9]+")
+                                    .hasMatch(value)) {
+                                  return getTransrlate(context, 'invalidname');
                                 }
                                 _formKey.currentState.save();
                                 return null;
@@ -271,9 +272,11 @@ int CheckBox=0;
                                 if (value.isEmpty) {
                                   return getTransrlate(
                                       context, 'requiredempty');
-                                } else if (value.length < 6) {
-                                  return getTransrlate(
-                                      context, 'requiredlength');
+                                }  else if (value.length <= 2) {
+                                  return "${getTransrlate(context, 'requiredlength')}";
+                                } else if (RegExp(r"^[+-]?([0-9]*[.])?[0-9]+")
+                                    .hasMatch(value)) {
+                                  return getTransrlate(context, 'invalidname');
                                 }
                                 _formKey.currentState.save();
                                 return null;
@@ -1436,7 +1439,6 @@ int CheckBox=0;
       }
     });
   }
-
   Future<void> getAllCareModel(String id) async {
     API(context).get('car-modelslist/$id').then((value) {
       if (value != null) {
@@ -1451,7 +1453,6 @@ int CheckBox=0;
       }
     });
   }
-
   Future<void> getAllParts_Category(int id) async {
     API(context).get('part-categorieslist/$id').then((value) {
       if (value != null) {
@@ -1461,7 +1462,6 @@ int CheckBox=0;
       }
     });
   }
-
   Future<void> getAllMain_category() async {
     API(context).get('main/categories/list/all').then((value) {
       if (value != null) {
@@ -1471,7 +1471,6 @@ int CheckBox=0;
       }
     });
   }
-
   Future<void> getAllproducttypes() async {
     API(context).get('product/types/list').then((value) {
       if (value != null) {
@@ -1482,7 +1481,6 @@ int CheckBox=0;
       }
     });
   }
-
   Future<void> getAllYear() async {
     API(context).get('car-yearslist').then((value) {
       if (value != null) {
@@ -1492,7 +1490,6 @@ int CheckBox=0;
       }
     });
   }
-
   Future<void> getAllStore() async {
     API(context).get('storeslist').then((value) {
       if (value != null) {
@@ -1502,7 +1499,6 @@ int CheckBox=0;
       }
     });
   }
-
   Future<void> getAllCategory(int id) async {
     API(context).get('categorieslist/$id').then((value) {
       if (value != null) {
@@ -1513,7 +1509,6 @@ int CheckBox=0;
     });
     getAlltag();
   }
-
   Future<void> getAlltag() async {
     API(context).get('product-tagslist').then((value) {
       if (value != null) {
@@ -1524,7 +1519,6 @@ int CheckBox=0;
       getAllprodcountry();
     });
   }
-
   Future<void> getAllprodcountry() async {
     API(context).get('prodcountries/list').then((value) {
       if (value != null) {

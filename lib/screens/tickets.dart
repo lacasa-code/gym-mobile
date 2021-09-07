@@ -16,6 +16,7 @@ import 'package:trkar_vendor/widget/ResultOverlay.dart';
 import 'package:trkar_vendor/widget/SearchOverlay.dart';
 import 'package:trkar_vendor/widget/Sort.dart';
 import 'package:trkar_vendor/widget/hidden_menu.dart';
+import 'package:trkar_vendor/widget/no_found_item.dart';
 import 'package:trkar_vendor/widget/stores/Ticket_item.dart';
 
 class Tickets extends StatefulWidget {
@@ -100,22 +101,7 @@ class _TicketsState extends State<Tickets> {
               )))
           : stores.isEmpty
               ? Center(
-                  child: Container(
-                    child: Column(
-                      children: [
-                        SizedBox(height: 20),
-                        Icon(Icons.hourglass_empty_outlined,size: 100,color: Colors.black26,),
-                        SizedBox(height: 20),
-                        Text(
-                          'no Tickets found ',
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.grey,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                  ),
+                  child:NotFoundItem(title: '${getTransrlate(context, 'nofoundtickit')}',),
                 )
               : SingleChildScrollView(
         controller: _scrollController,

@@ -159,8 +159,11 @@ class _faq_informationState extends State<faq_information> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(" ${getTransrlate(context, 'product')} :${widget.orders_model.product ==null? '':themeColor.getlocal()=='ar'?widget.orders_model.product.name:widget.orders_model.product.nameEn ?? widget.orders_model.product.name}",
-                          style: TextStyle(color: Colors.black, fontSize: 12)),
+                      Container(
+                        width: ScreenUtil.getWidth(context)/2,
+                        child: Text(" ${getTransrlate(context, 'product')} :${widget.orders_model.product ==null? '':themeColor.getlocal()=='ar'?widget.orders_model.product.name:widget.orders_model.product.nameEn ?? widget.orders_model.product.name}",
+                            style: TextStyle(color: Colors.black, fontSize: 12)),
+                      ),
                       Container(
                         margin: EdgeInsets.only(left: 5),
                         decoration: BoxDecoration(border: Border.all(color: Colors.black12,width: 2)),

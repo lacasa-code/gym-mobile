@@ -17,6 +17,7 @@ import 'package:trkar_vendor/widget/ResultOverlay.dart';
 import 'package:trkar_vendor/widget/SearchOverlay.dart';
 import 'package:trkar_vendor/widget/Sort.dart';
 import 'package:trkar_vendor/widget/hidden_menu.dart';
+import 'package:trkar_vendor/widget/no_found_item.dart';
 
 class FaqPage extends StatefulWidget {
   @override
@@ -70,6 +71,8 @@ class _FaqPageState extends State<FaqPage> {
       ),
       body: faq == null
           ? Center(child: CircularProgressIndicator())
+          : faq.isEmpty
+          ? Center(child:NotFoundItem(title:'${getTransrlate(context, 'NoFAQ')}'))
           : Container(
               child: SingleChildScrollView(
                 child: Column(

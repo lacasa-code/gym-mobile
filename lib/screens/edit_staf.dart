@@ -210,6 +210,7 @@ class _EditStaffState extends State<EditStaff> {
                                   );
                                 } else {
                                   data.getAllstaff(context);
+                                  data.getAllStore(context);
                                   Navigator.pop(context);
                                   showDialog(
                                     context: context,

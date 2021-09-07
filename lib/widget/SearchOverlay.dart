@@ -6,6 +6,7 @@ import 'package:trkar_vendor/model/products_model.dart';
 import 'package:trkar_vendor/screens/Edit_product.dart';
 import 'package:trkar_vendor/screens/productPage.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
+import 'package:trkar_vendor/utils/Provider/provider_data.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/navigator.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
@@ -207,7 +208,7 @@ class SearchOverlayState extends State<SearchOverlay>
                                 isSelect: false,
                                 //selectStores: selectProduct,
                               ),
-                              Positioned(
+                            products[index].approved==0?Container():   Positioned(
                                   left:themeColor.getlocal()=='ar'?20: null,
                                   right:themeColor.getlocal()=='en'?20:null,
                                   child: PopupMenuButton<int>(
@@ -276,6 +277,8 @@ class SearchOverlayState extends State<SearchOverlay>
     API(context).Delete('products/$id').then((value) {
       if (value != null) {
         print(value.containsKey('errors'));
+        Provider.of<Provider_Data>(context,listen: false).getProducts(context);
+
         showDialog(
           context: context,
           builder: (_) => ResultOverlay(

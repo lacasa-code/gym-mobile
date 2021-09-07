@@ -20,6 +20,7 @@ import 'package:trkar_vendor/widget/SearchOverlay.dart';
 import 'package:trkar_vendor/widget/SearchOverlay_staff.dart';
 import 'package:trkar_vendor/widget/Sort.dart';
 import 'package:trkar_vendor/widget/hidden_menu.dart';
+import 'package:trkar_vendor/widget/no_found_item.dart';
 import 'package:trkar_vendor/widget/stores/user_item.dart';
 
 class Staff extends StatefulWidget {
@@ -36,7 +37,8 @@ class _StaffState extends State<Staff> {
 
   @override
   void initState() {
-    
+    Provider.of<Provider_Data>(context,listen: false).getAllstaff(context);
+
     super.initState();
   }
 
@@ -122,22 +124,7 @@ class _StaffState extends State<Staff> {
               )))
           : data.staff.isEmpty
               ? Center(
-                  child: Container(
-                    child: Column(
-                      children: [
-                        SizedBox(height: 20),
-                        Icon(Icons.hourglass_empty_outlined,size: 100,color: Colors.black26,),
-                        SizedBox(height: 20),
-                        Text(
-                          '${getTransrlate(context, 'NoUsersFound')} ',
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.grey,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                  ),
+                  child: NotFoundItem(title: '${getTransrlate(context, 'NoUsersFound')}' ,),
                 )
               : SingleChildScrollView(
                 child: Column(

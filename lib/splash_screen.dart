@@ -52,10 +52,13 @@ class _SplashScreenState extends State<SplashScreen>
           child: Padding(
             padding: const EdgeInsets.only(top: 100, bottom: 20),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                SizedBox(
+                   height: ScreenUtil.getHeight(context) / 8,
+                ),
                 Container(
-                  height: ScreenUtil.getHeight(context) / 2,
+               //   height: ScreenUtil.getHeight(context) / 2,
                   width: ScreenUtil.getWidth(context) / 1.5,
                   child: Image.asset(
                     'assets/images/splashscreen-trkar-logo-white.gif',
