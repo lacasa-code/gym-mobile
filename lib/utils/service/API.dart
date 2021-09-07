@@ -11,7 +11,6 @@ import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trkar_vendor/screens/Maintenance.dart';
-import 'package:trkar_vendor/splash_screen.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/navigator.dart';
 import 'package:trkar_vendor/widget/ResultOverlay.dart';
@@ -32,28 +31,14 @@ class API {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'Authorization': 'Bearer ${prefs.getString('token')}',
-        // 'Accept-Language': Provider.of<Provider_control>(context,listen: false).getlocal(),
+       // 'Accept-Language': Provider.of<Provider_control>(context,listen: false).getlocal(),
       });
       print(response.body);
       if (response.statusCode == 500) {
         Nav.route(
             context, Maintenance(erorr: jsonDecode(response.body).toString()));
-      } else if (response.statusCode == 404) {
-        Nav.route(
-            context,
-            Maintenance(
-              erorr: full_url + '\n' + response.body.toString(),
-            ));
-      } else if (response.statusCode == 401) {
-        showDialog(
-          context: context,
-          builder: (_) =>
-              ResultOverlay(
-                  '${jsonDecode(response.body)['errors'] ??
-                      jsonDecode(response.body)}'),
-        );
       } else {
-        return getAction(response);
+        return jsonDecode(response.body);
       }
     } catch (e) {
       print(e);
@@ -78,18 +63,13 @@ class API {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
             'Authorization': 'Bearer ${prefs.getString('token')}',
-            'Accept-Language': "${Provider.of<Provider_control>(
-                context, listen: false).getlocal()}",
+            'Accept-Language': "${Provider.of<Provider_control>(context,listen: false).getlocal()}",
           },
           body: json.encode(body));
-      print("body =${jsonDecode(response.body)}");
 
       if (response.statusCode == 500) {
         Nav.route(
-            context, Maintenance(erorr: "${url}\n${response.body}",));
-      } else if (response.statusCode == 404) {
-        Nav.route(
-            context, Maintenance(erorr: "${url}\n${response.body}",));
+            context, Maintenance(erorr:"${url}\n${response.body}",));
       } else {
         return jsonDecode(response.body);
       }
@@ -97,7 +77,7 @@ class API {
       Nav.route(
           context,
           Maintenance(
-            erorr: "Connection Filed please retry again ${url}\n${e.toString()}",
+            erorr: "${url}\n${e.toString()}",
           ));
       print(e);
     } finally {}
@@ -115,8 +95,7 @@ class API {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
             'Authorization': 'Bearer ${prefs.getString('token')}',
-            'Accept-Language': "${Provider.of<Provider_control>(
-                context, listen: false).getlocal()}",
+            'Accept-Language': "${Provider.of<Provider_control>(context,listen: false).getlocal()}",
 
           },
           body: json.encode(body));
@@ -128,7 +107,7 @@ class API {
               erorr: "${url}\n${response.body}",
             ));
       } else {
-        return getAction(response);
+        return jsonDecode(response.body);
       }
     } catch (e) {} finally {}
   }
@@ -145,8 +124,7 @@ class API {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
           'Authorization': 'Bearer ${prefs.getString('token')}',
-          'Accept-Language': "${Provider.of<Provider_control>(
-              context, listen: false).getlocal()}",
+          'Accept-Language': "${Provider.of<Provider_control>(context,listen: false).getlocal()}",
 
         },
       );
@@ -157,21 +135,20 @@ class API {
           erorr: "${url}\n${response.body}",
         ));
       } else {
-        return getAction(response);
+        return jsonDecode(response.body);
       }
     } catch (e) {} finally {}
   }
 
   postFile(String url, Map<String, String> body,
       {List<Asset> attachment}) async {
-    print(Provider.of<Provider_control>(context, listen: false).getlocal());
+    print(Provider.of<Provider_control>(context,listen: false).getlocal());
     final full_url =
-    Uri.parse('${GlobalConfiguration().getString('api_base_url')}$url');
+        Uri.parse('${GlobalConfiguration().getString('api_base_url')}$url');
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var headers = {
       'Authorization': 'Bearer  ${prefs.getString('token')}',
-      'Accept-Language': "${Provider.of<Provider_control>(
-          context, listen: false).getlocal()}",
+    'Accept-Language': "${Provider.of<Provider_control>(context,listen: false).getlocal()}",
     }; // remove headers if not wanted
     var request = http.MultipartRequest(
         'POST', Uri.parse(full_url.toString())); // your server url
@@ -199,19 +176,5 @@ class API {
       print(jsonDecode(value));
       return jsonDecode(value);
     });
-  }
-
-  getAction(http.Response response) {
-    if (response.statusCode == 500) {
-      Nav.route(
-          context,
-          Maintenance(
-              erorr: response.body.toString()
-          ));
-    } else if (response.statusCode == 401) {
-      Nav.route(context, SplashScreen());
-    } else {
-      return jsonDecode(response.body);
-    }
   }
 }
