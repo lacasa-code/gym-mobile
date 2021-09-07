@@ -146,7 +146,7 @@ class _InvoicesState extends State<Invoices> {
                     onTap: () {
                       showDialog(
                           context: context,
-                          builder: (_) => Sortdialog(character: _character,)).then((val) {
+                          builder: (_) => Sortdialog()).then((val) {
                        setState(() {
                          _character=val;
                        });

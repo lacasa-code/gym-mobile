@@ -12,7 +12,19 @@ class Provider_Data with ChangeNotifier {
   int products_page = 2;
   int Stores_page = 2;
   int staff_page = 2;
+  List<int>  products_select = [];
+  List<int>  Stores_select = [];
+  List<int>  staff_select =[];
 
+
+  setproducts_select(List<int> products) async {
+    products_select = products;
+    notifyListeners();
+  }
+  setStores_select(List<int> products) async {
+    Stores_select = products;
+    notifyListeners();
+  }
 
   setproducts(List<Product> product) async {
     products = product;
@@ -28,6 +40,8 @@ class Provider_Data with ChangeNotifier {
   }
 
   Future<void> getAllstaff(BuildContext context) async {
+    staff=null;
+
     API(context).get("users").then((value) {
       if (value != null) {
            staff = User_model.fromJson(value).data;
@@ -37,6 +51,7 @@ class Provider_Data with ChangeNotifier {
     });
   }
   Future<void> getAllStore(BuildContext context) async {
+    stores=null;
     API(context).get("stores").then((value) {
       if (value != null) {
            stores = Store_model.fromJson(value).data;
@@ -56,6 +71,7 @@ class Provider_Data with ChangeNotifier {
   }
 
   Future<void> getProducts(BuildContext context) async {
+    products=null;
     API(context).get("products").then((value) {
       if (value != null) {
           products = Products_model.fromJson(value).product;

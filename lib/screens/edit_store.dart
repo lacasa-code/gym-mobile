@@ -197,8 +197,8 @@ class _Edit_StoreState extends State<Edit_Store> {
                             onChanged:
                                 (Country data) {
                               setState(() {
-                                widget.store.moderatorPhone='';
-                                widget.store.moderatorAltPhone='';
+                                phone1.text='';
+                                phone2.text='';
                                 widget.store.country=data;
                                 widget.store.countryId = data.id;
                                 widget.store.area = Area(areaName: '');
@@ -240,6 +240,8 @@ class _Edit_StoreState extends State<Edit_Store> {
                             themeColor.getlocal()=='ar'?u.areaName??u.name_en:u.name_en??u.areaName,
                             onChanged: (Area data) {
                               setState(() {
+                                phone1.text='';
+                                phone2.text='';
                                 widget.store.areaId = data.id;
                                 widget.store.city = City(cityName: '');
                                 widget.store.area =data;
@@ -279,6 +281,8 @@ class _Edit_StoreState extends State<Edit_Store> {
                             itemAsString: (City u) =>
                             themeColor.getlocal()=='ar'?u.cityName??u.name_en:u.name_en??u.cityName,
                             onChanged: (City data) {
+                              phone1.text='';
+                              phone2.text='';
                               widget.store.cityId =data.id;
                               widget.store.city=data;
                             },
@@ -304,15 +308,15 @@ class _Edit_StoreState extends State<Edit_Store> {
                         MyTextFormField(
                           textEditingController:phone1,
                           Keyboard_Type: TextInputType.phone,
-                          labelText: getTransrlate(context, 'ModeratorPhone'),
-                          hintText: getTransrlate(context, 'ModeratorPhone'),
+                          labelText: "${getTransrlate(context, 'phone')} 1",
+                          hintText:"${getTransrlate(context, 'phone')} 1",
                           isPhone: true,
                           inputFormatters: [
                             new LengthLimitingTextInputFormatter(15),
                           ],
                           enabled: true,
                           validator: (String value) {
-                            if (value.length<=8) {
+                            if (value.length<12) {
                               return getTransrlate(context, 'ModeratorPhone');
                             }
                             _formKey.currentState.save();
@@ -325,15 +329,15 @@ class _Edit_StoreState extends State<Edit_Store> {
                         MyTextFormField(
                           textEditingController:phone2,
                           Keyboard_Type: TextInputType.phone,
-                          labelText: getTransrlate(context, 'phone'),
-                          hintText: getTransrlate(context, 'phone'),
+                          labelText: "${getTransrlate(context, 'phone')} 2",
+                          hintText: "${getTransrlate(context, 'phone')} 2",
                           isPhone: true,
                           inputFormatters: [
                             new LengthLimitingTextInputFormatter(15),
                           ],
                           enabled: true,
                           validator: (String value) {
-                            if (value.length > 1&&value.length < 9) {
+                            if (value.length > 1&&value.length < 12) {
                               return getTransrlate(context, 'Required');
                             }
                             _formKey.currentState.save();

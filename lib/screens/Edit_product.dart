@@ -1486,15 +1486,16 @@ class _Edit_ProductState extends State<Edit_Product> {
                                   widget.product.toJson(),
                                   attachment: images)
                                   .then((value) {
+                                    print("value= $value");
                                 if (value != null) {
                                   setState(() {
                                     loading = false;
                                   });
-                                  if (value.containsKey('errors')) {
+                                  if (value['status_code']!=200) {
                                     showDialog(
                                       context: context,
                                       builder: (_) => ResultOverlay(
-                                        value['errors'].toString(),
+                                        "${value['errors']??value['message']}",
                                       ),
                                     );
                                   } else {
@@ -1505,7 +1506,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                                     showDialog(
                                       context: context,
                                       builder: (_) => ResultOverlay(
-                                          '${getTransrlate(context, 'Done')}'),
+                                          '${value['message']}'),
                                     );
                                   }
                                 }

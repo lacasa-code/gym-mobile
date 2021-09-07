@@ -28,7 +28,6 @@ class Stores extends StatefulWidget {
 
 class _StoresState extends State<Stores> {
 
-  List<int> selectStores = [];
   String url="stores";
   int i = 2;
   ScrollController _scrollController = new ScrollController();
@@ -164,7 +163,7 @@ class _StoresState extends State<Stores> {
                             Row(
                               children: [
                                 Text('تم اختيار '),
-                                Text('( ${selectStores.length} )'),
+                                Text('( ${Data.Stores_select.length} )'),
                               ],
                             ),
                             InkWell(
@@ -190,9 +189,9 @@ class _StoresState extends State<Stores> {
                             ),
                             InkWell(
                               onTap: () {
-                                print(selectStores.toString());
+                                print(Data.Stores_select.toString());
                                 API(context).post("stores/mass/delete", {
-                                  "ids": selectStores.toString()
+                                  "ids": Data.Stores_select.toString()
                                 }).then((value) {
                                   if (value != null) {
                                     showDialog(
@@ -202,7 +201,7 @@ class _StoresState extends State<Stores> {
                                       ),
                                     );
                                     setState(() {
-                                      selectStores=[];
+                                      Data.setStores_select([]);
                                       isSelect=false;
                                     });
                                   }
@@ -402,7 +401,7 @@ class _StoresState extends State<Stores> {
                           return Stores_item(
                             hall_model:Data.stores[index],
                             isSelect: isSelect,
-                            selectStores: selectStores,
+                            selectStores: Data.Stores_select,
                           );
                         },
                       ),

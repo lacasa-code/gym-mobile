@@ -32,7 +32,6 @@ class _ProductsState extends State<Products> {
   String url="products";
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   bool isSelect = false;
-  List<int> selectProduct = [];
   ScrollController _scrollController = new ScrollController();
   String  characters= "ASC";
   Provider_Data data;
@@ -154,7 +153,7 @@ class _ProductsState extends State<Products> {
                                   Row(
                                     children: [
                                       Text('تم اختيار '),
-                                      Text('( ${selectProduct.length} )'),
+                                      Text('( ${data.products_select.length} )'),
                                     ],
                                   ),
                                   InkWell(
@@ -180,26 +179,31 @@ class _ProductsState extends State<Products> {
                                   ),
                                   InkWell(
                                     onTap: () {
-                                      print(selectProduct.toString());
-                                      API(context).post("products/mass/delete", {
-                                        "ids": selectProduct.toString()
-                                      }).then((value) {
-                                        print(value.toString());
-
-                                        if (value != null) {
-                                          showDialog(
-                                            context: context,
-                                            builder: (_) => ResultOverlay(
-                                             "${value['message']??value['errors']?? getTransrlate(context, 'doneDelete')}"
-                                            ),
-                                          );
-                                          setState(() {
-                                            selectProduct=null;
-                                            isSelect=false;
-                                          });
-                                        }
-                                        data.getProducts(context);
-                                      });
+                                     if(data.products_select.isNotEmpty) {
+                                        API(context).post(
+                                            "products/mass/delete", {
+                                          "ids": data.products_select.toString()
+                                        }).then((value) {
+                                          if (value != null) {
+                                            showDialog(
+                                              context: context,
+                                              builder: (_) => ResultOverlay(
+                                                  "${value['message'] ?? value['errors'] ?? getTransrlate(context, 'doneDelete')}"),
+                                            );
+                                            data.setproducts_select([]);
+                                            setState(() {
+                                              isSelect = false;
+                                            });
+                                          }
+                                          data.getProducts(context);
+                                        });
+                                      }else{
+                                       showDialog(
+                                         context: context,
+                                         builder: (_) => ResultOverlay(
+                                             "برجاء اضافة منتجات لحذفها"),
+                                       );
+                                     }
                                     },
                                     child: Row(
                                       children: [
@@ -277,7 +281,7 @@ class _ProductsState extends State<Products> {
                                     onTap: () {
                                       showDialog(
                                               context: context,
-                                              builder: (_) => Sortdialog(character:characters ,))
+                                              builder: (_) => Sortdialog())
                                           .then((val) {
                                             characters=val??"ASC";
                                             data.setproducts(null);
@@ -325,7 +329,7 @@ class _ProductsState extends State<Products> {
                                   children: [
                                     Product_item(
                                       hall_model: data.products[index],
-                                      isSelect: isSelect,selectStores: selectProduct,
+                                      isSelect: isSelect,selectStores: data.products_select,
                                     ),
                                     data.products[index].approved==0?Container():Positioned(
                                         left:themeColor.getlocal()=='ar'?20: null,

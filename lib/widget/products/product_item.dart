@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/products_model.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
+import 'package:trkar_vendor/utils/Provider/provider_data.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 
@@ -22,6 +23,7 @@ class _Product_itemState extends State<Product_item> {
   @override
   Widget build(BuildContext context) {
     final themeColor = Provider.of<Provider_control>(context);
+    final data = Provider.of<Provider_Data>(context);
 
     return Container(
       width: ScreenUtil.getWidth(context),
@@ -63,6 +65,7 @@ class _Product_itemState extends State<Product_item> {
                                 ? widget.selectStores
                                     .remove(widget.hall_model.id)
                                 : widget.selectStores.add(widget.hall_model.id);
+                            data.setproducts_select(widget.selectStores);
                           }),
                     )
                   : Container(),

@@ -30,6 +30,7 @@ class _Stores_itemState extends State<Stores_item> {
   @override
   Widget build(BuildContext context) {
     final themeColor = Provider.of<Provider_control>(context);
+    final Data = Provider.of<Provider_Data>(context);
 
     return InkWell(
       onTap: () {
@@ -72,10 +73,12 @@ class _Stores_itemState extends State<Stores_item> {
                         onChanged: (bool value) {
                           setState(() {
                             widget.hall_model.isSelect = value;
+                            !widget.hall_model.isSelect
+                                ? widget.selectStores.remove(widget.hall_model.id)
+                                : widget.selectStores.add(widget.hall_model.id);
+                            Data.setStores_select(widget.selectStores);
                           });
-                          !widget.hall_model.isSelect
-                              ? widget.selectStores.remove(widget.hall_model.id)
-                              : widget.selectStores.add(widget.hall_model.id);
+
                         })
                     : Padding(
                         padding: const EdgeInsets.all(8.0),
