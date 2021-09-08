@@ -36,6 +36,7 @@
   "description": "الوصف (عربى)",
   "descriptionEn": "الوصف (أنجليزى)",
   "id": "رقم id",
+  "ConnectionFailed": "فشل الاتصال بالشبكة ",
 
   "nofoundtickit": "لا توجد اى شكاوى الان",
   "nofoundinvoices": "لا توجد اى فواتير الان",

@@ -55,6 +55,7 @@
   "send": "Send",
   "invalidname": "field cannot accept floating point",
 
+  "ConnectionFailed": "Connection Failed",
   "ticketsStats": "Tickets Status",
   "message": "Message",
   "Inventoryplay": "Inventory is Low",

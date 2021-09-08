@@ -197,7 +197,7 @@ class _Edit_StoreState extends State<Edit_Store> {
                             onChanged:
                                 (Country data) {
                               setState(() {
-                                phone1.text='';
+                                phone1.text='${data.phonecode}';
                                 phone2.text='';
                                 widget.store.country=data;
                                 widget.store.countryId = data.id;
@@ -307,6 +307,7 @@ class _Edit_StoreState extends State<Edit_Store> {
                         ),
                         MyTextFormField(
                           textEditingController:phone1,
+                          textDirection: TextDirection.ltr,
                           Keyboard_Type: TextInputType.phone,
                           labelText: "${getTransrlate(context, 'phone')} 1",
                           hintText:"${getTransrlate(context, 'phone')} 1",
@@ -316,8 +317,10 @@ class _Edit_StoreState extends State<Edit_Store> {
                           ],
                           enabled: true,
                           validator: (String value) {
-                            if (value.length<12) {
-                              return getTransrlate(context, 'ModeratorPhone');
+                            if (value.isEmpty) {
+                              return getTransrlate(context, 'requiredlength');
+                            } else if (value.length<12) {
+                              return getTransrlate(context, 'requiredempty');
                             }
                             _formKey.currentState.save();
                             return null;
@@ -328,6 +331,7 @@ class _Edit_StoreState extends State<Edit_Store> {
                         ),
                         MyTextFormField(
                           textEditingController:phone2,
+                          textDirection: TextDirection.ltr,
                           Keyboard_Type: TextInputType.phone,
                           labelText: "${getTransrlate(context, 'phone')} 2",
                           hintText: "${getTransrlate(context, 'phone')} 2",

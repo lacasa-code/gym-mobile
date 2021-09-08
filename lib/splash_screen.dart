@@ -106,11 +106,7 @@ class _SplashScreenState extends State<SplashScreen>
       }else {
         Provider.of<Provider_control>(context,listen: false).setLogin(false);
         Nav.routeReplacement(context, LoginPage());
-
-      }} else {
-        Provider.of<Provider_control>(context,listen: false).setLogin(false);
-        Nav.routeReplacement(context, LoginPage());
-      }
+      }}
     });
   }
 

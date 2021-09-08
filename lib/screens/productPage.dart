@@ -19,7 +19,7 @@ import 'Edit_product.dart';
 class ProductPage extends StatefulWidget {
   Product product;
 
-  ProductPage({Key key,this.product}) : super(key: key);
+  ProductPage({Key key, this.product}) : super(key: key);
 
   @override
   _ProductPageState createState() => _ProductPageState();
@@ -30,9 +30,13 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   void initState() {
-    widget.product.manufacturer==null?null:widget.product.manufacturer_id=widget.product.manufacturer.id.toString();
+    widget.product.manufacturer == null
+        ? null
+        : widget.product.manufacturer_id =
+            widget.product.manufacturer.id.toString();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     final themeColor = Provider.of<Provider_control>(context);
@@ -71,7 +75,6 @@ class _ProductPageState extends State<ProductPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -79,78 +82,77 @@ class _ProductPageState extends State<ProductPage> {
                 Padding(
                   padding: const EdgeInsets.all(24.0),
                   child: Container(
-                    width: ScreenUtil.getWidth(context)/1.5,
+                    width: ScreenUtil.getWidth(context) / 1.5,
                     child: Text(
-                      "${themeColor.getlocal()=='ar'?widget.product.name??widget.product.nameEn:widget.product.nameEn??widget.product.name}",
+                      "${themeColor.getlocal() == 'ar' ? widget.product.name ?? widget.product.nameEn : widget.product.nameEn ?? widget.product.name}",
                       style: TextStyle(fontSize: 22),
                     ),
                   ),
                 ),
-                if (widget.product.approved==0) Container() else Container(
-
-                    child: PopupMenuButton<int>(
-                      itemBuilder: (context) => [
-                        PopupMenuItem(
-                          value: 1,
-                          child: InkWell(
-                            onTap: (){
-                              Nav.route(context, Edit_Product( widget.product));
-                            },
-                            child: Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceAround,
-                              children: [
-                                Text("${getTransrlate(context, 'edit')}"),
-                                Icon(
-                                  Icons.edit_outlined,
-                                  color: Colors.black54,
-                                )
-                              ],
-                            ),
+                if (widget.product.approved == 0)
+                  Container()
+                else
+                  Container(
+                      child: PopupMenuButton<int>(
+                    itemBuilder: (context) => [
+                      PopupMenuItem(
+                        value: 1,
+                        child: InkWell(
+                          onTap: () {
+                            Nav.route(context, Edit_Product(widget.product));
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text("${getTransrlate(context, 'edit')}"),
+                              Icon(
+                                Icons.edit_outlined,
+                                color: Colors.black54,
+                              )
+                            ],
                           ),
                         ),
-                        PopupMenuItem(
-                          value: 2,
-                          child:  InkWell(
-                            onTap: (){
-                              API(context).Delete('products/${widget.product.id}').then((value) {
-                                if (value != null) {
-                                  showDialog(
-                                    context: context,
-                                    builder: (_) => ResultOverlay(
-                                        "${value['message']??value['errors']?? getTransrlate(context, 'doneDelete')}"
-                                    ),
-                                  );
-                                }
-                                Provider.of<Provider_Data>(context,listen: false).getProducts(context);
-                              });
-                            },
-                            child: Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceAround,
-                              children: [
-                                Text("${getTransrlate(context, 'delete')}"),
-                                Icon(
-                                  CupertinoIcons.delete,
-                                  color: Colors.black54,
-                                )
-                              ],
-                            ),
+                      ),
+                      PopupMenuItem(
+                        value: 2,
+                        child: InkWell(
+                          onTap: () {
+                            API(context)
+                                .Delete('products/${widget.product.id}')
+                                .then((value) {
+                              if (value != null) {
+                                showDialog(
+                                  context: context,
+                                  builder: (_) => ResultOverlay(
+                                      "${value['message'] ?? value['errors'] ?? getTransrlate(context, 'doneDelete')}"),
+                                );
+                              }
+                              Provider.of<Provider_Data>(context, listen: false)
+                                  .getProducts(context);
+                            });
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text("${getTransrlate(context, 'delete')}"),
+                              Icon(
+                                CupertinoIcons.delete,
+                                color: Colors.black54,
+                              )
+                            ],
                           ),
                         ),
-                      ],
-                    )
-
-                ),
-
+                      ),
+                    ],
+                  )),
               ],
             ),
             CarouselSlider(
               items: widget.product.photo
                   .map((item) => CachedNetworkImage(
-                imageUrl: item.image,
-                fit: BoxFit.contain,
-              ))
+                        imageUrl: item.image,
+                        fit: BoxFit.contain,
+                      ))
                   .toList(),
               options: CarouselOptions(
                   autoPlay: true,
@@ -165,131 +167,95 @@ class _ProductPageState extends State<ProductPage> {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: DataTable(dataRowHeight: 75,
-      columns: const <DataColumn>[
-        DataColumn(
-          label: Text(
-              ' ',
-              style: TextStyle(fontStyle: FontStyle.italic),
-          ),
-        ),
-        DataColumn(
-          label: Text(
-              ' ',
-              style: TextStyle(fontStyle: FontStyle.italic),
-          ),
-        ),
-      ],
-      rows:  <DataRow>[
-        DataRow(color: MaterialStateProperty.resolveWith((states) => Colors.black26) ,
-          cells: <DataCell>[
-              DataCell(Text('رقم ID'),),
-              DataCell(Text("${widget.product.id}")),
-          ],
-        ),
-        DataRow(
-          cells: <DataCell>[
-              DataCell(Text('${getTransrlate(context, 'mainCategory')}')),
-              DataCell(Text('${widget.product.maincategory==null?'':widget.product.maincategory.mainCategoryName}')),
-          ],
-        ),
-        DataRow(color: MaterialStateProperty.resolveWith((states) => Colors.black26) ,
-          cells: <DataCell>[
-              DataCell(Text('${getTransrlate(context, 'subCategory')}')),
-              DataCell(Text('${widget.product.category==null?'':widget.product.category.name}')),
-          ],
-        ),
-        DataRow(
-          cells: <DataCell>[
-              DataCell(Text('${getTransrlate(context, 'PartCategory')}')),
-              DataCell(Text('${widget.product.partCategory==null?'':widget.product.partCategory.categoryName}')),
-          ],
-        ),
-        DataRow(color: MaterialStateProperty.resolveWith((states) => Colors.black26) ,
-          cells: <DataCell>[
-              DataCell(Text('${getTransrlate(context, 'serial')}')),
-              DataCell(Text('${widget.product.serialNumber}')),
-          ],
-        ),
-        DataRow(
-          cells: <DataCell>[
-              DataCell(Text('${getTransrlate(context, 'description')}')),
-              DataCell(Container(width: ScreenUtil.getWidth(context)/2,child: Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: Text('${widget.product.description}'),
-              ))),
-          ],
-        ),
-        DataRow(color: MaterialStateProperty.resolveWith((states) => Colors.black26) ,
-          cells: <DataCell>[
-              DataCell(Text('${getTransrlate(context, 'brand')}')),
-              DataCell(Text('${widget.product.carMade==null?'':widget.product.carMade.carMade}')),
-          ],
-        ),
-        DataRow(
-          cells: <DataCell>[
-              DataCell(Text('${getTransrlate(context, 'prodcountry')}')),
-              DataCell(Text('${widget.product.originCountry==null?'':widget.product.originCountry.countryName}')),
-          ],
-        ),
-        DataRow(color: MaterialStateProperty.resolveWith((states) => Colors.black26) ,
-          cells: <DataCell>[
-              DataCell(Text('${getTransrlate(context, 'store')}')),
-              DataCell(Text('${widget.product.store==null?'':widget.product.store.nameStore}')),
-          ],
-        ),
-        DataRow(
-          cells: <DataCell>[
-              DataCell(Text('${getTransrlate(context, 'quantity')}')),
-              DataCell(Text('${widget.product.quantity}')),
-          ],
-        ),
-        DataRow(color: MaterialStateProperty.resolveWith((states) => Colors.black26) ,
-          cells: <DataCell>[
-              DataCell(Text('${getTransrlate(context, 'price')}')),
-              DataCell(Text('${widget.product.actualPrice}')),
-          ],
-        ),
-        DataRow(
-          cells: <DataCell>[
-              DataCell(Text('${getTransrlate(context, 'discount')}')),
-              DataCell(Text('${widget.product.discount} %')),
-          ],
-        ),
-
-
-        DataRow(color: MaterialStateProperty.resolveWith((states) => Colors.black26) ,
-          cells: <DataCell>[
-              DataCell(Text('${getTransrlate(context, 'productType')}')),
-              DataCell(Text('${widget.product.producttypeId==null?'':widget.product.producttypeId.producttype}')),
-          ],
-        ),
-        DataRow(
-          cells: <DataCell>[
-              DataCell(Text('${getTransrlate(context, 'Compatiblecars')}')),
-              DataCell(Text('${widget.product.carModel==null?'':widget.product.carModel.map((e) => e.carmodel).toList().toString()}')),
-          ],
-        ),
-        DataRow(color: MaterialStateProperty.resolveWith((states) => Colors.black26) ,
-          cells: <DataCell>[
-              DataCell(Text('${getTransrlate(context, 'tags')}')),
-              DataCell(Text('${widget.product.tags==null?'':widget.product.tags.map((e) => e.name).toList().toString()}')),
-          ],
-        ),
-        DataRow(
-          cells: <DataCell>[
-            DataCell(Text('${getTransrlate(context, 'qty_reminder')}')),
-            DataCell(Text('${widget.product.qty_reminder.toString()}')),
-          ],
-        ),
-      ],
-    ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  dataRow('رقم ID', "${widget.product.id}", Colors.black26),
+                  dataRow(
+                      '${getTransrlate(context, 'mainCategory')}',
+                      "${widget.product.maincategory == null ? '' : widget.product.maincategory.mainCategoryName}",
+                      Colors.white),
+                  dataRow(
+                      '${getTransrlate(context, 'subCategory')}',
+                      "${widget.product.category == null ? '' : widget.product.category.name}",
+                      Colors.black26),
+                  dataRow(
+                      '${getTransrlate(context, 'PartCategory')}',
+                      "${widget.product.partCategory == null ? '' : widget.product.partCategory.categoryName}",
+                      Colors.white),
+                  dataRow('${getTransrlate(context, 'serial')}',
+                      "${widget.product.serialNumber}", Colors.black26),
+                  dataRow('${getTransrlate(context, 'description')}',
+                      "${widget.product.description}", Colors.white),
+                  dataRow(
+                      '${getTransrlate(context, 'brand')}',
+                      "${widget.product.carMade == null ? '' : widget.product.carMade.carMade}",
+                      Colors.black26),
+                  dataRow(
+                      '${getTransrlate(context, 'prodcountry')}',
+                      "${widget.product.originCountry == null ? '' : widget.product.originCountry.countryName}",
+                      Colors.white),
+                  dataRow(
+                      '${getTransrlate(context, 'store')}',
+                      "${widget.product.store == null ? '' : widget.product.store.nameStore}",
+                      Colors.black26),
+                  dataRow('${getTransrlate(context, 'quantity')}',
+                      "${widget.product.quantity}", Colors.white),
+                  dataRow('${getTransrlate(context, 'price')}',
+                      "${widget.product.actualPrice}", Colors.black26),
+                  dataRow('${getTransrlate(context, 'discount')}',
+                      "${widget.product.discount} %", Colors.white),
+                  dataRow(
+                      '${getTransrlate(context, 'productType')}',
+                      "${widget.product.producttypeId == null ? '' : widget.product.producttypeId.producttype}",
+                      Colors.black26),
+                  dataRow(
+                      '${getTransrlate(context, 'Compatiblecars')}',
+                      "${widget.product.carModel == null ? '' : widget.product.carModel.map((e) => e.carmodel).toList().toString()}",
+                      Colors.white),
+                  dataRow(
+                      '${getTransrlate(context, 'tags')}',
+                      "${widget.product.tags == null ? '' : widget.product.tags.map((e) => e.name).toList().toString()}",
+                      Colors.black26),
+                  dataRow(
+                      '${getTransrlate(context, 'qty_reminder')}',
+                      "${widget.product.qty_reminder.toString()}",
+                      Colors.white),
+                ],
+              ),
             ),
-            SizedBox(height: 50,)
+            SizedBox(
+              height: 50,
+            )
           ],
         ),
       ),
-
     );
+  }
+
+  Widget dataRow(String title, String value, Color color) {
+    return value == null || value.isEmpty
+        ? Container()
+        : Container(
+            color: color,
+            child: Center(
+              child: Padding(
+                padding:  EdgeInsets.symmetric(horizontal: 4, vertical: 12),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Container(
+                        width: ScreenUtil.getWidth(context) / 2.2,
+                        child: Text('$title')),
+                    Container(
+                        width: ScreenUtil.getWidth(context) / 2.2,
+                        child: Text("${value}")),
+                  ],
+                ),
+              ),
+            ),
+          );
   }
 }

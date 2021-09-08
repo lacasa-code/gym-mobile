@@ -396,13 +396,13 @@ class _ProductsState extends State<Products> {
   _navigate_add_hell(BuildContext context) async {
     await Navigator.push(
         context, MaterialPageRoute(builder: (context) => Add_Product()));
-    Timer(Duration(seconds: 3), () => data.getProducts(context));
+    Timer(Duration(seconds: 3), () => Provider.of<Provider_Data>(context,listen: false).getProducts(context));
   }
 
   _navigate_edit_hell(BuildContext context, Product hall) async {
     await Navigator.push(
         context, MaterialPageRoute(builder: (context) => Edit_Product(hall)));
-    Timer(Duration(seconds: 3), () => data.getProducts(context));
+    Timer(Duration(seconds: 3), () => Provider.of<Provider_Data>(context,listen: false).getProducts(context));
   }
   Future<void> Delete_Products(int id) async {
     API(context).Delete('products/$id').then((value) {

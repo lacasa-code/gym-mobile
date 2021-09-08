@@ -246,14 +246,14 @@ class _Edit_profileState extends State<Edit_profile> {
                                   initialValue: userModal.phoneNo!=null?userModal.phoneNo.contains('+')?userModal.phoneNo.replaceAll('+', ''):'':'',
                                   keyboardType: TextInputType.number,
                                   inputFormatters: [
-                                    new LengthLimitingTextInputFormatter(12),
+                                    new LengthLimitingTextInputFormatter(17),
                                   ],
                                   decoration: InputDecoration(),
                                   validator: (String value) {
                                     if (value.isEmpty) {
                                       return getTransrlate(
                                           context, 'Required');
-                                    }else if (value.length<11) {
+                                    }else if (value.length<8) {
                                       return getTransrlate(
                                           context, 'Requiredlength');
                                     }
@@ -262,9 +262,9 @@ class _Edit_profileState extends State<Edit_profile> {
                                   },
                                   enabled: !_status,
                                   onSaved: (String val) =>
-                                  userModal.phoneNo = "+$val",
+                                  userModal.phoneNo = "$val",
                                   onChanged: (String val) =>
-                                  userModal.phoneNo =  "+$val",
+                                  userModal.phoneNo =  "$val",
                                 )),
                             Padding(
                                 padding: EdgeInsets.only(

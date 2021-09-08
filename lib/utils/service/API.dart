@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trkar_vendor/screens/Maintenance.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
+import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/navigator.dart';
 import 'package:trkar_vendor/widget/ResultOverlay.dart';
 
@@ -41,11 +42,11 @@ class API {
         return jsonDecode(response.body);
       }
     } catch (e) {
-      print(e);
-      Nav.route(context, Maintenance(
-        erorr: "${url}\n${e.toString()}",
-
-      ));
+      showDialog(
+        context: context,
+        builder: (_) => ResultOverlay(
+            "${getTransrlate(context, 'ConnectionFailed')}"),
+      );
     } finally {}
   }
 
@@ -74,11 +75,11 @@ class API {
         return jsonDecode(response.body);
       }
     } catch (e) {
-      Nav.route(
-          context,
-          Maintenance(
-            erorr: "${url}\n${e.toString()}",
-          ));
+      showDialog(
+        context: context,
+        builder: (_) => ResultOverlay(
+            "${getTransrlate(context, 'ConnectionFailed')}"),
+      );
       print(e);
     } finally {}
   }
@@ -109,7 +110,14 @@ class API {
       } else {
         return jsonDecode(response.body);
       }
-    } catch (e) {} finally {}
+    } catch (e) {
+
+      showDialog(
+        context: context,
+        builder: (_) => ResultOverlay(
+            "${getTransrlate(context, 'ConnectionFailed')}"),
+      );
+    } finally {}
   }
 
   Delete(String url) async {
@@ -137,19 +145,27 @@ class API {
       } else {
         return jsonDecode(response.body);
       }
-    } catch (e) {} finally {}
+    } catch (e) {
+
+      showDialog(
+        context: context,
+        builder: (_) => ResultOverlay(
+            "${getTransrlate(context, 'ConnectionFailed')}"),
+      );
+    } finally {}
   }
 
   postFile(String url, Map<String, String> body,
       {List<Asset> attachment}) async {
     print(Provider.of<Provider_control>(context,listen: false).getlocal());
-    final full_url =
-        Uri.parse('${GlobalConfiguration().getString('api_base_url')}$url');
+    final full_url = Uri.parse('${GlobalConfiguration().getString('api_base_url')}$url');
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var headers = {
       'Authorization': 'Bearer  ${prefs.getString('token')}',
     'Accept-Language': "${Provider.of<Provider_control>(context,listen: false).getlocal()}",
-    }; // remove headers if not wanted
+    };
+    //  try { remove headers if not wanted
+    try {
     var request = http.MultipartRequest(
         'POST', Uri.parse(full_url.toString())); // your server url
     request.fields.addAll(body);
@@ -163,18 +179,18 @@ class API {
         contentType: MediaType("image", "jpg"),
       ));
     }
-    // attachment.forEach((element) async {
-    //   request.files.add(await http.MultipartFile.fromBytes(
-    //       'photo[${attachment.indexOf(element)}]', element.getByteData(qualit)));
-    // });
-    //attachment==null?null:request.files.add(await http.MultipartFile.fromPath('photo[]', '${attachment[0].identifier}')); // file you want to upload
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
-    //print(await request.files);
-
     return response.stream.bytesToString().then((value) {
       print(jsonDecode(value));
       return jsonDecode(value);
     });
+    } catch (e) {
+      showDialog(
+        context: context,
+        builder: (_) => ResultOverlay(
+            "${getTransrlate(context, 'ConnectionFailed')}"),
+      );
+    }
   }
 }
