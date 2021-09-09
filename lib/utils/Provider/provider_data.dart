@@ -21,8 +21,39 @@ class Provider_Data with ChangeNotifier {
     products_select = products;
     notifyListeners();
   }
+  setAllproducts_select() async {
+    products_select=[];
+    products.forEach((element) {
+      element.isSelect=true;
+     products_select.add(element.id);
+      notifyListeners();
+
+    });
+  }
+  setAllStores_selectt() async {
+    Stores_select=[];
+
+    stores.forEach((element) {
+      element.isSelect=true;
+      Stores_select.add(element.id);
+      notifyListeners();
+    });
+  }
+  setAllStaff_selectt() async {
+    staff_select=[];
+    staff.forEach((element) {
+      element.isSelect=true;
+      staff_select.add(element.id);
+      notifyListeners();
+    });
+  }
+
   setStores_select(List<int> products) async {
     Stores_select = products;
+    notifyListeners();
+  }
+  setStaff_select(List<int> products) async {
+    staff_select = products;
     notifyListeners();
   }
 

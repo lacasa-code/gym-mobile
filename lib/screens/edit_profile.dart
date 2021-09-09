@@ -59,6 +59,7 @@ class _Edit_profileState extends State<Edit_profile> {
     emailController = TextEditingController();
     API(context).post('token/data',{}).then((value) {
       if (value != null) {
+        print(value);
           setState(() {
             userModal = UserInformation.fromJson(value).data.user;
           });
@@ -243,7 +244,7 @@ class _Edit_profileState extends State<Edit_profile> {
                                     left: 25.0, right: 25.0, top: 2.0),
                                 child: TextFormField(
                                   textAlign: TextAlign.left,
-                                  initialValue: userModal.phoneNo!=null?userModal.phoneNo.contains('+')?userModal.phoneNo.replaceAll('+', ''):'':'',
+                                  initialValue: userModal.phoneNo??'',
                                   keyboardType: TextInputType.number,
                                   inputFormatters: [
                                     new LengthLimitingTextInputFormatter(17),
@@ -379,6 +380,7 @@ class _Edit_profileState extends State<Edit_profile> {
                         "birthdate": userModal.birthdate,
                         "gender": userModal.gender,
                       }).then((value) {
+                        print(value);
                         if (value != null) {
                           if (value['status_code'] == 200) {
                             showDialog(

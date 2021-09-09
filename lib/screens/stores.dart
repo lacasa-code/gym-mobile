@@ -168,9 +168,7 @@ class _StoresState extends State<Stores> {
                             ),
                             InkWell(
                               onTap: () {
-                                setState(() {
-                                  isSelect = true;
-                                });
+                                Data.setAllStores_selectt();
                               },
                               child: Row(
                                 children: [

@@ -158,9 +158,10 @@ class _ProductsState extends State<Products> {
                                   ),
                                   InkWell(
                                     onTap: () {
-                                      setState(() {
-                                        isSelect = true;
-                                      });
+                                      data.setAllproducts_select();
+                                      // setState(() {
+                                      //   isSelect = false;
+                                      // });
                                     },
                                     child: Row(
                                       children: [

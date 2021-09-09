@@ -13,6 +13,7 @@ import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
+import 'package:trkar_vendor/utils/url_launcher.dart';
 import 'package:trkar_vendor/widget/ResultOverlay.dart';
 import 'package:trkar_vendor/widget/commons/custom_textfield.dart';
 
@@ -152,6 +153,25 @@ class _tickets_informationState extends State<tickets_information> {
                         fontWeight: FontWeight.w600,
                       )),
                 ],
+              ),
+              widget.orders_model.attachment==null ?Container():   InkWell(
+                onTap: (){
+                  launchURL(widget.orders_model.attachment.image);
+                },
+                child: Row(
+                  children: [
+                    Text("${getTransrlate(context, 'FileTickit')} : ",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                        ),),   SizedBox(
+                      width: ScreenUtil.getWidth(context)/2,
+                      child: Text("${widget.orders_model.attachment!=null?widget.orders_model.attachment.name ?? '':''}",
+                          maxLines: 1,style: TextStyle(color: Colors.orange,decoration: TextDecoration.underline, fontSize: 12)),
+                    ),
+                  ],
+                ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -407,6 +427,7 @@ class _tickets_informationState extends State<tickets_information> {
                   );
                 },
               ),
+
 
             ],
           ),

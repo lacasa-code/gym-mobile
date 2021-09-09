@@ -29,7 +29,6 @@ class Staff extends StatefulWidget {
 }
 
 class _StaffState extends State<Staff> {
-  List<int> selectStores = [];
   final debouncer = Search(milliseconds: 1000);
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   bool isSelect = false;
@@ -139,14 +138,13 @@ class _StaffState extends State<Staff> {
                                   Row(
                                     children: [
                                       Text('تم ${getTransrlate(context, 'select')} '),
-                                      Text('( ${selectStores.length} )'),
+                                      Text('( ${data.staff_select.length} )'),
                                     ],
                                   ),
                                   InkWell(
                                     onTap: () {
-                                      setState(() {
-                                        isSelect = true;
-                                      });
+                                      data.setAllStaff_selectt();
+
                                     },
                                     child: Row(
                                       children: [
@@ -165,9 +163,8 @@ class _StaffState extends State<Staff> {
                                   ),
                                   InkWell(
                                     onTap: () {
-                                      print(selectStores.toString());
                                       API(context).post("users/mass/delete", {
-                                        "ids": selectStores.toString()
+                                        "ids": data.staff_select.toString()
                                       }).then((value) {
                                         if (value != null) {
                                           showDialog(
@@ -307,7 +304,7 @@ class _StaffState extends State<Staff> {
                                   child: User_item(
                                     isSelect: isSelect,
                                     hall_model: data.staff[index],
-                                    selectStores: selectStores,
+                                    selectStores: data.staff_select,
                                   ),
                                 );
                               },

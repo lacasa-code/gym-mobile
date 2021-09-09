@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trkar_vendor/screens/faqdetails.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
+import 'package:trkar_vendor/utils/Provider/provider_data.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/navigator.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
@@ -27,9 +28,17 @@ class FaqPage extends StatefulWidget {
 class _FaqPageState extends State<FaqPage> {
   List<Faq> faq;
   String url = "products";
+  int i = 2;
+  ScrollController _scrollController = new ScrollController();
 
   @override
   void initState() {
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        PerFaq(context);
+      }
+    });
     getFaq();
     super.initState();
   }
@@ -75,6 +84,7 @@ class _FaqPageState extends State<FaqPage> {
           ? Center(child:NotFoundItem(title:'${getTransrlate(context, 'NoFAQ')}'))
           : Container(
               child: SingleChildScrollView(
+                controller: _scrollController,
                 child: Column(
                   children: [
                     Container(
@@ -209,7 +219,18 @@ class _FaqPageState extends State<FaqPage> {
           })
         });
   }
+  Future<void> PerFaq(BuildContext context) async {
+    SharedPreferences.getInstance().then((value) => {
 
+    API(context).post("vendor/fetch/question?per_page=${i++}", {"vendor_id": value.getInt('user_id')}).then((value) {
+      if (value != null) {
+        setState(() {
+          faq.addAll(Faq_model.fromJson(value).data);
+        });
+
+      }
+    })});
+  }
   _navigate_edit_hell(BuildContext context, Faq faq) async {
     await Navigator.push(
         context,

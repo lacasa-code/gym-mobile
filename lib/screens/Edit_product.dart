@@ -1515,7 +1515,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                               showDialog(
                                 context: context,
                                 builder: (_) => ResultOverlay(
-                                  "Select Image",
+                                  "${getTransrlate(context,'Selectimage')}",
                                 ),
                               );
                             }

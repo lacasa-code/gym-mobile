@@ -20,7 +20,10 @@
       "else": "لقد ضغطت الزر {{value}} مرة"
     }
   },
+  "Selectimage": "حدد الصور",
+
   "language": "اللغة",
+  "FileTickit": "مرفق الشكوى",
 
   "gust": "عزيزى الزائر",
   "good_morning": "صباح الخير",

@@ -9,8 +9,14 @@ import 'package:provider/provider.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trkar_vendor/model/basic_report.dart';
+import 'package:trkar_vendor/model/faq_model.dart';
 import 'package:trkar_vendor/model/products_model.dart';
+import 'package:trkar_vendor/screens/Orders.dart';
+import 'package:trkar_vendor/screens/faq.dart';
+import 'package:trkar_vendor/screens/invoices.dart';
 import 'package:trkar_vendor/screens/message_show.dart';
+import 'package:trkar_vendor/screens/product.dart';
+import 'package:trkar_vendor/screens/tickets.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/data_repostory.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
@@ -187,285 +193,313 @@ class _HomeMobileState extends State<HomeMobile> {
                       ],
                     ),
                     Divider(),
-                    basic_report == null
-                        ? Container()
-                        : Container(
+                    if (basic_report == null) Container() else Container(
                             child: ResponsiveGridList(
                               scroll: false,
                               desiredItemWidth:
                                   ScreenUtil.getWidth(context) / 2.3,
                               minSpacing: 10,
                               children: [
-                                Card(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        SvgPicture.asset(
-                                          'assets/icons/Bell.svg',
-                                          width: 18,
-                                          height: 18,
-                                          color: Colors.green,
-                                        ),
-                                        SizedBox(
-                                          width: 3,
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              width:
-                                                  ScreenUtil.getWidth(context) /
-                                                      3.1,
-                                              child: AutoSizeText(
-                                                "${getTransrlate(context, 'total_orders')}",
-                                                minFontSize: 13,
-                                                maxLines: 1,
-                                                maxFontSize: 14,
-                                                style: TextStyle(
-                                                    color: Colors.green,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                               InkWell(
+                                 onTap: (){
+                                   Nav.route(context, Orders());
+                                 },
+                                  child: Card(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          SvgPicture.asset(
+                                            'assets/icons/Bell.svg',
+                                            width: 18,
+                                            height: 18,
+                                            color: Colors.green,
+                                          ),
+                                          SizedBox(
+                                            width: 3,
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                width:
+                                                    ScreenUtil.getWidth(context) /
+                                                        3.1,
+                                                child: AutoSizeText(
+                                                  "${getTransrlate(context, 'total_orders')}",
+                                                  minFontSize: 13,
+                                                  maxLines: 1,
+                                                  maxFontSize: 14,
+                                                  style: TextStyle(
+                                                      color: Colors.green,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
                                               ),
-                                            ),
-                                            Text("${basic_report.totalOrders}",
-                                                maxLines: 1,
-                                                style: TextStyle(
-                                                    color:
-                                                        themeColor.getColor())),
-                                          ],
-                                        ),
-                                      ],
+                                              Text("${basic_report.totalOrders}",
+                                                  maxLines: 1,
+                                                  style: TextStyle(
+                                                      color:
+                                                          themeColor.getColor())),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
-                                Card(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Icon(
-                                          Icons.local_shipping_outlined,
-                                          color: Colors.orange,
-                                        ),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              "${getTransrlate(context, 'pending_orders')}",
-                                              style: TextStyle(
-                                                  color: Colors.orange,
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            Text(
-                                                "${basic_report.pending_orders}",
-                                                maxLines: 1,
+                                InkWell(
+                                  onTap: (){
+                                    Nav.route(context, Orders());
+                                  },
+                                  child: Card(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Icon(
+                                            Icons.local_shipping_outlined,
+                                            color: Colors.orange,
+                                          ),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "${getTransrlate(context, 'pending_orders')}",
                                                 style: TextStyle(
-                                                    color:
-                                                        themeColor.getColor())),
-                                          ],
-                                        ),
-                                      ],
+                                                    color: Colors.orange,
+                                                    fontSize: 13,
+                                                    fontWeight: FontWeight.bold),
+                                              ),
+                                              Text(
+                                                  "${basic_report.pending_orders}",
+                                                  maxLines: 1,
+                                                  style: TextStyle(
+                                                      color:
+                                                          themeColor.getColor())),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
-                                Card(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Icon(
-                                          Icons.money,
-                                          color: Colors.lightGreen,
-                                          size: 18,
-                                        ),
-                                        SizedBox(
-                                          width: 3,
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              width:
-                                                  ScreenUtil.getWidth(context) /
-                                                      3.1,
-                                              child: AutoSizeText(
-                                                "${getTransrlate(context, 'total_sale')}",
-                                                minFontSize: 13,
-                                                maxLines: 1,
-                                                maxFontSize: 14,
-                                                style: TextStyle(
-                                                    color: Colors.lightGreen,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                InkWell(
+                                  onTap: (){
+                                    Nav.route(context, Invoices());
+                                  },
+                                  child: Card(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Icon(
+                                            Icons.money,
+                                            color: Colors.lightGreen,
+                                            size: 18,
+                                          ),
+                                          SizedBox(
+                                            width: 3,
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                width:
+                                                    ScreenUtil.getWidth(context) /
+                                                        3.1,
+                                                child: AutoSizeText(
+                                                  "${getTransrlate(context, 'total_sale')}",
+                                                  minFontSize: 13,
+                                                  maxLines: 1,
+                                                  maxFontSize: 14,
+                                                  style: TextStyle(
+                                                      color: Colors.lightGreen,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
                                               ),
-                                            ),
-                                            Text("${basic_report.totalSale.roundToDouble()}",
-                                                maxLines: 1,
-                                                style: TextStyle(
-                                                    color:
-                                                        themeColor.getColor())),
-                                          ],
-                                        ),
-                                      ],
+                                              Text("${basic_report.totalSale.roundToDouble()}",
+                                                  maxLines: 1,
+                                                  style: TextStyle(
+                                                      color:
+                                                          themeColor.getColor())),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
-                                Card(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Icon(
-                                          Icons.shopping_bag_outlined,
-                                          color: Colors.brown,
-                                          size: 18,
-                                        ),
-                                        SizedBox(
-                                          width: 3,
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              width:
-                                                  ScreenUtil.getWidth(context) /
-                                                      3.1,
-                                              child: AutoSizeText(
-                                                "${getTransrlate(context, 'total_products')}",
-                                                minFontSize: 13,
-                                                maxLines: 1,
-                                                maxFontSize: 14,
-                                                style: TextStyle(
-                                                    color: Colors.brown,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                InkWell(
+                                  onTap: (){
+                                    Nav.route(context, Products());
+                                  },
+                                  child: Card(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Icon(
+                                            Icons.shopping_bag_outlined,
+                                            color: Colors.brown,
+                                            size: 18,
+                                          ),
+                                          SizedBox(
+                                            width: 3,
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                width:
+                                                    ScreenUtil.getWidth(context) /
+                                                        3.1,
+                                                child: AutoSizeText(
+                                                  "${getTransrlate(context, 'total_products')}",
+                                                  minFontSize: 13,
+                                                  maxLines: 1,
+                                                  maxFontSize: 14,
+                                                  style: TextStyle(
+                                                      color: Colors.brown,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
                                               ),
-                                            ),
-                                            Text(
-                                                "${basic_report.totalProducts.roundToDouble()}",
-                                                maxLines: 1,
-                                                style: TextStyle(
-                                                    color:
-                                                        themeColor.getColor())),
-                                          ],
-                                        ),
-                                      ],
+                                              Text(
+                                                  "${basic_report.totalProducts.roundToDouble()}",
+                                                  maxLines: 1,
+                                                  style: TextStyle(
+                                                      color:
+                                                          themeColor.getColor())),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
-                                Card(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SvgPicture.asset(
-                                          'assets/icons/Question mark.svg',
-                                          width: 18,
-                                          height: 18,
-                                          color: Colors.blue,
-                                        ),
-                                        SizedBox(
-                                          width: 3,
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              width:
-                                                  ScreenUtil.getWidth(context) /
-                                                      3.1,
-                                              child: AutoSizeText(
-                                                "${getTransrlate(context, 'prod_questions')}",
-                                                minFontSize: 10,
-                                                maxLines: 1,
-                                                maxFontSize: 15,
-                                                style: TextStyle(
-                                                    color: Colors.blue,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                InkWell(
+                                  onTap: (){
+                                    Nav.route(context, FaqPage());
+                                  },
+                                  child: Card(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SvgPicture.asset(
+                                            'assets/icons/Question mark.svg',
+                                            width: 18,
+                                            height: 18,
+                                            color: Colors.blue,
+                                          ),
+                                          SizedBox(
+                                            width: 3,
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                width:
+                                                    ScreenUtil.getWidth(context) /
+                                                        3.1,
+                                                child: AutoSizeText(
+                                                  "${getTransrlate(context, 'prod_questions')}",
+                                                  minFontSize: 10,
+                                                  maxLines: 1,
+                                                  maxFontSize: 15,
+                                                  style: TextStyle(
+                                                      color: Colors.blue,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
                                               ),
-                                            ),
-                                            Text(
-                                                "${basic_report.prod_questions ?? '0'}",
-                                                maxLines: 1,
-                                                style: TextStyle(
-                                                    color:
-                                                        themeColor.getColor())),
-                                          ],
-                                        ),
-                                      ],
+                                              Text(
+                                                  "${basic_report.prod_questions ?? '0'}",
+                                                  maxLines: 1,
+                                                  style: TextStyle(
+                                                      color:
+                                                          themeColor.getColor())),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
-                                Card(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Icon(
-                                          Icons.error_outline,
-                                          color: Colors.red,
-                                          size: 18,
-                                        ),
-                                        SizedBox(
-                                          width: 3,
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              width:
-                                                  ScreenUtil.getWidth(context) /
-                                                      3.1,
-                                              child: AutoSizeText(
-                                                "${getTransrlate(context, 'tickets')}",
-                                                minFontSize: 13,
-                                                maxLines: 1,
-                                                maxFontSize: 14,
-                                                style: TextStyle(
-                                                    color: Colors.red,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                InkWell(
+                                  onTap: (){
+                                    Nav.route(context, Tickets());
+                                  },
+                                  child: Card(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Icon(
+                                            Icons.error_outline,
+                                            color: Colors.red,
+                                            size: 18,
+                                          ),
+                                          SizedBox(
+                                            width: 3,
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                width:
+                                                    ScreenUtil.getWidth(context) /
+                                                        3.1,
+                                                child: AutoSizeText(
+                                                  "${getTransrlate(context, 'tickets')}",
+                                                  minFontSize: 13,
+                                                  maxLines: 1,
+                                                  maxFontSize: 14,
+                                                  style: TextStyle(
+                                                      color: Colors.red,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
                                               ),
-                                            ),
-                                            Text(
-                                                "${basic_report.tickets ?? '0'}",
-                                                maxLines: 1,
-                                                style: TextStyle(
-                                                    color:
-                                                        themeColor.getColor())),
-                                          ],
-                                        ),
-                                      ],
+                                              Text(
+                                                  "${basic_report.tickets ?? '0'}",
+                                                  maxLines: 1,
+                                                  style: TextStyle(
+                                                      color:
+                                                          themeColor.getColor())),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),

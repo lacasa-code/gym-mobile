@@ -1392,7 +1392,7 @@ int CheckBox=0;
                                         showDialog(
                                           context: context,
                                           builder: (_) => ResultOverlay(
-                                            "Select Image",
+                                            "${getTransrlate(context,'Selectimage')}",
                                           ),
                                         );
                                       }

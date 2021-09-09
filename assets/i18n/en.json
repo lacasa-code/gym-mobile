@@ -85,6 +85,7 @@
   "id": "No id",
   "shipping": "shipping",
   "birthDate": "BirthDate",
+  "FileTickit": "Ticket File",
   "gender": "Gender",
   "CarType": "Car Type",
   "car": "Car",
@@ -173,6 +174,7 @@
   "SortByPricemore": "Price to high",
   "SortByPriceLess": "Price to low",
   "SortByNew": "Newest",
+  "Selectimage": "Select image ",
   "SortByold": "Oldest",
   "your_profile": "Profile Information",
   "editProfile": "Edit Profile",
@@ -206,6 +208,8 @@
   "Email": "Email ",
   "password": "Password",
   "Required": "Required",
+  "requiredempty": "Required",
+
   "Requiredlength": "Small length ",
 
   "paymentMethod": "Payment Method",

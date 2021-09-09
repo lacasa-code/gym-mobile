@@ -65,6 +65,8 @@ class _User_itemState extends State<User_item> {
                           widget.hall_model.isSelect = value;
                         });
                         !widget.hall_model.isSelect? widget.selectStores.remove(widget.hall_model.id) :widget.selectStores.add(widget.hall_model.id);
+                        data.setStaff_select(widget.selectStores);
+
                       })
                   : SvgPicture.asset(
                       "assets/icons/account.svg",
