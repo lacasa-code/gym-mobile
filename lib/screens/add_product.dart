@@ -106,6 +106,7 @@ int CheckBox=0;
           statusBarColor: "#EF9300",
           selectCircleStrokeColor: "#000000",
         ),
+
       );
     } on Exception catch (e) {
       error = e.toString();

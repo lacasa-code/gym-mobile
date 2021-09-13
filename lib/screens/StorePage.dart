@@ -16,6 +16,7 @@ import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
 import 'package:trkar_vendor/widget/ResultOverlay.dart';
 import 'package:trkar_vendor/widget/SearchOverlay.dart';
+import 'package:trkar_vendor/widget/SearchOverlay_Store.dart';
 
 class StorePage extends StatefulWidget {
   Store store;
@@ -28,6 +29,7 @@ class StorePage extends StatefulWidget {
 
 class _StorePageState extends State<StorePage> {
   Completer<GoogleMapController> _controller = Completer();
+  List<Marker> _markers = <Marker>[];
 
   static  CameraPosition _kGooglePlex ;
 @override
@@ -36,7 +38,16 @@ class _StorePageState extends State<StorePage> {
  setState(() {
    _kGooglePlex = CameraPosition(
      target: LatLng(double.parse(widget.store.lat??'0.0'), double.parse(widget.store.long??'0.0')),
-     zoom: 9.4746,
+     zoom: 14.4746,
+   );
+   _markers.add(
+       Marker(
+           markerId: MarkerId('1'),
+           position: LatLng(double.parse(widget.store.lat??'0.0'), double.parse(widget.store.long??'0.0')),
+           infoWindow: InfoWindow(
+               title: '${widget.store.nameStore}'
+           )
+       )
    );
  });
     // TODO: implement initState
@@ -70,7 +81,7 @@ class _StorePageState extends State<StorePage> {
             onPressed: () {
               showDialog(
                 context: context,
-                builder: (_) => SearchOverlay(),
+                builder: (_) => SearchOverlay_Store(url: 'stores/search/name',),
               );
             },
           )
@@ -228,6 +239,15 @@ class _StorePageState extends State<StorePage> {
                     },
                   ),
                   Text(
+                    "${getTransrlate(context, 'country')} : ${widget.store.countryName??' '}",
+                    style: TextStyle(fontSize: 14),
+                  ),   Text(
+                    "${getTransrlate(context, 'Area')} : ${widget.store.areaName??' '}",
+                    style: TextStyle(fontSize: 14),
+                  ),   Text(
+                    "${getTransrlate(context, 'City')} : ${widget.store.cityName??' '}",
+                    style: TextStyle(fontSize: 14),
+                  ),  Text(
                     "${getTransrlate(context, 'address')} : ${widget.store.address}",
                     style: TextStyle(fontSize: 14),
                   ),
@@ -236,7 +256,7 @@ class _StorePageState extends State<StorePage> {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Row(mainAxisAlignment: MainAxisAlignment.start,
+                child: Column(mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
@@ -245,11 +265,12 @@ class _StorePageState extends State<StorePage> {
                     ),
                     Container(
                       height: ScreenUtil.getHeight(context)/5,
-                      width: ScreenUtil.getWidth(context)/1.5,
+                      width: ScreenUtil.getWidth(context),
 
                       child: GoogleMap(
                         mapType: MapType.normal,
                         initialCameraPosition: _kGooglePlex,
+                        markers: Set<Marker>.of(_markers),
                         onMapCreated: (GoogleMapController controller) {
                           _controller.complete(controller);
                         },

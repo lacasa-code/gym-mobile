@@ -123,6 +123,7 @@ class _Edit_ProductState extends State<Edit_Product> {
 
   @override
   void initState() {
+
     setState(() {
       isqty_reminder =widget.product.qty_reminder!=null;
     });
@@ -204,9 +205,7 @@ class _Edit_ProductState extends State<Edit_Product> {
             onPressed: () {
               showDialog(
                 context: context,
-                builder: (_) => SearchOverlay(
-                  url: 'products/search/dynamic',
-                ),
+                builder: (_) => SearchOverlay(url: 'products/search/dynamic',),
               );
             },
           )
@@ -255,7 +254,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                   inputFormatters: [
                     new LengthLimitingTextInputFormatter(200),
                   ],
-                  hintText: getTransrlate(context, 'name'),
+                  hintText: getTransrlate(context, 'nameEn'),
                   isPhone: true,
                   enabled: true,
                   validator: (String value) {
@@ -358,6 +357,9 @@ class _Edit_ProductState extends State<Edit_Product> {
                           widget.product.cartype_id =
                               data.id.toString();
                           getAllCarMade(data.id.toString());
+                          setState(() {
+                            widget.product.carType=data;
+                          });
                         })),
                 SizedBox(
                   height: 10,
@@ -1692,48 +1694,6 @@ class _Edit_ProductState extends State<Edit_Product> {
     });
   }
 
-  _generateTags(Provider_control themeColor) {
-    return widget.product.tags.isEmpty
-        ? Container()
-        : Container(
-            alignment: Alignment.topLeft,
-            child: Tags(
-              alignment: WrapAlignment.center,
-              itemCount: widget.product.tags.length,
-              itemBuilder: (index) {
-                return ItemTags(
-                  index: index,
-                  title: themeColor.getlocal() == 'ar'
-                      ? widget.product.tags[index].name ??
-                          widget.product.tags[index].name_en
-                      : widget.product.tags[index].name_en ??
-                          widget.product.tags[index].name,
-                  color: Colors.blue,
-                  activeColor: Colors.black26,
-                  onPressed: (Item item) {
-                    print('pressed');
-                  },
-                  highlightColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                  elevation: 0.0,
-                  borderRadius: BorderRadius.all(Radius.circular(7.0)),
-//                textColor: ,
-                  textColor: Colors.white,
-                  textActiveColor: Colors.white,
-                  removeButton: ItemTagsRemoveButton(
-                      color: Colors.white,
-                      backgroundColor: Colors.transparent,
-                      size: 18,
-                      onRemoved: () {
-                        _onSuggestionRemoved(widget.product.tags[index]);
-                        return true;
-                      }),
-                  textOverflow: TextOverflow.ellipsis,
-                );
-              },
-            ),
-          );
-  }
 
   _generateModels(Provider_control themeColor) {
     return widget.product.carModel.isEmpty
@@ -1777,6 +1737,48 @@ class _Edit_ProductState extends State<Edit_Product> {
             ),
           );
   }
+  _generateTags(Provider_control themeColor) {
+    return widget.product.tags.isEmpty
+        ? Container()
+        : Container(
+      alignment: Alignment.topLeft,
+      child: Tags(
+        alignment: WrapAlignment.center,
+        itemCount: widget.product.tags.length,
+        itemBuilder: (index) {
+          return ItemTags(
+            index: index,
+            title: themeColor.getlocal() == 'ar'
+                ? widget.product.tags[index].name ??
+                widget.product.tags[index].name_en
+                : widget.product.tags[index].name_en ??
+                widget.product.tags[index].name,
+            color: Colors.blue,
+            activeColor: Colors.black26,
+            onPressed: (Item item) {
+              print('pressed');
+            },
+            highlightColor: Colors.transparent,
+            splashColor: Colors.transparent,
+            elevation: 0.0,
+            borderRadius: BorderRadius.all(Radius.circular(7.0)),
+//                textColor: ,
+            textColor: Colors.white,
+            textActiveColor: Colors.white,
+            removeButton: ItemTagsRemoveButton(
+                color: Colors.white,
+                backgroundColor: Colors.transparent,
+                size: 18,
+                onRemoved: () {
+                  _onSuggestionRemoved(widget.product.tags[index]);
+                  return true;
+                }),
+            textOverflow: TextOverflow.ellipsis,
+          );
+        },
+      ),
+    );
+  }
 
   _onSuggestionSelected(Tag value) {
     if (value != null) {
@@ -1788,15 +1790,14 @@ class _Edit_ProductState extends State<Edit_Product> {
   }
 
   _onSuggestionRemoved(Tag value) {
-    final Tag exist =
-        _tags.firstWhere((text) => text.name == value, orElse: () {
-      return null;
-    });
-
+    // final Tag exist =
+    //     _tags.firstWhere((text) => text.name == value, orElse: () {
+    //   return null;
+    // });
     if (value != null) {
       setState(() {
         widget.product.tags.remove(value);
-        _tags.add(exist);
+        _tags.add(value);
       });
     }
   }

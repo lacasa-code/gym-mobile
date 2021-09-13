@@ -119,7 +119,7 @@
   "messageProduct": "Please add a branch to be able to add your products",
   "messagestaff": "Please add a branch to be able to add your Staff",
   "transmissionName": "Transmission",
-  "Percentage": "Percentage",
+  "Percentage": "Percentage(discount)",
   "subCategory": "Sub Category",
   "PartCategory": "Part Category",
   "showAll": "Show all",
@@ -179,6 +179,7 @@
   "your_profile": "Profile Information",
   "editProfile": "Edit Profile",
   "edit": "Edit",
+  "invalidpass": "Uppercase,Lowercase,Number and Special Character",
 
   "profile_name": "Name",
   "mail": "Email",
@@ -211,6 +212,7 @@
   "requiredempty": "Required",
 
   "Requiredlength": "Small length ",
+  "requiredlength": "Small length ",
 
   "paymentMethod": "Payment Method",
   "MethodShipping": "Shipping Method",

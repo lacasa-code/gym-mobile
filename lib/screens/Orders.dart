@@ -42,6 +42,7 @@ class _OrdersState extends State<Orders> {
         pageFetch();
       }
     });
+
     getAllStore();
     super.initState();
   }
@@ -265,7 +266,7 @@ class _OrdersState extends State<Orders> {
                                                   ],
                                                 ),
                                               )
-                                            :Row(
+                                            : Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
                                                         .spaceAround,

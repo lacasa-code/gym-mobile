@@ -158,7 +158,7 @@ class _UserPageState extends State<UserPage> {
                           Container(
                             width: ScreenUtil.getWidth(context) / 2,
                             child: Text(
-                              " ${widget.user.stores[index].name}",
+                              " ${widget.user.stores[index].nameStore}",
                               style: TextStyle(
                                 //color: themeColor.getColor(),
                                   fontWeight: FontWeight.w300,

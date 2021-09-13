@@ -65,7 +65,7 @@ class _ProductPageState extends State<ProductPage> {
             onPressed: () {
               showDialog(
                 context: context,
-                builder: (_) => SearchOverlay(),
+                builder: (_) => SearchOverlay(url: 'products/search/dynamic',),
               );
             },
           )

@@ -4,8 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_tags/flutter_tags.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/roles_model.dart';
+import 'package:trkar_vendor/model/store_model.dart';
 import 'package:trkar_vendor/model/user_model.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/Provider/provider_data.dart';
@@ -30,10 +33,12 @@ class _EditStaffState extends State<EditStaff> {
   final _formKey = GlobalKey<FormState>();
   List<Role> roles;
   bool passwordVisible = false;
+  List<Store> _listStore;
 
   @override
   void initState() {
     getRoles();
+    getStore();
     super.initState();
   }
 
@@ -42,7 +47,6 @@ class _EditStaffState extends State<EditStaff> {
     final themeColor = Provider.of<Provider_control>(context);
     final data = Provider.of<Provider_Data>(context);
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Row(
           children: [
@@ -58,15 +62,15 @@ class _EditStaffState extends State<EditStaff> {
         ),
         backgroundColor: themeColor.getColor(),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(25),
-            child: Form(
-              key: _formKey,
-              child: Container(
-                height: ScreenUtil.getHeight(context) / 1.5,
-                child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(25),
+              child: Form(
+                key: _formKey,
+                child: Container(
+                  height: ScreenUtil.getHeight(context) / 1.5,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -145,14 +149,52 @@ class _EditStaffState extends State<EditStaff> {
                               itemAsString: (Role u) => u.title,
                               onChanged: (Role data) =>
                                   widget.user.rolesid = data.id.toString()),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "${getTransrlate(context, 'stores')}",
+                        style: TextStyle(color: Colors.black, fontSize: 16),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      _listStore == null
+                          ? Container()
+                          : _generateStores(themeColor),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(width: 1, color: Colors.black26)),
+                        child: TypeAheadField(
+                          // hideOnLoading: true,
+                          // hideOnEmpty: true,
+                          getImmediateSuggestions: false,
+                          onSuggestionSelected: (val) {
+                            _onSuggestionSelected(val);
+                          },
+                          itemBuilder: (context, suggestion) {
+                            return ListTile(
+                              title: Text( suggestion.nameStore
+                              ),
+                            );
+                          },
+                          suggestionsCallback: (val) {
+                            return _sugestionList(
+                              Stores:  _listStore,
+                              suggestion: val,
+                            );
+                          },
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
             ),
-          ),
-          Expanded(
-            child: Container(
+            Container(
               decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
@@ -186,26 +228,23 @@ class _EditStaffState extends State<EditStaff> {
                             _formKey.currentState.save();
                             setState(() => loading = true);
                             print("users/${widget.user.id}");
-                            print({
-                              "name": widget.user.name,
-                              "email": widget.user.email,
-                              "roles": widget.user.rolesid
-                            });
+
                             API(context).Put("users/${widget.user.id}", {
                               "name": widget.user.name,
                               "email": widget.user.email,
-                              "roles": widget.user.rolesid??widget.user.roles.id
+                              "roles": widget.user.rolesid??widget.user.roles.id,
+                              "stores": widget.user.stores!=null? widget.user.stores.isNotEmpty?widget.user.stores.map((e) => e.id).toList().toString():"":""
                             }).then((value) {
                               if (value != null) {
                                 setState(() {
                                   loading = false;
                                 });
                                 print(value.containsKey('errors'));
-                                if (value.containsKey('errors')) {
+                                if (value['status_code']!=200) {
                                   showDialog(
                                     context: context,
                                     builder: (_) => ResultOverlay(
-                                      value['errors'].toString(),
+                                      "${value['errors']}",
                                     ),
                                   );
                                 } else {
@@ -215,7 +254,7 @@ class _EditStaffState extends State<EditStaff> {
                                   showDialog(
                                     context: context,
                                     builder: (_) => ResultOverlay(
-                                      '${getTransrlate(context,'Done')}',
+                                      '${value['message']??value['errors']}',
                                     ),
                                   );
                                 }
@@ -245,8 +284,8 @@ class _EditStaffState extends State<EditStaff> {
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -256,6 +295,88 @@ class _EditStaffState extends State<EditStaff> {
       if (value != null) {
         setState(() {
           roles = Roles_model.fromJson(value).data;
+        });
+      }
+    });
+  }
+  _generateStores(Provider_control themeColor) {
+    return widget.user.stores.isEmpty
+        ? Container()
+        : Container(
+      alignment: Alignment.topLeft,
+      child: Tags(
+        alignment: WrapAlignment.center,
+        itemCount: widget.user.stores.length,
+        itemBuilder: (index) {
+          return ItemTags(
+            index: index,
+            title:  widget.user.stores[index].nameStore,
+            color: Colors.blue,
+            activeColor: Colors.black26,
+            onPressed: (Item item) {
+              print('pressed');
+            },
+            highlightColor: Colors.transparent,
+            splashColor: Colors.transparent,
+            elevation: 0.0,
+            borderRadius: BorderRadius.all(Radius.circular(7.0)),
+//                textColor: ,
+            textColor: Colors.white,
+            textActiveColor: Colors.white,
+            removeButton: ItemTagsRemoveButton(
+                color: Colors.white,
+                backgroundColor: Colors.transparent,
+                size: 18,
+                onRemoved: () {
+                  _onSuggestionRemoved(widget.user.stores[index]);
+                  return true;
+                }),
+            textOverflow: TextOverflow.ellipsis,
+          );
+        },
+      ),
+    );
+  }
+
+  _onSuggestionSelected(Store value) {
+    if (value != null) {
+      setState(() {
+        widget.user.stores.add(value);
+        _listStore.remove(value);
+      });
+    }
+  }
+
+  _onSuggestionRemoved(Store value) {
+    // final Store exist =
+    //     _Stores.firstWhere((text) => text.name == value, orElse: () {
+    //   return null;
+    // });
+    if (value != null) {
+      setState(() {
+        widget.user.stores.remove(value);
+        _listStore.add(value);
+      });
+    }
+  }
+
+  _sugestionList({@required List<Store> Stores, @required String suggestion}) {
+    List<Store> modifiedList = [];
+    modifiedList.addAll(Stores);
+    modifiedList.retainWhere(
+            (text) => text.nameStore.toLowerCase().contains(suggestion.toLowerCase()));
+    if (suggestion.length >= 0) {
+      return modifiedList;
+    } else {
+      return null;
+    }
+  }
+
+  void getStore() {
+    API(context).get('storeslist').then((value) {
+      if (value != null) {
+        setState(() {
+          _listStore= Store_model.fromJson(value).data;
         });
       }
     });

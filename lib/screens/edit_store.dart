@@ -94,7 +94,10 @@ class _Edit_StoreState extends State<Edit_Store> {
                 myLocationButtonEnabled: true,
                 mapType: MapType.normal,
                 //  camera position
-                initialCameraPosition: cameraPosition,
+                initialCameraPosition: CameraPosition(
+                  target: LatLng(double.parse(widget.store.lat??'0.0'), double.parse(widget.store.long??'0.0')),
+                  zoom: 14.4746,
+                ),
                 onMapCreated: (GoogleMapController controller) {
                   _controller.complete(controller);
                 },
@@ -102,15 +105,12 @@ class _Edit_StoreState extends State<Edit_Store> {
                   // notify map is moving
                   mapPickerController.mapMoving();
                 },
-                onCameraMove: (cameraPosition) {
-                  this.cameraPosition = cameraPosition;
-                },
                 onCameraIdle: () async {
                   // notify map stopped moving
                   mapPickerController.mapFinishedMoving();
                   //get address name from camera position
-                  widget.store.lat = cameraPosition.target.latitude.toString();
-                  widget.store.long = cameraPosition.target.longitude.toString();
+                 // widget.store.lat = cameraPosition.target.latitude.toString();
+                //  widget.store.long = cameraPosition.target.longitude.toString();
                   List<Address> addresses = await Geocoder.local
                       .findAddressesFromCoordinates(Coordinates(
                       cameraPosition.target.latitude,
@@ -162,149 +162,149 @@ class _Edit_StoreState extends State<Edit_Store> {
                           },
                         ),
 
-                        Text(
-                          getTransrlate(
-                              context, 'Countroy'),
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16),
-                        ),
-                        contries == null
-                            ? Container()
-                            : Padding(
-                          padding: const EdgeInsets
-                              .symmetric(
-                              vertical: 10),
-                          child:
-                          DropdownSearch<Country>(
-                            // label: getTransrlate(context, 'Countroy'),
-                            validator:
-                                (Country item) {
-                              if (item == null) {
-                                return "Required field";
-                              } else
-                                return null;
-                            },
-                            selectedItem:widget.store.country??Country(countryName: " ${widget.store.countryName??' '}"),
-                            //selectedItem:widget.store.countryId==null?Country(countryName: 'select country'):contries.where((element) => element.id==widget.store.countryId).first,
-                            showSearchBox: true,
-                            items: contries,
-                            //  onFind: (String filter) => getData(filter),
-                            itemAsString:
-                                (Country u) =>
-                                themeColor.getlocal()=='ar'?u.countryName??u.name_en:u.name_en??u.countryName,
-
-                            onChanged:
-                                (Country data) {
-                              setState(() {
-                                phone1.text='${data.phonecode}';
-                                phone2.text='';
-                                widget.store.country=data;
-                                widget.store.countryId = data.id;
-                                widget.store.area = Area(areaName: '');
-                                widget.store.city = City(cityName: '');
-                                area=null;
-                              });
-                              getArea(data.id);
-                            },
-                          ),
-                        ),
-                        Text(
-                          "${getTransrlate(context, 'Area')}",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16),
-                        ),
-
-                        area == null
-                            ? Container()
-                            : Padding(
-                          padding: const EdgeInsets
-                              .symmetric(
-                              vertical: 10),
-                          child: DropdownSearch<Area>(
-                            // label: getTransrlate(context, 'Countroy'),
-                            validator: (Area item) {
-                              if (item == null) {
-                                return "Required field";
-                              } else
-                                return null;
-                            },
-
-                            items: area,
-                            selectedItem:widget.store.area??Area(areaName: " ${widget.store.areaName??' '}"),
-
-                            //  selectedItem:widget.store.areaId==null?Area(areaName:'Select Area'):area.where((element) => element.id==widget.store.areaId).first,
-                            //  onFind: (String filter) => getData(filter),
-                            itemAsString: (Area u) =>
-                            themeColor.getlocal()=='ar'?u.areaName??u.name_en:u.name_en??u.areaName,
-                            onChanged: (Area data) {
-                              setState(() {
-                                phone1.text='';
-                                phone2.text='';
-                                widget.store.areaId = data.id;
-                                widget.store.city = City(cityName: '');
-                                widget.store.area =data;
-
-                                cities=null;
-                              });
-                              getCity(data.id);
-                            },
-                          ),
-                        ),
-                        Text(
-                          getTransrlate(
-                              context, 'City'),
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16),
-                        ),
-
-                        cities == null
-                            ? Container()
-                            : Padding(
-                          padding: const EdgeInsets
-                              .symmetric(
-                              vertical: 10),
-                          child: DropdownSearch<City>(
-                           // selectedItem:widget.store.cityId==null?City(cityName:'Select City'):cities.where((element) => element.id==widget.store.cityId).first,
-                            selectedItem:widget.store.city??City(cityName:' ${widget.store.cityName??' '}'),
-                            validator: (City item) {
-                              if (item == null) {
-                                return "Required field";
-                              } else
-                                return null;
-                            },
-
-                            items: cities,
-                            //  onFind: (String filter) => getData(filter),
-                            itemAsString: (City u) =>
-                            themeColor.getlocal()=='ar'?u.cityName??u.name_en:u.name_en??u.cityName,
-                            onChanged: (City data) {
-                              phone1.text='';
-                              phone2.text='';
-                              widget.store.cityId =data.id;
-                              widget.store.city=data;
-                            },
-                          ),
-                        ),
-                        MyTextFormField(
-                          intialLabel: widget.store.address ?? ' ',
-                          Keyboard_Type: TextInputType.text,
-                          labelText: getTransrlate(context, 'address'),
-                          hintText: getTransrlate(context, 'address'),
-                          enabled: true,
-                          validator: (String value) {
-                            if (value.isEmpty) {
-                              return getTransrlate(context, 'address');
-                            }
-                            _formKey.currentState.save();
-                            return null;
-                          },
-                          onSaved: (String value) {
-                            widget.store.address = value;
-                          },
-                        ),
+                    //    Text(
+                        //   getTransrlate(
+                        //       context, 'Countroy'),
+                        //   style: TextStyle(
+                        //       color: Colors.black,
+                        //       fontSize: 16),
+                        // ),
+                        // contries == null
+                        //     ? Container()
+                        //     : Padding(
+                        //   padding: const EdgeInsets
+                        //       .symmetric(
+                        //       vertical: 10),
+                        //   child:
+                        //   DropdownSearch<Country>(
+                        //     // label: getTransrlate(context, 'Countroy'),
+                        //     validator:
+                        //         (Country item) {
+                        //       if (item == null) {
+                        //         return "Required field";
+                        //       } else
+                        //         return null;
+                        //     },
+                        //     selectedItem:widget.store.country??Country(countryName: " ${widget.store.countryName??' '}"),
+                        //     //selectedItem:widget.store.countryId==null?Country(countryName: 'select country'):contries.where((element) => element.id==widget.store.countryId).first,
+                        //     showSearchBox: true,
+                        //     items: contries,
+                        //     //  onFind: (String filter) => getData(filter),
+                        //     itemAsString:
+                        //         (Country u) =>
+                        //         themeColor.getlocal()=='ar'?u.countryName??u.name_en:u.name_en??u.countryName,
+                        //
+                        //     onChanged:
+                        //         (Country data) {
+                        //       setState(() {
+                        //         phone1.text='${data.phonecode}';
+                        //         phone2.text='';
+                        //         widget.store.country=data;
+                        //         widget.store.countryId = data.id;
+                        //         widget.store.area = Area(areaName: '');
+                        //         widget.store.city = City(cityName: '');
+                        //         area=null;
+                        //       });
+                        //       getArea(data.id);
+                        //     },
+                        //   ),
+                        // ),
+                        // Text(
+                        //   "${getTransrlate(context, 'Area')}",
+                        //   style: TextStyle(
+                        //       color: Colors.black,
+                        //       fontSize: 16),
+                        // ),
+                        //
+                        // area == null
+                        //     ? Container()
+                        //     : Padding(
+                        //   padding: const EdgeInsets
+                        //       .symmetric(
+                        //       vertical: 10),
+                        //   child: DropdownSearch<Area>(
+                        //     // label: getTransrlate(context, 'Countroy'),
+                        //     validator: (Area item) {
+                        //       if (item == null) {
+                        //         return "Required field";
+                        //       } else
+                        //         return null;
+                        //     },
+                        //
+                        //     items: area,
+                        //     selectedItem:widget.store.area??Area(areaName: " ${widget.store.areaName??' '}"),
+                        //
+                        //     //  selectedItem:widget.store.areaId==null?Area(areaName:'Select Area'):area.where((element) => element.id==widget.store.areaId).first,
+                        //     //  onFind: (String filter) => getData(filter),
+                        //     itemAsString: (Area u) =>
+                        //     themeColor.getlocal()=='ar'?u.areaName??u.name_en:u.name_en??u.areaName,
+                        //     onChanged: (Area data) {
+                        //       setState(() {
+                        //         phone1.text='';
+                        //         phone2.text='';
+                        //         widget.store.areaId = data.id;
+                        //         widget.store.city = City(cityName: '');
+                        //         widget.store.area =data;
+                        //
+                        //         cities=null;
+                        //       });
+                        //       getCity(data.id);
+                        //     },
+                        //   ),
+                        // ),
+                        // Text(
+                        //   getTransrlate(
+                        //       context, 'City'),
+                        //   style: TextStyle(
+                        //       color: Colors.black,
+                        //       fontSize: 16),
+                        // ),
+                        //
+                        // cities == null
+                        //     ? Container()
+                        //     : Padding(
+                        //   padding: const EdgeInsets
+                        //       .symmetric(
+                        //       vertical: 10),
+                        //   child: DropdownSearch<City>(
+                        //    // selectedItem:widget.store.cityId==null?City(cityName:'Select City'):cities.where((element) => element.id==widget.store.cityId).first,
+                        //     selectedItem:widget.store.city??City(cityName:' ${widget.store.cityName??' '}'),
+                        //     validator: (City item) {
+                        //       if (item == null) {
+                        //         return "Required field";
+                        //       } else
+                        //         return null;
+                        //     },
+                        //
+                        //     items: cities,
+                        //     //  onFind: (String filter) => getData(filter),
+                        //     itemAsString: (City u) =>
+                        //     themeColor.getlocal()=='ar'?u.cityName??u.name_en:u.name_en??u.cityName,
+                        //     onChanged: (City data) {
+                        //       phone1.text='';
+                        //       phone2.text='';
+                        //       widget.store.cityId =data.id;
+                        //       widget.store.city=data;
+                        //     },
+                        //   ),
+                        // ),
+                        // MyTextFormField(
+                        //   intialLabel: widget.store.address ?? ' ',
+                        //   Keyboard_Type: TextInputType.text,
+                        //   labelText: getTransrlate(context, 'address'),
+                        //   hintText: getTransrlate(context, 'address'),
+                        //   enabled: true,
+                        //   validator: (String value) {
+                        //     if (value.isEmpty) {
+                        //       return getTransrlate(context, 'address');
+                        //     }
+                        //     _formKey.currentState.save();
+                        //     return null;
+                        //   },
+                        //   onSaved: (String value) {
+                        //     widget.store.address = value;
+                        //   },
+                        // ),
                         MyTextFormField(
                           textEditingController:phone1,
                           textDirection: TextDirection.ltr,

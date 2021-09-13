@@ -44,6 +44,7 @@ class _ProductsState extends State<Products> {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         Provider.of<Provider_Data>(context,listen: false).PerProducts(context);
+        Provider.of<Provider_Data>(context,listen: false).products_page=2;
       }
     });
     super.initState();

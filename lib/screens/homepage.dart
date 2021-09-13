@@ -16,6 +16,7 @@ import 'package:trkar_vendor/screens/faq.dart';
 import 'package:trkar_vendor/screens/invoices.dart';
 import 'package:trkar_vendor/screens/message_show.dart';
 import 'package:trkar_vendor/screens/product.dart';
+import 'package:trkar_vendor/screens/productPage.dart';
 import 'package:trkar_vendor/screens/tickets.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/data_repostory.dart';
@@ -39,11 +40,11 @@ class _HomeMobileState extends State<HomeMobile> {
   List<Product> product;
   Basic_report basic_report;
   DateTime date = DateTime.now();
-  DateTime from = DateTime.now();
+  DateTime from = DateTime.now().subtract(Duration(days: 7));
   TextEditingController _tocontroller = TextEditingController(
       text: DateFormat('yyyy-MM-dd').format(DateTime.now()));
   TextEditingController _fromcontroller = TextEditingController(
-      text: DateFormat('yyyy-MM-dd').format(DateTime.now()));
+      text: DateFormat('yyyy-MM-dd').format(DateTime.now().subtract(Duration(days: 7))));
   String name;
 
   Future<void> _selectDatefrom(BuildContext context) async {
@@ -582,73 +583,78 @@ class _HomeMobileState extends State<HomeMobile> {
                                   itemCount: product.length,
                                   itemBuilder:
                                       (BuildContext context, int index) {
-                                    return Column(
-                                      children: [
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              width:
-                                                  ScreenUtil.getWidth(context) /
-                                                      8,
-                                              height:
-                                                  ScreenUtil.getWidth(context) /
-                                                      8,
-                                              child: CachedNetworkImage(
-                                                imageUrl: product[index]
-                                                        .photo
-                                                        .isNotEmpty
-                                                    ? product[index]
-                                                        .photo[0]
-                                                        .image
-                                                    : '',
-                                                errorWidget:
-                                                    (context, url, error) =>
-                                                        Icon(
-                                                  Icons.image,
-                                                  color: Colors.black12,
+                                    return InkWell(
+                                      onTap: (){
+                                        Nav.route(context, ProductPage(product: product[index]));
+                                      },
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                width:
+                                                    ScreenUtil.getWidth(context) /
+                                                        8,
+                                                height:
+                                                    ScreenUtil.getWidth(context) /
+                                                        8,
+                                                child: CachedNetworkImage(
+                                                  imageUrl: product[index]
+                                                          .photo
+                                                          .isNotEmpty
+                                                      ? product[index]
+                                                          .photo[0]
+                                                          .image
+                                                      : '',
+                                                  errorWidget:
+                                                      (context, url, error) =>
+                                                          Icon(
+                                                    Icons.image,
+                                                    color: Colors.black12,
+                                                  ),
+                                                  fit: BoxFit.contain,
                                                 ),
-                                                fit: BoxFit.contain,
                                               ),
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            Container(
-                                              width:
-                                                  ScreenUtil.getWidth(context) /
-                                                      2,
-                                              child: AutoSizeText(
-                                               "${themeColor.getlocal()=='ar'?product[index].name??product[index].nameEn: product[index].nameEn??product[index].name}",
-                                                maxLines: 2,
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                                minFontSize: 11,
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: SizedBox(
+                                              SizedBox(
                                                 width: 10,
                                               ),
-                                            ),
-                                            Text(
-                                              "${product[index].quantity}",
-                                              style:
-                                                  TextStyle(color: Colors.red),
-                                            ),
-                                            SizedBox(
-                                              width: 20,
-                                            )
-                                          ],
-                                        ),
-                                        Container(
-                                          height: 1,
-                                          color: Colors.black12,
-                                        )
-                                      ],
+                                              Container(
+                                                width:
+                                                    ScreenUtil.getWidth(context) /
+                                                        2,
+                                                child: AutoSizeText(
+                                                 "${themeColor.getlocal()=='ar'?product[index].name??product[index].nameEn: product[index].nameEn??product[index].name}",
+                                                  maxLines: 2,
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                  minFontSize: 13,
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: SizedBox(
+                                                  width: 10,
+                                                ),
+                                              ),
+                                              Text(
+                                                "${product[index].quantity}",
+                                                style:
+                                                    TextStyle(color: Colors.red),
+                                              ),
+                                              SizedBox(
+                                                width: 20,
+                                              )
+                                            ],
+                                          ),
+                                          Container(
+                                            height: 1,
+                                            color: Colors.black12,
+                                          )
+                                        ],
+                                      ),
                                     );
                                   },
                                 ),

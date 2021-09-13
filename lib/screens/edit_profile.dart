@@ -227,7 +227,7 @@ class _Edit_profileState extends State<Edit_profile> {
                                     _formKey.currentState.save();
                                     return null;
                                   },
-                                  enabled: !_status,
+                                  enabled: false,
                                   onSaved: (String val) =>
                                   userModal.email = val,
                                   onChanged: (String val) =>

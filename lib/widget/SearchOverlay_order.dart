@@ -272,7 +272,47 @@ class SearchOverlay_OrderState extends State<SearchOverlay_Order>
                                         ],
                                       ),
                                     )
-                                        : Row(
+                                        :products[index].orderStatus=='cancelled due to expiration'?Container(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment
+                                            .spaceBetween,
+                                        children: <Widget>[
+                                          Text(
+                                            getTransrlate(context,
+                                                'OrderState'),
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                              color: Colors.black,
+                                              fontWeight:
+                                              FontWeight.w600,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Container(
+                                            width: 80,
+                                            padding:
+                                            EdgeInsets.all(3),
+                                            decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    width: 1)),
+                                            child: Center(
+                                              child: Text(
+                                                '${products[index].orderStatus}',
+                                                maxLines: 1,
+                                                style: TextStyle(
+                                                  fontSize: 13,
+                                                  fontWeight:
+                                                  FontWeight.w600,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ): Row(
                                       mainAxisAlignment:
                                       MainAxisAlignment
                                           .spaceAround,

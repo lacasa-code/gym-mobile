@@ -37,6 +37,7 @@ class _StaffState extends State<Staff> {
   @override
   void initState() {
     Provider.of<Provider_Data>(context,listen: false).getAllstaff(context);
+    Provider.of<Provider_Data>(context,listen: false).staff_page=2;
 
     super.initState();
   }

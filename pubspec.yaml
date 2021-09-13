@@ -53,6 +53,7 @@ dependencies:
   location: ^4.3.0
   sentry_flutter: ^5.1.0
   sentry: ^5.1.0
+  camera:
 
 dev_dependencies:
   flutter_test:

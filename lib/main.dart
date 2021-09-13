@@ -23,9 +23,9 @@ Future<void> main() async {
   //   ),
   // ], child:MyApp()));
   await SentryFlutter.init(
-
-        (options) {
-      options.dsn = 'https://536b9d1a8e014f0dbca91d2f7f5c487a@o551399.ingest.sentry.io/5825146';
+    (options) {
+      options.dsn =
+          'https://536b9d1a8e014f0dbca91d2f7f5c487a@o551399.ingest.sentry.io/5825146';
     },
     appRunner: () => runApp(MultiProvider(providers: [
       ChangeNotifierProvider<Provider_control>(
@@ -35,7 +35,6 @@ Future<void> main() async {
         create: (_) => Provider_Data(),
       ),
     ], child: MyApp())),
-
   );
 
   // OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
@@ -64,24 +63,25 @@ class _MyAppState extends State<MyApp> {
   Locale _locale;
   final GlobalKey<NavigatorState> navigatorKey =
       new GlobalKey<NavigatorState>();
-  bool onboard=false;
+  bool onboard = false;
+
   void setlocal(Locale locale) {
     setState(() {
       _locale = locale;
     });
   }
+
   @override
   void initState() {
-   SharedPreferences.getInstance().then((prefs) {
-     setState(() {
-       onboard = prefs.getBool("onboard") ?? true;
+    SharedPreferences.getInstance().then((prefs) {
+      setState(() {
+        onboard = prefs.getBool("onboard") ?? true;
+      });
+    });
 
-     });
-   });
-
-   super.initState();
-
+    super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     final themeColor = Provider.of<Provider_control>(context);
@@ -118,12 +118,15 @@ class _MyAppState extends State<MyApp> {
           backgroundColor: themeColor.getColor(),
           behavior: SnackBarBehavior.floating,
         ),
-        colorScheme: ColorScheme.fromSwatch(
-            primarySwatch: Colors.lightGreen,
-
+        appBarTheme: AppBarTheme(
+            color: themeColor.getColor(),
+            actionsIconTheme: IconThemeData(color: Colors.white),
+            iconTheme: IconThemeData(color: Colors.white),titleTextStyle: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold,fontFamily: 'Cairo')),
+     colorScheme: ColorScheme.fromSwatch(
+          primarySwatch: Colors.lightGreen,
         ),
       ),
-      home:onboard?OnboardingPage():SplashScreen(),
+      home: onboard ? OnboardingPage() : SplashScreen(),
     );
   }
 }

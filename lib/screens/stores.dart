@@ -39,6 +39,7 @@ class _StoresState extends State<Stores> {
   @override
   void initState() {
     Provider.of<Provider_Data>(context,listen: false).getAllStore(context);
+    Provider.of<Provider_Data>(context,listen: false).Stores_page=2;
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
@@ -89,7 +90,8 @@ class _StoresState extends State<Stores> {
               showDialog(
                 context: context,
                 builder: (_) => SearchOverlay_Store(url: 'stores/search/name',),
-              );},
+              );
+              },
           )
         ],
         backgroundColor: themeColor.getColor(),

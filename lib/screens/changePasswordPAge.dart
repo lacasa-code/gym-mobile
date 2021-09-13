@@ -122,7 +122,7 @@ class _changePasswordState extends State<changePassword> {
                       return getTransrlate(context, 'NewPassword');
                     } else if (!value.contains(new RegExp(
     r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$'))) {
-                      return "one Uppercase, One Lowercase, One Number and one Special Character";
+                      return getTransrlate(context, 'invalidpass');
                     }  _formKey.currentState.save();
                     return null;
                   },

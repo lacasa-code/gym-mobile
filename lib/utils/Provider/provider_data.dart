@@ -22,6 +22,7 @@ class Provider_Data with ChangeNotifier {
     notifyListeners();
   }
   setAllproducts_select() async {
+    products_page=2;
     products_select=[];
     products.forEach((element) {
       element.isSelect=true;
@@ -32,7 +33,7 @@ class Provider_Data with ChangeNotifier {
   }
   setAllStores_selectt() async {
     Stores_select=[];
-
+    staff_page = 2;
     stores.forEach((element) {
       element.isSelect=true;
       Stores_select.add(element.id);
@@ -40,6 +41,7 @@ class Provider_Data with ChangeNotifier {
     });
   }
   setAllStaff_selectt() async {
+    staff_page = 2;
     staff_select=[];
     staff.forEach((element) {
       element.isSelect=true;
