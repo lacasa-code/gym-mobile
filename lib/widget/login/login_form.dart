@@ -116,13 +116,13 @@ class _LoginFormState extends State<LoginForm> {
                           var user = value['data'];
                           prefs.setString("user_email", user['email']);
                           prefs.setString("user_name", user['name']);
+                          prefs.setString("roles", user['roles'][0]['title']);
                           prefs.setString("token", user['token']);
                           prefs.setInt("user_id", user['id']);
                           themeColor.setLogin(true);
-                          Provider.of<Provider_Data>(context,listen: false).getAllstaff(context);
-                          Provider.of<Provider_Data>(context,listen: false).getAllStore(context);
-                          Provider.of<Provider_Data>(context,listen: false).getProducts(context);
-
+                          // Provider.of<Provider_Data>(context,listen: false).getAllstaff(context);
+                          // Provider.of<Provider_Data>(context,listen: false).getAllStore(context);
+                          // Provider.of<Provider_Data>(context,listen: false).getProducts(context);
                           Nav.routeReplacement(context, Home());
 
                       } else {

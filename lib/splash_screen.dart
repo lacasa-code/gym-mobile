@@ -93,14 +93,15 @@ class _SplashScreenState extends State<SplashScreen>
         print("dddddddd ${value['data']}");
         if (value['status_code'] == 200)
       {
-        Provider.of<Provider_Data>(context,listen: false).getAllstaff(context);
-        Provider.of<Provider_Data>(context,listen: false).getAllStore(context);
-        Provider.of<Provider_Data>(context,listen: false).getProducts(context);
+        // Provider.of<Provider_Data>(context,listen: false).getAllstaff(context);
+        // Provider.of<Provider_Data>(context,listen: false).getAllStore(context);
+        // Provider.of<Provider_Data>(context,listen: false).getProducts(context);
 
         var user = value['data'];
         prefs.setString("user_email", user['email']);
         prefs.setString("user_name", user['name']);
         prefs.setInt("user_id", user['id']);
+        prefs.setString("roles", user['roles'][0]['title']);
         Provider.of<Provider_control>(context,listen: false).setLogin(true);
         Nav.routeReplacement(context, Home());
       }else {

@@ -1504,7 +1504,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                                     Navigator.pop(context);
                                     Provider.of<Provider_Data>(context,
                                         listen: false)
-                                        .getProducts(context);
+                                        .getProducts(context,"products");
                                     showDialog(
                                       context: context,
                                       builder: (_) => ResultOverlay(
@@ -1753,11 +1753,9 @@ class _Edit_ProductState extends State<Edit_Product> {
                 widget.product.tags[index].name_en
                 : widget.product.tags[index].name_en ??
                 widget.product.tags[index].name,
-            color: Colors.blue,
+            color: Colors.black26,
             activeColor: Colors.black26,
-            onPressed: (Item item) {
-              print('pressed');
-            },
+
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
             elevation: 0.0,

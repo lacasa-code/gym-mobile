@@ -125,7 +125,7 @@ class _User_itemState extends State<User_item> {
                     })
                         .then((value) {
                       if (value != null) {
-                        data.getAllstaff(context);
+                        data.getAllstaff(context,'users');
                         showDialog(
                           context: context,
                           builder: (_) => ResultOverlay(
@@ -196,7 +196,7 @@ class _User_itemState extends State<User_item> {
                             ),
                           );
                         }
-                        data.getAllstaff(context);
+                        data.getAllstaff(context,'users');
                       });
                     },
                     child: Row(

@@ -84,7 +84,7 @@ class _Product_itemState extends State<Product_item> {
                 width: ScreenUtil.getWidth(context) / 1.7,
                 child: AutoSizeText(
                  "${themeColor.getlocal()=='ar'? widget.hall_model.name ??widget.hall_model.nameEn:widget.hall_model.nameEn??widget.hall_model.name}",
-                  minFontSize: 10,
+                  minFontSize: 14,
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 16,

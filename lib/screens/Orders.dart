@@ -27,11 +27,10 @@ class Orders extends StatefulWidget {
 
 class _OrdersState extends State<Orders> {
   List<Order> orders;
-  List<Order> filteredOrders;
   final debouncer = Search(milliseconds: 1000);
   ScrollController _scrollController = new ScrollController();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  String url="show/orders";
+  String url = "show/orders";
   int i = 2;
 
   @override
@@ -84,7 +83,9 @@ class _OrdersState extends State<Orders> {
             onPressed: () {
               showDialog(
                 context: context,
-                builder: (_) => SearchOverlay_Order(url: 'orders/search/name',),
+                builder: (_) => SearchOverlay_Order(
+                  url: 'orders/search/name',
+                ),
               );
             },
           )
@@ -103,7 +104,9 @@ class _OrdersState extends State<Orders> {
           : orders.isEmpty
               ? Center(
                   child: Container(
-                    child: NotFoundItem(title: '${getTransrlate(context,'NoOrder')}',),
+                    child: NotFoundItem(
+                      title: '${getTransrlate(context, 'NoOrder')}',
+                    ),
                   ),
                 )
               : SingleChildScrollView(
@@ -116,7 +119,8 @@ class _OrdersState extends State<Orders> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Text('${orders.length} ${getTransrlate(context, 'Orders')}'),
+                            Text(
+                                '${orders.length} ${getTransrlate(context, 'Orders')}'),
                             SizedBox(
                               width: 100,
                             ),
@@ -142,22 +146,25 @@ class _OrdersState extends State<Orders> {
                                     context: context,
                                     builder: (_) => Sortdialog()).then((val) {
                                   print(val);
-                                  API(context)
-                                      .post('$url?ordered_by=created_at&sort_type=${val??'ASC'}',{})
-                                      .then((value) {
-                                    if (value != null) {
-                                      if (value['status_code'] == 200) {
-                                        setState(() {
-                                          filteredOrders = orders = Orders_model.fromJson(value).data;
-                                        });
-                                      } else {
-                                        showDialog(
-                                            context: context,
-                                            builder: (_) => ResultOverlay(
-                                                value['errors']));
-                                      }
-                                    }
-                                  });
+                                  url='show/orders?sort_type=${val??'ASC'}';
+                                  getAllStore();
+                                  // API(context).post(
+                                  //     '$url?ordered_by=created_at&sort_type=${val ?? 'ASC'}',
+                                  //     {}).then((value) {
+                                  //   if (value != null) {
+                                  //     if (value['status_code'] == 200) {
+                                  //       setState(() {
+                                  //         orders = orders =
+                                  //             Orders_model.fromJson(value).data;
+                                  //       });
+                                  //     } else {
+                                  //       showDialog(
+                                  //           context: context,
+                                  //           builder: (_) =>
+                                  //               ResultOverlay(value['errors']));
+                                  //     }
+                                  //   }
+                                  // });
                                 });
                               },
                               child: Row(
@@ -174,9 +181,7 @@ class _OrdersState extends State<Orders> {
                         ),
                       ),
                       ListView.builder(
-                        itemCount: filteredOrders == null && orders.isEmpty
-                            ? 0
-                            : filteredOrders.length,
+                        itemCount: orders.length,
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (BuildContext context, int index) {
@@ -185,8 +190,8 @@ class _OrdersState extends State<Orders> {
                               Nav.route(
                                   context,
                                   Order_information(
-                                    orders: filteredOrders,
-                                    orders_model: filteredOrders[index],
+                                    orders: orders,
+                                    orders_model: orders[index],
                                   ));
                             },
                             child: Container(
@@ -196,7 +201,7 @@ class _OrdersState extends State<Orders> {
                               child: Column(
                                 children: [
                                   OrderItem(
-                                    orders_model: filteredOrders[index],
+                                    orders_model: orders[index],
                                     themeColor: themeColor,
                                   ),
                                   Padding(
@@ -207,14 +212,14 @@ class _OrdersState extends State<Orders> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          ' ${getTransrlate(context, 'totalOrder')} : ${filteredOrders[index].orderTotal} ${getTransrlate(context, 'Currency')} ',
+                                          ' ${getTransrlate(context, 'totalOrder')} : ${orders[index].orderTotal} ${getTransrlate(context, 'Currency')} ',
                                           style: TextStyle(
                                             fontSize: 13,
                                             color: Colors.black,
                                             fontWeight: FontWeight.w600,
                                           ),
                                         ),
-                            filteredOrders[index].need_approval==0
+                                        orders[index].need_approval == 0
                                             ? Container(
                                                 child: Row(
                                                   mainAxisAlignment:
@@ -242,18 +247,18 @@ class _OrdersState extends State<Orders> {
                                                           border: Border.all(
                                                               width: 1,
                                                               color: isPassed(
-                                                                  filteredOrders[
+                                                                  orders[
                                                                           index]
                                                                       .orderStatus
                                                                       .toString()))),
                                                       child: Center(
                                                         child: Text(
-                                                          '${filteredOrders[index].orderStatus}',
+                                                          '${orders[index].orderStatus}',
                                                           maxLines: 1,
                                                           style: TextStyle(
                                                             fontSize: 13,
                                                             color: isPassed(
-                                                                filteredOrders[
+                                                                orders[
                                                                         index]
                                                                     .orderStatus
                                                                     .toString()),
@@ -279,7 +284,7 @@ class _OrdersState extends State<Orders> {
                                                           {
                                                             "status": "1",
                                                             "order_id":
-                                                                filteredOrders[
+                                                                orders[
                                                                         index]
                                                                     .id
                                                           }).then((value) {
@@ -292,7 +297,7 @@ class _OrdersState extends State<Orders> {
                                                                       'message')
                                                                   ? value[
                                                                       'message']
-                                                                  : '${getTransrlate(context,'Done')}',
+                                                                  : '${getTransrlate(context, 'Done')}',
                                                             ),
                                                           );
                                                           getAllStore();
@@ -332,7 +337,7 @@ class _OrdersState extends State<Orders> {
                                                           'vendor/cancel/order',
                                                           {
                                                             "order_id":
-                                                                filteredOrders[
+                                                                orders[
                                                                         index]
                                                                     .id
                                                           }).then((value) {
@@ -345,7 +350,7 @@ class _OrdersState extends State<Orders> {
                                                                       'message')
                                                                   ? value[
                                                                       'message']
-                                                                  : '${getTransrlate(context,'Done')}',
+                                                                  : '${getTransrlate(context, 'Done')}',
                                                             ),
                                                           );
                                                         }
@@ -402,13 +407,16 @@ class _OrdersState extends State<Orders> {
   }
 
   Future<void> getAllStore() async {
+    i=2;
     API(context)
-        .post('${url}?ordered_by=created_at&sort_type=desc',{})
-        .then((value) {
+        .post('${url}', {}).then((value) {
       if (value != null) {
+        print(value);
         setState(() {
-          filteredOrders = orders = Orders_model.fromJson(value).data;
+           orders = Orders_model.fromJson(value).data;
         });
+        print(Orders_model.fromJson(value).total);
+
       }
     });
   }
@@ -435,11 +443,12 @@ class _OrdersState extends State<Orders> {
   }
 
   void pageFetch() {
-    API(context)
-        .post('show/orders?page=${i++}&ordered_by=created_at&sort_type=desc',{})
-        .then((value) {
+    API(context).post(
+        '$url${url.contains('?')?'&':'?'}page=${i++}',
+        {}).then((value) {
+      print(value);
       setState(() {
-        orders.addAll(Orders_model.fromJson(value).data);filteredOrders.addAll(Orders_model.fromJson(value).data);
+        orders.addAll(Orders_model.fromJson(value).data);
       });
     });
   }

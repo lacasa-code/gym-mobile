@@ -245,6 +245,8 @@ class Product {
         ? null
         : this.partCategoryId.isEmpty
             ? null
+            :this.partCategoryId=='null'
+            ? null
             : data['part_category_id'] = this.partCategoryId;
     this.cartype_id == null
         ? null

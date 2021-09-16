@@ -122,6 +122,7 @@ int CheckBox=0;
 
   @override
   void initState() {
+    getAlltag();
     getAllType();
     getAllMain_category();
     getAllStore();
@@ -1508,7 +1509,6 @@ int CheckBox=0;
         });
       }
     });
-    getAlltag();
   }
   Future<void> getAlltag() async {
     API(context).get('product-tagslist').then((value) {
@@ -1576,11 +1576,9 @@ int CheckBox=0;
                 return ItemTags(
                   index: index,
                   title: themeColor.getlocal()=='ar'?_tagSelect[index].name??_tagSelect[index].name_en:_tagSelect[index].name_en??_tagSelect[index].name,
-                  color: Colors.blue,
+                  color: Colors.black26,
                   activeColor: Colors.black26,
-                  onPressed: (Item item) {
-                    print('pressed');
-                  },
+
                   highlightColor: Colors.transparent,
                   splashColor: Colors.transparent,
                   elevation: 0.0,
@@ -1621,7 +1619,7 @@ int CheckBox=0;
     if (value != null) {
       setState(() {
         _tagSelect.remove(value);
-        _tags.add(exist);
+        _tags.add(value);
       });
     }
   }

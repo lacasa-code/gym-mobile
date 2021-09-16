@@ -228,7 +228,6 @@ class _EditStaffState extends State<EditStaff> {
                             _formKey.currentState.save();
                             setState(() => loading = true);
                             print("users/${widget.user.id}");
-
                             API(context).Put("users/${widget.user.id}", {
                               "name": widget.user.name,
                               "email": widget.user.email,
@@ -248,8 +247,8 @@ class _EditStaffState extends State<EditStaff> {
                                     ),
                                   );
                                 } else {
-                                  data.getAllstaff(context);
-                                  data.getAllStore(context);
+                                  data.getAllstaff(context,'users');
+                                  data.getAllStore(context,'stores');
                                   Navigator.pop(context);
                                   showDialog(
                                     context: context,
@@ -311,8 +310,8 @@ class _EditStaffState extends State<EditStaff> {
           return ItemTags(
             index: index,
             title:  widget.user.stores[index].nameStore,
-            color: Colors.blue,
-            activeColor: Colors.black26,
+            color: Colors.orange,
+            activeColor: Colors.orange,
             onPressed: (Item item) {
               print('pressed');
             },

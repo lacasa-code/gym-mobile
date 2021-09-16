@@ -128,7 +128,7 @@ class _ProductPageState extends State<ProductPage> {
                                 );
                               }
                               Provider.of<Provider_Data>(context, listen: false)
-                                  .getProducts(context);
+                                  .getProducts(context,'products');
                             });
                           },
                           child: Row(

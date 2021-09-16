@@ -123,6 +123,7 @@ class _Stores_itemState extends State<Stores_item> {
                       Text(
                         "${widget.hall_model.moderatorPhone}",
                         maxLines: 1,
+                        textDirection: TextDirection.ltr,
                         style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.w500,
@@ -248,7 +249,7 @@ class _Stores_itemState extends State<Stores_item> {
                               "${value['message']??value['errors'] ?? 'تم حذف المتجر بنجاح'}",
                             ),
                           );
-                          Provider.of<Provider_Data>(context,listen: false).getAllStore(context);
+                          Provider.of<Provider_Data>(context,listen: false).getAllStore(context,'stores');
                         });
                       },
                       child: Row(

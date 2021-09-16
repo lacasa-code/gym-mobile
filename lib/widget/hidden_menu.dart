@@ -32,7 +32,7 @@ class HiddenMenu extends StatefulWidget {
 class _HiddenMenuState extends State<HiddenMenu> {
   bool isconfiguredListern = false;
   int id;
-  String username, name, last, photo;
+  String username, name, roles, last, photo;
 
   @override
   void initState() {
@@ -40,6 +40,7 @@ class _HiddenMenuState extends State<HiddenMenu> {
       setState(() {
         id = prefs.getInt('user_id');
         name = prefs.getString('user_name');
+        roles = prefs.getString("roles");
       });
     });
     super.initState();
@@ -133,7 +134,7 @@ class _HiddenMenuState extends State<HiddenMenu> {
                           fontWeight: FontWeight.w800),
                       colorLineSelected: Colors.orange,
                     ),
-                    ItemHiddenMenu(
+                    roles=='Staff'?Container():  ItemHiddenMenu(
                       onTap: () {
 
                         Nav.route(context, Staff());
@@ -168,7 +169,7 @@ class _HiddenMenuState extends State<HiddenMenu> {
                           fontWeight: FontWeight.w800),
                       colorLineSelected: Colors.black,
                     ),
-                    ItemHiddenMenu(
+                    roles=='Staff'?Container():      ItemHiddenMenu(
                       onTap: () {
                         Nav.route(context, Orders());
                       },
@@ -202,7 +203,7 @@ class _HiddenMenuState extends State<HiddenMenu> {
                           fontWeight: FontWeight.w800),
                       colorLineSelected: Colors.orange,
                     ),
-                    ItemHiddenMenu(
+                    roles=='Staff'?Container():      ItemHiddenMenu(
                       onTap: () {
                         Nav.route(context, Invoices());
                       },

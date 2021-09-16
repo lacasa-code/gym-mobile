@@ -34,23 +34,18 @@ class Edit_Store extends StatefulWidget {
 class _Edit_StoreState extends State<Edit_Store> {
   bool loading = false;
   final _formKey = GlobalKey<FormState>();
-  Completer<GoogleMapController> _controller = Completer();
-  MapPickerController mapPickerController = MapPickerController();
+
   List<Country> contries;
   List<City> cities;
   List<Area> area;
   TextEditingController phone1;
   TextEditingController phone2;
 
-  CameraPosition cameraPosition = CameraPosition(
-    target: LatLng(31.2060916, 29.9187),
-    zoom: 14.4746,
-  );
+
   @override
   void initState() {
-    phone1=TextEditingController(text: widget.store.moderatorPhone??'');
+    phone1=TextEditingController(text: widget.store.phone_number??'');
     phone2=TextEditingController(text: widget.store.moderatorAltPhone??'');
-    getCountry();
     super.initState();
   }
 
@@ -77,51 +72,6 @@ class _Edit_StoreState extends State<Edit_Store> {
       ),
       body: Column(
         children: [
-          Container(
-            margin: EdgeInsets.symmetric(vertical: 10),
-            height: ScreenUtil.getHeight(context) / 5,
-            child: MapPicker(
-              // pass icon widget
-              iconWidget: Icon(
-                Icons.store,
-                size: 50,
-              ),
-              //add map picker controller
-              mapPickerController: mapPickerController,
-              child: GoogleMap(
-                zoomControlsEnabled: true,
-                // hide location button
-                myLocationButtonEnabled: true,
-                mapType: MapType.normal,
-                //  camera position
-                initialCameraPosition: CameraPosition(
-                  target: LatLng(double.parse(widget.store.lat??'0.0'), double.parse(widget.store.long??'0.0')),
-                  zoom: 14.4746,
-                ),
-                onMapCreated: (GoogleMapController controller) {
-                  _controller.complete(controller);
-                },
-                onCameraMoveStarted: () {
-                  // notify map is moving
-                  mapPickerController.mapMoving();
-                },
-                onCameraIdle: () async {
-                  // notify map stopped moving
-                  mapPickerController.mapFinishedMoving();
-                  //get address name from camera position
-                 // widget.store.lat = cameraPosition.target.latitude.toString();
-                //  widget.store.long = cameraPosition.target.longitude.toString();
-                  List<Address> addresses = await Geocoder.local
-                      .findAddressesFromCoordinates(Coordinates(
-                      cameraPosition.target.latitude,
-                      cameraPosition.target.longitude));
-                  // update the ui with the address
-                  widget.store.address =
-                  '${addresses.first?.addressLine ?? ''}';
-                },
-              ),
-            ),
-          ),
 
           Expanded(
             child: Container(
@@ -161,7 +111,6 @@ class _Edit_StoreState extends State<Edit_Store> {
                             widget.store.nameStore = value;
                           },
                         ),
-
                     //    Text(
                         //   getTransrlate(
                         //       context, 'Countroy'),
@@ -315,6 +264,8 @@ class _Edit_StoreState extends State<Edit_Store> {
                           inputFormatters: [
                             new LengthLimitingTextInputFormatter(15),
                           ],
+                          suffixIcon: Container(width: 50,child: Center(child: Text(' ${widget.store.phonecode??''}', textDirection: TextDirection.ltr))),
+
                           enabled: true,
                           validator: (String value) {
                             if (value.isEmpty) {
@@ -326,7 +277,7 @@ class _Edit_StoreState extends State<Edit_Store> {
                             return null;
                           },
                           onSaved: (String value) {
-                            widget.store.moderatorPhone = value;
+                            widget.store.moderatorPhone = "+${widget.store.phonecode}${value}";
                           },
                         ),
                         MyTextFormField(
@@ -336,6 +287,7 @@ class _Edit_StoreState extends State<Edit_Store> {
                           labelText: "${getTransrlate(context, 'phone')} 2",
                           hintText: "${getTransrlate(context, 'phone')} 2",
                           isPhone: true,
+                         // suffixIcon: Container(width: 50,child: Center(child: Text(' ${widget.store.phonecode??''}', textDirection: TextDirection.ltr))),
                           inputFormatters: [
                             new LengthLimitingTextInputFormatter(15),
                           ],
@@ -414,7 +366,7 @@ class _Edit_StoreState extends State<Edit_Store> {
                                 ),
                               );
                             } else {
-                              Provider.of<Provider_Data>(context,listen: false).getAllStore(context);
+                              Provider.of<Provider_Data>(context,listen: false).getAllStore(context,'stores');
 
                               Navigator.pop(context);
                               showDialog(
@@ -456,32 +408,8 @@ class _Edit_StoreState extends State<Edit_Store> {
     );
   }
 
-  void getCity(int id) {
-    API(context).get('cities/list/all/$id').then((value) {
-      setState(() {
-        cities = City_model.fromJson(value).data;
-      });
-    });
 
-  }
 
-  void getArea(int id) {
-    API(context).get('areas/list/all/$id').then((value) {
-      print(value);
-      setState(() {
-        area = Area_model.fromJson(value).data;
-      });
-      getCity(widget.store.areaId);
 
-    });
-  }
 
-  void getCountry() {
-    API(context).get('countries/list/all').then((value) {
-      setState(() {
-        contries = Country_model.fromJson(value).data;
-      });
-      getArea(widget.store.countryId);
-    });
-  }
 }

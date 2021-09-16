@@ -33,12 +33,17 @@ class _StaffState extends State<Staff> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   bool isSelect = false;
   String url="users";
+  ScrollController _scrollController = new ScrollController();
 
   @override
   void initState() {
-    Provider.of<Provider_Data>(context,listen: false).getAllstaff(context);
-    Provider.of<Provider_Data>(context,listen: false).staff_page=2;
-
+    Provider.of<Provider_Data>(context,listen: false).getAllstaff(context,url);
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        Provider.of<Provider_Data>(context,listen: false).PerStaff(context,url);
+      }
+    });
     super.initState();
   }
 
@@ -127,6 +132,7 @@ class _StaffState extends State<Staff> {
                   child: NotFoundItem(title: '${getTransrlate(context, 'NoUsersFound')}' ,),
                 )
               : SingleChildScrollView(
+        controller: _scrollController,
                 child: Column(
                     children: [
                       isSelect
@@ -177,7 +183,7 @@ class _StaffState extends State<Staff> {
                                             ),
                                           );
                                         }
-                                        data.getAllstaff(context);
+                                        data.getAllstaff(context,url);
                                       });
                                     },
                                     child: Row(
@@ -257,16 +263,11 @@ class _StaffState extends State<Staff> {
                                               context: context,
                                               builder: (_) => Sortdialog())
                                           .then((val) {
-                                        print(val);
+                                            print(val);
                                         if(val!=null){
                                           data.setstaff(null);
-                                          API(context)
-                                              .get('$url?sort_type=${val}')
-                                              .then((value) {
-                                            if (value != null) {
-                                                  data.setstaff(User_model.fromJson(value).data);
-                                            }
-                                          });
+                                          url = 'users?sort_type=${val ?? 'ASC'}';
+                                          data.getAllstaff(context,url);
                                         }
                                       });
                                     },

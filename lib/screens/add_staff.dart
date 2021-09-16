@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_tags/flutter_tags.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/roles_model.dart';
 import 'package:trkar_vendor/model/store_model.dart';
@@ -36,7 +38,7 @@ class _add_StaffState extends State<add_Staff> {
   void initState() {
     getRoles();
     getAllStore();
-
+    user.stores=[];
     super.initState();
   }
 
@@ -60,8 +62,9 @@ class _add_StaffState extends State<add_Staff> {
         ),
         backgroundColor: themeColor.getColor(),
       ),
-      body: SingleChildScrollView(
-        child:_listStore==null?Custom_Loading():_listStore.isEmpty?NotFoundItem(title: '${getTransrlate(context, 'messagestaff')}',) :Column(
+      body: _listStore==null?Custom_Loading():_listStore.isEmpty?NotFoundItem(title: '${getTransrlate(context, 'messagestaff')}',) :
+      SingleChildScrollView(
+        child: Column(
           children: [
             Container(
               decoration: BoxDecoration(
@@ -81,118 +84,129 @@ class _add_StaffState extends State<add_Staff> {
               padding: const EdgeInsets.all(25),
               child: Form(
                 key: _formKey,
-                child: Container(
-                  height: ScreenUtil.getHeight(context) / 1.6,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        MyTextFormField(
-                          intialLabel: user.name ?? ' ',
-                          Keyboard_Type: TextInputType.name,
-                             labelText: getTransrlate(context, 'name'),inputFormatters: [
-                            new LengthLimitingTextInputFormatter(200),
-                          ],
-                          hintText: getTransrlate(context, 'name'),
-                          isPhone: true,
-                          enabled: true,
-                          validator: (String value) {
-                            if (value.isEmpty) {
-                              return getTransrlate(context, 'requiredempty');
-                            }else   if (value.length<2) {
-                              return "${getTransrlate(context, 'requiredlength')}";
-                            }else if (RegExp(
-                                r"^[+-]?([0-9]*[.])?[0-9]+").hasMatch(value)) {
-                              return "${getTransrlate(context, 'invalidname')}";
-                            }
-                            return null;
-                          },
-                          onSaved: (String value) {
-                            user.name = value;
-                          },
-                        ),
-                        MyTextFormField(
-                          intialLabel: user.email ?? ' ',
-                          Keyboard_Type: TextInputType.emailAddress,
-                          labelText: getTransrlate(context, 'Email'),
-                          hintText: getTransrlate(context, 'Email'),
-                          isPhone: true,
-                          inputFormatters: [
-                            new LengthLimitingTextInputFormatter(200),
-                          ],
-                          enabled: true,
-                          validator: (String value) {
-                            if (value.isEmpty) {
-                              return getTransrlate(context, 'mail');
-                            } else if (!RegExp(
-                                    r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
-                                .hasMatch(value)) {
-                              return getTransrlate(context, 'invalidemail');
-                            }
-                            _formKey.currentState.save();
-                            return null;
-                          },
-                          onSaved: (String value) {
-                            user.email = value;
-                          },
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text("${getTransrlate(context, 'role')}",style: TextStyle(color: Colors.black,fontSize: 16),),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        roles == null
-                            ? Container()
-                            : DropdownSearch<Role>(
-                                showSearchBox: false,
-                                showClearButton: false,
-                                maxHeight: ScreenUtil.getHeight(context)/3,
-                                label: "   ",
-                                validator: (Role item) {
-                                  if (item == null) {
-                                    return "Required field";
-                                  } else
-                                    return null;
-                                },
-                                items: roles,
-                                //  onFind: (String filter) => getData(filter),
-                                itemAsString: (Role u) =>
-                                themeColor.getlocal()=='ar'?u.title??u.name_en:u.name_en??u.title,
-                                onChanged: (Role data) =>
-                                    user.rolesid = data.id.toString()),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text("${getTransrlate(context, 'stores')}",style: TextStyle(color: Colors.black,fontSize: 16),),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        _listStore == null
-                            ? Container()
-                            : DropdownSearch<Store>(
-                                showSearchBox: false,
-                                showClearButton: false,
-                                label: "   ",
-                                validator: (Store item) {
-                                  if (item == null) {
-                                    return "Required field";
-                                  } else
-                                    return null;
-                                },
-                                items: _listStore,
-                                //  onFind: (String filter) => getData(filter),
-                                itemAsString: (Store u) => u.nameStore,
-                                onChanged: (Store data) =>
-                                    user.storeid = data.id.toString()),
-                        SizedBox(
-                          height: 10,
-                        ),
-
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    MyTextFormField(
+                      intialLabel: user.name ?? ' ',
+                      Keyboard_Type: TextInputType.name,
+                         labelText: getTransrlate(context, 'name'),inputFormatters: [
+                        new LengthLimitingTextInputFormatter(200),
                       ],
+                      hintText: getTransrlate(context, 'name'),
+                      isPhone: true,
+                      enabled: true,
+                      validator: (String value) {
+                        if (value.isEmpty) {
+                          return getTransrlate(context, 'requiredempty');
+                        }else   if (value.length<2) {
+                          return "${getTransrlate(context, 'requiredlength')}";
+                        }else if (RegExp(
+                            r"^[+-]?([0-9]*[.])?[0-9]+").hasMatch(value)) {
+                          return "${getTransrlate(context, 'invalidname')}";
+                        }
+                        return null;
+                      },
+                      onSaved: (String value) {
+                        user.name = value;
+                      },
                     ),
-                  ),
+                    MyTextFormField(
+                      intialLabel: user.email ?? ' ',
+                      Keyboard_Type: TextInputType.emailAddress,
+                      labelText: getTransrlate(context, 'Email'),
+                      hintText: getTransrlate(context, 'Email'),
+                      isPhone: true,
+                      inputFormatters: [
+                        new LengthLimitingTextInputFormatter(200),
+                      ],
+                      enabled: true,
+                      validator: (String value) {
+                        if (value.isEmpty) {
+                          return getTransrlate(context, 'mail');
+                        } else if (!RegExp(
+                                r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
+                            .hasMatch(value)) {
+                          return getTransrlate(context, 'invalidemail');
+                        }
+                        _formKey.currentState.save();
+                        return null;
+                      },
+                      onSaved: (String value) {
+                        user.email = value;
+                      },
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text("${getTransrlate(context, 'role')}",style: TextStyle(color: Colors.black,fontSize: 16),),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    roles == null
+                        ? Container()
+                        : DropdownSearch<Role>(
+                            showSearchBox: false,
+                            showClearButton: false,
+                            maxHeight: ScreenUtil.getHeight(context)/3,
+                            label: "   ",
+                            validator: (Role item) {
+                              if (item == null) {
+                                return "Required field";
+                              } else
+                                return null;
+                            },
+                            items: roles,
+                            //  onFind: (String filter) => getData(filter),
+                            itemAsString: (Role u) =>
+                            themeColor.getlocal()=='ar'?u.title??u.name_en:u.name_en??u.title,
+                            onChanged: (Role data) =>
+                                user.rolesid = data.id.toString()),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text("${getTransrlate(context, 'stores')}",style: TextStyle(color: Colors.black,fontSize: 16),),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    _listStore == null
+                        ? Container()
+                        : _generateStores(themeColor),
+                    SizedBox(
+                      height: 5,
+                    ),
+
+                    Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              width: 1, color: Colors.black26)),
+                      child: TypeAheadField(
+                        hideOnLoading: true,
+                        hideOnEmpty: true,
+                        getImmediateSuggestions: false,
+                        onSuggestionSelected: (val) {
+                          _onSuggestionSelected(val);
+                        },
+                        itemBuilder: (context, suggestion) {
+                          return ListTile(
+                            title: Text(
+                              suggestion.nameStore,
+                            ),
+                          );
+                        },
+                        suggestionsCallback: (val) {
+                          return _sugestionList(
+                            Stores:   _listStore,
+                            suggestion: val,
+                          );
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      height: 50,
+                    ),
+
+                  ],
                 ),
               ),
             ),
@@ -236,7 +250,8 @@ class _add_StaffState extends State<add_Staff> {
                                 "stores": user.storeid,
                                 "email": user.email,
                                 "password": user.password,
-                                "role": user.rolesid
+                                "role": user.rolesid,
+                                "stores": user.stores.map((e) => e.id).toList().toString()
                               }).then((value) {
                                 if (value != null) {
                                   setState(() {
@@ -251,8 +266,8 @@ class _add_StaffState extends State<add_Staff> {
                                       ),
                                     );
                                   } else {
-                                    data.getAllstaff(context);
-                                    data.getAllStore(context);
+                                    data.getAllstaff(context,'users');
+                                    data.getAllStore(context,'stores');
                                     Navigator.pop(context);
                                     showDialog(
                                       context: context,
@@ -314,6 +329,75 @@ class _add_StaffState extends State<add_Staff> {
       }
     });
   }
+  _generateStores(Provider_control themeColor) {
+    return user.stores==null
+        ? Container()
+        : Container(
+      alignment: Alignment.topLeft,
+      child: Tags(
+        alignment: WrapAlignment.center,
+        itemCount: user.stores.length,
+        itemBuilder: (index) {
+          return ItemTags(
+            index: index,
+            title:  user.stores[index].nameStore,
+            color: Colors.orange,
+            activeColor: Colors.orange,
+            onPressed: (Item item) {
+              print('pressed');
+            },
+            highlightColor: Colors.transparent,
+            splashColor: Colors.transparent,
+            elevation: 0.0,
+            borderRadius: BorderRadius.all(Radius.circular(7.0)),
+//                textColor: ,
+            textColor: Colors.white,
+            textActiveColor: Colors.white,
+            removeButton: ItemTagsRemoveButton(
+                color: Colors.white,
+                backgroundColor: Colors.transparent,
+                size: 18,
+                onRemoved: () {
+                  _onSuggestionRemoved(user.stores[index]);
+                  return true;
+                }),
+            textOverflow: TextOverflow.ellipsis,
+          );
+        },
+      ),
+    );
+  }
 
+  _onSuggestionSelected(Store value) {
+    if (value != null) {
+      setState(() {
+        user.stores.add(value);
+        _listStore.remove(value);
+      });
+    }
+  }
+
+  _onSuggestionRemoved(Store value) {
+    // final Store exist =
+    //     _Stores.firstWhere((text) => text.name == value, orElse: () {
+    //   return null;
+    // });
+    if (value != null) {
+      setState(() {
+        user.stores.remove(value);
+        _listStore.add(value);
+      });
+    }
+  }
+
+  _sugestionList({@required List<Store> Stores, @required String suggestion}) {
+    List<Store> modifiedList = [];
+    modifiedList.addAll(Stores);
+    modifiedList.retainWhere(
+            (text) => text.nameStore.toLowerCase().contains(suggestion.toLowerCase()));
+
+    return Stores;
+
+  }
 
 }

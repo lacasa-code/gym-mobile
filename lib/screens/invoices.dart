@@ -31,8 +31,7 @@ class Invoices extends StatefulWidget {
 }
 
 class _InvoicesState extends State<Invoices> {
-  List<Invoice> orders;
-  List<Invoice> filteredOrders;
+  List<Invoice> invoices;
   String _character='ASC';
 
   final debouncer = Search(milliseconds: 1000);
@@ -100,7 +99,7 @@ class _InvoicesState extends State<Invoices> {
         backgroundColor: themeColor.getColor(),
       ),
       drawer: HiddenMenu(),
-      body: orders == null
+      body: invoices == null
           ? Container(
           height: ScreenUtil.getHeight(context) / 3,
           child: Center(
@@ -108,7 +107,7 @@ class _InvoicesState extends State<Invoices> {
                 valueColor:
                 AlwaysStoppedAnimation<Color>(themeColor.getColor()),
               )))
-          : orders.isEmpty
+          : invoices.isEmpty
           ? Center(
         child: NotFoundItem(title: '${getTransrlate(context, 'nofoundinvoices')}',),
       )
@@ -122,7 +121,7 @@ class _InvoicesState extends State<Invoices> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Text('${orders.length} ${getTransrlate(context, 'invoice')}'),
+                  Text('${invoices.length} ${getTransrlate(context, 'invoice')}'),
                   SizedBox(
                     width: 100,
                   ),
@@ -150,23 +149,8 @@ class _InvoicesState extends State<Invoices> {
                        setState(() {
                          _character=val;
                        });
-                        API(context)
-                            .get('$url?sort_type=${val}')
-                            .then((value) {
-                          if (value != null) {
-                            if (value['status_code'] == 200) {
-                              setState(() {
-                                filteredOrders = orders =
-                                    Invoices_model.fromJson(value).data;
-                              });
-                            } else {
-                              showDialog(
-                                  context: context,
-                                  builder: (_) => ResultOverlay(
-                                      value['message']));
-                            }
-                          }
-                        });
+                       url="show/invoices?sort_type=${val}";
+                    getAllStore();
                       });
                     },
                     child: Row(
@@ -183,9 +167,7 @@ class _InvoicesState extends State<Invoices> {
               ),
             ),
             ListView.builder(
-              itemCount: filteredOrders == null && orders.isEmpty
-                  ? 0
-                  : filteredOrders.length,
+              itemCount: invoices.length,
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: (BuildContext context, int index) {
@@ -194,8 +176,8 @@ class _InvoicesState extends State<Invoices> {
                     Nav.route(
                         context,
                         Invoices_information(
-                          orders: filteredOrders,
-                          orders_model: filteredOrders[index],
+                          orders: invoices,
+                          orders_model: invoices[index],
                         ));
                   },
                   child: Container(
@@ -205,7 +187,7 @@ class _InvoicesState extends State<Invoices> {
                     child: Column(
                       children: [
                         InvoiceItem(
-                          orders_model: filteredOrders[index],
+                          orders_model: invoices[index],
                           themeColor: themeColor,
                         ),
                         Padding(
@@ -216,7 +198,7 @@ class _InvoicesState extends State<Invoices> {
                             MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                ' ${getTransrlate(context, 'totalOrder')} : ${filteredOrders[index].invoiceTotal} ${getTransrlate(context, 'Currency')} ',
+                                ' ${getTransrlate(context, 'totalOrder')} : ${invoices[index].invoiceTotal} ${getTransrlate(context, 'Currency')} ',
                                 style: TextStyle(
                                   fontSize: 13,
                                   color: Colors.black,
@@ -224,7 +206,7 @@ class _InvoicesState extends State<Invoices> {
                                 ),
                               ),
                               AutoSizeText(
-                                  filteredOrders[index].createdAt==null?'': DateFormat('yyyy-MM-dd').format(DateTime.parse(filteredOrders[index].createdAt)),
+                                  invoices[index].createdAt==null?'': DateFormat('yyyy-MM-dd').format(DateTime.parse(invoices[index].createdAt)),
                                 style: TextStyle(
                                   fontSize: 13,
                                   color: Colors.black,
@@ -257,12 +239,13 @@ class _InvoicesState extends State<Invoices> {
   }
 
   Future<void> getAllStore() async {
+    i=2;
     API(context)
         .get(url)
         .then((value) {
       if (value != null) {
         setState(() {
-          filteredOrders = orders = Invoices_model.fromJson(value).data;
+          invoices = Invoices_model.fromJson(value).data;
         });
       }
     });
@@ -291,11 +274,10 @@ class _InvoicesState extends State<Invoices> {
 
   void pageFetch() {
     API(context)
-        .get('show/invoices?page=${i++}&ordered_by=created_at&sort_type=desc')
+        .get('${url}${url.contains("?")?'&':'?'}page=${i++}')
         .then((value) {
       setState(() {
-        orders.addAll(Invoices_model.fromJson(value).data);
-        filteredOrders.addAll(Invoices_model.fromJson(value).data);
+        invoices.addAll(Invoices_model.fromJson(value).data);
       });
     });
   }

@@ -37,14 +37,13 @@ class _ProductsState extends State<Products> {
   Provider_Data data;
   @override
   void initState() {
-    Provider.of<Provider_Data>(context,listen: false).getProducts(context);
+    Provider.of<Provider_Data>(context,listen: false).getProducts(context,url);
     //data.getProducts(context);
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        Provider.of<Provider_Data>(context,listen: false).PerProducts(context);
-        Provider.of<Provider_Data>(context,listen: false).products_page=2;
+        Provider.of<Provider_Data>(context,listen: false).PerProducts(context,url);
       }
     });
     super.initState();
@@ -197,7 +196,7 @@ class _ProductsState extends State<Products> {
                                               isSelect = false;
                                             });
                                           }
-                                          data.getProducts(context);
+                                          data.getProducts(context,url);
                                         });
                                       }else{
                                        showDialog(
@@ -287,20 +286,8 @@ class _ProductsState extends State<Products> {
                                           .then((val) {
                                             characters=val??"ASC";
                                             data.setproducts(null);
-                                        API(context)
-                                            .get('$url?sort_type=${characters}')
-                                            .then((value) {
-                                          if (value != null) {
-                                            if (value['status_code'] == 200) {
-                                                data.setproducts(Products_model.fromJson(value).product);
-                                            } else {
-                                              showDialog(
-                                                  context: context,
-                                                  builder: (_) => ResultOverlay(
-                                                      value['message']));
-                                            }
-                                          }
-                                        });
+                                            url='products?sort_type=${characters}';
+                                            data.getProducts(context,'$url');
                                       });
                                     },
                                     child: Row(
@@ -398,13 +385,13 @@ class _ProductsState extends State<Products> {
   _navigate_add_hell(BuildContext context) async {
     await Navigator.push(
         context, MaterialPageRoute(builder: (context) => Add_Product()));
-    Timer(Duration(seconds: 3), () => Provider.of<Provider_Data>(context,listen: false).getProducts(context));
+    Timer(Duration(seconds: 3), () => Provider.of<Provider_Data>(context,listen: false).getProducts(context,url));
   }
 
   _navigate_edit_hell(BuildContext context, Product hall) async {
     await Navigator.push(
         context, MaterialPageRoute(builder: (context) => Edit_Product(hall)));
-    Timer(Duration(seconds: 3), () => Provider.of<Provider_Data>(context,listen: false).getProducts(context));
+    Timer(Duration(seconds: 3), () => Provider.of<Provider_Data>(context,listen: false).getProducts(context,url));
   }
   Future<void> Delete_Products(int id) async {
     API(context).Delete('products/$id').then((value) {
@@ -416,7 +403,7 @@ class _ProductsState extends State<Products> {
           ),
         );
       }
-      data.getProducts(context);
+      data.getProducts(context,url);
     });
   }
 

@@ -28,7 +28,6 @@ class SearchOverlayState extends State<SearchOverlay>
   AnimationController controller;
   Animation<double> scaleAnimation;
   List<Product> products = [];
-
   @override
   void initState() {
     super.initState();
@@ -277,7 +276,7 @@ class SearchOverlayState extends State<SearchOverlay>
     API(context).Delete('products/$id').then((value) {
       if (value != null) {
         print(value.containsKey('errors'));
-        Provider.of<Provider_Data>(context,listen: false).getProducts(context);
+        Provider.of<Provider_Data>(context,listen: false).getProducts(context,"products");
 
         showDialog(
           context: context,

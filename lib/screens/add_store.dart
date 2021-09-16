@@ -368,7 +368,7 @@ class _add_StoreState extends State<add_Store> {
                                 ),
                               );
                             } else {
-                              Provider.of<Provider_Data>(context,listen: false).getAllStore(context);
+                              Provider.of<Provider_Data>(context,listen: false).getAllStore(context,'stores');
 
                               Navigator.pop(context);
                               showDialog(

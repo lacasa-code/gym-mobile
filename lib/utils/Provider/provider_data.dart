@@ -72,10 +72,11 @@ class Provider_Data with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getAllstaff(BuildContext context) async {
+  Future<void> getAllstaff(BuildContext context,String url) async {
     staff=null;
+    staff_page = 2;
 
-    API(context).get("users").then((value) {
+    API(context).get("$url").then((value) {
       if (value != null) {
            staff = User_model.fromJson(value).data;
            notifyListeners();
@@ -83,9 +84,18 @@ class Provider_Data with ChangeNotifier {
       }
     });
   }
-  Future<void> getAllStore(BuildContext context) async {
+  Future<void> PerStaff(BuildContext context,String url) async {
+    API(context).get("$url${url.contains('?')?'&':'?'}page=${staff_page++}").then((value) {
+      if (value != null) {
+        staff.addAll(User_model.fromJson(value).data);
+        notifyListeners();
+      }
+    });
+  }
+  Future<void> getAllStore(BuildContext context,String url) async {
+    Stores_page=2;
     stores=null;
-    API(context).get("stores").then((value) {
+    API(context).get("$url").then((value) {
       if (value != null) {
            stores = Store_model.fromJson(value).data;
            notifyListeners();
@@ -93,8 +103,8 @@ class Provider_Data with ChangeNotifier {
       }
     });
   }
-  Future<void> PerStore(BuildContext context) async {
-    API(context).get("stores?page=${Stores_page++}&ordered_by=created_at&sort_type=desc").then((value) {
+  Future<void> PerStore(BuildContext context,String url) async {
+    API(context).get("${url}${url.contains('?')?'&':'?'}page=${Stores_page++}").then((value) {
       if (value != null) {
           stores.addAll(Store_model.fromJson(value).data);
           notifyListeners();
@@ -103,17 +113,18 @@ class Provider_Data with ChangeNotifier {
     });
   }
 
-  Future<void> getProducts(BuildContext context) async {
+  Future<void> getProducts(BuildContext context,String url) async {
+    products_page=2;
     products=null;
-    API(context).get("products").then((value) {
+    API(context).get("$url").then((value) {
       if (value != null) {
           products = Products_model.fromJson(value).product;
           notifyListeners();
       }
     });
   }
-  Future<void> PerProducts(BuildContext context) async {
-    API(context).get("products?page=${products_page++}&ordered_by=created_at&sort_type=desc").then((value) {
+  Future<void> PerProducts(BuildContext context,String url) async {
+    API(context).get("${url}${url.contains('?')?'&':'?'}page=${products_page++}").then((value) {
       if (value != null) {
           products.addAll(Products_model.fromJson(value).product);
           notifyListeners();

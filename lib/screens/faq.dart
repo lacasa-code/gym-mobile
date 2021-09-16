@@ -27,7 +27,7 @@ class FaqPage extends StatefulWidget {
 
 class _FaqPageState extends State<FaqPage> {
   List<Faq> faq;
-  String url = "products";
+  String url = "vendor/fetch/question";
   int i = 2;
   ScrollController _scrollController = new ScrollController();
 
@@ -104,30 +104,8 @@ class _FaqPageState extends State<FaqPage> {
                                   context: context,
                                   builder: (_) => Sortdialog()).then((val) {
                                 print(val);
-
-                                SharedPreferences.getInstance()
-                                    .then((value) => {
-                                          API(context).post(
-                                              'vendor/fetch/question?sort_type=${val}', {
-                                            "vendor_id": value.getInt('user_id')
-                                          }).then((value) {
-                                            if (value != null) {
-                                              if (value['status_code'] == 200) {
-                                                setState(() {
-                                                  faq =
-                                                      Faq_model.fromJson(value)
-                                                          .data;
-                                                });
-                                              } else {
-                                                showDialog(
-                                                    context: context,
-                                                    builder: (_) =>
-                                                        ResultOverlay(
-                                                            value['message']));
-                                              }
-                                            }
-                                          })
-                                        });
+                                url='vendor/fetch/question?sort_type=${val}';
+                                getFaq();
                               });
                             },
                             child: Row(
@@ -165,6 +143,11 @@ class _FaqPageState extends State<FaqPage> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
+                                      // Text(
+                                      //     " ${faq[index].id ?? ''}",
+                                      //     style: TextStyle(
+                                      //         color: Colors.black,
+                                      //         fontSize: 12)),
                                       Text(
                                           " ${getTransrlate(context, 'QustOwner')}: ${faq[index].user_name ?? ''}",
                                           style: TextStyle(
@@ -208,8 +191,9 @@ class _FaqPageState extends State<FaqPage> {
   }
 
   void getFaq() {
+     i = 2;
     SharedPreferences.getInstance().then((value) => {
-          API(context).post('vendor/fetch/question',
+          API(context).post('$url',
               {"vendor_id": value.getInt('user_id')}).then((value) {
             if (value != null) {
               setState(() {
@@ -222,8 +206,10 @@ class _FaqPageState extends State<FaqPage> {
   Future<void> PerFaq(BuildContext context) async {
     SharedPreferences.getInstance().then((value) => {
 
-    API(context).post("vendor/fetch/question?per_page=${i++}", {"vendor_id": value.getInt('user_id')}).then((value) {
-      if (value != null) {
+    API(context).post("$url${url.contains('?')?'&':'?'}page=${i++}", {"vendor_id": value.getInt('user_id')}).then((value) {
+
+     print(value);
+     if (value != null) {
         setState(() {
           faq.addAll(Faq_model.fromJson(value).data);
         });

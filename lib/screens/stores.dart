@@ -27,8 +27,7 @@ class Stores extends StatefulWidget {
 }
 
 class _StoresState extends State<Stores> {
-
-  String url="stores";
+  String url = "stores";
   int i = 2;
   ScrollController _scrollController = new ScrollController();
 
@@ -38,13 +37,12 @@ class _StoresState extends State<Stores> {
 
   @override
   void initState() {
-    Provider.of<Provider_Data>(context,listen: false).getAllStore(context);
-    Provider.of<Provider_Data>(context,listen: false).Stores_page=2;
+    Provider.of<Provider_Data>(context, listen: false).getAllStore(context,url);
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        Provider.of<Provider_Data>(context,listen: false).PerStore(context);
+        Provider.of<Provider_Data>(context, listen: false).PerStore(context,url);
       }
     });
     super.initState();
@@ -86,12 +84,14 @@ class _StoresState extends State<Stores> {
               Icons.search,
               color: Colors.white,
             ),
-            onPressed: (){
+            onPressed: () {
               showDialog(
                 context: context,
-                builder: (_) => SearchOverlay_Store(url: 'stores/search/name',),
+                builder: (_) => SearchOverlay_Store(
+                  url: 'stores/search/name',
+                ),
               );
-              },
+            },
           )
         ],
         backgroundColor: themeColor.getColor(),
@@ -103,7 +103,7 @@ class _StoresState extends State<Stores> {
           child: FlatButton(
               color: Colors.orange,
               onPressed: () {
-               Nav.route(context, add_Store());
+                Nav.route(context, add_Store());
               },
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -137,7 +137,11 @@ class _StoresState extends State<Stores> {
                     child: Column(
                       children: [
                         SizedBox(height: 20),
-                        Icon(Icons.hourglass_empty_outlined,size: 100,color: Colors.black26,),
+                        Icon(
+                          Icons.hourglass_empty_outlined,
+                          size: 100,
+                          color: Colors.black26,
+                        ),
                         SizedBox(height: 20),
                         Text(
                           'no stores found ',
@@ -151,173 +155,165 @@ class _StoresState extends State<Stores> {
                   ),
                 )
               : SingleChildScrollView(
-        controller: _scrollController,
-
-        child: Column(
+                  controller: _scrollController,
+                  child: Column(
                     children: [
                       isSelect
                           ? Container(
-                        height: 50,
-                        color: Colors.black12,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Row(
-                              children: [
-                                Text('تم اختيار '),
-                                Text('( ${Data.Stores_select.length} )'),
-                              ],
-                            ),
-                            InkWell(
-                              onTap: () {
-                                Data.setAllStores_selectt();
-                              },
+                              height: 50,
+                              color: Colors.black12,
                               child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: [
-                                  Icon(
-                                    Icons.check,
-                                    color: Colors.black45,
-                                    size: 25,
+                                  Row(
+                                    children: [
+                                      Text('تم اختيار '),
+                                      Text('( ${Data.Stores_select.length} )'),
+                                    ],
                                   ),
-                                  SizedBox(
-                                    width: 5,
+                                  InkWell(
+                                    onTap: () {
+                                      Data.setAllStores_selectt();
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.check,
+                                          color: Colors.black45,
+                                          size: 25,
+                                        ),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Text('اختر الكل')
+                                      ],
+                                    ),
+                                    // color: Color(0xffE4E4E4),
                                   ),
-                                  Text('اختر الكل')
-                                ],
-                              ),
-                              // color: Color(0xffE4E4E4),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                print(Data.Stores_select.toString());
-                                API(context).post("stores/mass/delete", {
-                                  "ids": Data.Stores_select.toString()
-                                }).then((value) {
-                                  if (value != null) {
-                                    showDialog(
-                                      context: context,
-                                      builder: (_) => ResultOverlay(
-                                        "${value['message']??value['errors']??''}",
-                                      ),
-                                    );
-                                    setState(() {
-                                      Data.setStores_select([]);
-                                      isSelect=false;
-                                    });
-                                  }
-                                  Provider.of<Provider_Data>(context,listen: false).getAllStore(context);
-                                });
-                              },
-                              child: Row(
-                                children: [
-                                  Text('${getTransrlate(context, 'delete')}'),
-                                  Icon(
-                                    CupertinoIcons.delete,
-                                    size: 20,
-                                  )
-                                ],
-                              ),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  isSelect = false;
-                                });
-                              },
-                              icon: Icon(
-                                Icons.close,
-                                size: 30,
-                                color: Colors.black54,
-                              ),
-                            )
-                          ],
-                        ),
-                      )
-                          : Container(
-                        height: 50,
-                        color: Colors.black12,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text('${Data.stores.length} ${getTransrlate(context, 'store')}'),
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  isSelect
-                                      ? isSelect = false
-                                      : isSelect = true;
-                                });
-                              },
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.check_box,
-                                    color: Colors.black45,
-                                    size: 25,
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Text('${getTransrlate(context, 'select')}')
-                                ],
-                              ),
-                              // color: Color(0xffE4E4E4),
-                            ),
-                            // InkWell (
-                            //   onTap: () {
-                            //     // showDialog(
-                            //     //     context: context,
-                            //     //     builder: (_) => Filterdialog());
-                            //   },
-                            //   child: Row(
-                            //     children: [
-                            //       Text('تصفية'),
-                            //       Icon(
-                            //         Icons.keyboard_arrow_down,
-                            //         size: 20,
-                            //       )
-                            //     ],
-                            //   ),
-                            // ),
-                            InkWell(
-                              onTap: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (_) => Sortdialog())
-                                    .then((val) {
-                                  print(val);
-                                  API(context)
-                                      .get('$url?sort_type=${val??'ASC'}')
-                                      .then((value) {
-                                    if (value != null) {
-                                      if (value['status_code'] == 200) {
-                                        setState(() {
-                                          Data.stores =
-                                              Store_model.fromJson(value).data;
-                                        });
-                                      } else {
-                                        showDialog(
+                                  InkWell(
+                                    onTap: () {
+                                      print(Data.Stores_select.toString());
+                                      API(context).post("stores/mass/delete", {
+                                        "ids": Data.Stores_select.toString()
+                                      }).then((value) {
+                                        if (value != null) {
+                                          showDialog(
                                             context: context,
                                             builder: (_) => ResultOverlay(
-                                                value['message']));
-                                      }
-                                    }
-                                  });
-                                });
-                              },
-                              child: Row(
-                                children: [
-                                  Text('${getTransrlate(context, 'Sort')}'),
-                                  Icon(
-                                    Icons.keyboard_arrow_down,
-                                    size: 20,
+                                              "${value['message'] ?? value['errors'] ?? ''}",
+                                            ),
+                                          );
+                                          setState(() {
+                                            Data.setStores_select([]);
+                                            isSelect = false;
+                                          });
+                                        }
+                                        Provider.of<Provider_Data>(context,
+                                                listen: false)
+                                            .getAllStore(context,url);
+                                      });
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                            '${getTransrlate(context, 'delete')}'),
+                                        Icon(
+                                          CupertinoIcons.delete,
+                                          size: 20,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        isSelect = false;
+                                      });
+                                    },
+                                    icon: Icon(
+                                      Icons.close,
+                                      size: 30,
+                                      color: Colors.black54,
+                                    ),
                                   )
                                 ],
                               ),
                             )
-                          ],
-                        ),
-                      ),
+                          : Container(
+                              height: 50,
+                              color: Colors.black12,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Text(
+                                      '${Data.stores.length} ${getTransrlate(context, 'store')}'),
+                                  InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        isSelect
+                                            ? isSelect = false
+                                            : isSelect = true;
+                                      });
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.check_box,
+                                          color: Colors.black45,
+                                          size: 25,
+                                        ),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Text(
+                                            '${getTransrlate(context, 'select')}')
+                                      ],
+                                    ),
+                                    // color: Color(0xffE4E4E4),
+                                  ),
+                                  // InkWell (
+                                  //   onTap: () {
+                                  //     // showDialog(
+                                  //     //     context: context,
+                                  //     //     builder: (_) => Filterdialog());
+                                  //   },
+                                  //   child: Row(
+                                  //     children: [
+                                  //       Text('تصفية'),
+                                  //       Icon(
+                                  //         Icons.keyboard_arrow_down,
+                                  //         size: 20,
+                                  //       )
+                                  //     ],
+                                  //   ),
+                                  // ),
+                                  InkWell(
+                                    onTap: () {
+                                      showDialog(
+                                              context: context,
+                                              builder: (_) => Sortdialog())
+                                          .then((val) {
+                                        print(val);
+                                        url = 'stores?sort_type=${val ?? 'ASC'}';
+                                        Data.getAllStore(context,url);
+                                      });
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                            '${getTransrlate(context, 'Sort')}'),
+                                        Icon(
+                                          Icons.keyboard_arrow_down,
+                                          size: 20,
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
                       // Row(
                       //   children: <Widget>[
                       //     SizedBox(
@@ -399,20 +395,20 @@ class _StoresState extends State<Stores> {
                         physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (BuildContext context, int index) {
                           return Stores_item(
-                            hall_model:Data.stores[index],
+                            hall_model: Data.stores[index],
                             isSelect: isSelect,
                             selectStores: Data.Stores_select,
                           );
                         },
                       ),
-                      SizedBox(height: 50,)
+                      SizedBox(
+                        height: 50,
+                      )
                     ],
                   ),
                 ),
     );
   }
-
-
 
   Widget row(Store productModel) {
     return Row(
@@ -431,5 +427,4 @@ class _StoresState extends State<Stores> {
       ],
     );
   }
-
 }

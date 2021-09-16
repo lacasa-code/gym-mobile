@@ -36,8 +36,7 @@ class API {
       });
       print(response.body);
       if (response.statusCode == 500) {
-        Nav.route(
-            context, Maintenance(erorr: jsonDecode(response.body).toString()));
+        Nav.route(context, Maintenance(erorr:"Backend Section \n  ${url}\n Exception Response  ${response.body}",));
       } else {
         return jsonDecode(response.body);
       }
@@ -69,8 +68,7 @@ class API {
           body: json.encode(body));
 
       if (response.statusCode == 500) {
-        Nav.route(
-            context, Maintenance(erorr:"${url}\n${response.body}",));
+        Nav.route(context, Maintenance(erorr:"Backend Section \n  ${url}\n Exception Response  ${response.body}",));
       } else {
         return jsonDecode(response.body);
       }
@@ -103,11 +101,7 @@ class API {
           body: json.encode(body));
       print(jsonDecode(response.body));
       if (response.statusCode == 500) {
-        Nav.route(
-            context,
-            Maintenance(
-              erorr: "${url}\n${response.body}",
-            ));
+        Nav.route(context, Maintenance(erorr:"Backend Section \n  ${url}\n Exception Response  ${response.body}",));
       } else {
         return jsonDecode(response.body);
       }
@@ -139,10 +133,7 @@ class API {
       );
       print(response.body);
       if (response.statusCode == 500) {
-        Nav.route(
-            context, Maintenance(
-          erorr: "${url}\n${response.body}",
-        ));
+        Nav.route(context, Maintenance(erorr: "${url}\n${response.body}",));
       } else {
         return jsonDecode(response.body);
       }

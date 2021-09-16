@@ -215,7 +215,7 @@ class _UserPageState extends State<UserPage> {
                             ),
                           );
                         }
-                        data.getAllstaff(context);
+                        data.getAllstaff(context,'users');
                       });
                     },
                     child: Row(

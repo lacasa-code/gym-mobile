@@ -84,7 +84,7 @@ class OrderItem extends StatelessWidget {
                         Container(
                           width: ScreenUtil.getWidth(context) / 2,
                           child: Text(
-                          themeColor.getlocal()=='ar'?  orders_model.orderDetails[index].productName: orders_model.orderDetails[index].name_en??orders_model.orderDetails[index].productName,
+                          "${themeColor.getlocal()=='ar'?  orders_model.orderDetails[index].productName??orders_model.orderDetails[index].name_en: orders_model.orderDetails[index].name_en??orders_model.orderDetails[index].productName}",
                             style: TextStyle(
                                 color: themeColor.getColor(),
                                 fontWeight: FontWeight.bold,

@@ -41,6 +41,7 @@ class Store {
   bool isSelect=false;
   String lat;
   String long;
+  String phonecode;
   int vendorId;
   int countryId;
   int areaId;
@@ -51,6 +52,7 @@ class Store {
   int headCenter;
   String serialId;
   String moderatorPhone;
+  String phone_number;
   String moderatorAltPhone;
   int status;
   String createdAt;
@@ -73,6 +75,7 @@ class Store {
         this.vendorId,
         this.countryId,
         this.areaId,
+        this.phonecode,
         this.cityId,
         this.countryName,
         this.areaName,
@@ -99,11 +102,13 @@ class Store {
     areaId = json['area_id'];
     cityId = json['city_id'];
     countryName = json['country_name'];
+    phonecode = json['phonecode'].toString();
     areaName = json['area_name'];
     cityName = json['city_name'];
     headCenter = json['head_center'];
     serialId = json['serial_id'];
     moderatorPhone = json['moderator_phone'];
+    phone_number = json['phone_number'];
     moderatorAltPhone = json['moderator_alt_phone'];
     status = json['status'];
     createdAt = json['created_at'];

@@ -45,7 +45,7 @@ class _HomeMobileState extends State<HomeMobile> {
       text: DateFormat('yyyy-MM-dd').format(DateTime.now()));
   TextEditingController _fromcontroller = TextEditingController(
       text: DateFormat('yyyy-MM-dd').format(DateTime.now().subtract(Duration(days: 7))));
-  String name;
+  String name,roles;
 
   Future<void> _selectDatefrom(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -80,6 +80,8 @@ class _HomeMobileState extends State<HomeMobile> {
     SharedPreferences.getInstance().then((prefs) {
       setState(() {
         name = prefs.getString('user_name');
+        roles = prefs.getString("roles");
+
       });
     });
     API(context).get('vendor/about/rare/products').then((value) {
@@ -136,7 +138,7 @@ class _HomeMobileState extends State<HomeMobile> {
               SizedBox(
                 height: 20,
               ),
-              Container(
+              roles=='Staff'?Container( child: Center(child: Image.asset('assets/images/trkar_logo_white.png')),):      Container(
                 color: Color(0xffF6F6F6),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

@@ -154,7 +154,7 @@ class _StorePageState extends State<StorePage> {
                                       "${value['message']??value['errors'] ?? 'تم حذف المتجر بنجاح'}",
                                     ),
                                   );
-                                  Provider.of<Provider_Data>(context,listen: false).getAllStore(context);
+                                  Provider.of<Provider_Data>(context,listen: false).getAllStore(context,'stores');
                                 });
                               },
                               child: Row(

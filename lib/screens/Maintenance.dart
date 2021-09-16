@@ -49,11 +49,15 @@ class _MaintenanceState extends State<Maintenance> {
               Icons.settings_ethernet_outlined,
               size: 100,
             ),
-            Center(
-                child: Text(
-              "${widget.erorr == null ? ' ' : widget.erorr}",
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-            ))
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                  child: Text(
+                "${widget.erorr == null ? ' ' : widget.erorr}",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              )),
+            )
           ],
         ))),
       ),
