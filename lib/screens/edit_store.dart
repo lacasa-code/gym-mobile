@@ -86,10 +86,10 @@ class _Edit_StoreState extends State<Edit_Store> {
                         MyTextFormField(
                           intialLabel: widget.store.nameStore ?? ' ',
                           Keyboard_Type: TextInputType.name,
-                             labelText: getTransrlate(context, 'name'),inputFormatters: [
+                             labelText: getTransrlate(context, 'title'),inputFormatters: [
                             new LengthLimitingTextInputFormatter(200),
                           ],
-                          hintText: getTransrlate(context, 'name'),
+                          hintText: getTransrlate(context, 'title'),
                           isPhone: true,
                           enabled: true,
                           validator: (String value) {

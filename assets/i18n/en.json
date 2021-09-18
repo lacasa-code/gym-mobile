@@ -10,6 +10,7 @@
   "Empty": "No found product !",
   "NoOrder": "No found Order ",
   "store": "Store",
+  "SelectAll": "Select All",
 
   "duration": "duration",
   "from": "from",
@@ -33,7 +34,7 @@
       "else": "You have pushed the button {{value}} times."
     }
   },
-  "title": "name",
+  "title": "Name",
   "welcome": " Welcome ",
   "addProduct": "Add Product",
   "Moderator": "Moderator",
@@ -50,8 +51,8 @@
   "anyTime": "Any Time",
   "SelectDate": "Select Date",
   "SelectTime": "Select Time",
-  "description": "description (Arabic)",
-  "descriptionEn": "description (English)",
+  "description": "Description (Arabic)",
+  "descriptionEn": "Description (English)",
   "send": "Send",
   "invalidname": "field cannot accept floating point",
 

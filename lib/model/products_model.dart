@@ -58,7 +58,6 @@ class Product {
   List<PhotoProduct> photo;
   List<Asset> photos;
   List<Tag> tags;
-  String yearId;
   Year yearto;
   Year yearfrom;
   String yeartoId;
@@ -109,7 +108,6 @@ class Product {
       this.avg_valuations,
       this.carModelId,
       this.carModel,
-      this.yearId,
       this.partCategoryId,
       this.photo,
       this.yearto,
@@ -145,7 +143,6 @@ class Product {
         json['year_from'] != null ? new Year.fromJson(json['year_from']) : null;
     yearto =
         json['year_to'] != null ? new Year.fromJson(json['year_to']) : null;
-    yearId = json['year_id'];
     partCategoryId = json['part_category_id'].toString();
     CategoryId = json['category_id'].toString();
     vendorId = json['vendor_id'].toString();
@@ -235,9 +232,8 @@ class Product {
     this.carMadeId == null ? null : data['car_made_id'] = this.carMadeId;
     data['category_id'] = this.CategoryId;
     //data['car_model_id'] = this.carModelId;
-    this.yearId == null ? null : data['year_id'] = this.yearId;
-    this.yearfrom == null ? null : data['year_from'] = this.yearfromId;
-    this.yearto == null ? null : data['year_to'] = this.yeartoId;
+    this.yearfromId == null ? null : data['year_from'] = this.yearfromId;
+    this.yeartoId == null ? null : data['year_to'] = this.yeartoId;
     if (this.carModel != null) {
       data['models'] = this.carModel.map((v) => v.id).toList().toString();
     }

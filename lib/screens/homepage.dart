@@ -75,15 +75,18 @@ class _HomeMobileState extends State<HomeMobile> {
 
   @override
   void initState() {
-    get_report(DateFormat('yyyy-MM-dd').format(DateTime.now()),
-        DateFormat('yyyy-MM-dd').format(DateTime.now()));
     SharedPreferences.getInstance().then((prefs) {
       setState(() {
         name = prefs.getString('user_name');
         roles = prefs.getString("roles");
-
       });
+      if(roles!='Staff'){
+        get_report(DateFormat('yyyy-MM-dd').format(DateTime.now()),
+            DateFormat('yyyy-MM-dd').format(DateTime.now()));
+      }
     });
+
+
     API(context).get('vendor/about/rare/products').then((value) {
       if (value != null) {
         setState(() {

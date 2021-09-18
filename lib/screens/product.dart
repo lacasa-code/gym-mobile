@@ -152,7 +152,7 @@ class _ProductsState extends State<Products> {
                                 children: [
                                   Row(
                                     children: [
-                                      Text('تم اختيار '),
+                                      Text('${getTransrlate(context, 'select')}'),
                                       Text('( ${data.products_select.length} )'),
                                     ],
                                   ),
@@ -173,7 +173,7 @@ class _ProductsState extends State<Products> {
                                         SizedBox(
                                           width: 5,
                                         ),
-                                        Text('اختر الكل')
+                                        Text('${getTransrlate(context, 'SelectAll')}')
                                       ],
                                     ),
                                     // color: Color(0xffE4E4E4),
@@ -325,11 +325,12 @@ class _ProductsState extends State<Products> {
                                         right:themeColor.getlocal()=='en'?1:null,
                                         top: 20,
                                         child: PopupMenuButton<int>(
-                                          itemBuilder: (context) => [
+                                          itemBuilder: (ctx) => [
                                             PopupMenuItem(
                                               value: 1,
                                               child: InkWell(
                                                 onTap: (){
+                                                  Navigator.pop(ctx);
                                                   _navigate_edit_hell(
                                                       context, data.products[index]);
                                                 },

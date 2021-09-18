@@ -110,6 +110,15 @@ class _Product_itemState extends State<Product_item> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              AutoSizeText(
+                '${getTransrlate(context, 'CarType')}  : ${widget.hall_model.carType!=null?themeColor.getlocal()=='ar'?widget.hall_model.carType.typeName??'':widget.hall_model.carType.name_en??'':''}',
+                minFontSize: 10,
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               Container(
                 width: ScreenUtil.getWidth(context) / 1.5,
                 child: Text(

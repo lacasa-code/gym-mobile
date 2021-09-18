@@ -149,7 +149,7 @@ class _InvoicesState extends State<Invoices> {
                        setState(() {
                          _character=val;
                        });
-                       url="show/invoices?sort_type=${val}";
+                       url="show/invoices?sort_type=${val??'DESC'}";
                     getAllStore();
                       });
                     },

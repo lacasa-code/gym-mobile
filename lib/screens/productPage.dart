@@ -172,7 +172,11 @@ class _ProductPageState extends State<ProductPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   dataRow('رقم ID', "${widget.product.id}", Colors.black26),
+               //${getTransrlate(context, 'CarType')}  : ${widget.hall_model.carType!=null?themeColor.getlocal()=='ar'?widget.hall_model.carType.typeName??'':widget.hall_model.carType.name_en??'':''}
                   dataRow(
+                      '${getTransrlate(context, 'CarType')}',
+                      "${widget.product.carType == null ? '' : themeColor.getlocal()=='ar'?widget.product.carType.typeName??'':widget.product.carType.name_en??''}",
+                      Colors.white),     dataRow(
                       '${getTransrlate(context, 'mainCategory')}',
                       "${widget.product.maincategory == null ? '' : widget.product.maincategory.mainCategoryName}",
                       Colors.white),
@@ -200,7 +204,7 @@ class _ProductPageState extends State<ProductPage> {
                       '${getTransrlate(context, 'store')}',
                       "${widget.product.store == null ? '' : widget.product.store.nameStore}",
                       Colors.black26),
-                  dataRow('${getTransrlate(context, 'quantity')}',
+                  widget.product.producttypeId.id==2?Container(): dataRow('${getTransrlate(context, 'quantity')}',
                       "${widget.product.quantity}", Colors.white),
                   dataRow('${getTransrlate(context, 'price')}',
                       "${widget.product.actualPrice}", Colors.black26),
@@ -218,9 +222,17 @@ class _ProductPageState extends State<ProductPage> {
                       '${getTransrlate(context, 'tags')}',
                       "${widget.product.tags == null ? '' : widget.product.tags.map((e) => e.name).toList().toString()}",
                       Colors.black26),
-                  dataRow(
+                  widget.product.producttypeId.id==2?Container():   dataRow(
                       '${getTransrlate(context, 'qty_reminder')}',
                       "${widget.product.qty_reminder.toString()}",
+                      Colors.white),
+                  dataRow(
+                      '${getTransrlate(context, 'yearfrom')}',
+                      "${widget.product.yearfrom == null ? '' : widget.product.yearfrom.year}",
+                      Colors.black26),
+                  dataRow(
+                      '${getTransrlate(context, 'yearto')}',
+                      "${widget.product.yearto == null ? '' : widget.product.yearto.year}",
                       Colors.white),
                 ],
               ),

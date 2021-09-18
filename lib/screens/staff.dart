@@ -144,7 +144,7 @@ class _StaffState extends State<Staff> {
                                 children: [
                                   Row(
                                     children: [
-                                      Text('تم ${getTransrlate(context, 'select')} '),
+                                      Text('${getTransrlate(context, 'select')}'),
                                       Text('( ${data.staff_select.length} )'),
                                     ],
                                   ),
@@ -163,7 +163,7 @@ class _StaffState extends State<Staff> {
                                         SizedBox(
                                           width: 5,
                                         ),
-                                        Text('اختر الكل')
+                                        Text('${getTransrlate(context, 'SelectAll')}')
                                       ],
                                     ),
                                     // color: Color(0xffE4E4E4),

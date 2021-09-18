@@ -13,7 +13,6 @@ import 'package:trkar_vendor/utils/navigator.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
 import 'package:trkar_vendor/widget/ResultOverlay.dart';
-import 'package:trkar_vendor/widget/SearchOverlay.dart';
 import 'package:trkar_vendor/widget/Sort.dart';
 import 'package:trkar_vendor/widget/hidden_menu.dart';
 import 'package:trkar_vendor/widget/no_found_item.dart';
@@ -26,10 +25,10 @@ class Tickets extends StatefulWidget {
 
 class _TicketsState extends State<Tickets> {
   List<Ticket> stores;
-  List<Ticket> filteredStores;
   final debouncer = Search(milliseconds: 1000);
   String url="all/tickets";
   int i = 2;
+  
   ScrollController _scrollController = new ScrollController();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
@@ -139,23 +138,8 @@ class _TicketsState extends State<Tickets> {
                                     context: context,
                                     builder: (_) => Sortdialog())
                                     .then((val) {
-                                  print('$url?sort_type=${val??'ASC'}');
-                                  API(context)
-                                      .get('$url?sort_type=${val??'ASC'}')
-                                      .then((value) {
-                                    if (value != null) {
-                                      if (value['status_code'] == 200) {
-                                        setState(() {
-                                          filteredStores = stores = Tickets_model.fromJson(value).data;
-                                        });
-                                      } else {
-                                        showDialog(
-                                            context: context,
-                                            builder: (_) => ResultOverlay(
-                                                value['errors']));
-                                      }
-                                    }
-                                  });
+                                  url='all/tickets?sort_type=${val??'ASC'}';
+                                getAllStore();
                                 });
                               },
                               child: Row(
@@ -172,18 +156,16 @@ class _TicketsState extends State<Tickets> {
                         ),
                       ),
                       ListView.builder(
-                        itemCount: filteredStores == null && stores.isEmpty
-                            ? 0
-                            : filteredStores.length,
+                        itemCount: stores.length,
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (BuildContext context, int index) {
                           return InkWell(
                             onTap: (){
-                              Nav.route(context, tickets_information(orders_model: filteredStores[index],));
+                              Nav.route(context, tickets_information(orders_model: stores[index],));
                             },
                             child: Ticket_item(
-                              hall_model: filteredStores[index],
+                              hall_model: stores[index],
                             ),
                           );
                         },
@@ -195,16 +177,17 @@ class _TicketsState extends State<Tickets> {
   }
 
   Future<void> getAllStore() async {
-    API(context).get('all/tickets').then((value) {
+    i=2;
+    API(context).get('$url').then((value) {
       if (value != null) {
         setState(() {
-          filteredStores = stores = Tickets_model.fromJson(value).data;
+           stores = Tickets_model.fromJson(value).data;
         });
       }
     });
   }
   Future<void> PerStore() async {
-    API(context).get("$url?page=${i++}&ordered_by=created_at&sort_type=desc").then((value) {
+    API(context).get("$url${url.contains('?')?'&':'?'}page=${i++}").then((value) {
       if (value != null) {
         setState(() {
           stores.addAll(Tickets_model.fromJson(value).data);

@@ -593,6 +593,10 @@ class _Edit_ProductState extends State<Edit_Product> {
                         onChanged: (CarMade data) {
                           widget.product.carMadeId =
                               data.id.toString();
+                          setState(() {
+                            widget.product.carModel=[];
+
+                          });
                           getAllCareModel(data.id);
                         }),
                     SizedBox(
@@ -678,9 +682,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                                   : widget.product.yearfrom,
                               itemAsString: (Year u) =>
                               "${themeColor.getlocal() == 'ar' ? u.year ?? u.name_en : u.name_en ?? u.year}",
-                              onChanged: (Year data) => widget
-                                  .product
-                                  .yearfromId = data.id.toString()),
+                              onChanged: (Year data) => widget.product.yearfromId = data.id.toString()),
                         ),
                         years == null
                             ? Container(
@@ -1711,11 +1713,9 @@ class _Edit_ProductState extends State<Edit_Product> {
                           widget.product.carModel[index].name_en
                       : widget.product.carModel[index].name_en ??
                           widget.product.carModel[index].carmodel,
-                  color: Colors.blue,
+                  color: Colors.orange.shade400,
                   activeColor: Colors.orange.shade400,
-                  onPressed: (Item item) {
-                    print('pressed');
-                  },
+
                   highlightColor: Colors.transparent,
                   splashColor: Colors.transparent,
                   elevation: 0.0,
@@ -1822,15 +1822,12 @@ class _Edit_ProductState extends State<Edit_Product> {
   }
 
   _onModelRemoved(Carmodel value) {
-    final Carmodel exist =
-        carmodels.firstWhere((text) => text.carmodel == value, orElse: () {
-      return null;
-    });
+
 
     if (value != null) {
       setState(() {
         widget.product.carModel.remove(value);
-        carmodels.add(exist);
+        carmodels.add(value);
       });
     }
   }

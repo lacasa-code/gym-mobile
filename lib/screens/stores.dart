@@ -168,7 +168,7 @@ class _StoresState extends State<Stores> {
                                 children: [
                                   Row(
                                     children: [
-                                      Text('تم اختيار '),
+                                      Text('${getTransrlate(context, 'select')}'),
                                       Text('( ${Data.Stores_select.length} )'),
                                     ],
                                   ),
@@ -186,7 +186,7 @@ class _StoresState extends State<Stores> {
                                         SizedBox(
                                           width: 5,
                                         ),
-                                        Text('اختر الكل')
+                                        Text('${getTransrlate(context, 'SelectAll')}')
                                       ],
                                     ),
                                     // color: Color(0xffE4E4E4),

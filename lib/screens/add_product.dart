@@ -519,8 +519,10 @@ int CheckBox=0;
                                                 itemAsString: (CarMade u) =>
                                                 themeColor.getlocal()=='ar'?u.carMade??u.name_en:u.name_en??u.carMade,
                                                 onChanged: (CarMade data) {
-                                                  product.carMadeId =
-                                                      data.id.toString();
+                                                  product.carMadeId = data.id.toString();
+                                                  setState(() {
+                                                    product.carModel=[];
+                                                  });
                                                   getAllCareModel(data.id);
                                                 }),
                                           ),
@@ -644,8 +646,7 @@ int CheckBox=0;
                                                     itemAsString: (Year u) =>
                                                     themeColor.getlocal()=='ar'?u.year??u.name_en:u.name_en??u.year,
                                                     onChanged: (Year data) =>
-                                                        product.yearfromId =
-                                                            data.id.toString()),
+                                                        product.yearfromId = data.id.toString()),
                                               ),
                                         years == null
                                             ? Container(
@@ -809,6 +810,7 @@ int CheckBox=0;
                                       child: DropdownSearch<ProductType>(
                                           showSearchBox: false,
                                           showClearButton: false,
+                                          maxHeight:ScreenUtil.getHeight(context)/4,
                                           validator: (ProductType item) {
                                             if (item == null) {
                                               return "Required field";

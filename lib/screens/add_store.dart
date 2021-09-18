@@ -140,10 +140,10 @@ class _add_StoreState extends State<add_Store> {
                         MyTextFormField(
                           intialLabel: store.nameStore ?? ' ',
                           Keyboard_Type: TextInputType.name,
-                             labelText: getTransrlate(context, 'name'),inputFormatters: [
+                             labelText: getTransrlate(context, 'title'),inputFormatters: [
                             new LengthLimitingTextInputFormatter(200),
                           ],
-                          hintText: getTransrlate(context, 'name'),
+                          hintText: getTransrlate(context, 'title'),
                           isPhone: true,
                           enabled: true,
                           validator: (String value) {

@@ -96,17 +96,20 @@ class _MyAppState extends State<MyApp> {
       ],
       locale: _locale,
       localeResolutionCallback: (devicelocale, supportedLocales) {
+        WidgetsBinding.instance.addPostFrameCallback((_){
+          themeColor.setLocal(devicelocale.languageCode);
+        });
         for (var locale in supportedLocales) {
-          if (locale.languageCode == devicelocale.languageCode &&
-              locale.countryCode == devicelocale.countryCode) {
-            return devicelocale;
+          if (locale.languageCode == devicelocale.languageCode ) {
+
+            return Locale(devicelocale.languageCode,'');
           }
         }
         return supportedLocales.first;
       },
       supportedLocales: [
-        Locale("ar", ""),
         Locale("en", ""),
+        Locale("ar", ""),
       ],
       theme: ThemeData(
         pageTransitionsTheme: PageTransitionsTheme(builders: {
