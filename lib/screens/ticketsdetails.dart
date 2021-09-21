@@ -29,7 +29,7 @@ class tickets_information extends StatefulWidget {
 class _tickets_informationState extends State<tickets_information> {
   final _formKey = GlobalKey<FormState>();
   String answer;
-
+  bool loading = false;
   @override
   Widget build(BuildContext context) {
     final themeColor = Provider.of<Provider_control>(context);
@@ -209,7 +209,7 @@ class _tickets_informationState extends State<tickets_information> {
                   Row(
                     children: [
                       AutoSizeText(
-                        '${getTransrlate(context, 'OrderDate')} :',
+                        '${getTransrlate(context, 'tickitDate')} :',
                         minFontSize: 10,
                         style: TextStyle(
                           color: Colors.black,
@@ -309,7 +309,23 @@ class _tickets_informationState extends State<tickets_information> {
                     ),
                   ),
               Center(
-                child: GestureDetector(
+                child: loading?FlatButton(
+                  minWidth: ScreenUtil.getWidth(context) / 2.5,
+                  color: Colors.orange,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child:Container(
+                      height: 30,
+                      child: Center(
+                          child: CircularProgressIndicator(
+                            valueColor:
+                            AlwaysStoppedAnimation<Color>( Colors.white),
+                          )),
+                    ),
+                  ),
+                  onPressed: () async {
+                  },
+                ):GestureDetector(
                   child: Container(
                     width: ScreenUtil.getWidth(context) / 2.5,
                     padding: const EdgeInsets.all(10.0),
@@ -330,11 +346,13 @@ class _tickets_informationState extends State<tickets_information> {
                   onTap: () {
                     if (_formKey.currentState.validate()) {
                       _formKey.currentState.save();
-                      //setState(() => _isLoading = true);
+                      setState(() => loading = true);
                       API(context).post('vendor/answer/ticket', {
                         "ticket_id": widget.orders_model.id,
                         "answer": answer
                       }).then((value) {
+                        setState(() => loading = false);
+
                         if (value != null) {
                           if (value['status_code'] == 200) {
                             Navigator.pop(context);

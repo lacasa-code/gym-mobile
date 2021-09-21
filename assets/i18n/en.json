@@ -11,6 +11,7 @@
   "NoOrder": "No found Order ",
   "store": "Store",
   "SelectAll": "Select All",
+  "tickitDate": "Ticket Date",
 
   "duration": "duration",
   "from": "from",
@@ -51,7 +52,8 @@
   "anyTime": "Any Time",
   "SelectDate": "Select Date",
   "SelectTime": "Select Time",
-  "description": "Description (Arabic)",
+  "description": "Description",
+  "descriptionAr": "Description (Arabic)",
   "descriptionEn": "Description (English)",
   "send": "Send",
   "invalidname": "field cannot accept floating point",

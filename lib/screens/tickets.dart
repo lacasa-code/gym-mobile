@@ -165,7 +165,7 @@ class _TicketsState extends State<Tickets> {
                               Nav.route(context, tickets_information(orders_model: stores[index],));
                             },
                             child: Ticket_item(
-                              hall_model: stores[index],
+                              ticket_model: stores[index],
                             ),
                           );
                         },

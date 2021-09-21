@@ -208,7 +208,23 @@ class _EditStaffState extends State<EditStaff> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    FlatButton(
+                    loading?FlatButton(
+                      minWidth: ScreenUtil.getWidth(context) / 2.5,
+                      color: Colors.orange,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child:Container(
+                          height: 30,
+                          child: Center(
+                              child: CircularProgressIndicator(
+                                valueColor:
+                                AlwaysStoppedAnimation<Color>( Colors.white),
+                              )),
+                        ),
+                      ),
+                      onPressed: () async {
+                      },
+                    ):   FlatButton(
                         minWidth: ScreenUtil.getWidth(context) / 2.5,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(1),

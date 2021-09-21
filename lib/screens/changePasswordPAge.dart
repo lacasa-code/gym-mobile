@@ -20,6 +20,7 @@ class _changePasswordState extends State<changePassword> {
   String email,oldPassword,newPassword,ConfirmPassword;
   final _formKey = GlobalKey<FormState>();
   bool passwordVisible = false;
+  bool _isLoading = false;
 
   void initState() {
     SharedPreferences.getInstance().then((value) => {
@@ -166,7 +167,23 @@ class _changePasswordState extends State<changePassword> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Center(
+                    _isLoading?FlatButton(
+                      minWidth: ScreenUtil.getWidth(context) / 2.5,
+                      color: Colors.orange,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child:Container(
+                          height: 30,
+                          child: Center(
+                              child: CircularProgressIndicator(
+                                valueColor:
+                                AlwaysStoppedAnimation<Color>( Colors.white),
+                              )),
+                        ),
+                      ),
+                      onPressed: () async {
+                      },
+                    ):      Center(
                       child: GestureDetector(
                         child: Container(
                           width: ScreenUtil.getWidth(context) / 2.5,
@@ -187,14 +204,17 @@ class _changePasswordState extends State<changePassword> {
                         onTap: ()  {
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
-                            //setState(() => _isLoading = true);
+                          setState(() => _isLoading = true);
                             API(context).post('user/change/password', {
                               "email": email,
                               "current_password": oldPassword,
                               "new_password": newPassword,
                               "new_password_confirmation":ConfirmPassword,
                             }).then((value) {
+                              setState(() => _isLoading = false);
+
                               if (value != null) {
+
                                 if (value['status_code'] == 200) {
                                   Navigator.pop(context);
                                   showDialog(

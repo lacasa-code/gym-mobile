@@ -38,7 +38,8 @@
   "Moderator": "المدير",
   "ModeratorPhone": "رقم جوال المدير",
   "moderatorAltPhone": "رقم جوال المدير 2",
-  "description": "الوصف (عربى)",
+  "descriptionAr": "الوصف (عربى)",
+  "description": "الوصف ",
   "descriptionEn": "الوصف (أنجليزى)",
   "id": "رقم id",
   "ConnectionFailed": "فشل الاتصال بالشبكة ",
@@ -254,6 +255,7 @@
 
   "DeliveryTime": "موعد التسليم",
   "DeliveryDate": "تاريخ التسليم",
+  "tickitDate": "تاريخ الشكوى",
   "Select": "حدد الان",
   "DeliverPeriod": "فترة التسليم",
   "am": "صباحى",

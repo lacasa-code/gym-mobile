@@ -269,9 +269,12 @@ class _Edit_StoreState extends State<Edit_Store> {
                           enabled: true,
                           validator: (String value) {
                             if (value.isEmpty) {
-                              return getTransrlate(context, 'requiredlength');
-                            } else if (value.length<12) {
+                              print(value);
                               return getTransrlate(context, 'requiredempty');
+                            } else if (value.length<10) {
+                              print(value);
+
+                              return getTransrlate(context, 'requiredlength');
                             }
                             _formKey.currentState.save();
                             return null;
@@ -328,7 +331,23 @@ class _Edit_StoreState extends State<Edit_Store> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  FlatButton(
+                  loading?FlatButton(
+                    minWidth: ScreenUtil.getWidth(context) / 2.5,
+                    color: Colors.orange,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child:Container(
+                        height: 30,
+                        child: Center(
+                            child: CircularProgressIndicator(
+                              valueColor:
+                              AlwaysStoppedAnimation<Color>( Colors.white),
+                            )),
+                      ),
+                    ),
+                    onPressed: () async {
+                    },
+                  ):  FlatButton(
                       minWidth: ScreenUtil.getWidth(context) / 2.5,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(1),

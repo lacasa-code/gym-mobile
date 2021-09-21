@@ -6,8 +6,8 @@ import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 
 class Ticket_item extends StatelessWidget {
-  Ticket_item({Key key, this.hall_model}) : super(key: key);
-  final Ticket hall_model;
+  Ticket_item({Key key, this.ticket_model}) : super(key: key);
+  final Ticket ticket_model;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class Ticket_item extends StatelessWidget {
                           ),
                           maxLines: 1,
                         ),
-                        AutoSizeText(hall_model.priority,
+                        AutoSizeText(ticket_model.priority,
                             minFontSize: 10,
                             style: TextStyle(
                               color: Colors.black,
@@ -67,7 +67,7 @@ class Ticket_item extends StatelessWidget {
                     ),
                     Container(
                       width: ScreenUtil.getWidth(context)/1.5,
-                      child: AutoSizeText(hall_model.message,
+                      child: AutoSizeText(ticket_model.message,
                           maxLines: 1,
                           minFontSize: 12,
                           style: TextStyle(
@@ -93,7 +93,7 @@ class Ticket_item extends StatelessWidget {
                           ),
                           maxLines: 1,
                         ),
-                        AutoSizeText(hall_model.orderNumber.toString(),
+                        AutoSizeText(ticket_model.orderNumber.toString(),
                             minFontSize: 10,
                             style: TextStyle(
                               color: Colors.black,
@@ -116,7 +116,7 @@ class Ticket_item extends StatelessWidget {
                         ),
                         AutoSizeText(
                             DateFormat('yyyy-MM-dd').format(
-                                DateTime.parse(hall_model.orderCreatedAt)),
+                                DateTime.parse(ticket_model.orderCreatedAt)),
                             minFontSize: 10,
                             style: TextStyle(
                               color: Colors.black,
@@ -146,13 +146,13 @@ class Ticket_item extends StatelessWidget {
                           margin: EdgeInsets.all(4),
                           decoration: BoxDecoration(
                               border:
-                                  Border.all(width: 1, color:isPassed(hall_model.status))),
+                                  Border.all(width: 1, color:isPassed(ticket_model.status))),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 5),
-                            child: AutoSizeText(hall_model.Case,
+                            child: AutoSizeText(ticket_model.Case,
                                 minFontSize: 10,
                                 style: TextStyle(
-                                  color: isPassed(hall_model.Case),
+                                  color: isPassed(ticket_model.Case),
                                   fontSize: 13,
                                   fontWeight: FontWeight.w600,
                                 )),
@@ -163,7 +163,7 @@ class Ticket_item extends StatelessWidget {
                     Row(
                       children: [
                         AutoSizeText(
-                          '${getTransrlate(context, 'OrderDate')} :',
+                          '${getTransrlate(context, 'tickitDate')} :',
                           minFontSize: 10,
                           style: TextStyle(
                             color: Colors.black,
@@ -172,7 +172,7 @@ class Ticket_item extends StatelessWidget {
                           ),
                           maxLines: 1,
                         ),
-                        AutoSizeText("${DateFormat('yyyy-MM-dd').format(DateTime.parse(hall_model.createdAt))}",
+                        AutoSizeText("${DateFormat('yyyy-MM-dd').format(DateTime.parse(ticket_model.createdAt))}",
                             minFontSize: 10,
                             style: TextStyle(
                               color: Colors.black,

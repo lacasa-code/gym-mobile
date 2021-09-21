@@ -124,7 +124,9 @@ class _ProductsState extends State<Products> {
               )),
         ),
       ),
-      body: data.products == null
+      body: RefreshIndicator(
+          color: themeColor.getColor(),
+    child:data.products == null
           ? Container(
               height: ScreenUtil.getHeight(context) / 3,
               child: Center(
@@ -379,10 +381,15 @@ class _ProductsState extends State<Products> {
                           }),
                     ],
                   ),
-                ),
+    ),      onRefresh: _refreshLocalGallery,
+
+      ),
     );
   }
+  Future<Null> _refreshLocalGallery() async{
+    Provider.of<Provider_Data>(context,listen: false).getProducts(context,url);
 
+  }
   _navigate_add_hell(BuildContext context) async {
     await Navigator.push(
         context, MaterialPageRoute(builder: (context) => Add_Product()));

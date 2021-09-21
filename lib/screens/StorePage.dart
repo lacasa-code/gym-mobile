@@ -181,14 +181,49 @@ class _StorePageState extends State<StorePage> {
                       style: TextStyle(fontSize: 22),
                     ),
                   ),
-                  Text(
-                    "${getTransrlate(context, 'ModeratorPhone')} : ${widget.store.moderatorPhone}",
-                    style: TextStyle(fontSize: 14),
+                  Row(
+                    children: [
+                      Text(
+                        " ${getTransrlate(context, 'phone')} 1 : ",
+                        maxLines: 1,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 13),
+                      ),
+                      Text(
+                        "${widget.store.moderatorPhone}",
+                        maxLines: 1,
+                        textDirection: TextDirection.ltr,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 13),
+                      ),
+                    ],
                   ),
-                  widget.store.moderatorAltPhone==null?Container(): Text(
-                    "${getTransrlate(context, 'moderatorAltPhone')} : ${widget.store.moderatorAltPhone}",
-                    style: TextStyle(fontSize: 14),
+                  widget.store.moderatorAltPhone==null?Container():     Row(
+                    children: [
+                      Text(
+                        " ${getTransrlate(context, 'phone')} 2: ",
+                        maxLines: 1,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 13),
+                      ),
+                      Text(
+                        "${widget.store.moderatorAltPhone}",
+                        maxLines: 1,
+                        textDirection: TextDirection.ltr,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 13),
+                      ),
+                    ],
                   ),
+
                   Text(
                     "${getTransrlate(context, 'staff')} : ",
                     style: TextStyle(fontSize: 14),

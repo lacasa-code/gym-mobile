@@ -364,14 +364,30 @@ class _Edit_profileState extends State<Edit_profile> {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Expanded(
+            loading?FlatButton(
+              minWidth: ScreenUtil.getWidth(context) / 2.5,
+              color: Colors.orange,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(1),
+                  side: BorderSide( width: 1)),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child:Center(
+                    child: CircularProgressIndicator(
+                      valueColor:
+                      AlwaysStoppedAnimation<Color>( Colors.white),
+                    )),
+              ),
+              onPressed: () async {
+              },
+            ):    Expanded(
               child: Padding(
                 padding: EdgeInsets.only(right: 10.0),
                 child: InkWell(
                   onTap: () {
                     if (_formKey.currentState.validate()) {
                       _formKey.currentState.save();
-                      //setState(() => _isLoading = true);
+                      setState(() => loading = true);
                       API(context).post('user/edit/profile', {
                         "name": userModal.name,
                         "email": userModal.email,
@@ -380,7 +396,7 @@ class _Edit_profileState extends State<Edit_profile> {
                         "birthdate": userModal.birthdate,
                         "gender": userModal.gender,
                       }).then((value) {
-                        print(value);
+                        setState(() => loading = false);
                         if (value != null) {
                           if (value['status_code'] == 200) {
                             showDialog(

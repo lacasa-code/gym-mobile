@@ -521,6 +521,7 @@ class _HomeMobileState extends State<HomeMobile> {
                               child: BarChart(
                                 data: data,
                                 labels: labels,
+                                labelStyle: TextStyle(fontSize: 12),
                                 displayValue: true,
                                 reverse: true,
                                 getColor: DataRepository.getColor,
@@ -680,9 +681,8 @@ class _HomeMobileState extends State<HomeMobile> {
 
   void _loadData() {
     setState(() {
-      data =
-          basic_report.periodDetails.map((e) => e.reports.totalSale).toList();
-      labels = basic_report.periodDetails.map((e) => e.dayName).toList();
+      data = basic_report.periodDetails.map((e) => e.reports.totalSale).toList();
+      labels = basic_report.periodDetails.map((e) => e.dayName??e.day).toList();
     });
   }
 

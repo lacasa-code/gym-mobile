@@ -23,16 +23,14 @@ class _LoginFormState extends State<LoginForm> {
   Model_login model = Model_login();
   bool passwordVisible = false;
   String CountryNo = '';
-
+  bool _isLoading=false;
   @override
   void initState() {
     super.initState();
   }
-
   @override
   Widget build(BuildContext context) {
     final themeColor = Provider.of<Provider_control>(context);
-
     return Container(
       padding: EdgeInsets.only(top: 24, right: 42, left: 42),
       child: Form(
@@ -95,7 +93,23 @@ class _LoginFormState extends State<LoginForm> {
               height: 50,
               width: ScreenUtil.getWidth(context),
               margin: EdgeInsets.only(top: 48, bottom: 12),
-              child: FlatButton(
+              child: _isLoading?FlatButton(
+                minWidth: ScreenUtil.getWidth(context) / 2.5,
+                color: Colors.orange,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child:Container(
+                    height: 30,
+                    child: Center(
+                        child: CircularProgressIndicator(
+                          valueColor:
+                          AlwaysStoppedAnimation<Color>( Colors.white),
+                        )),
+                  ),
+                ),
+                onPressed: () async {
+                },
+              ):FlatButton(
                 shape: RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(1.0),
                 ),
@@ -103,16 +117,17 @@ class _LoginFormState extends State<LoginForm> {
                 onPressed: () async {
                   if (_formKey.currentState.validate()) {
                     _formKey.currentState.save();
-                    //setState(() => _isLoading = true);
+                    setState(() => _isLoading = true);
                     final SharedPreferences prefs =
                         await SharedPreferences.getInstance();
                     API(context).post('login', {
                       'email': model.email,
                       'password': model.password,
                     }).then((value) {
+                      setState(() => _isLoading = false);
+
                       if (value != null) {
                         if (value['status_code'] == 200) {
-
                           var user = value['data'];
                           prefs.setString("user_email", user['email']);
                           prefs.setString("user_name", user['name']);

@@ -1340,7 +1340,23 @@ int CheckBox=0;
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                FlatButton(
+                                loading?FlatButton(
+                                  minWidth: ScreenUtil.getWidth(context) / 2.5,
+                                  color: Colors.orange,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child:Container(
+                                      height: 30,
+                                      child: Center(
+                                          child: CircularProgressIndicator(
+                                            valueColor:
+                                            AlwaysStoppedAnimation<Color>( Colors.white),
+                                          )),
+                                    ),
+                                  ),
+                                  onPressed: () async {
+                                  },
+                                ): FlatButton(
                                   minWidth: ScreenUtil.getWidth(context) / 2.5,
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(1),
@@ -1361,9 +1377,10 @@ int CheckBox=0;
                                       _formKey.currentState.save();
                                       product.tags = _tagSelect;
                                       product.photos = images;
-                                      setState(() => loading = true);
                                       print(product.toJson());
                                       if(images.isNotEmpty){
+                                        setState(() => loading = true);
+
                                         API(context)
                                             .postFile("add/products",
                                                 product.toJson(),

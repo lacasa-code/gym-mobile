@@ -28,6 +28,7 @@ class faq_information extends StatefulWidget {
 class _faq_informationState extends State<faq_information> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController answer=TextEditingController();
+bool loading=false;
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +106,23 @@ class _faq_informationState extends State<faq_information> {
                 ),
               ),
               Center(
-                child: GestureDetector(
+                child:loading?FlatButton(
+                  minWidth: ScreenUtil.getWidth(context) / 2.5,
+                  color: Colors.orange,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child:Container(
+                      height: 30,
+                      child: Center(
+                          child: CircularProgressIndicator(
+                            valueColor:
+                            AlwaysStoppedAnimation<Color>( Colors.white),
+                          )),
+                    ),
+                  ),
+                  onPressed: () async {
+                  },
+                ): GestureDetector(
                   child: Container(
                     width: ScreenUtil.getWidth(context) / 2.5,
                     padding: const EdgeInsets.all(10.0),
@@ -126,12 +143,14 @@ class _faq_informationState extends State<faq_information> {
                   onTap: () {
                     if (_formKey.currentState.validate()) {
                       _formKey.currentState.save();
-                      //setState(() => _isLoading = true);
+                      setState(() => loading = true);
                       API(context).post('vendor/answer/question', {
                         "question_id": widget.orders_model.id,
                         "answer": answer.text
                       }).then((value) {
                         if (value != null) {
+                          setState(() => loading = false);
+
                           if (value['status_code'] == 200) {
                             Navigator.pop(context);
                             showDialog(

@@ -17,6 +17,8 @@ class LostPassword extends StatefulWidget {
 class _LostPasswordState extends State<LostPassword> {
   final _formKey = GlobalKey<FormState>();
 String email;
+  bool _isLoading=false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +49,23 @@ String email;
                ),
                SizedBox(height: 25 ),
                Center(
-                 child: GestureDetector(
+                 child:_isLoading?FlatButton(
+                   minWidth: ScreenUtil.getWidth(context) / 2.5,
+                   color: Colors.orange,
+                   child: Padding(
+                     padding: const EdgeInsets.all(8.0),
+                     child:Container(
+                       height: 30,
+                       child: Center(
+                           child: CircularProgressIndicator(
+                             valueColor:
+                             AlwaysStoppedAnimation<Color>( Colors.white),
+                           )),
+                     ),
+                   ),
+                   onPressed: () async {
+                   },
+                 ): GestureDetector(
                    child: Container(
                      width: ScreenUtil.getWidth(context) / 3,
                      padding: const EdgeInsets.all(5.0),
@@ -67,8 +85,12 @@ String email;
                    onTap: () {
                      if (_formKey.currentState.validate()) {
                        _formKey.currentState.save();
+                       setState(() => _isLoading = true);
+
                        API(context).post('user/forget/password',
                            {"email": email}).then((value) {
+                         setState(() => _isLoading = false);
+
                          if (value != null) {
                            if (value.containsKey('error')) {
                              showDialog(

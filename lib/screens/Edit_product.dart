@@ -1462,7 +1462,23 @@ class _Edit_ProductState extends State<Edit_Product> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      FlatButton(
+                      loading?FlatButton(
+                        minWidth: ScreenUtil.getWidth(context) / 2.5,
+                        color: Colors.orange,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child:Container(
+                            height: 30,
+                            child: Center(
+                                child: CircularProgressIndicator(
+                                  valueColor:
+                                  AlwaysStoppedAnimation<Color>( Colors.white),
+                                )),
+                          ),
+                        ),
+                        onPressed: () async {
+                        },
+                      ): FlatButton(
                         minWidth: ScreenUtil.getWidth(context) / 2.5,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(1),
@@ -1481,10 +1497,11 @@ class _Edit_ProductState extends State<Edit_Product> {
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
                             widget.product.qty_reminder=isqty_reminder?widget.product.qty_reminder:'1';
-                            setState(() => loading = true);
                             print(widget.product.toJson());
                             if (widget.product.photo.isNotEmpty ||
                                 images.isNotEmpty) {
+                              setState(() => loading = true);
+
                               API(context)
                                   .postFile("products/${widget.product.id}",
                                   widget.product.toJson(),

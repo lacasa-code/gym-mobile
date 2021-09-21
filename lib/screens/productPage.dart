@@ -171,34 +171,35 @@ class _ProductPageState extends State<ProductPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  dataRow('رقم ID', "${widget.product.id}", Colors.black26),
+                  dataRow('${getTransrlate(context, 'id')}', "${widget.product.id}", Colors.black26),
                //${getTransrlate(context, 'CarType')}  : ${widget.hall_model.carType!=null?themeColor.getlocal()=='ar'?widget.hall_model.carType.typeName??'':widget.hall_model.carType.name_en??'':''}
                   dataRow(
                       '${getTransrlate(context, 'CarType')}',
                       "${widget.product.carType == null ? '' : themeColor.getlocal()=='ar'?widget.product.carType.typeName??'':widget.product.carType.name_en??''}",
-                      Colors.white),     dataRow(
+                      Colors.white),
+                  dataRow(
                       '${getTransrlate(context, 'mainCategory')}',
-                      "${widget.product.maincategory == null ? '' : widget.product.maincategory.mainCategoryName}",
+                      "${widget.product.maincategory != null ?themeColor.getlocal()=='ar'?widget.product.maincategory.mainCategoryName??widget.product.maincategory.mainCategoryNameen:widget.product.maincategory.mainCategoryNameen??widget.product.maincategory.mainCategoryName:''}",
                       Colors.white),
                   dataRow(
                       '${getTransrlate(context, 'subCategory')}',
-                      "${widget.product.category == null ? '' : widget.product.category.name}",
+                      "${widget.product.category != null ?themeColor.getlocal()=='ar'?widget.product.category.name??widget.product.category.name_en:widget.product.category.name_en??widget.product.category.name:''}",
                       Colors.black26),
                   dataRow(
                       '${getTransrlate(context, 'PartCategory')}',
-                      "${widget.product.partCategory == null ? '' : widget.product.partCategory.categoryName}",
+                      "${widget.product.partCategory != null ?themeColor.getlocal()=='ar'?widget.product.partCategory.categoryName??widget.product.partCategory.categoryname_en:widget.product.partCategory.categoryname_en??widget.product.partCategory.categoryName:''}",
                       Colors.white),
                   dataRow('${getTransrlate(context, 'serial')}',
                       "${widget.product.serialNumber}", Colors.black26),
                   dataRow('${getTransrlate(context, 'description')}',
-                      "${widget.product.description}", Colors.white),
+                      "${themeColor.getlocal()=='ar'?widget.product.description:widget.product.descriptionEn}", Colors.white),
                   dataRow(
                       '${getTransrlate(context, 'brand')}',
-                      "${widget.product.carMade == null ? '' : widget.product.carMade.carMade}",
+                      "${widget.product.carMade == null ? '' :themeColor.getlocal()=='ar'? widget.product.carMade.carMade :widget.product.carMade.name_en}",
                       Colors.black26),
                   dataRow(
                       '${getTransrlate(context, 'prodcountry')}',
-                      "${widget.product.originCountry == null ? '' : widget.product.originCountry.countryName}",
+                      "${widget.product.originCountry == null ? '' :themeColor.getlocal()=='ar'? widget.product.originCountry.countryName :widget.product.originCountry.nameEn}",
                       Colors.white),
                   dataRow(
                       '${getTransrlate(context, 'store')}',
@@ -216,11 +217,11 @@ class _ProductPageState extends State<ProductPage> {
                       Colors.black26),
                   dataRow(
                       '${getTransrlate(context, 'Compatiblecars')}',
-                      "${widget.product.carModel == null ? '' : widget.product.carModel.map((e) => e.carmodel).toList().toString()}",
+                      "${widget.product.carModel == null ? '' : widget.product.carModel.map((e) => themeColor.getlocal()=='ar'?e.carmodel??e.name_en:e.name_en??e.carmodel).toList().toString()}",
                       Colors.white),
                   dataRow(
                       '${getTransrlate(context, 'tags')}',
-                      "${widget.product.tags == null ? '' : widget.product.tags.map((e) => e.name).toList().toString()}",
+                      "${widget.product.tags == null ? '' : widget.product.tags.map((e) => themeColor.getlocal()=='ar'? e.name??e.name_en:e.name_en??e.name).toList().toString()}",
                       Colors.black26),
                   widget.product.producttypeId.id==2?Container():   dataRow(
                       '${getTransrlate(context, 'qty_reminder')}',

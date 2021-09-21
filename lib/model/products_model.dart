@@ -258,12 +258,12 @@ class Product {
         ? null
         : data['maincategory_id'] = this.Main_categoryid;
     data['manufacturer_id'] = this.manufacturer_id;
-    this.qty_reminder == null ? data['qty_reminder'] = '1' : data['qty_reminder'] = this.qty_reminder;
+    this.qty_reminder == null || this.qty_reminder == "null" ? data['qty_reminder'] = '1' : data['qty_reminder'] = this.qty_reminder;
     this.transmission_id == null
         ? null
         : data['transmission_id'] = this.transmission_id;
     data['store_id'] = this.storeId;
-    this.quantity == null || this.quantity == "0"
+    this.quantity == null || this.quantity == "0"|| this.quantity == "null"
         ? data['quantity'] = "1"
         : data['quantity'] = this.quantity;
 
@@ -466,6 +466,7 @@ class Vendor {
 class OriginCountry {
   int id;
   String countryName;
+  String nameEn;
   String countryCode;
   int status;
   String lang;
@@ -476,6 +477,7 @@ class OriginCountry {
   OriginCountry.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     countryName = json['country_name'];
+    nameEn = json['name_en'];
     countryCode = json['country_code'];
     status = json['status'];
     lang = json['lang'];

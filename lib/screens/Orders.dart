@@ -32,7 +32,8 @@ class _OrdersState extends State<Orders> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   String url = "show/orders";
   int i = 2;
-
+bool loading=false;
+bool Cloading=false;
   @override
   void initState() {
     _scrollController.addListener(() {
@@ -276,9 +277,27 @@ class _OrdersState extends State<Orders> {
                                                     MainAxisAlignment
                                                         .spaceAround,
                                                 children: [
-                                                  FlatButton(
+                                                  loading?FlatButton(
+                                                    minWidth: ScreenUtil.getWidth(context) / 4.5,
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.all(8.0),
+                                                      child:Container(
+                                                        height: 30,
+                                                        child: Center(
+                                                            child: CircularProgressIndicator(
+                                                              valueColor:
+                                                              AlwaysStoppedAnimation<Color>(Colors.orange,
+                                                              ),
+                                                            )),
+                                                      ),
+                                                    ),
+                                                    onPressed: () async {
+                                                    },
+                                                  ):  FlatButton(
                                                     padding: EdgeInsets.all(4),
                                                     onPressed: () {
+                                                      setState(() => loading = true);
+
                                                       API(context).post(
                                                           'vendor/approve/orders',
                                                           {
@@ -288,6 +307,8 @@ class _OrdersState extends State<Orders> {
                                                                         index]
                                                                     .id
                                                           }).then((value) {
+                                                        setState(() => loading = false);
+
                                                         if (value != null) {
                                                           showDialog(
                                                             context: context,
@@ -330,9 +351,27 @@ class _OrdersState extends State<Orders> {
                                                       ],
                                                     ),
                                                   ),
-                                                  FlatButton(
+                                                  Cloading?FlatButton(
+                                                    minWidth: ScreenUtil.getWidth(context) / 4.5,
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.all(8.0),
+                                                      child:Container(
+                                                        height: 30,
+                                                        child: Center(
+                                                            child: CircularProgressIndicator(
+                                                              valueColor:
+                                                              AlwaysStoppedAnimation<Color>(Colors.orange,
+                                                              ),
+                                                            )),
+                                                      ),
+                                                    ),
+                                                    onPressed: () async {
+                                                    },
+                                                  ):  FlatButton(
                                                     padding: EdgeInsets.all(4),
                                                     onPressed: () {
+                                                      setState(() => Cloading = true);
+
                                                       API(context).post(
                                                           'vendor/cancel/order',
                                                           {
@@ -342,6 +381,8 @@ class _OrdersState extends State<Orders> {
                                                                     .id
                                                           }).then((value) {
                                                         if (value != null) {
+                                                          setState(() => Cloading = false);
+
                                                           showDialog(
                                                             context: context,
                                                             builder: (_) =>
