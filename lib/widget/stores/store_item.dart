@@ -235,8 +235,8 @@ class _Stores_itemState extends State<Stores_item> {
                   ),
                   widget.hall_model.headCenter==1?PopupMenuItem(
                     value: 2,
-
-                  ):    PopupMenuItem(
+                  ):
+                  PopupMenuItem(
                     value: 2,
                     child:  InkWell(
                       onTap: (){
@@ -247,8 +247,7 @@ class _Stores_itemState extends State<Stores_item> {
                             context: context,
                             builder: (_) => ResultOverlay(
                               "${value['message']??value['errors'] ?? 'تم حذف المتجر بنجاح'}",
-                            ),
-                          );
+                            ),);
                           Provider.of<Provider_Data>(context,listen: false).getAllStore(context,'stores');
                         });
                       },

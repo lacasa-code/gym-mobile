@@ -36,6 +36,7 @@ class Order {
   int id;
   int userId;
   int orderNumber;
+  bool loading=false;
   String orderTotal;
   int expired;
   int approved;

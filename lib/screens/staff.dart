@@ -179,7 +179,7 @@ class _StaffState extends State<Staff> {
                                             builder: (_) => ResultOverlay(
                                               value.containsKey('errors')
                                                   ? "${value['errors']}"
-                                                  : 'تم حذف العامل بنجاح',
+                                                  : '${value['message']??value['errors'] ??'تم حذف العامل بنجاح '}'
                                             ),
                                           );
                                         }

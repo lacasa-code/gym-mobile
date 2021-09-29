@@ -91,6 +91,8 @@
   "FileTickit": "Ticket File",
   "gender": "Gender",
   "CarType": "Car Type",
+  "transmissions": "Transmission Type",
+
   "car": "Car",
   "year": "Year",
   "yearto": "Year to",

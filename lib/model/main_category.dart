@@ -50,42 +50,49 @@ class Main_category {
 
 class Main_Category {
   int _id;
-  String _mainCategoryName;
-  String _mainCategoryNameen;
+  String name;
+  String name_en;
   int _status;
-  String _lang;
+  List<Main_Category> categories;
 
   int get id => _id;
-  String get mainCategoryName => _mainCategoryName;
-  String get mainCategoryNameen => _mainCategoryNameen;
+  String get mainCategoryName => name;
+  String get mainCategoryNameen => name_en;
   int get status => _status;
-  String get lang => _lang;
+  List<Main_Category> get lang => categories;
 
   Main_Category({
       int id, 
       String mainCategoryName, 
-      int status, 
-      String lang}){
+      int status,
+    List<Main_Category> lang}){
     _id = id;
-    _mainCategoryName = mainCategoryName;
+    name = mainCategoryName;
     _status = status;
-    _lang = lang;
+    categories = lang;
 }
 
   Main_Category.fromJson(dynamic json) {
     _id = json["id"];
-    _mainCategoryName = json["main_category_name"];
-    _mainCategoryNameen = json["name_en"];
-    _status = json["status"];
-    _lang = json["lang"];
+    name = json["name"];
+    name_en = json["name_en"];
+    _status = json["level"];
+
+    if(json["categories"]!=null){
+      categories=List<Main_Category>();
+      json["categories"].forEach((v) {
+        categories.add(Main_Category.fromJson(v));
+      });
+    }
+
   }
 
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
     map["id"] = _id;
-    map["main_category_name"] = _mainCategoryName;
+    map["main_category_name"] = name;
     map["status"] = _status;
-    map["lang"] = _lang;
+    map["lang"] = categories;
     return map;
   }
 

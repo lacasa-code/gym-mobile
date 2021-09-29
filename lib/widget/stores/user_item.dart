@@ -189,10 +189,7 @@ class _User_itemState extends State<User_item> {
                         if (value != null) {
                           showDialog(
                             context: context,
-                            builder: (_) => ResultOverlay(
-                              value.containsKey('errors')
-                                  ? "${value['errors']}"
-                                  : 'تم حذف العامل بنجاح',
+                            builder: (_) => ResultOverlay("${value['message']??value['errors']}"
                             ),
                           );
                         }

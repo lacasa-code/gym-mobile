@@ -9,7 +9,7 @@
 class Basic_report {
   int _totalOrders;
   int _totalInvoices;
-  double _totalSale;
+  String _totalSale;
   int _prod_questions;
   int _tickets;
   int _pending_orders;
@@ -18,7 +18,7 @@ class Basic_report {
 
   int get totalOrders => _totalOrders;
   int get totalInvoices => _totalInvoices;
-  double get totalSale => _totalSale;
+  String get totalSale => _totalSale;
   int get prod_questions => _prod_questions;
   int get tickets => _tickets;
   int get pending_orders => _pending_orders;
@@ -28,7 +28,7 @@ class Basic_report {
   Basic_report(
       {int totalOrders,
       int totalInvoices,
-      double totalSale,
+        String totalSale,
       int prod_questions,
       int pending_orders,
       int tickets,
@@ -47,7 +47,7 @@ class Basic_report {
   Basic_report.fromJson(dynamic json) {
     _totalOrders = json["total_orders"];
     _totalInvoices = json["total_invoices"];
-    _totalSale = double.parse(json["total_sale"].toString());
+    _totalSale =json["total_sale"].toString() ;
     _prod_questions = json["prod_questions"];
     _pending_orders = json["pending_orders"];
     _tickets = json["tickets"];

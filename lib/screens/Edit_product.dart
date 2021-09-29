@@ -356,10 +356,14 @@ class _Edit_ProductState extends State<Edit_Product> {
                         onChanged: (CarType data) {
                           widget.product.cartype_id =
                               data.id.toString();
-                          getAllCarMade(data.id.toString());
                           setState(() {
                             widget.product.carType=data;
+                            widget.product.carMade=null;
+                            widget.product.carMadeId=null;
+                            CarMades=null;
                           });
+                          getAllCarMade(data.id.toString());
+
                         })),
                 SizedBox(
                   height: 10,
@@ -453,8 +457,9 @@ class _Edit_ProductState extends State<Edit_Product> {
                               onChanged: (Categories data) {
                                 widget.product.CategoryId = data.id.toString();
                                 setState(() {
-                                  widget.product.category=data;
+                                 // widget.product.category=data;
                                   part_Categories = null;
+                                  widget.product.partCategory=null;
                                 });
                                 getAllParts_Category(data.id);
                               }),
@@ -497,9 +502,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                               // },
                               items: part_Categories,
                               selectedItem:
-                              widget.product.partCategory == null
-                                  ? Part_Category()
-                                  : widget.product.partCategory,
+                              widget.product.partCategory ,
                               itemAsString: (Part_Category u) =>
                               "${themeColor.getlocal() == 'ar' ? u.categoryName ?? u.categoryname_en??'' : u.categoryname_en ?? u.categoryName??''}",
                               onChanged: (Part_Category data) => widget
@@ -545,8 +548,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                       child: DropdownSearch<Transmission>(
                           showSearchBox: false,
                           showClearButton: false,
-                          label:
-                          " ${getTransrlate(context, 'CarType')}",
+                          label: " ${getTransrlate(context, 'transmissions')}",
                           validator: (Transmission item) {
                             if (item == null) {
                               return "Required field";
@@ -555,13 +557,12 @@ class _Edit_ProductState extends State<Edit_Product> {
                           },
                           items: transmissions,
                           selectedItem:
-                          widget.product.transmission ??
-                              Transmission(),
+                          widget.product.transmission ,
                           itemAsString: (Transmission u) =>
                           "${themeColor.getlocal() == 'ar' ? u.transmissionName ?? u.name_en : u.name_en ?? u.transmissionName}",
                           onChanged: (Transmission data) =>
-                          widget.product.transmission_id =
-                              data.id.toString()),
+                          widget.product.transmission_id = data.id.toString()
+                      ),
                     ),
                     SizedBox(
                       height: 10,
@@ -578,7 +579,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                         : DropdownSearch<CarMade>(
                         showSearchBox: false,
                         showClearButton: false,
-                        label: " ${getTransrlate(context, 'brand')}ة",
+                        label: " ${getTransrlate(context, 'brand')}",
                         validator: (CarMade item) {
                           if (item == null) {
                             return "Required field";
@@ -587,7 +588,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                         },
                         items: CarMades,
                         selectedItem:
-                        widget.product.carMade ?? CarMade(),
+                        widget.product.carMade ,
                         itemAsString: (CarMade u) =>
                         "${themeColor.getlocal() == 'ar' ? u.carMade ?? u.name_en : u.name_en ?? u.carMade}",
                         onChanged: (CarMade data) {
@@ -677,9 +678,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                               },
                               items: years,
                               selectedItem:
-                              widget.product.yearfrom == null
-                                  ? Year()
-                                  : widget.product.yearfrom,
+                              widget.product.yearfrom ,
                               itemAsString: (Year u) =>
                               "${themeColor.getlocal() == 'ar' ? u.year ?? u.name_en : u.name_en ?? u.year}",
                               onChanged: (Year data) => widget.product.yearfromId = data.id.toString()),
@@ -710,9 +709,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                               },
                               items: years,
                               selectedItem:
-                              widget.product.yearto == null
-                                  ? Year()
-                                  : widget.product.yearto,
+                              widget.product.yearto,
                               itemAsString: (Year u) =>
                               "${themeColor.getlocal() == 'ar' ? u.year ?? u.name_en : u.name_en ?? u.year}",
                               onChanged: (Year data) => widget
@@ -1287,6 +1284,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                   crossAxisCount: 3,
                   children: List.generate(images.length, (index) {
                     Asset asset = images[index];
+
                     return Container(
                       margin: EdgeInsets.all(8),
                       decoration: BoxDecoration(
@@ -1316,6 +1314,16 @@ class _Edit_ProductState extends State<Edit_Product> {
                                     color: Colors.white,
                                   ),
                                 ),
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            right: 5,
+                            child: Container(
+                              color: Colors.white,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text('${index + 1}'),
                               ),
                             ),
                           ),

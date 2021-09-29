@@ -259,7 +259,7 @@ class _EditStaffState extends State<EditStaff> {
                                   showDialog(
                                     context: context,
                                     builder: (_) => ResultOverlay(
-                                      "${value['errors']}",
+                                      "${value['message']??value['errors']}",
                                     ),
                                   );
                                 } else {
@@ -392,6 +392,11 @@ class _EditStaffState extends State<EditStaff> {
       if (value != null) {
         setState(() {
           _listStore= Store_model.fromJson(value).data;
+        });
+        widget.user.stores.forEach((element) {
+          setState(() {
+            _listStore.remove(_listStore.where((e) => element.id==e.id).first);
+          });
         });
       }
     });

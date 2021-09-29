@@ -78,7 +78,6 @@ class _MyAppState extends State<MyApp> {
         onboard = prefs.getBool("onboard") ?? true;
       });
     });
-
     super.initState();
   }
 

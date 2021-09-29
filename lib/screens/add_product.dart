@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
@@ -11,10 +12,10 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:trkar_vendor/model/all_category.dart';
 import 'package:trkar_vendor/model/car_made.dart';
 import 'package:trkar_vendor/model/car_types.dart';
 import 'package:trkar_vendor/model/carmodel.dart';
-import 'package:trkar_vendor/model/category.dart';
 import 'package:trkar_vendor/model/main_category.dart';
 import 'package:trkar_vendor/model/manufacturer_model.dart';
 import 'package:trkar_vendor/model/part__category.dart';
@@ -44,6 +45,8 @@ class Add_Product extends StatefulWidget {
 class _Add_ProductState extends State<Add_Product> {
   Product product = Product();
   int Main_categoryid;
+  List<Main_Category> category=[];
+
   TextEditingController totaldiscount = TextEditingController();
   bool loading = false;
   bool isqty_reminder = false;
@@ -51,17 +54,17 @@ class _Add_ProductState extends State<Add_Product> {
   final _formKey = GlobalKey<FormState>();
   List<Carmodel> carmodels;
   List<CarMade> CarMades;
-  List<Year> years;
+  List<Year> yearsto,yearsfrom;
   List<Store> _store;
   List<Tag> _tags;
   List<Tag> _tagSelect = [];
-  List<Categories> _category;
+  List<Category_list> category_list;
+  List<Main_Category> _category;
   List<String> categories;
-  List<Part_Category> part_Categories;
+  List<Main_Category> part_Categories;
   List<Manufacturer> _manufacturers;
   List<ProdCountry> _prodcountries;
   List<Transmission> transmissions;
-  List<CarType> cartypes;
   List<Asset> images = List<Asset>();
   List<Main_Category> _listCategory;
   List<ProductType> _ProductType;
@@ -123,7 +126,6 @@ int CheckBox=0;
   @override
   void initState() {
     getAlltag();
-    getAllType();
     getAllMain_category();
     getAllStore();
     getAllYear();
@@ -288,44 +290,7 @@ int CheckBox=0;
                              product.descriptionEn = value;
                             },
                           ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          cartypes == null
-                              ? Container(
-                            child: DropdownSearch<String>(
-                              showSearchBox: false,
-                              showClearButton: false,
-                              label: " ",
-                              items: [''],
-                              enabled: false,
-                              //  onFind: (String filter) => getData(filter),
-                            ),
-                          )
-                              : Container(
-                              child: DropdownSearch<CarType>(
-                                  showSearchBox: false,
-                                  maxHeight: ScreenUtil.getHeight(context)/4,
-                                  showClearButton: false,
-                                  label:
-                                  "${getTransrlate(context, 'CarType')}",
-                                  validator: (CarType item) {
-                                    if (item == null) {
-                                      return "Required field";
-                                    } else
-                                      return null;
-                                  },
-                                  items: cartypes,
-                                  //  onFind: (String filter) => getData(filter),
-                                  itemAsString: (CarType u) =>
-                                  "${ themeColor.getlocal()=='ar'?u.typeName??u.name_en:u.name_en??u.typeName}",
-                                  onChanged: (CarType data) {
-                                    product.cartype_id = data.id.toString();
-                                    setState(() {
-                                      CarMades==null;
-                                    });
-                                    getAllCarMade(data.id.toString());
-                                  })),
+
                           SizedBox(
                             height: 10,
                           ),
@@ -363,112 +328,120 @@ int CheckBox=0;
                                               data.id.toString();
                                           Main_categoryid = data.id;
                                           product.CategoryId==null;
-                                          _category = null;
+                                          _category = data.categories;
                                         });
-                                        getAllCategory(data.id);
+
                                       }),
                                 ),
+                          
                           SizedBox(
                             height: 5,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "${getTransrlate(context, 'subCategory')} ",
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 16),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  _category == null
-                                      ? Container(
-                                          width: ScreenUtil.getWidth(context) /
-                                              2.5,
-                                          child: DropdownSearch<String>(
-                                            showSearchBox: false,
-                                            showClearButton: false,
-                                            label: " ",
-                                            items: [''],
-                                            enabled: false,
-                                            //  onFind: (String filter) => getData(filter),
-                                          ),
-                                        )
-                                      : Container(
-                                          width: ScreenUtil.getWidth(context) /
-                                              2.5,
-                                          child: DropdownSearch<Categories>(
-                                              showSearchBox: false,
-                                              showClearButton: false,
-                                              label: " ",
-                                              validator: (Categories item) {
-                                                if (item == null) {
-                                                  return "Required field";
-                                                } else
-                                                  return null;
-                                              },
-                                              items: _category,
-                                              //  onFind: (String filter) => getData(filter),
-                                              itemAsString: (Categories u) =>
-                                              themeColor.getlocal()=='ar'?u.name??u.name_en:u.name_en??u.name,
-                                              onChanged: (Categories data) {
-                                                setState(() {
-                                                  product.CategoryId = data.id.toString();
-
-                                                  part_Categories = null;
-
-                                                });
-                                                getAllParts_Category(data.id);
-                                              }),
-                                        ),
-                                ],
+                              Text(
+                                "${getTransrlate(context, 'subCategory')} ",
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 16),
                               ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "${getTransrlate(context, 'PartCategory')}",
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 16),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  part_Categories == null
-                                      ? Container(
-                                          width: ScreenUtil.getWidth(context) /
-                                              2.5,
-                                          child: DropdownSearch<String>(
-                                            showSearchBox: false,
-                                            showClearButton: false,
-                                            label: " ",
-                                            items: [''],
-                                            enabled: false,
-                                            //  onFind: (String filter) => getData(filter),
-                                          ),
-                                        )
-                                      : Container(
-                                          width: ScreenUtil.getWidth(context) /
-                                              2.5,
-                                          child: DropdownSearch<Part_Category>(
-                                              showSearchBox: false,
-                                              showClearButton: false,
-                                              label: " ",
-                                              items: part_Categories,
-                                              //  onFind: (String filter) => getData(filter),
-                                              itemAsString: (Part_Category u) =>
-                                              themeColor.getlocal()=='ar'?u.categoryName??u.categoryname_en:u.categoryname_en??u.categoryName,
-                                              onChanged: (Part_Category data) =>
-                                                  product.partCategoryId = data.id.toString()),
-                                        ),
-                                ],
+                              SizedBox(
+                                height: 10,
+                              ),
+                              _category == null
+                                  ? Container(
+                                width: ScreenUtil.getWidth(context) /
+                                    1.15,
+                                child: DropdownSearch<String>(
+                                  showSearchBox: false,
+                                  showClearButton: false,
+                                  label: " ",
+                                  items: [''],
+                                  enabled: false,
+                                  //  onFind: (String filter) => getData(filter),
+                                ),
+                              )
+                                  : Container(
+                                width: ScreenUtil.getWidth(context) /
+                                    1.15,
+                                child: DropdownSearch<Main_Category>(
+                                    showSearchBox: false,
+                                    showClearButton: false,
+                                    label: " ",
+                                    validator: (Main_Category item) {
+                                      if (item == null) {
+                                        return "Required field";
+                                      } else
+                                        return null;
+                                    },
+                                    items: _category,
+                                    //  onFind: (String filter) => getData(filter),
+                                    itemAsString: (Main_Category u) =>
+                                    themeColor.getlocal()=='ar'?u.mainCategoryName??u.mainCategoryNameen:u.mainCategoryNameen??u.mainCategoryName,
+                                    onChanged: (Main_Category data) {
+                                      setState(() {
+                                        product.CategoryId = data.id.toString();
+                                        product.category=data;
+                                        data.status==0?category.contains(data)?null: category.add(data):null;
+                                        part_Categories = data.categories;
+                                      });
+                                    }),
                               ),
                             ],
                           ),
+
+                          SizedBox(
+                            height: 5,
+                          ),
+                          ListView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: category.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "${getTransrlate(context, 'subCategory')} ",
+                                      style: TextStyle(
+                                          color: Colors.black, fontSize: 16),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    category[index].categories == null
+                                        ? Container()
+                                        : Container(
+                                      width: ScreenUtil.getWidth(context) /
+                                          1.15,
+                                      child: DropdownSearch<Main_Category>(
+                                          showSearchBox: false,
+                                          showClearButton: false,
+                                          label: " ",
+                                          validator: (Main_Category item) {
+                                            if (item == null) {
+                                              return "Required field";
+                                            } else
+                                              return null;
+                                          },
+                                          items: category[index].categories,
+                                          //  onFind: (String filter) => getData(filter),
+                                          itemAsString: (Main_Category u) =>
+                                          themeColor.getlocal()=='ar'?u.mainCategoryName??u.mainCategoryNameen:u.mainCategoryNameen??u.mainCategoryName,
+                                          onChanged: (Main_Category data) {
+                                            setState(() {
+                                              product.CategoryId = data.id.toString();
+                                              data.status==0?category.contains(data)?null: category.add(data):null;
+                                              print(category.contains(data));
+                                              part_Categories = null;
+
+                                            });
+                                          }),
+                                    ),
+                                  ],
+                                );
+                              }),
+
                           Main_categoryid == 7||Main_categoryid == 5||product.CategoryId == "43"
                               ? Container()
                               : Column(
@@ -613,7 +586,7 @@ int CheckBox=0;
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        years == null
+                                        yearsto == null
                                             ? Container(
                                                 width: ScreenUtil.getWidth(
                                                         context) /
@@ -641,14 +614,24 @@ int CheckBox=0;
                                                       } else
                                                         return null;
                                                     },
-                                                    items: years,
+                                                    items: yearsto,
                                                  // selectedItem: product.yearfrom == null ? Year() : product.yearfrom,
                                                     itemAsString: (Year u) =>
                                                     themeColor.getlocal()=='ar'?u.year??u.name_en:u.name_en??u.year,
-                                                    onChanged: (Year data) =>
-                                                        product.yearfromId = data.id.toString()),
+                                                    onChanged: (Year data) {
+                                                      setState(() {
+                                                        yearsfrom=null;
+                                                      });
+                                                      product.yearfromId = data.id.toString();
+                                                      Timer(Duration(seconds: 1), () =>
+                                                         setState(() {
+                                                           yearsfrom= yearsto.where((e) => int.parse(e.year??"0") >=int.parse(data.year??"0")).toList();
+                                                         }));
+
+                                                    }),
+
                                               ),
-                                        years == null
+                                        yearsfrom == null
                                             ? Container(
                                                 width: ScreenUtil.getWidth(
                                                         context) /
@@ -669,17 +652,17 @@ int CheckBox=0;
                                                 child: DropdownSearch<Year>(
                                                     showSearchBox: false,
                                                     showClearButton: false,
-                                                    label: "${getTransrlate(context, 'yearto')}",
+                                                    label: " ${getTransrlate(context, 'yearto')}",
                                                     validator: (Year item) {
                                                       if (item == null) {
                                                         return "Required field";
                                                       } else
                                                         return null;
                                                     },
-                                                    items: years,
+                                                    items: yearsfrom,
                                                     //selectedItem: product.yearto == null ? Year() : product.yearto,
                                                     itemAsString: (Year u) =>
-                                                    themeColor.getlocal()=='ar'?u.year??u.name_en:u.name_en??u.year,
+                                                     " ${themeColor.getlocal()=='ar'?u.year??u.name_en:u.name_en??u.year}",
                                                     onChanged: (Year data) =>
                                                         product.yeartoId =
                                                             data.id.toString()),
@@ -1478,16 +1461,17 @@ int CheckBox=0;
     API(context).get('part-categorieslist/$id').then((value) {
       if (value != null) {
         setState(() {
-          part_Categories = Parts_Category.fromJson(value).data;
+         // part_Categories = Parts_Category.fromJson(value).data;
         });
       }
     });
   }
   Future<void> getAllMain_category() async {
-    API(context).get('main/categories/list/all').then((value) {
+    API(context).get('allcategories').then((value) {
       if (value != null) {
         setState(() {
           _listCategory = Main_category.fromJson(value).data;
+          category_list = Category_model.fromJson(value).data;
         });
       }
     });
@@ -1506,7 +1490,7 @@ int CheckBox=0;
     API(context).get('car-yearslist').then((value) {
       if (value != null) {
         setState(() {
-          years = Years.fromJson(value).data;
+          yearsto = Years.fromJson(value).data;
         });
       }
     });
@@ -1520,15 +1504,7 @@ int CheckBox=0;
       }
     });
   }
-  Future<void> getAllCategory(int id) async {
-    API(context).get('categorieslist/$id').then((value) {
-      if (value != null) {
-        setState(() {
-          _category = Category_model.fromJson(value).data;
-        });
-      }
-    });
-  }
+
   Future<void> getAlltag() async {
     API(context).get('product-tagslist').then((value) {
       if (value != null) {
@@ -1569,19 +1545,9 @@ int CheckBox=0;
         });
       }
     });
-    getAllType();
-  }
-
-  Future<void> getAllType() async {
-    API(context).get('car/types/list').then((value) {
-      if (value != null) {
-        setState(() {
-          cartypes = CarTypes.fromJson(value).data;
-        });
-      }
-    });
     getAllproducttypes();
   }
+
 
   _generateTags(Provider_control themeColor) {
     return _tagSelect.isEmpty

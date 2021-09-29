@@ -75,7 +75,7 @@ class Product {
   String quantity;
   String serialNumber;
   String transmissionId;
-  Categories category;
+  Main_Category category;
   ProdCountry prodCountry;
   CarMade carMade;
   List<Carmodel> carModel;
@@ -162,7 +162,7 @@ class Product {
       });
     }
     category = json['category'] != null
-        ? new Categories.fromJson(json['category'])
+        ? new Main_Category.fromJson(json['category'])
         : null;
     prodCountry = json['origin_country'] != null
         ? new ProdCountry.fromJson(json['origin_country'])

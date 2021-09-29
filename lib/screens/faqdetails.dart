@@ -196,7 +196,7 @@ bool loading=false;
                       ),
                     ],
                   ),
-                  widget.orders_model.product.category==null?Container():   Text(" ${getTransrlate(context, 'mainCategory')} :${widget.orders_model.product==null?"": widget.orders_model.product.category==null?"":widget.orders_model.product.category.name ?? ''}",
+                  widget.orders_model.product.category==null?Container():   Text(" ${getTransrlate(context, 'mainCategory')} :${widget.orders_model.product==null?"": widget.orders_model.product.category==null?"":widget.orders_model.product.category.mainCategoryName ?? ''}",
                       style: TextStyle(color: Colors.black, fontSize: 12)),
                   widget.orders_model.product.description==null?Container():  Text(" ${getTransrlate(context, 'description')} :${themeColor.getlocal()=='ar'?widget.orders_model.product.description:widget.orders_model.product.descriptionEn ?? widget.orders_model.product.description}",
                       style: TextStyle(color: Colors.black, fontSize: 12)),

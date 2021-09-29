@@ -25,6 +25,7 @@ import 'package:trkar_vendor/utils/navigator.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
 import 'package:trkar_vendor/screens/notification.dart';
+import 'package:trkar_vendor/widget/custom_loading.dart';
 import 'package:trkar_vendor/widget/hidden_menu.dart';
 
 class HomeMobile extends StatefulWidget {
@@ -44,8 +45,9 @@ class _HomeMobileState extends State<HomeMobile> {
   TextEditingController _tocontroller = TextEditingController(
       text: DateFormat('yyyy-MM-dd').format(DateTime.now()));
   TextEditingController _fromcontroller = TextEditingController(
-      text: DateFormat('yyyy-MM-dd').format(DateTime.now().subtract(Duration(days: 7))));
-  String name,roles;
+      text: DateFormat('yyyy-MM-dd')
+          .format(DateTime.now().subtract(Duration(days: 7))));
+  String name, roles;
 
   Future<void> _selectDatefrom(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -80,12 +82,10 @@ class _HomeMobileState extends State<HomeMobile> {
         name = prefs.getString('user_name');
         roles = prefs.getString("roles");
       });
-      if(roles!='Staff'){
-        get_report(DateFormat('yyyy-MM-dd').format(DateTime.now()),
-            DateFormat('yyyy-MM-dd').format(DateTime.now()));
-      }
-    });
 
+      get_report(DateFormat('yyyy-MM-dd').format(DateTime.now()),
+          DateFormat('yyyy-MM-dd').format(DateTime.now()));
+    });
 
     API(context).get('vendor/about/rare/products').then((value) {
       if (value != null) {
@@ -141,404 +141,264 @@ class _HomeMobileState extends State<HomeMobile> {
               SizedBox(
                 height: 20,
               ),
-              roles=='Staff'?Container( child: Center(child: Image.asset('assets/images/trkar_logo_white.png')),):      Container(
-                color: Color(0xffF6F6F6),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Container(
-                            width: ScreenUtil.getWidth(context) / 6,
-                            child: Text(
-                                '${getTransrlate(context, 'duration')} : ')),
-                        InkWell(
-                          onTap: () {
-                            _selectDatefrom(context);
-                          },
-                          child: Row(
+              basic_report == null
+                  ? Container(
+                      child: Center(
+                          child: Custom_Loading()),
+                    )
+                  : Container(
+                      color: Color(0xffF6F6F6),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Icon(
-                                Icons.calendar_today_outlined,
-                                color: Colors.black26,
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
                               Container(
-                                  width: ScreenUtil.getWidth(context) / 3.2,
+                                  width: ScreenUtil.getWidth(context) / 6,
                                   child: Text(
-                                    " ${getTransrlate(context, 'from')} : ${_fromcontroller.text}",
-                                    style: TextStyle(fontSize: 14),
-                                  )),
-                            ],
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            _selectDateto(context);
-                          },
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.calendar_today_outlined,
-                                color: Colors.black26,
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Container(
-                                  width: ScreenUtil.getWidth(context) / 3.2,
-                                  child: Text(
-                                      " ${getTransrlate(context, 'to')} : ${_tocontroller.text}",
-                                      style: TextStyle(fontSize: 14))),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    Divider(),
-                    if (basic_report == null) Container() else Container(
-                            child: ResponsiveGridList(
-                              scroll: false,
-                              desiredItemWidth:
-                                  ScreenUtil.getWidth(context) / 2.3,
-                              minSpacing: 10,
-                              children: [
-                               InkWell(
-                                 onTap: (){
-                                   Nav.route(context, Orders());
-                                 },
-                                  child: Card(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          SvgPicture.asset(
-                                            'assets/icons/Bell.svg',
-                                            width: 18,
-                                            height: 18,
-                                            color: Colors.green,
-                                          ),
-                                          SizedBox(
-                                            width: 3,
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                width:
-                                                    ScreenUtil.getWidth(context) /
-                                                        3.1,
-                                                child: AutoSizeText(
-                                                  "${getTransrlate(context, 'total_orders')}",
-                                                  minFontSize: 13,
-                                                  maxLines: 1,
-                                                  maxFontSize: 14,
-                                                  style: TextStyle(
-                                                      color: Colors.green,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                              ),
-                                              Text("${basic_report.totalOrders}",
-                                                  maxLines: 1,
-                                                  style: TextStyle(
-                                                      color:
-                                                          themeColor.getColor())),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
+                                      '${getTransrlate(context, 'duration')} : ')),
+                              InkWell(
+                                onTap: () {
+                                  _selectDatefrom(context);
+                                },
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.calendar_today_outlined,
+                                      color: Colors.black26,
                                     ),
-                                  ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Container(
+                                        width:
+                                            ScreenUtil.getWidth(context) / 3.2,
+                                        child: Text(
+                                          " ${getTransrlate(context, 'from')} : ${_fromcontroller.text}",
+                                          style: TextStyle(fontSize: 14),
+                                        )),
+                                  ],
                                 ),
-                                InkWell(
-                                  onTap: (){
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  _selectDateto(context);
+                                },
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.calendar_today_outlined,
+                                      color: Colors.black26,
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Container(
+                                        width:
+                                            ScreenUtil.getWidth(context) / 3.2,
+                                        child: Text(
+                                            " ${getTransrlate(context, 'to')} : ${_tocontroller.text}",
+                                            style: TextStyle(fontSize: 14))),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          Divider(),
+                          if (basic_report == null)
+                            Container()
+                          else
+                            Container(
+                              child: ResponsiveGridList(
+                                scroll: false,
+                                desiredItemWidth:
+                                    ScreenUtil.getWidth(context) / 2.3,
+                                minSpacing: 10,
+                                children: [
+                                  CustomCard(() {
                                     Nav.route(context, Orders());
                                   },
-                                  child: Card(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Icon(
-                                            Icons.local_shipping_outlined,
-                                            color: Colors.orange,
-                                          ),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "${getTransrlate(context, 'pending_orders')}",
-                                                style: TextStyle(
-                                                    color: Colors.orange,
-                                                    fontSize: 13,
-                                                    fontWeight: FontWeight.bold),
-                                              ),
-                                              Text(
-                                                  "${basic_report.pending_orders}",
-                                                  maxLines: 1,
-                                                  style: TextStyle(
-                                                      color:
-                                                          themeColor.getColor())),
-                                            ],
-                                          ),
-                                        ],
+                                      SvgPicture.asset(
+                                        'assets/icons/Bell.svg',
+                                        width: 18,
+                                        height: 18,
+                                        color: Colors.green,
                                       ),
-                                    ),
-                                  ),
-                                ),
-                                InkWell(
-                                  onTap: (){
-                                    Nav.route(context, Invoices());
+                                      getTransrlate(context, 'total_orders'),
+                                      Colors.green,
+                                      "${basic_report.totalOrders}",
+                                      themeColor),
+                                  CustomCard(() {
+                                    Nav.route(context, Orders());
                                   },
-                                  child: Card(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Icon(
-                                            Icons.money,
-                                            color: Colors.lightGreen,
-                                            size: 18,
-                                          ),
-                                          SizedBox(
-                                            width: 3,
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                width:
-                                                    ScreenUtil.getWidth(context) /
-                                                        3.1,
-                                                child: AutoSizeText(
-                                                  "${getTransrlate(context, 'total_sale')}",
-                                                  minFontSize: 13,
-                                                  maxLines: 1,
-                                                  maxFontSize: 14,
-                                                  style: TextStyle(
-                                                      color: Colors.lightGreen,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                              ),
-                                              Text("${basic_report.totalSale.roundToDouble()}",
-                                                  maxLines: 1,
-                                                  style: TextStyle(
-                                                      color:
-                                                          themeColor.getColor())),
-                                            ],
-                                          ),
-                                        ],
+                                      Icon(
+                                        Icons.local_shipping_outlined,
+                                        color: Colors.orange,
                                       ),
-                                    ),
-                                  ),
-                                ),
-                                InkWell(
-                                  onTap: (){
+                                      getTransrlate(context, 'pending_orders'),
+                                      Colors.orange,
+                                      "${basic_report.pending_orders}",
+                                      themeColor),
+                                  CustomCard(() {
                                     Nav.route(context, Products());
                                   },
-                                  child: Card(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Icon(
-                                            Icons.shopping_bag_outlined,
-                                            color: Colors.brown,
-                                            size: 18,
-                                          ),
-                                          SizedBox(
-                                            width: 3,
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                width:
-                                                    ScreenUtil.getWidth(context) /
-                                                        3.1,
-                                                child: AutoSizeText(
-                                                  "${getTransrlate(context, 'total_products')}",
-                                                  minFontSize: 13,
-                                                  maxLines: 1,
-                                                  maxFontSize: 14,
-                                                  style: TextStyle(
-                                                      color: Colors.brown,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                              ),
-                                              Text(
-                                                  "${basic_report.totalProducts.roundToDouble()}",
-                                                  maxLines: 1,
-                                                  style: TextStyle(
-                                                      color:
-                                                          themeColor.getColor())),
-                                            ],
-                                          ),
-                                        ],
+                                      Icon(
+                                        Icons.local_shipping_outlined,
+                                        color: Colors.brown,
                                       ),
-                                    ),
-                                  ),
-                                ),
-                                InkWell(
-                                  onTap: (){
-                                    Nav.route(context, FaqPage());
+                                      getTransrlate(context, 'total_products'),
+                                      Colors.brown,
+                                      "${basic_report.totalProducts}",
+                                      themeColor),
+                                  CustomCard(() {
+                                    Nav.route(context, Invoices());
                                   },
-                                  child: Card(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          SvgPicture.asset(
-                                            'assets/icons/Question mark.svg',
-                                            width: 18,
-                                            height: 18,
-                                            color: Colors.blue,
-                                          ),
-                                          SizedBox(
-                                            width: 3,
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                width:
-                                                    ScreenUtil.getWidth(context) /
-                                                        3.1,
-                                                child: AutoSizeText(
-                                                  "${getTransrlate(context, 'prod_questions')}",
-                                                  minFontSize: 10,
-                                                  maxLines: 1,
-                                                  maxFontSize: 15,
-                                                  style: TextStyle(
-                                                      color: Colors.blue,
-                                                      fontWeight:
-                                                          FontWeight.bold),
+                                      Icon(
+                                        Icons.money,
+                                        color: Colors.lightGreen,
+                                        size: 18,
+                                      ),
+                                      getTransrlate(context, 'total_sale'),
+                                      Colors.lightGreen,
+                                      "${basic_report.totalSale}",
+                                      themeColor),
+
+                                  InkWell(
+                                    onTap: () {
+                                      Nav.route(context, FaqPage());
+                                    },
+                                    child: Card(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            SvgPicture.asset(
+                                              'assets/icons/Question mark.svg',
+                                              width: 18,
+                                              height: 18,
+                                              color: Colors.blue,
+                                            ),
+                                            SizedBox(
+                                              width: 3,
+                                            ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Container(
+                                                  width: ScreenUtil.getWidth(
+                                                          context) /
+                                                      3.1,
+                                                  child: AutoSizeText(
+                                                    "${getTransrlate(context, 'prod_questions')}",
+                                                    minFontSize: 10,
+                                                    maxLines: 1,
+                                                    maxFontSize: 15,
+                                                    style: TextStyle(
+                                                        color: Colors.blue,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
                                                 ),
-                                              ),
-                                              Text(
-                                                  "${basic_report.prod_questions ?? '0'}",
-                                                  maxLines: 1,
-                                                  style: TextStyle(
-                                                      color:
-                                                          themeColor.getColor())),
-                                            ],
-                                          ),
-                                        ],
+                                                Text(
+                                                    "${basic_report.prod_questions ?? '0'}",
+                                                    maxLines: 1,
+                                                    style: TextStyle(
+                                                        color: themeColor
+                                                            .getColor())),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                InkWell(
-                                  onTap: (){
-                                    Nav.route(context, Tickets());
-                                  },
-                                  child: Card(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Icon(
-                                            Icons.error_outline,
-                                            color: Colors.red,
-                                            size: 18,
-                                          ),
-                                          SizedBox(
-                                            width: 3,
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                width:
-                                                    ScreenUtil.getWidth(context) /
-                                                        3.1,
-                                                child: AutoSizeText(
-                                                  "${getTransrlate(context, 'tickets')}",
-                                                  minFontSize: 13,
-                                                  maxLines: 1,
-                                                  maxFontSize: 14,
-                                                  style: TextStyle(
-                                                      color: Colors.red,
-                                                      fontWeight:
-                                                          FontWeight.bold),
+                                  InkWell(
+                                    onTap: () {
+                                      Nav.route(context, Tickets());
+                                    },
+                                    child: Card(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Icon(
+                                              Icons.error_outline,
+                                              color: Colors.red,
+                                              size: 18,
+                                            ),
+                                            SizedBox(
+                                              width: 3,
+                                            ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Container(
+                                                  width: ScreenUtil.getWidth(
+                                                          context) /
+                                                      3.1,
+                                                  child: AutoSizeText(
+                                                    "${getTransrlate(context, 'tickets')}",
+                                                    minFontSize: 13,
+                                                    maxLines: 1,
+                                                    maxFontSize: 14,
+                                                    style: TextStyle(
+                                                        color: Colors.red,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
                                                 ),
-                                              ),
-                                              Text(
-                                                  "${basic_report.tickets ?? '0'}",
-                                                  maxLines: 1,
-                                                  style: TextStyle(
-                                                      color:
-                                                          themeColor.getColor())),
-                                            ],
-                                          ),
-                                        ],
+                                                Text(
+                                                    "${basic_report.tickets ?? '0'}",
+                                                    maxLines: 1,
+                                                    style: TextStyle(
+                                                        color: themeColor
+                                                            .getColor())),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-                    labels.isEmpty
-                        ? Container()
-                        : Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              height: ScreenUtil.getHeight(context) / 4,
-                              child: BarChart(
-                                data: data,
-                                labels: labels,
-                                labelStyle: TextStyle(fontSize: 12),
-                                displayValue: true,
-                                reverse: true,
-                                getColor: DataRepository.getColor,
-                                //getIcon: DataRepository.getIcon,
-                                barWidth: ScreenUtil.divideWidth(context) / 5,
-                                barSeparation: 5,
-                                animationDuration: Duration(milliseconds: 5000),
-                                animationCurve: Curves.easeInOutSine,
-                                itemRadius: 1,
-                                headerValueHeight: 30,
-                                roundValuesOnText: false,
+                                ],
                               ),
                             ),
-                          ),
-                  ],
-                ),
-              ),
+                          labels.isEmpty
+                              ? Container()
+                              : Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                    height: ScreenUtil.getHeight(context) / 4,
+                                    child: BarChart(
+                                      data: data,
+                                      labels: labels,
+                                      labelStyle: TextStyle(fontSize: 12),
+                                      displayValue: true,
+                                      reverse: true,
+                                      getColor: DataRepository.getColor,
+                                      //getIcon: DataRepository.getIcon,
+                                      barWidth:
+                                          ScreenUtil.divideWidth(context) / 5,
+                                      barSeparation: 5,
+                                      animationDuration:
+                                          Duration(milliseconds: 5000),
+                                      animationCurve: Curves.easeInOutSine,
+                                      itemRadius: 1,
+                                      headerValueHeight: 30,
+                                      roundValuesOnText: false,
+                                    ),
+                                  ),
+                                ),
+                        ],
+                      ),
+                    ),
               product == null
                   ? Container()
                   : product.isEmpty
@@ -590,8 +450,11 @@ class _HomeMobileState extends State<HomeMobile> {
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     return InkWell(
-                                      onTap: (){
-                                        Nav.route(context, ProductPage(product: product[index]));
+                                      onTap: () {
+                                        Nav.route(
+                                            context,
+                                            ProductPage(
+                                                product: product[index]));
                                       },
                                       child: Column(
                                         children: [
@@ -600,12 +463,12 @@ class _HomeMobileState extends State<HomeMobile> {
                                                 CrossAxisAlignment.center,
                                             children: [
                                               Container(
-                                                width:
-                                                    ScreenUtil.getWidth(context) /
-                                                        8,
-                                                height:
-                                                    ScreenUtil.getWidth(context) /
-                                                        8,
+                                                width: ScreenUtil.getWidth(
+                                                        context) /
+                                                    8,
+                                                height: ScreenUtil.getWidth(
+                                                        context) /
+                                                    8,
                                                 child: CachedNetworkImage(
                                                   imageUrl: product[index]
                                                           .photo
@@ -627,11 +490,11 @@ class _HomeMobileState extends State<HomeMobile> {
                                                 width: 10,
                                               ),
                                               Container(
-                                                width:
-                                                    ScreenUtil.getWidth(context) /
-                                                        2,
+                                                width: ScreenUtil.getWidth(
+                                                        context) /
+                                                    2,
                                                 child: AutoSizeText(
-                                                 "${themeColor.getlocal()=='ar'?product[index].name??product[index].nameEn: product[index].nameEn??product[index].name}",
+                                                  "${themeColor.getlocal() == 'ar' ? product[index].name ?? product[index].nameEn : product[index].nameEn ?? product[index].name}",
                                                   maxLines: 2,
                                                   style: TextStyle(
                                                     fontSize: 14,
@@ -647,8 +510,8 @@ class _HomeMobileState extends State<HomeMobile> {
                                               ),
                                               Text(
                                                 "${product[index].quantity}",
-                                                style:
-                                                    TextStyle(color: Colors.red),
+                                                style: TextStyle(
+                                                    color: Colors.red),
                                               ),
                                               SizedBox(
                                                 width: 20,
@@ -681,8 +544,10 @@ class _HomeMobileState extends State<HomeMobile> {
 
   void _loadData() {
     setState(() {
-      data = basic_report.periodDetails.map((e) => e.reports.totalSale).toList();
-      labels = basic_report.periodDetails.map((e) => e.dayName??e.day).toList();
+      data =
+          basic_report.periodDetails.map((e) => e.reports.totalSale).toList();
+      labels =
+          basic_report.periodDetails.map((e) => e.dayName ?? e.day).toList();
     });
   }
 
@@ -690,12 +555,53 @@ class _HomeMobileState extends State<HomeMobile> {
     API(context)
         .post('vendor/day/month/filter', {"from": "$from", "to": "$to"}).then(
             (value) {
+      print("value =$value");
       if (value != null) {
         setState(() {
           basic_report = Basic_report.fromJson(value);
         });
-        _loadData();
+        roles=='Staff'?null:_loadData();
       }
     });
+  }
+
+  CustomCard(GestureTapCallback ontap, Widget icon, String title, Color color,
+      String value, Provider_control themeColor) {
+    return value=="null"?Container(): InkWell(
+      onTap:ontap,
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              icon,
+              SizedBox(
+                width: 2,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: ScreenUtil.getWidth(context) / 3.2,
+                    child: AutoSizeText(
+                      "$title",
+                      minFontSize: 13,
+                      maxLines: 1,
+                      maxFontSize: 14,
+                      style:
+                          TextStyle(color: color, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Text("$value",
+                      maxLines: 1,
+                      style: TextStyle(color: themeColor.getColor())),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

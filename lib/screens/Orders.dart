@@ -32,7 +32,6 @@ class _OrdersState extends State<Orders> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   String url = "show/orders";
   int i = 2;
-bool loading=false;
 bool Cloading=false;
   @override
   void initState() {
@@ -277,7 +276,7 @@ bool Cloading=false;
                                                     MainAxisAlignment
                                                         .spaceAround,
                                                 children: [
-                                                  loading?FlatButton(
+                                                  orders[index].loading?FlatButton(
                                                     minWidth: ScreenUtil.getWidth(context) / 4.5,
                                                     child: Padding(
                                                       padding: const EdgeInsets.all(8.0),
@@ -296,7 +295,7 @@ bool Cloading=false;
                                                   ):  FlatButton(
                                                     padding: EdgeInsets.all(4),
                                                     onPressed: () {
-                                                      setState(() => loading = true);
+                                                      setState(() => orders[index].loading = true);
 
                                                       API(context).post(
                                                           'vendor/approve/orders',
@@ -307,7 +306,7 @@ bool Cloading=false;
                                                                         index]
                                                                     .id
                                                           }).then((value) {
-                                                        setState(() => loading = false);
+                                                        setState(() => orders[index].loading = false);
 
                                                         if (value != null) {
                                                           showDialog(
