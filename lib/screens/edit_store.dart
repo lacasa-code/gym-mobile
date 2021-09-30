@@ -130,7 +130,7 @@ class _Edit_StoreState extends State<Edit_Store> {
                         //     validator:
                         //         (Country item) {
                         //       if (item == null) {
-                        //         return "Required field";
+                        //         return "${getTransrlate(context, 'Required')}";
                         //       } else
                         //         return null;
                         //     },
@@ -175,7 +175,7 @@ class _Edit_StoreState extends State<Edit_Store> {
                         //     // label: getTransrlate(context, 'Countroy'),
                         //     validator: (Area item) {
                         //       if (item == null) {
-                        //         return "Required field";
+                        //         return "${getTransrlate(context, 'Required')}";
                         //       } else
                         //         return null;
                         //     },
@@ -220,7 +220,7 @@ class _Edit_StoreState extends State<Edit_Store> {
                         //     selectedItem:widget.store.city??City(cityName:' ${widget.store.cityName??' '}'),
                         //     validator: (City item) {
                         //       if (item == null) {
-                        //         return "Required field";
+                        //         return "${getTransrlate(context, 'Required')}";
                         //       } else
                         //         return null;
                         //     },

@@ -174,7 +174,7 @@ class _add_StoreState extends State<add_Store> {
                             // label: getTransrlate(context, 'Countroy'),
                             validator: (Country item) {
                               if (item == null) {
-                                return "Required field";
+                                return "${getTransrlate(context, 'Required')}";
                               } else
                                 return null;
                             },
@@ -208,7 +208,7 @@ class _add_StoreState extends State<add_Store> {
                              label: getTransrlate(context, 'City'),
                             validator: (Area item) {
                               if (item == null) {
-                                return "Required field";
+                                return "${getTransrlate(context, 'Required')}";
                               } else
                                 return null;
                             },
@@ -234,7 +234,7 @@ class _add_StoreState extends State<add_Store> {
                              label: getTransrlate(context, 'City'),
                             validator: (City item) {
                               if (item == null) {
-                                return "Required field";
+                                return "${getTransrlate(context, 'Required')}";
                               } else
                                 return null;
                             },

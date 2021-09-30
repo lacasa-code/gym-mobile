@@ -152,7 +152,7 @@ class _add_StaffState extends State<add_Staff> {
                             label: "   ",
                             validator: (Role item) {
                               if (item == null) {
-                                return "Required field";
+                                return "${getTransrlate(context, 'Required')}";
                               } else
                                 return null;
                             },

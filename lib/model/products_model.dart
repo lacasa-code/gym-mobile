@@ -62,7 +62,7 @@ class Product {
   Year yearfrom;
   String yeartoId;
   String yearfromId;
-  String CategoryId;
+  String allcategory_id;
   String partCategoryId;
   String vendorId;
   String storeId;
@@ -94,6 +94,7 @@ class Product {
   int approved;
   String holesalePrice;
   String noOfOrders;
+  List<Main_Category> allcategory;
 
   Product(
       {this.id,
@@ -122,6 +123,7 @@ class Product {
       this.cartype_id,
       this.prodCountry,
       this.quantity,
+      this.allcategory,
       this.maincategory_id,
       this.serialNumber});
 
@@ -143,8 +145,8 @@ class Product {
         json['year_from'] != null ? new Year.fromJson(json['year_from']) : null;
     yearto =
         json['year_to'] != null ? new Year.fromJson(json['year_to']) : null;
-    partCategoryId = json['part_category_id'].toString();
-    CategoryId = json['category_id'].toString();
+    //partCategoryId = json['part_category_id'].toString();
+    //CategoryId = json['category_id'].toString();
     vendorId = json['vendor_id'].toString();
     storeId = json['store_id'].toString();
     quantity = json['quantity'].toString();
@@ -159,6 +161,12 @@ class Product {
       tags = new List<Tag>();
       json['tags'].forEach((v) {
         tags.add(new Tag.fromJson(v));
+      });
+    }
+    if (json['allcategory'] != null) {
+      allcategory = new List<Main_Category>();
+      json['allcategory'].forEach((v) {
+        allcategory.add(new Main_Category.fromJson(v));
       });
     }
     category = json['category'] != null
@@ -230,7 +238,7 @@ class Product {
       print(this.discount);
     }
     this.carMadeId == null ? null : data['car_made_id'] = this.carMadeId;
-    data['category_id'] = this.CategoryId;
+    data['allcategory'] = this.allcategory_id;
     //data['car_model_id'] = this.carModelId;
     this.yearfromId == null ? null : data['year_from'] = this.yearfromId;
     this.yeartoId == null ? null : data['year_to'] = this.yeartoId;
@@ -249,7 +257,7 @@ class Product {
         : this.cartype_id.isEmpty
             ? null
             : data['cartype_id'] = this.cartype_id;
-    this.CategoryId == null ? null : data['maincategory_id'] = this.CategoryId;
+    this.allcategory_id == null ? null : data['maincategory_id'] = this.allcategory_id;
     this.prodcountry_id == null
         ? null
         : data['prodcountry_id'] = this.prodcountry_id;

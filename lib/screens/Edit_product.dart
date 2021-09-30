@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -46,6 +47,8 @@ class Edit_Product extends StatefulWidget {
 }
 
 class _Edit_ProductState extends State<Edit_Product> {
+  List<Main_Category> category=[];
+
   bool loading = false;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
@@ -123,7 +126,7 @@ class _Edit_ProductState extends State<Edit_Product> {
 
   @override
   void initState() {
-
+    category=widget.product.allcategory;
     setState(() {
       isqty_reminder =widget.product.qty_reminder!=null;
     });
@@ -345,7 +348,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                             : widget.product.carType,
                         validator: (CarType item) {
                           if (item == null) {
-                            return "Required field";
+                            return "${getTransrlate(context, 'Required')}";
                           } else
                             return null;
                         },
@@ -368,159 +371,110 @@ class _Edit_ProductState extends State<Edit_Product> {
                 SizedBox(
                   height: 10,
                 ),
-                _listCategory == null
-                    ? Container(
-                  child: DropdownSearch<String>(
-                    showSearchBox: false,
-                    showClearButton: false,
-                    label: " ",
-                    items: [''],
-                    enabled: false,
-                    //  onFind: (String filter) => getData(filter),
-                  ),
-                )
-                    : Container(
-                  child: DropdownSearch<Main_Category>(
-                      showSearchBox: false,
-                      showClearButton: false,
-                      label: "${getTransrlate(context, 'mainCategory')}",
-                      validator: (Main_Category item) {
-                        if (item == null) {
-                          return "Required field";
-                        } else
-                          return null;
-                      },
-                      items: _listCategory,
-                      selectedItem: widget.product.maincategory == null
-                          ? Main_Category()
-                          : widget.product.maincategory,
-                      itemAsString: (Main_Category u) =>
-                      "${themeColor.getlocal() == 'ar' ? u.mainCategoryName ?? u.mainCategoryNameen : u.mainCategoryNameen ?? u.mainCategoryName}",
-                      onChanged: (Main_Category data) {
-                        setState(() {
-                          widget.product.Main_categoryid = data.id.toString();
-
-                          widget.product.maincategory = data;
-                          widget.product.category = null;
-                        });
-                        getAllCategory(data.id.toString());
-                      }),
-                ),
+                // _listCategory == null
+                //     ? Container(
+                //   child: DropdownSearch<String>(
+                //     showSearchBox: false,
+                //     showClearButton: false,
+                //     label: " ",
+                //     items: [''],
+                //     enabled: false,
+                //     //  onFind: (String filter) => getData(filter),
+                //   ),
+                // )
+                //     : Container(
+                //   child: DropdownSearch<Main_Category>(
+                //       showSearchBox: false,
+                //       showClearButton: false,
+                //       label: "${getTransrlate(context, 'mainCategory')}",
+                //       validator: (Main_Category item) {
+                //         if (item == null) {
+                //           return "${getTransrlate(context, 'Required')}";
+                //         } else
+                //           return null;
+                //       },
+                //       items: _listCategory,
+                //       selectedItem: widget.product.maincategory == null
+                //           ? Main_Category()
+                //           : widget.product.maincategory,
+                //       itemAsString: (Main_Category u) =>
+                //       "${themeColor.getlocal() == 'ar' ? u.mainCategoryName ?? u.mainCategoryNameen : u.mainCategoryNameen ?? u.mainCategoryName}",
+                //       onChanged: (Main_Category data) {
+                //         setState(() {
+                //           widget.product.Main_categoryid = data.id.toString();
+                //           widget.product.maincategory = data;
+                //           widget.product.category = null;
+                //           category=[];
+                //         });
+                //         getAllCategory(data.id.toString());
+                //         Timer(Duration(seconds: 1), () =>
+                //             setState(() {
+                //               category.add(data);
+                //             }));
+                //       }),
+                //
+                // ),
                 SizedBox(
                   height: 5,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "${getTransrlate(context, 'subCategory')}",
-                          style: TextStyle(color: Colors.black, fontSize: 16),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        _category == null
-                            ? Container(
-                          width: ScreenUtil.getWidth(context) / 2.5,
-                          child: DropdownSearch<String>(
-                            showSearchBox: false,
-                            showClearButton: false,
-                            label: " ",
-                            items: [''],
-                            enabled: false,
-                            //  onFind: (String filter) => getData(filter),
+                ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: category.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "${getTransrlate(context, 'subCategory')} ",
+                            style: TextStyle(
+                                color: Colors.black, fontSize: 16),
                           ),
-                        )
-                            : Container(
-                          width: ScreenUtil.getWidth(context) / 2.5,
-                          child: DropdownSearch<Categories>(
-                              showSearchBox: false,
-                              showClearButton: false,
-                              label: " ",
-                              validator: (Categories item) {
-                                if (item == null) {
-                                  return "Required field";
-                                } else
-                                  return null;
-                              },
-                              items: _category,
-                              selectedItem:
-                              widget.product.category == null
-                                  ? Categories()
-                                  : widget.product.category,
-                              //  onFind: (String filter) => getData(filter),
-                              itemAsString: (Categories u) =>
-                              "${themeColor.getlocal() == 'ar' ? u.name ?? u.name_en??'' : u.name_en ?? u.name??''}",
-                              onChanged: (Categories data) {
-                                widget.product.CategoryId = data.id.toString();
-                                setState(() {
-                                 // widget.product.category=data;
-                                  part_Categories = null;
-                                  widget.product.partCategory=null;
-                                });
-                                getAllParts_Category(data.id);
-                              }),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          " ${getTransrlate(context, 'PartCategory')}",
-                          style: TextStyle(color: Colors.black, fontSize: 16),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        part_Categories == null
-                            ? Container(
-                          width: ScreenUtil.getWidth(context) / 2.5,
-                          child: DropdownSearch<String>(
-                            showSearchBox: false,
-                            showClearButton: false,
-                            label: " ",
-                            items: [''],
-                            enabled: false,
-                            //  onFind: (String filter) => getData(filter),
+                          SizedBox(
+                            height: 10,
                           ),
-                        )
-                            : Container(
-                          width: ScreenUtil.getWidth(context) / 2.5,
-                          child: DropdownSearch<Part_Category>(
-                              showSearchBox: false,
-                              showClearButton: true,
-                              label: "   ",
-                              // validator: (Part_Category item) {
-                              //   if (item == null) {
-                              //     return "Required field";
-                              //   } else
-                              //     return null;
-                              // },
-                              items: part_Categories,
-                              selectedItem:
-                              widget.product.partCategory ,
-                              itemAsString: (Part_Category u) =>
-                              "${themeColor.getlocal() == 'ar' ? u.categoryName ?? u.categoryname_en??'' : u.categoryname_en ?? u.categoryName??''}",
-                              onChanged: (Part_Category data) => widget
-                                  .product
-                                  .partCategoryId = data.id.toString()),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                          Container(
+                            width: ScreenUtil.getWidth(context) /
+                                1.15,
+                            child: DropdownSearch<Main_Category>(
+                                showSearchBox: false,
+                                showClearButton: false,
+                                label: " ",
+                                validator: (Main_Category item) {
+                                  if(category.length<2){
+                                    if (item == null) {
+                                      return "${getTransrlate(
+                                          context, 'Required')}";
+                                    }} else return null;
+                                },
+                                items: category[index].categories,
+                                //  onFind: (String filter) => getData(filter),
+                                itemAsString: (Main_Category u) =>
+                                themeColor.getlocal()=='ar'?u.mainCategoryName??u.mainCategoryNameen:u.mainCategoryNameen??u.mainCategoryName,
+                                onChanged: (Main_Category data) {
+
+                                  setState(() {
+                                    if(category.length>index+1){
+                                      category.remove(category[index+1]);
+                                      for( var i = index+1 ; i < category.length; i++ ) {
+                                        category.remove(category[i]);
+                                      }
+                                    }
+
+                                  });
+                                  Timer(Duration(seconds: 1), () =>
+                                      setState(() {
+                                        category.add(data);
+                                      }));
+                                }),
+                          ),
+                        ],
+                      );
+                    }),
                 SizedBox(
                   height: 10,
                 ),
-                widget.product.Main_categoryid == "7" ||
-                    widget.product.Main_categoryid == "5" ||
-                    widget.product.CategoryId == "43"
-                    ? Container()
-                    : Column(
+                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -551,7 +505,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                           label: " ${getTransrlate(context, 'transmissions')}",
                           validator: (Transmission item) {
                             if (item == null) {
-                              return "Required field";
+                              return "${getTransrlate(context, 'Required')}";
                             } else
                               return null;
                           },
@@ -582,7 +536,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                         label: " ${getTransrlate(context, 'brand')}",
                         validator: (CarMade item) {
                           if (item == null) {
-                            return "Required field";
+                            return "${getTransrlate(context, 'Required')}";
                           } else
                             return null;
                         },
@@ -672,7 +626,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                               label: " ${getTransrlate(context, 'yearfrom')}",
                               validator: (Year item) {
                                 if (item == null) {
-                                  return "Required field";
+                                  return "${getTransrlate(context, 'Required')}";
                                 } else
                                   return null;
                               },
@@ -703,7 +657,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                               label: "${getTransrlate(context, 'yearto')}",
                               validator: (Year item) {
                                 if (item == null) {
-                                  return "Required field";
+                                  return "${getTransrlate(context, 'Required')}";
                                 } else
                                   return null;
                               },
@@ -742,7 +696,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                       label: " ${getTransrlate(context, 'manufacturer')}",
                       validator: (Manufacturer item) {
                         if (item == null) {
-                          return "Required field";
+                          return "${getTransrlate(context, 'Required')}";
                         } else
                           return null;
                       },
@@ -800,7 +754,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                       showClearButton: false,
                       validator: (Store item) {
                         if (item == null) {
-                          return "Required field";
+                          return "${getTransrlate(context, 'Required')}";
                         } else
                           return null;
                       },
@@ -836,7 +790,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                       showClearButton: false,
                       validator: (ProductType item) {
                         if (item == null) {
-                          return "Required field";
+                          return "${getTransrlate(context, 'Required')}";
                         } else
                           return null;
                       },
@@ -1215,7 +1169,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                       showClearButton: false,
                       validator: (ProdCountry item) {
                         if (item == null) {
-                          return "Required field";
+                          return "${getTransrlate(context, 'Required')}";
                         } else
                           return null;
                       },
@@ -1506,6 +1460,8 @@ class _Edit_ProductState extends State<Edit_Product> {
                             _formKey.currentState.save();
                             widget.product.qty_reminder=isqty_reminder?widget.product.qty_reminder:'1';
                             print(widget.product.toJson());
+                            widget.product.allcategory_id=category.map((e) => e.id).toList().toString();
+
                             if (widget.product.photo.isNotEmpty ||
                                 images.isNotEmpty) {
                               setState(() => loading = true);
@@ -1515,11 +1471,13 @@ class _Edit_ProductState extends State<Edit_Product> {
                                   widget.product.toJson(),
                                   attachment: images)
                                   .then((value) {
+
+                                setState(() {
+                                  loading = false;
+                                });
                                     print("value= $value");
                                 if (value != null) {
-                                  setState(() {
-                                    loading = false;
-                                  });
+
                                   if (value['status_code']!=200) {
                                     showDialog(
                                       context: context,
@@ -1616,7 +1574,7 @@ class _Edit_ProductState extends State<Edit_Product> {
   }
 
   Future<void> getAllMain_category() async {
-    API(context).get('main/categories/list/all').then((value) {
+    API(context).get('allcategories').then((value) {
       if (value != null) {
         setState(() {
           _listCategory = Main_category.fromJson(value).data;

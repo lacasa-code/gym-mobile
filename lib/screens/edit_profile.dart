@@ -306,7 +306,7 @@ class _Edit_profileState extends State<Edit_profile> {
                                 maxHeight: 120,
                                 validator: (String item) {
                                   if (item == null) {
-                                    return "Required field";
+                                    return "${getTransrlate(context, 'Required')}";
                                   } else
                                     return null;
                                 },
