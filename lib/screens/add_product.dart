@@ -316,8 +316,7 @@ int CheckBox=0;
                                       },
                                       items: _listCategory,
                                       //  onFind: (String filter) => getData(filter),
-                                      itemAsString: (Main_Category u) =>
-                                      themeColor.getlocal()=='ar'?u.mainCategoryName??u.mainCategoryNameen:u.mainCategoryNameen??u.mainCategoryName,
+                                      itemAsString: (Main_Category u) => themeColor.getlocal()=='ar'?u.mainCategoryName??u.mainCategoryNameen:u.mainCategoryNameen??u.mainCategoryName,
                                       onChanged: (Main_Category data) {
                                         setState(() {
                                           product.Main_categoryid = data.id.toString();
@@ -426,7 +425,9 @@ int CheckBox=0;
                                             if (item == null) {
                                               return "${getTransrlate(
                                                   context, 'Required')}";
-                                            }} else return null;
+                                            }
+                                            return null;
+                                            } else return null;
                                           },
                                           items: category[index].categories,
                                           //  onFind: (String filter) => getData(filter),

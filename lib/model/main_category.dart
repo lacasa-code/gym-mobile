@@ -50,30 +50,37 @@ class Main_category {
 
 class Main_Category {
   int _id;
+  int _allcategory_id;
   String name;
   String name_en;
   int _status;
   List<Main_Category> categories;
 
   int get id => _id;
+  int get allcategory_id => _allcategory_id;
   String get mainCategoryName => name;
   String get mainCategoryNameen => name_en;
   int get status => _status;
-  List<Main_Category> get lang => categories;
+  List<Main_Category> get Categories => categories;
 
   Main_Category({
       int id, 
-      String mainCategoryName, 
+      int allcategory_id,
+      String mainCategoryName,
+      String mainCategoryNameen,
       int status,
     List<Main_Category> lang}){
     _id = id;
+    _allcategory_id = allcategory_id;
     name = mainCategoryName;
+    name_en = mainCategoryNameen;
     _status = status;
     categories = lang;
 }
 
   Main_Category.fromJson(dynamic json) {
     _id = json["id"];
+    _allcategory_id = json["allcategory_id"];
     name = json["name"];
     name_en = json["name_en"];
     _status = json["level"];
