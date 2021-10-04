@@ -452,9 +452,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                             itemBuilder: (BuildContext context, int index) {
                               return category[index].categories == null
                                   ? Container()
-                                  : category[index].categories.isEmpty
-                                      ? Container()
-                                      : Column(
+                                  : Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
@@ -488,8 +486,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                                                   },
                                                   //  enabled: categorylist[index].categories!=null,
                                                   selectedItem: category[index],
-                                                  items: category[index]
-                                                      .categories,
+                                                  items: category[index].categories,
                                                   //  onFind: (String filter) => getData(filter),
                                                   itemAsString: (Main_Category
                                                           u) =>
@@ -502,43 +499,25 @@ class _Edit_ProductState extends State<Edit_Product> {
                                                         .toString());
 
                                                     setState(() {
-                                                      // category.removeRange(index, category.length);
                                                       print(index);
-
+                                                      // category[index]=data;
                                                       if (category.length > index )
                                                       {
-
-                                                        for (var i = index + 1; i < category.length; i++) {
+                                                        for (var i = index ; i < category.length; i++) {
                                                           print(i);
                                                           category.removeAt(i);
                                                         }
+                                                        category.add(Main_Category(lang: data.categories.isEmpty?[]:data.categories, mainCategoryName: '', mainCategoryNameen: '',id:  data.id));
+
                                                       }else{
                                                         category.removeAt(index);
                                                       }
-
-                                                      index == 0
-                                                          ? Main_categoryid =
-                                                              data.id
-                                                          : null;
                                                     });
-                                                    Timer(Duration(seconds: 1),
-                                                        () {
-                                                      setState(() {
-
-                                                        category.add(Main_Category(
-                                                            lang:
-                                                                data.categories,
-                                                            mainCategoryName:
-                                                                '',
-                                                            mainCategoryNameen:
-                                                                '',
-                                                            id: data.id));
-                                                      });
-                                                      print(category
-                                                          .map((e) => e.id)
-                                                          .toList()
-                                                          .toString());
-                                                    });
+                                                //    getAllCategory();
+                                                    print(category
+                                                        .map((e) => e.id)
+                                                        .toList()
+                                                        .toString());
                                                   }),
                                             ),
                                           ],
@@ -1707,22 +1686,31 @@ class _Edit_ProductState extends State<Edit_Product> {
   }
 
   getAllCategory() {
-    category.forEach((element) {
-      element.allcategory_id == null
-          ? cartypes = element
-          : API(context)
-              .get('allcategories/details/${element.allcategory_id}')
-              .then((value) {
-              print(value);
-              if (value != null) {
-                List<Main_Category> main_category =
-                    Main_category.fromJson(value).data;
-                setState(() {
-                  element.categories = main_category;
-                });
-              }
-            });
-    });
+    if(category.isEmpty){
+      setState(() {
+        cartypes=Main_Category(
+            lang: _listCategory,
+            mainCategoryName: '',
+            mainCategoryNameen: '',);
+      });
+    }else {
+      category.forEach((element) {
+        element.allcategory_id == null
+            ? cartypes = element
+            : API(context)
+                .get('allcategories/details/${element.allcategory_id}')
+                .then((value) {
+                print(value);
+                if (value != null) {
+                  List<Main_Category> main_category =
+                      Main_category.fromJson(value).data;
+                  setState(() {
+                    element.categories = main_category;
+                  });
+                }
+              });
+      });
+    }
   }
 
   Future<void> getAlltag() async {

@@ -119,13 +119,13 @@ class _Product_itemState extends State<Product_item> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Container(
+              widget.hall_model.allcategory!=null? widget.hall_model.allcategory.isEmpty?Container():   Container(
                 width: ScreenUtil.getWidth(context) / 1.5,
                 child: Text(
-                  '${getTransrlate(context, 'Category')} > ${widget.hall_model.maincategory == null ? '' : themeColor.getlocal()=='ar'?widget.hall_model.maincategory.mainCategoryName:widget.hall_model.maincategory.mainCategoryNameen}> ${widget.hall_model.category == null ? '' : themeColor.getlocal()=='ar'?widget.hall_model.category.name:widget.hall_model.category.name_en}> ${widget.hall_model.partCategory == null ? '' : themeColor.getlocal()=='ar'?widget.hall_model.partCategory.categoryName:widget.hall_model.partCategory.categoryname_en??widget.hall_model.partCategory.categoryName}',
+                  '${getTransrlate(context, 'Category')}: ${widget.hall_model.allcategory.map((e) => themeColor.getlocal()=='ar'? e.mainCategoryName: e.mainCategoryNameen).toList()}'.replaceAll('[', '').replaceAll(']', ''),
                   style: TextStyle(fontSize: 13,fontWeight: FontWeight.bold),
                 ),
-              ),
+              ):Container(),
               Container(
                 width: ScreenUtil.getWidth(context) / 1.5,
                 child: AutoSizeText(

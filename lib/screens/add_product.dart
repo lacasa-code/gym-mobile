@@ -455,7 +455,6 @@ int CheckBox=0;
                           Main_categoryid==7?Container():  Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-
                                     SizedBox(
                                       height: 10,
                                     ),
