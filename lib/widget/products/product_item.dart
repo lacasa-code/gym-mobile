@@ -122,7 +122,7 @@ class _Product_itemState extends State<Product_item> {
               widget.hall_model.allcategory!=null? widget.hall_model.allcategory.isEmpty?Container():   Container(
                 width: ScreenUtil.getWidth(context) / 1.5,
                 child: Text(
-                  '${getTransrlate(context, 'Category')}: ${widget.hall_model.allcategory.map((e) => themeColor.getlocal()=='ar'? e.mainCategoryName: e.mainCategoryNameen).toList()}'.replaceAll('[', '').replaceAll(']', ''),
+                  '${getTransrlate(context, 'Category')}: ${widget.hall_model.allcategory.map((e) => "${themeColor.getlocal()=='ar'?e.mainCategoryName: e.mainCategoryNameen}${ widget.hall_model.allcategory.last.id==e.id?'':' >>'}").toList()}'.replaceAll('[', '').replaceAll(']', ''),
                   style: TextStyle(fontSize: 13,fontWeight: FontWeight.bold),
                 ),
               ):Container(),

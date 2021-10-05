@@ -178,8 +178,8 @@ class _ProductPageState extends State<ProductPage> {
                       "${widget.product.carType == null ? '' : themeColor.getlocal()=='ar'?widget.product.carType.typeName??'':widget.product.carType.name_en??''}",
                       Colors.white),
                   dataRow(
-                      '${getTransrlate(context, 'mainCategory')}',
-                      "${widget.product.maincategory != null ?themeColor.getlocal()=='ar'?widget.product.maincategory.mainCategoryName??widget.product.maincategory.mainCategoryNameen:widget.product.maincategory.mainCategoryNameen??widget.product.maincategory.mainCategoryName:''}",
+                      '${getTransrlate(context, 'Category')}',
+                      ' ${widget.product.allcategory.map((e) =>  "${themeColor.getlocal()=='ar'?e.mainCategoryName: e.mainCategoryNameen}${ widget.product.allcategory.last.id==e.id?'':'>>'}").toList()}'.replaceAll('[', '').replaceAll(']', ''),
                       Colors.white),
                   dataRow(
                       '${getTransrlate(context, 'subCategory')}',

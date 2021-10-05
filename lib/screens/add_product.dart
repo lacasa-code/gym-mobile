@@ -45,7 +45,9 @@ class _Add_ProductState extends State<Add_Product> {
   Product product = Product();
   int Main_categoryid;
   List<Main_Category> category=[];
-
+  List<int> categorysend = [];
+  Main_Category _maincategory;
+  Main_Category cartypes;
   TextEditingController totaldiscount = TextEditingController();
   bool loading = false;
   bool isqty_reminder = false;
@@ -292,122 +294,127 @@ int CheckBox=0;
                           SizedBox(
                             height: 10,
                           ),
+
                           _listCategory == null
                               ? Container(
-                                  child: DropdownSearch<String>(
-                                    showSearchBox: false,
-                                    showClearButton: false,
-                                    label: " ",
-                                    items: [''],
-                                    enabled: false,
-                                    //  onFind: (String filter) => getData(filter),
-                                  ),
-                                )
+                            child: DropdownSearch<String>(
+                              showSearchBox: false,
+                              showClearButton: false,
+                              label: " ",
+                              items: [''],
+                              enabled: false,
+                              //  onFind: (String filter) => getData(filter),
+                            ),
+                          )
                               : Container(
-                                  child: DropdownSearch<Main_Category>(
-                                      showSearchBox: false,
-                                      showClearButton: false,
-                                      label: "${getTransrlate(context, 'mainCategory')}",
-                                      validator: (Main_Category item) {
-                                        if (item == null) {
-                                          return "${getTransrlate(context, 'Required')}";
-                                        } else
-                                          return null;
-                                      },
-                                      items: _listCategory,
-                                      //  onFind: (String filter) => getData(filter),
-                                      itemAsString: (Main_Category u) => themeColor.getlocal()=='ar'?u.mainCategoryName??u.mainCategoryNameen:u.mainCategoryNameen??u.mainCategoryName,
-                                      onChanged: (Main_Category data) {
-                                        setState(() {
-                                          product.Main_categoryid = data.id.toString();
-                                          Main_categoryid = data.id;
-                                          category=[];
-                                          product.allcategory_id=null;
-                                          getAllCarMade(data.id);
-                                          CarMades=null;
-                                        });
-                                        Timer(Duration(seconds: 1), () =>
-                                            setState(() {
-                                              category.add(data);
-                                            }));
-                                      }),
-                                ),
-                          //
-                          // SizedBox(
-                          //   height: 5,
-                          // ),
-                          // Column(
-                          //   crossAxisAlignment: CrossAxisAlignment.start,
-                          //   children: [
-                          //     Text(
-                          //       "${getTransrlate(context, 'subCategory')} ",
-                          //       style: TextStyle(
-                          //           color: Colors.black, fontSize: 16),
-                          //     ),
-                          //     SizedBox(
-                          //       height: 10,
-                          //     ),
-                          //     _category == null
-                          //         ? Container(
-                          //       width: ScreenUtil.getWidth(context) /
-                          //           1.15,
-                          //       child: DropdownSearch<String>(
-                          //         showSearchBox: false,
-                          //         showClearButton: false,
-                          //         label: " ",
-                          //         items: [''],
-                          //         enabled: false,
-                          //         //  onFind: (String filter) => getData(filter),
-                          //       ),
-                          //     )
-                          //         : Container(
-                          //       width: ScreenUtil.getWidth(context) /
-                          //           1.15,
-                          //       child: DropdownSearch<Main_Category>(
-                          //           showSearchBox: false,
-                          //           showClearButton: false,
-                          //           label: " ",
-                          //           validator: (Main_Category item) {
-                          //             if (item == null) {
-                          //               return "${getTransrlate(context, 'Required')}";
-                          //             } else
-                          //               return null;
-                          //           },
-                          //           items: _category,
-                          //           //  onFind: (String filter) => getData(filter),
-                          //           itemAsString: (Main_Category u) =>
-                          //           themeColor.getlocal()=='ar'?u.mainCategoryName??u.mainCategoryNameen:u.mainCategoryNameen??u.mainCategoryName,
-                          //           onChanged: (Main_Category data) {
-                          //             setState(() {
-                          //               product.CategoryId = data.id.toString();
-                          //               product.category=data;
-                          //               category.add(data);
-                          //               part_Categories = data.categories;
-                          //             });
-                          //           }),
-                          //     ),
-                          //   ],
-                          // ),
+                              child: DropdownSearch<Main_Category>(
+                                  showSearchBox: false,
+                                  showClearButton: false,
+                                  label: " ${getTransrlate(context, 'CarType')}",
+                                  selectedItem: cartypes,
+                                  validator: (Main_Category item) {
+                                    if (item == null) {
+                                      return "${getTransrlate(context, 'Required')}";
+                                    } else
+                                      return null;
+                                  },
+                                  items: _listCategory,
+                                  //  onFind: (String filter) => getData(filter),
+                                  itemAsString: (Main_Category u) =>
+                                  "${themeColor.getlocal() == 'ar' ? u.mainCategoryName ?? u.mainCategoryNameen : u.mainCategoryNameen ?? u.mainCategoryName}",
+                                  onChanged: (Main_Category data) {
+                                    setState(() {
+                                      Main_categoryid = data.id;
+                                      _maincategory=  Main_Category(
+                                          lang: data.categories,
+                                          mainCategoryName: '',
+                                          mainCategoryNameen: '',
+                                          id: data.id);
+                                      category = [];
+                                      getAllCarMade(data.id.toString());
+                                      categorysend=[];
+                                      categorysend.add(data.id);
+                                    });
+                                  })),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          _maincategory == null
+                              ? Container(
+                            child: DropdownSearch<String>(
+                              showSearchBox: false,
+                              showClearButton: false,
+                              label: " ",
+                              items: [''],
+                              enabled: false,
+                              //  onFind: (String filter) => getData(filter),
+                            ),
+                          )
+                              : Container(
+                            child: DropdownSearch<Main_Category>(
+                                showSearchBox: false,
+                                showClearButton: false,
+                                label: "${getTransrlate(context, 'mainCategory')}",
+                                validator: (Main_Category item) {
+                                  if (item == null) {
+                                    return "${getTransrlate(context, 'Required')}";
+                                  } else
+                                    return null;
+                                },
+                                items: _maincategory.categories,
+                                selectedItem: _maincategory,
+                                itemAsString: (Main_Category u) =>
+                                "${themeColor.getlocal() == 'ar' ? u.mainCategoryName ?? u.mainCategoryNameen : u.mainCategoryNameen ?? u.mainCategoryName}",
+                                onChanged: (Main_Category data) {
+                                  setState(() {
+                                    category = [];
+                                    data.categories.isEmpty?null: category.add(Main_Category(
+                                        lang: data.categories,
+                                        mainCategoryName: '',
+                                        mainCategoryNameen: '',
+                                        id: data.id));
+                                  });
+                                  categorysend= categorysend.getRange(0, 1).toList();
+                                  categorysend.add(data.id);
+                                  print(categorysend
+                                      .map((e) => e)
+                                      .toList()
+                                      .toString());
+                                }),
 
+                          ),
                           SizedBox(
                             height: 5,
                           ),
-                          ListView.builder(
+                          category == null
+                              ? Container(
+                            child: DropdownSearch<String>(
+                              showSearchBox: false,
+                              showClearButton: false,
+                              label: " ",
+                              items: [''],
+                              enabled: false,
+                              //  onFind: (String filter) => getData(filter),
+                            ),
+                          )
+                              : category.isEmpty
+                              ? Container()
+                              : ListView.builder(
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
                               itemCount: category.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return category[index].categories == null
                                     ? Container()
-                                    : category[index].categories.isEmpty
-                                    ? Container()
                                     : Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "${getTransrlate(context, 'subCategory')} ",
+                                      "${ getTransrlate(context, 'subCategory')} ",
                                       style: TextStyle(
-                                          color: Colors.black, fontSize: 16),
+                                          color: Colors.black,
+                                          fontSize: 16),
                                     ),
                                     SizedBox(
                                       height: 10,
@@ -418,40 +425,42 @@ int CheckBox=0;
                                       child: DropdownSearch<Main_Category>(
                                           showSearchBox: false,
                                           showClearButton: false,
-                                          dropdownBuilderSupportsNullItem: true,
-                                          label: " ",
+                                          label: "",
                                           validator: (Main_Category item) {
-                                            if(category.length<2){
-                                            if (item == null) {
-                                              return "${getTransrlate(
-                                                  context, 'Required')}";
-                                            }
-                                            return null;
-                                            } else return null;
+                                            if (category.length < 2) {
+                                              if (item == null) {
+                                                return "${getTransrlate(context, 'Required')}";
+                                              } else
+                                                return null;
+                                            } else
+                                              return null;
                                           },
+                                          //  enabled: categorylist[index].categories!=null,
+                                          selectedItem: category[index],
                                           items: category[index].categories,
                                           //  onFind: (String filter) => getData(filter),
                                           itemAsString: (Main_Category u) =>
-                                          themeColor.getlocal()=='ar'?u.mainCategoryName??u.mainCategoryNameen:u.mainCategoryNameen??u.mainCategoryName,
+                                          "${themeColor.getlocal() == 'ar' ? u.mainCategoryName ?? u.mainCategoryNameen : u.mainCategoryNameen ?? u.mainCategoryName}",
                                           onChanged: (Main_Category data) {
+
                                             setState(() {
-                                              if(category.length>index+1){
-                                                category.remove(category[index+1]);
-                                                for( var i = index+1 ; i < category.length; i++ ) {
-                                                  category.remove(category[i]);
-                                                }
-                                              }
-                                            });
-                                            Timer(Duration(seconds: 1), () =>
-                                                setState(() {
-                                                  category.add(data);
-                                                }));
+                                              categorysend= categorysend.getRange(0, index+2).toList();
+                                              categorysend.add(data.id);
+                                              category=category.getRange(0, index+1).toList();
+                                              data.categories.isEmpty?null: category.add(Main_Category(
+                                                  lang: data.categories,
+                                                  mainCategoryName: '',
+                                                  mainCategoryNameen: '',
+                                                  id: data.id));                                                });
+                                            print(categorysend
+                                                .map((e) => e)
+                                                .toList()
+                                                .toString());
                                           }),
                                     ),
                                   ],
                                 );
                               }),
-
                           Main_categoryid==7?Container():  Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -1367,7 +1376,7 @@ int CheckBox=0;
                                       _formKey.currentState.save();
                                       product.tags = _tagSelect;
                                       product.photos = images;
-                                      product.allcategory_id=category.map((e) => e.id).toList().toString();
+                                      product.allcategory_id=categorysend.map((e) => e).toList().toString();
 
                                       print(product.toJson());
                                       if(images.isNotEmpty){
@@ -1444,7 +1453,7 @@ int CheckBox=0;
     );
   }
 
-  Future<void> getAllCarMade(int id) async {
+  Future<void> getAllCarMade(String id) async {
     CarMades=null;
     API(context).get('cartype/madeslist/$id').then((value) {
       if (value != null) {
@@ -1482,11 +1491,11 @@ int CheckBox=0;
       if (value != null) {
         setState(() {
           _listCategory = Main_category.fromJson(value).data;
-          category_list = Category_model.fromJson(value).data;
         });
       }
     });
   }
+
   Future<void> getAllproducttypes() async {
     API(context).get('product/types/list').then((value) {
       if (value != null) {

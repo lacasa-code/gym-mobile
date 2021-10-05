@@ -48,7 +48,8 @@ class Edit_Product extends StatefulWidget {
 
 class _Edit_ProductState extends State<Edit_Product> {
   List<Main_Category> category = [];
-  Main_Category _category;
+  List<int> categorysend = [];
+  Main_Category _maincategory;
   Main_Category cartypes;
 
   bool loading = false;
@@ -128,8 +129,8 @@ class _Edit_ProductState extends State<Edit_Product> {
 
   @override
   void initState() {
+    categorysend=widget.product.allcategory.map((e) => e.id).toList();
     getAlltag();
-    category = widget.product.allcategory;
     setState(() {
       isqty_reminder = widget.product.qty_reminder != null;
     });
@@ -358,68 +359,67 @@ class _Edit_ProductState extends State<Edit_Product> {
                             onChanged: (Main_Category data) {
                               setState(() {
                                 Main_categoryid = data.id;
+                                _maincategory=  Main_Category(
+                                    lang: data.categories,
+                                    mainCategoryName: '',
+                                    mainCategoryNameen: '',
+                                    id: data.id);
                                 category = [];
                                 getAllCarMade(data.id.toString());
-                                CarMades = null;
+                                widget.product.carMade = null;
+                                widget.product.carModel = null;
+                                carmodels = [];
+                                categorysend=[];
+                                categorysend.add(data.id);
                               });
-                              Timer(
-                                  Duration(seconds: 1),
-                                  () => setState(() {
-                                        category.add(Main_Category(
-                                            lang: data.categories,
-                                            mainCategoryName: '',
-                                            mainCategoryNameen: '',
-                                            id: data.id));
-                                      }));
                             })),
-                // SizedBox(
-                //   height: 10,
-                // ),
-                // _listCategory == null
-                //     ? Container(
-                //   child: DropdownSearch<String>(
-                //     showSearchBox: false,
-                //     showClearButton: false,
-                //     label: " ",
-                //     items: [''],
-                //     enabled: false,
-                //     //  onFind: (String filter) => getData(filter),
-                //   ),
-                // )
-                //     : Container(
-                //   child: DropdownSearch<Main_Category>(
-                //       showSearchBox: false,
-                //       showClearButton: false,
-                //       label: "${getTransrlate(context, 'mainCategory')}",
-                //       validator: (Main_Category item) {
-                //         if (item == null) {
-                //           return "${getTransrlate(context, 'Required')}";
-                //         } else
-                //           return null;
-                //       },
-                //       items: _listCategory,
-                //       selectedItem: category == null
-                //           ? Main_Category()
-                //           : category.isEmpty
-                //           ? Main_Category(lang: _listCategory)
-                //           : category[0],
-                //       itemAsString: (Main_Category u) =>
-                //       "${themeColor.getlocal() == 'ar' ? u.mainCategoryName ?? u.mainCategoryNameen : u.mainCategoryNameen ?? u.mainCategoryName}",
-                //       onChanged: (Main_Category data) {
-                //         setState(() {
-                //           widget.product.Main_categoryid = data.id.toString();
-                //           widget.product.maincategory = data;
-                //           widget.product.category = null;
-                //           category=[];
-                //         });
-                //        // getAllCategory(data.id.toString());
-                //         Timer(Duration(seconds: 1), () =>
-                //             setState(() {
-                //               category.add(data);
-                //             }));
-                //       }),
-                //
-                // ),
+                SizedBox(
+                  height: 10,
+                ),
+                _maincategory == null
+                    ? Container(
+                  child: DropdownSearch<String>(
+                    showSearchBox: false,
+                    showClearButton: false,
+                    label: " ",
+                    items: [''],
+                    enabled: false,
+                    //  onFind: (String filter) => getData(filter),
+                  ),
+                )
+                    : Container(
+                  child: DropdownSearch<Main_Category>(
+                      showSearchBox: false,
+                      showClearButton: false,
+                      label: "${getTransrlate(context, 'mainCategory')}",
+                      validator: (Main_Category item) {
+                        if (item == null) {
+                          return "${getTransrlate(context, 'Required')}";
+                        } else
+                          return null;
+                      },
+                      items: _maincategory.categories,
+                      selectedItem: _maincategory,
+                      itemAsString: (Main_Category u) =>
+                      "${themeColor.getlocal() == 'ar' ? u.mainCategoryName ?? u.mainCategoryNameen : u.mainCategoryNameen ?? u.mainCategoryName}",
+                      onChanged: (Main_Category data) {
+                        setState(() {
+                          category = [];
+                          data.categories.isEmpty?null: category.add(Main_Category(
+                              lang: data.categories,
+                              mainCategoryName: '',
+                              mainCategoryNameen: '',
+                              id: data.id));
+                        });
+                        categorysend= categorysend.getRange(0, 1).toList();
+                        categorysend.add(data.id);
+                        print(categorysend
+                            .map((e) => e)
+                            .toList()
+                            .toString());
+                      }),
+
+                ),
                 SizedBox(
                   height: 5,
                 ),
@@ -435,16 +435,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                         ),
                       )
                     : category.isEmpty
-                        ? Container(
-                            child: DropdownSearch<String>(
-                              showSearchBox: false,
-                              showClearButton: false,
-                              label: " ",
-                              items: [''],
-                              enabled: false,
-                              //  onFind: (String filter) => getData(filter),
-                            ),
-                          )
+                    ? Container()
                         : ListView.builder(
                             shrinkWrap: true,
                             physics: NeverScrollableScrollPhysics(),
@@ -453,75 +444,59 @@ class _Edit_ProductState extends State<Edit_Product> {
                               return category[index].categories == null
                                   ? Container()
                                   : Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              "${index == 0 ? getTransrlate(context, 'mainCategory') : getTransrlate(context, 'subCategory')} ",
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16),
-                                            ),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            Container(
-                                              width:
-                                                  ScreenUtil.getWidth(context) /
-                                                      1.15,
-                                              child: DropdownSearch<
-                                                      Main_Category>(
-                                                  showSearchBox: false,
-                                                  showClearButton: false,
-                                                  label: "",
-                                                  validator:
-                                                      (Main_Category item) {
-                                                    if (category.length < 2) {
-                                                      if (item == null) {
-                                                        return "${getTransrlate(context, 'Required')}";
-                                                      } else
-                                                        return null;
-                                                    } else
-                                                      return null;
-                                                  },
-                                                  //  enabled: categorylist[index].categories!=null,
-                                                  selectedItem: category[index],
-                                                  items: category[index].categories,
-                                                  //  onFind: (String filter) => getData(filter),
-                                                  itemAsString: (Main_Category
-                                                          u) =>
-                                                      "${themeColor.getlocal() == 'ar' ? u.mainCategoryName ?? u.mainCategoryNameen : u.mainCategoryNameen ?? u.mainCategoryName}",
-                                                  onChanged:
-                                                      (Main_Category data) {
-                                                    print(category
-                                                        .map((e) => e.id)
-                                                        .toList()
-                                                        .toString());
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "${ getTransrlate(context, 'subCategory')} ",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Container(
+                                          width: ScreenUtil.getWidth(context) /
+                                              1.15,
+                                          child: DropdownSearch<Main_Category>(
+                                              showSearchBox: false,
+                                              showClearButton: false,
+                                              label: "",
+                                              validator: (Main_Category item) {
+                                                if (category.length < 2) {
+                                                  if (item == null) {
+                                                    return "${getTransrlate(context, 'Required')}";
+                                                  } else
+                                                    return null;
+                                                } else
+                                                  return null;
+                                              },
+                                              //  enabled: categorylist[index].categories!=null,
+                                              selectedItem: category[index],
+                                              items: category[index].categories,
+                                              //  onFind: (String filter) => getData(filter),
+                                              itemAsString: (Main_Category u) =>
+                                                  "${themeColor.getlocal() == 'ar' ? u.mainCategoryName ?? u.mainCategoryNameen : u.mainCategoryNameen ?? u.mainCategoryName}",
+                                              onChanged: (Main_Category data) {
 
-                                                    setState(() {
-                                                      print(index);
-                                                      // category[index]=data;
-                                                      if (category.length > index )
-                                                      {
-                                                        for (var i = index ; i < category.length; i++) {
-                                                          print(i);
-                                                          category.removeAt(i);
-                                                        }
-                                                        category.add(Main_Category(lang: data.categories.isEmpty?[]:data.categories, mainCategoryName: '', mainCategoryNameen: '',id:  data.id));
-
-                                                      }else{
-                                                        category.removeAt(index);
-                                                      }
-                                                    });
-                                                //    getAllCategory();
-                                                    print(category
-                                                        .map((e) => e.id)
-                                                        .toList()
-                                                        .toString());
-                                                  }),
-                                            ),
-                                          ],
-                                        );
+                                                setState(() {
+                                                  categorysend= categorysend.getRange(0, index+2).toList();
+                                                  categorysend.add(data.id);
+                                                  category=category.getRange(0, index+1).toList();
+                                                  data.categories.isEmpty?null: category.add(Main_Category(
+                                                      lang: data.categories,
+                                                      mainCategoryName: '',
+                                                      mainCategoryNameen: '',
+                                                      id: data.id));                                                });
+                                                print(categorysend
+                                                    .map((e) => e)
+                                                    .toList()
+                                                    .toString());
+                                              }),
+                                        ),
+                                      ],
+                                    );
                             }),
                 SizedBox(
                   height: 10,
@@ -1528,12 +1503,11 @@ class _Edit_ProductState extends State<Edit_Product> {
                                   widget.product.qty_reminder = isqty_reminder
                                       ? widget.product.qty_reminder
                                       : '1';
-                                  widget.product.allcategory_id = category
-                                      .map((e) => e.id)
+                                  widget.product.allcategory_id = categorysend
+                                      .map((e) => e)
                                       .toList()
                                       .toString();
                                   print(widget.product.toJson());
-
                                   if (widget.product.photo.isNotEmpty ||
                                       images.isNotEmpty) {
                                     setState(() => loading = true);
@@ -1686,32 +1660,28 @@ class _Edit_ProductState extends State<Edit_Product> {
   }
 
   getAllCategory() {
-    if(category.isEmpty){
-      setState(() {
-        cartypes=Main_Category(
-            lang: _listCategory,
-            mainCategoryName: '',
-            mainCategoryNameen: '',);
+    widget.product.allcategory.forEach((element) {
+      widget.product.allcategory.indexOf(element) == 0
+          ? cartypes = element
+          : API(context)
+          .get('allcategories/details/${element.allcategory_id}')
+          .then((value) {
+
+        print(value);
+        if (value != null) {
+          List<Main_Category> main_category =
+              Main_category.fromJson(value).data;
+          setState(() {
+            element.categories=main_category;
+            widget.product.allcategory.indexOf(element) == 1
+                ? _maincategory = element
+                : category.add(element);
+          });
+        }
       });
-    }else {
-      category.forEach((element) {
-        element.allcategory_id == null
-            ? cartypes = element
-            : API(context)
-                .get('allcategories/details/${element.allcategory_id}')
-                .then((value) {
-                print(value);
-                if (value != null) {
-                  List<Main_Category> main_category =
-                      Main_category.fromJson(value).data;
-                  setState(() {
-                    element.categories = main_category;
-                  });
-                }
-              });
-      });
-    }
+    });
   }
+
 
   Future<void> getAlltag() async {
     API(context).get('product-tagslist').then((value) {
