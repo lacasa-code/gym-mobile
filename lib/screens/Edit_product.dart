@@ -80,6 +80,7 @@ class _Edit_ProductState extends State<Edit_Product> {
   int CheckBox = 0;
   TextEditingController totaldiscount = TextEditingController();
   bool isqty_reminder = false;
+  bool isdiscount = false;
 
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
@@ -133,6 +134,7 @@ class _Edit_ProductState extends State<Edit_Product> {
     getAlltag();
     setState(() {
       isqty_reminder = widget.product.qty_reminder != null;
+      isdiscount = widget.product.discount != null;
     });
     getAllproducttypes();
     getAllMain_category();
@@ -140,7 +142,6 @@ class _Edit_ProductState extends State<Edit_Product> {
     getAllYear();
     totaldiscount.text =
         "${(double.parse(widget.product.discount ?? "0") / 100) * double.parse(widget.product.price ?? "0")}";
-
     widget.product.category == null
         ? null
         : getAllParts_Category(widget.product.category.id);
@@ -239,7 +240,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                     if (themeColor.local == 'ar') {
                       if (value.isEmpty) {
                         return getTransrlate(context, 'requiredempty');
-                      } else if (value.length < 2) {
+                      } else if (value.length <= 2) {
                         return "${getTransrlate(context, 'requiredlength')}";
                       } else if (RegExp(r"^[+-]?([0-9]*[.])?[0-9]+")
                           .hasMatch(value)) {
@@ -280,9 +281,9 @@ class _Edit_ProductState extends State<Edit_Product> {
                   },
                 ),
                 MyTextFormField(
-                  intialLabel: widget.product.description.length < 100
+                  intialLabel:widget.product.description!=null? widget.product.description.length < 100
                       ? widget.product.description
-                      : widget.product.descriptionEn,
+                      : widget.product.descriptionEn:"",
                   Keyboard_Type: TextInputType.name,
                   labelText: getTransrlate(context, 'description'),
                   hintText: getTransrlate(context, 'description'),
@@ -292,7 +293,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                     if (themeColor.local == 'ar') {
                       if (value.isEmpty) {
                         return getTransrlate(context, 'description');
-                      } else if (value.length < 4) {
+                      } else if (value.length <= 2) {
                         return getTransrlate(context, 'description');
                       }
                       _formKey.currentState.save();
@@ -314,7 +315,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                     if (themeColor.local == 'en') {
                       if (value.isEmpty) {
                         return getTransrlate(context, 'requiredempty');
-                      } else if (value.length < 6) {
+                      } else if (value.length <= 2) {
                         return getTransrlate(context, 'requiredlength');
                       }
                       _formKey.currentState.save();
@@ -329,16 +330,9 @@ class _Edit_ProductState extends State<Edit_Product> {
                   height: 10,
                 ),
 
-                cartypes == null
+                _listCategory == null
                     ? Container(
-                        child: DropdownSearch<String>(
-                          showSearchBox: false,
-                          showClearButton: false,
-                          label: " ",
-                          items: [''],
-                          enabled: false,
-                          //  onFind: (String filter) => getData(filter),
-                        ),
+                        child: Center(child: CircularProgressIndicator()),
                       )
                     : Container(
                         child: DropdownSearch<Main_Category>(
@@ -390,7 +384,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                     : Container(
                   child: DropdownSearch<Main_Category>(
                       showSearchBox: false,
-                      showClearButton: false,
+                      showClearButton: true,
                       label: "${getTransrlate(context, 'mainCategory')}",
                       validator: (Main_Category item) {
                         if (item == null) {
@@ -399,24 +393,30 @@ class _Edit_ProductState extends State<Edit_Product> {
                           return null;
                       },
                       items: _maincategory.categories,
+                      clearButtonBuilder: (_) => Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: const Icon(
+                          Icons.clear,
+                          size: 24,
+                          color: Colors.black,
+                        ),
+                      ),
                       selectedItem: _maincategory,
                       itemAsString: (Main_Category u) =>
                       "${themeColor.getlocal() == 'ar' ? u.mainCategoryName ?? u.mainCategoryNameen : u.mainCategoryNameen ?? u.mainCategoryName}",
                       onChanged: (Main_Category data) {
                         setState(() {
                           category = [];
-                          data.categories.isEmpty?null: category.add(Main_Category(
-                              lang: data.categories,
-                              mainCategoryName: '',
-                              mainCategoryNameen: '',
-                              id: data.id));
+                          if(data!=null){
+                            data.categories.isEmpty?null: category.add(Main_Category(
+                                lang: data.categories,
+                                mainCategoryName: '',
+                                mainCategoryNameen: '',
+                                id: data.id));
+                            categorysend= categorysend.getRange(0, 1).toList();
+                            categorysend.add(data.id);
+                          }
                         });
-                        categorysend= categorysend.getRange(0, 1).toList();
-                        categorysend.add(data.id);
-                        print(categorysend
-                            .map((e) => e)
-                            .toList()
-                            .toString());
                       }),
 
                 ),
@@ -448,7 +448,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "${ getTransrlate(context, 'subCategory')} ",
+                                          "${getTransrlate(context, 'subCategory')}",
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 16),
@@ -858,7 +858,20 @@ class _Edit_ProductState extends State<Edit_Product> {
                               return null;
                             },
                             onChanged: (String value) {
-                              widget.product.price = value;
+                              setState(() {
+                                widget.product.price = value;
+                                if (widget.product.discount != null) {
+                                  if (widget.product.discount.isNotEmpty) {
+                                    if (widget.product.price != null) {
+                                      if (widget.product.price.isNotEmpty) {
+                                        totaldiscount.text =
+                                        "${(double.parse(widget.product.discount) / 100) * double.parse(widget.product.price)}";
+                                        print(totaldiscount.text);
+                                      }
+                                    }
+                                  }
+                                }
+                              });
                             },
                             onSaved: (String value) {
                               widget.product.price = value;
@@ -883,6 +896,23 @@ class _Edit_ProductState extends State<Edit_Product> {
                             },
                           ),
                           Row(
+                            children: [
+                              Checkbox(
+                                checkColor: Colors.white,
+                                activeColor:Colors.orange ,
+                                //fillColor:Colors.orange,
+                                value:isdiscount ,
+                                onChanged: (bool value) {
+                                  setState(() {
+                                    isdiscount = value;
+                                    widget.product.discount=null;
+                                  });
+                                },
+                              ),
+                              Text("${getTransrlate(context, 'Sale')}"),
+                            ],
+                          ),
+                          !isdiscount?Container():  Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Container(
@@ -1045,6 +1075,21 @@ class _Edit_ProductState extends State<Edit_Product> {
                                   _formKey.currentState.save();
                                   return null;
                                 },
+
+                                onChanged: (String value) {
+                                  widget.product.price = value;
+                                  if (widget.product.discount != null) {
+                                    if (widget.product.discount.isNotEmpty) {
+                                      if (widget.product.price != null) {
+                                        if (widget.product.price.isNotEmpty) {
+                                          totaldiscount.text =
+                                          "${(double.parse(widget.product.discount) / 100) * double.parse(widget.product.price)}";
+                                          print(totaldiscount.text);
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
                                 onSaved: (String value) {
                                   widget.product.price = value;
                                 },
@@ -1070,6 +1115,23 @@ class _Edit_ProductState extends State<Edit_Product> {
                                 },
                               ),
                               Row(
+                                children: [
+                                  Checkbox(
+                                    checkColor: Colors.white,
+                                    activeColor:Colors.orange ,
+                                    //fillColor:Colors.orange,
+                                    value:isdiscount ,
+                                    onChanged: (bool value) {
+                                      setState(() {
+                                        isdiscount = value;
+                                        widget.product.discount=null;
+                                      });
+                                    },
+                                  ),
+                                  Text("${getTransrlate(context, 'Sale')}"),
+                                ],
+                              ),
+                              !isdiscount?Container():   Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
@@ -1133,7 +1195,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                               ),
                               MyTextFormField(
                                 intialLabel:
-                                    widget.product.holesalePrice ?? ' ',
+                                    widget.product.holesalePrice ?? '',
                                 Keyboard_Type: TextInputType.number,
                                 labelText:
                                     '${getTransrlate(context, 'Wholesaleprice')}',
@@ -1153,7 +1215,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                                 },
                               ),
                               MyTextFormField(
-                                intialLabel: widget.product.noOfOrders ?? ' ',
+                                intialLabel: widget.product.noOfOrders ?? '',
                                 Keyboard_Type: TextInputType.number,
                                 labelText:
                                     "${getTransrlate(context, 'minOfOrder')}",
@@ -1172,7 +1234,25 @@ class _Edit_ProductState extends State<Edit_Product> {
                                   widget.product.noOfOrders = value;
                                 },
                               ),
-                              MyTextFormField(
+                              Row(
+                                children: [
+                                  Checkbox(
+                                    checkColor: Colors.white,
+                                    activeColor: Colors.orange,
+                                    //fillColor:Colors.orange,
+                                    value: isqty_reminder,
+                                    onChanged: (bool value) {
+                                      setState(() {
+                                        isqty_reminder = value;
+                                      });
+                                    },
+                                  ),
+                                  Text("${getTransrlate(context, 'reminder')}"),
+                                ],
+                              ),
+                              !isqty_reminder
+                                  ? Container()
+                                  :  MyTextFormField(
                                 intialLabel: widget.product.qty_reminder ?? ' ',
                                 Keyboard_Type: TextInputType.number,
                                 labelText:
@@ -1581,7 +1661,6 @@ class _Edit_ProductState extends State<Edit_Product> {
       ),
     );
   }
-
   Future<void> getAllCarMade(String id) async {
     API(context).get('cartype/madeslist/$id').then((value) {
       if (value != null) {
@@ -1660,26 +1739,39 @@ class _Edit_ProductState extends State<Edit_Product> {
   }
 
   getAllCategory() {
-    widget.product.allcategory.forEach((element) {
-      widget.product.allcategory.indexOf(element) == 0
-          ? cartypes = element
-          : API(context)
+    print(widget.product.allcategory.map((e) => e.id).toList());
+  setState(() {
+    cartypes=widget.product.allcategory[0];
+   _maincategory=widget.product.allcategory[1];
+  });
+    API(context)
+        .get('allcategories/details/${widget.product.allcategory[1].allcategory_id}')
+        .then((value) {
+      if (value != null) {
+        setState(() {
+          _maincategory.categories=Main_category.fromJson(value).data;
+        });
+      }
+    });
+    widget.product.allcategory=widget.product.allcategory.getRange(2, widget.product.allcategory.length).toList();
+setState(() {
+
+});
+    widget.product.allcategory.forEach((element)  {
+       API(context)
           .get('allcategories/details/${element.allcategory_id}')
           .then((value) {
-
-        print(value);
+      // print('id = ${widget.product.allcategory.indexOf(element)} => ${element.id}');
         if (value != null) {
-          List<Main_Category> main_category =
-              Main_category.fromJson(value).data;
           setState(() {
-            element.categories=main_category;
-            widget.product.allcategory.indexOf(element) == 1
-                ? _maincategory = element
-                : category.add(element);
+            element.categories=Main_category.fromJson(value).data;
+            category=widget.product.allcategory;
+
           });
         }
       });
     });
+
   }
 
 

@@ -55,14 +55,12 @@ class Main_Category {
   String name_en;
   int _status;
   List<Main_Category> categories;
-
   int get id => _id;
   int get allcategory_id => _allcategory_id;
   String get mainCategoryName => name;
   String get mainCategoryNameen => name_en;
   int get status => _status;
   List<Main_Category> get Categories => categories;
-
   Main_Category({
       int id, 
       int allcategory_id,

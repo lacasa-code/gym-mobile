@@ -51,6 +51,7 @@ class _Add_ProductState extends State<Add_Product> {
   TextEditingController totaldiscount = TextEditingController();
   bool loading = false;
   bool isqty_reminder = false;
+  bool isdiscount = false;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
   List<Carmodel> carmodels;
@@ -848,7 +849,21 @@ int CheckBox=0;
                                         return null;
                                       },
                                       onSaved: (String value) {
-                                        product.price = value;
+                                        setState(() {
+                                          product.price = value;
+
+                                          if (product.discount != null) {
+                                            if (product.discount.isNotEmpty) {
+                                              if (product.price != null) {
+                                                if (product.price.isNotEmpty) {
+                                                  totaldiscount.text =
+                                                  "${(double.parse(product.discount) / 100) * double.parse(product.price)}";
+                                                  print(totaldiscount.text);
+                                                }
+                                              }
+                                            }
+                                          }
+                                        });
                                       },  onChanged: (String value) {
                                         product.price = value;
                                       },
@@ -874,6 +889,23 @@ int CheckBox=0;
                                       },
                                     ),
                                     Row(
+                                      children: [
+                                        Checkbox(
+                                          checkColor: Colors.white,
+                                          activeColor:Colors.orange ,
+                                          //fillColor:Colors.orange,
+                                          value:isdiscount ,
+                                          onChanged: (bool value) {
+                                            setState(() {
+                                              isdiscount = value;
+                                              product.discount=null;
+                                            });
+                                          },
+                                        ),
+                                        Text("${getTransrlate(context, 'Sale')}"),
+                                      ],
+                                    ),
+                                    !isdiscount?Container():  Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
@@ -943,6 +975,7 @@ int CheckBox=0;
                                           onChanged: (bool value) {
                                             setState(() {
                                               isqty_reminder = value;
+                                              product.qty_reminder=null;
                                             });
                                           },
                                         ),
@@ -1035,7 +1068,24 @@ int CheckBox=0;
                                             _formKey.currentState.save();
                                             return null;
                                           },
-                                          onSaved: (String value) {
+
+                                          onChanged: (String value) {
+                                            setState(() {
+                                              product.price = value;
+
+                                              if (product.discount != null) {
+                                                if (product.discount.isNotEmpty) {
+                                                  if (product.price != null) {
+                                                    if (product.price.isNotEmpty) {
+                                                      totaldiscount.text =
+                                                      "${(double.parse(product.discount) / 100) * double.parse(product.price)}";
+                                                      print(totaldiscount.text);
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            });
+                                          },  onSaved: (String value) {
                                             product.price = value;
                                           },
                                         ),
@@ -1060,6 +1110,23 @@ int CheckBox=0;
                                           },
                                         ),
                                         Row(
+                                          children: [
+                                            Checkbox(
+                                              checkColor: Colors.white,
+                                              activeColor:Colors.orange ,
+                                              //fillColor:Colors.orange,
+                                              value:isdiscount ,
+                                              onChanged: (bool value) {
+                                                setState(() {
+                                                  isdiscount = value;
+                                                  product.discount=null;
+                                                });
+                                              },
+                                            ),
+                                            Text("${getTransrlate(context, 'Sale')}"),
+                                          ],
+                                        ),
+                                        !isdiscount?Container(): Row(
                                           mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                           children: [
@@ -1158,7 +1225,24 @@ int CheckBox=0;
                                             product.noOfOrders = value;
                                           },
                                         ),
-                                        MyTextFormField(
+                                        Row(
+                                          children: [
+                                            Checkbox(
+                                              checkColor: Colors.white,
+                                              activeColor:Colors.orange ,
+                                              //fillColor:Colors.orange,
+                                              value: isqty_reminder,
+                                              onChanged: (bool value) {
+                                                setState(() {
+                                                  isqty_reminder = value;
+                                                  product.qty_reminder=null;
+                                                });
+                                              },
+                                            ),
+                                            Text("${getTransrlate(context, 'reminder')}"),
+                                          ],
+                                        ),
+                                        !isqty_reminder?Container():   MyTextFormField(
                                           intialLabel: ' ',
                                           Keyboard_Type: TextInputType.number,
                                           labelText:
@@ -1376,7 +1460,7 @@ int CheckBox=0;
                                       _formKey.currentState.save();
                                       product.tags = _tagSelect;
                                       product.photos = images;
-                                      product.allcategory_id=categorysend.map((e) => e).toList().toString();
+                                      product.allcategory_id=categorysend.map((e) => e.toString()).toList().toString();
 
                                       print(product.toJson());
                                       if(images.isNotEmpty){

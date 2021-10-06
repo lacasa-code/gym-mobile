@@ -192,7 +192,7 @@ class _ProductPageState extends State<ProductPage> {
                   dataRow('${getTransrlate(context, 'serial')}',
                       "${widget.product.serialNumber}", Colors.black26),
                   dataRow('${getTransrlate(context, 'description')}',
-                      "${themeColor.getlocal()=='ar'?widget.product.description:widget.product.descriptionEn}", Colors.white),
+                      "${themeColor.getlocal()=='ar'?widget.product.description??widget.product.descriptionEn:widget.product.descriptionEn??widget.product.description}", Colors.white),
                   dataRow(
                       '${getTransrlate(context, 'brand')}',
                       "${widget.product.carMade == null ? '' :themeColor.getlocal()=='ar'? widget.product.carMade.carMade :widget.product.carMade.name_en}",

@@ -216,8 +216,8 @@ class Product {
     qty_reminder = json['qty_reminder'].toString();
     print("wholesale ${json['holesale_price']}");
 
-    holesalePrice = json['holesale_price'].toString();
-    noOfOrders = json['no_of_orders'].toString();
+    holesalePrice = json['holesale_price']==null?'':json['holesale_price'].toString();
+    noOfOrders = json['no_of_orders']==null?'':json['no_of_orders'].toString();
   }
 
   Map<String, String> toJson() {
@@ -257,7 +257,6 @@ class Product {
         : this.cartype_id.isEmpty
             ? null
             : data['cartype_id'] = this.cartype_id;
-    this.allcategory_id == null ? null : data['maincategory_id'] = this.allcategory_id;
     this.prodcountry_id == null
         ? null
         : data['prodcountry_id'] = this.prodcountry_id;
