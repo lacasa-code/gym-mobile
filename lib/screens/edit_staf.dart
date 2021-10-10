@@ -371,6 +371,7 @@ class _EditStaffState extends State<EditStaff> {
       setState(() {
         widget.user.stores.remove(value);
         _listStore.add(value);
+        getStore();
       });
     }
   }
@@ -393,9 +394,10 @@ class _EditStaffState extends State<EditStaff> {
         setState(() {
           _listStore= Store_model.fromJson(value).data;
         });
-        widget.user.stores.forEach((element) {
+        widget.user.stores.forEach((e) {
           setState(() {
-            _listStore.remove(_listStore.where((e) => element.id==e.id).first);
+            print(e.id);
+            _listStore.removeWhere((element) => element.id==e.id);
           });
         });
       }

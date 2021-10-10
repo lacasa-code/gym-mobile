@@ -49,6 +49,7 @@ class Edit_Product extends StatefulWidget {
 class _Edit_ProductState extends State<Edit_Product> {
   List<Main_Category> category = [];
   List<int> categorysend = [];
+  List<int> photo_deleted = [];
   Main_Category _maincategory;
   Main_Category cartypes;
 
@@ -56,7 +57,6 @@ class _Edit_ProductState extends State<Edit_Product> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
   int Main_categoryid;
-
   List<Carmodel> carmodels;
   List<CarMade> CarMades;
   List<Year> years;
@@ -337,7 +337,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                     : Container(
                         child: DropdownSearch<Main_Category>(
                             showSearchBox: false,
-                            showClearButton: false,
+                            showClearButton: true,
                             label: " ${getTransrlate(context, 'CarType')}",
                             selectedItem: cartypes,
                             validator: (Main_Category item) {
@@ -346,25 +346,36 @@ class _Edit_ProductState extends State<Edit_Product> {
                               } else
                                 return null;
                             },
+                            clearButtonBuilder: (_) => Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: const Icon(
+                                Icons.clear,
+                                size: 24,
+                                color: Colors.black,
+                              ),
+                            ),
                             items: _listCategory,
                             //  onFind: (String filter) => getData(filter),
                             itemAsString: (Main_Category u) =>
                                 "${themeColor.getlocal() == 'ar' ? u.mainCategoryName ?? u.mainCategoryNameen : u.mainCategoryNameen ?? u.mainCategoryName}",
                             onChanged: (Main_Category data) {
                               setState(() {
-                                Main_categoryid = data.id;
-                                _maincategory=  Main_Category(
-                                    lang: data.categories,
-                                    mainCategoryName: '',
-                                    mainCategoryNameen: '',
-                                    id: data.id);
-                                category = [];
-                                getAllCarMade(data.id.toString());
                                 widget.product.carMade = null;
                                 widget.product.carModel = null;
+                                category = [];
                                 carmodels = [];
                                 categorysend=[];
-                                categorysend.add(data.id);
+                                _maincategory=null;
+                                if(data!=null){
+                                  Main_categoryid = data.id;
+                                  _maincategory=  Main_Category(
+                                      lang: data.categories,
+                                      mainCategoryName: '',
+                                      mainCategoryNameen: '',
+                                      id: data.id);
+                                  getAllCarMade(data.id.toString());
+                                  categorysend.add(data.id);
+                                }
                               });
                             })),
                 SizedBox(
@@ -461,7 +472,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                                               1.15,
                                           child: DropdownSearch<Main_Category>(
                                               showSearchBox: false,
-                                              showClearButton: false,
+                                              showClearButton: true,
                                               label: "",
                                               validator: (Main_Category item) {
                                                 if (category.length < 2) {
@@ -472,7 +483,15 @@ class _Edit_ProductState extends State<Edit_Product> {
                                                 } else
                                                   return null;
                                               },
-                                              //  enabled: categorylist[index].categories!=null,
+                                            clearButtonBuilder: (_) => Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: const Icon(
+                                                Icons.clear,
+                                                size: 24,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            //  enabled: categorylist[index].categories!=null,
                                               selectedItem: category[index],
                                               items: category[index].categories,
                                               //  onFind: (String filter) => getData(filter),
@@ -482,29 +501,27 @@ class _Edit_ProductState extends State<Edit_Product> {
 
                                                 setState(() {
                                                   categorysend= categorysend.getRange(0, index+2).toList();
-                                                  categorysend.add(data.id);
+
                                                   category=category.getRange(0, index+1).toList();
-                                                  data.categories.isEmpty?null: category.add(Main_Category(
-                                                      lang: data.categories,
-                                                      mainCategoryName: '',
-                                                      mainCategoryNameen: '',
-                                                      id: data.id));                                                });
-                                                print(categorysend
-                                                    .map((e) => e)
-                                                    .toList()
-                                                    .toString());
-                                              }),
-                                        ),
+                                                  if(data!=null){
+                                                    categorysend.add(data.id);
+                                                    data.categories.isEmpty?null: category.add(Main_Category(
+                                                        lang: data.categories,
+                                                        mainCategoryName: '',
+                                                        mainCategoryNameen: '',
+                                                        id: data.id));
+                                                  }
+                                                  print(categorysend
+                                                      .map((e) => e)
+                                                      .toList()
+                                                      .toString());
+
+                                              });},
+                                        ),)
                                       ],
                                     );
                             }),
-                SizedBox(
-                  height: 10,
-                ),
-
-                SizedBox(
-                  height: 10,
-                ),
+                SizedBox(height: 10,),
                 Main_categoryid == 7
                     ? Container()
                     : Column(
@@ -1431,33 +1448,11 @@ class _Edit_ProductState extends State<Edit_Product> {
                                   left: 5,
                                   child: InkWell(
                                     onTap: () {
-                                      if (widget.product.photo.length != 1) {
-                                        API(context).post(
-                                            'products/remove/checked/media', {
-                                          'product_id': widget.product.id,
-                                          'media_ids': "[${asset.id}]",
-                                        }).then((value) {
-                                          if (value['status_code'] == 200) {
-                                            setState(() {
-                                              widget.product.photo
-                                                  .remove(asset);
-                                            });
-                                          }
-                                          showDialog(
-                                            context: context,
-                                            builder: (_) => ResultOverlay(
-                                              '${value['message'] ?? value['errors']}',
-                                            ),
-                                          );
-                                        });
-                                      } else {
-                                        showDialog(
-                                          context: context,
-                                          builder: (_) => ResultOverlay(
-                                            '${getTransrlate(context, 'NotDelete')}',
-                                          ),
-                                        );
-                                      }
+                                      setState(() {
+                                        widget.product.photo.remove(asset);
+                                        photo_deleted.add(asset.id);
+                                      });
+
                                     },
                                     child: Container(
                                       color: Colors.grey,
@@ -1544,8 +1539,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      loading
-                          ? FlatButton(
+                      if (loading) FlatButton(
                               minWidth: ScreenUtil.getWidth(context) / 2.5,
                               color: Colors.orange,
                               child: Padding(
@@ -1560,8 +1554,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                                 ),
                               ),
                               onPressed: () async {},
-                            )
-                          : FlatButton(
+                            ) else FlatButton(
                               minWidth: ScreenUtil.getWidth(context) / 2.5,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(1),
@@ -1590,6 +1583,15 @@ class _Edit_ProductState extends State<Edit_Product> {
                                   print(widget.product.toJson());
                                   if (widget.product.photo.isNotEmpty ||
                                       images.isNotEmpty) {
+                                    if(photo_deleted.isNotEmpty){
+                                      API(context).post(
+                                          'products/remove/checked/media', {
+                                        'product_id': widget.product.id,
+                                        'media_ids': "${photo_deleted.map((e) => e).toList()}",
+                                      }).then((value) {
+
+                                      });
+                                    }
                                     setState(() => loading = true);
                                     API(context)
                                         .postFile(
@@ -1670,7 +1672,6 @@ class _Edit_ProductState extends State<Edit_Product> {
       }
     });
   }
-
   Future<void> getAllCareModel(String id) async {
     API(context).get('car-modelslist/$id').then((value) {
       if (value != null) {
@@ -1685,7 +1686,6 @@ class _Edit_ProductState extends State<Edit_Product> {
       }
     });
   }
-
   Future<void> getAllParts_Category(int id) async {
     API(context).get('part-categorieslist/$id').then((value) {
       if (value != null) {
@@ -1695,7 +1695,6 @@ class _Edit_ProductState extends State<Edit_Product> {
       }
     });
   }
-
   Future<void> getAllMain_category() async {
     API(context).get('allcategories').then((value) {
       if (value != null) {
@@ -1706,7 +1705,6 @@ class _Edit_ProductState extends State<Edit_Product> {
       }
     });
   }
-
   Future<void> getAllproducttypes() async {
     API(context).get('product/types/list').then((value) {
       if (value != null) {
@@ -1717,7 +1715,6 @@ class _Edit_ProductState extends State<Edit_Product> {
       }
     });
   }
-
   Future<void> getAllYear() async {
     API(context).get('car-yearslist').then((value) {
       if (value != null) {
@@ -1727,7 +1724,6 @@ class _Edit_ProductState extends State<Edit_Product> {
       }
     });
   }
-
   Future<void> getAllStore() async {
     API(context).get('storeslist').then((value) {
       if (value != null) {
@@ -1737,7 +1733,6 @@ class _Edit_ProductState extends State<Edit_Product> {
       }
     });
   }
-
   getAllCategory() {
     print(widget.product.allcategory.map((e) => e.id).toList());
   setState(() {
@@ -1749,13 +1744,13 @@ class _Edit_ProductState extends State<Edit_Product> {
         .then((value) {
       if (value != null) {
         setState(() {
+          _maincategory.categories=null;
           _maincategory.categories=Main_category.fromJson(value).data;
         });
       }
     });
     widget.product.allcategory=widget.product.allcategory.getRange(2, widget.product.allcategory.length).toList();
 setState(() {
-
 });
     widget.product.allcategory.forEach((element)  {
        API(context)
@@ -1773,8 +1768,6 @@ setState(() {
     });
 
   }
-
-
   Future<void> getAlltag() async {
     API(context).get('product-tagslist').then((value) {
       if (value != null) {
@@ -1785,7 +1778,6 @@ setState(() {
       getAllprodcountry();
     });
   }
-
   Future<void> getAllprodcountry() async {
     API(context).get('prodcountries/list').then((value) {
       if (value != null) {
@@ -1796,7 +1788,6 @@ setState(() {
       getAllmanufacturer();
     });
   }
-
   Future<void> getAllmanufacturer() async {
     API(context).get('manufacturer/list').then((value) {
       if (value != null) {
@@ -1807,7 +1798,6 @@ setState(() {
       getAllTransmission();
     });
   }
-
   Future<void> getAllTransmission() async {
     API(context).get('transmissions-list').then((value) {
       if (value != null) {
@@ -1817,7 +1807,6 @@ setState(() {
       }
     });
   }
-
   _generateModels(Provider_control themeColor) {
     return widget.product.carModel.isEmpty
         ? Container()
@@ -1858,7 +1847,6 @@ setState(() {
             ),
           );
   }
-
   _generateTags(Provider_control themeColor) {
     return widget.product.tags.isEmpty
         ? Container()
@@ -1899,7 +1887,6 @@ setState(() {
             ),
           );
   }
-
   _onSuggestionSelected(Tag value) {
     if (value != null) {
       setState(() {
@@ -1908,7 +1895,6 @@ setState(() {
       });
     }
   }
-
   _onSuggestionRemoved(Tag value) {
     // final Tag exist =
     //     _tags.firstWhere((text) => text.name == value, orElse: () {
@@ -1921,7 +1907,6 @@ setState(() {
       });
     }
   }
-
   _sugestionList({@required List<Tag> tags, @required String suggestion}) {
     List<Tag> modifiedList = [];
     modifiedList.addAll(tags);
@@ -1933,7 +1918,6 @@ setState(() {
       return null;
     }
   }
-
   _onModelSelected(Carmodel value) {
     if (value != null) {
       setState(() {
@@ -1942,7 +1926,6 @@ setState(() {
       });
     }
   }
-
   _onModelRemoved(Carmodel value) {
     if (value != null) {
       setState(() {
@@ -1951,7 +1934,6 @@ setState(() {
       });
     }
   }
-
   _ModelList({@required List<Carmodel> tags, @required String suggestion}) {
     List<Carmodel> modifiedList = [];
     modifiedList.addAll(tags);

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
@@ -5,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/products_model.dart';
+import 'package:trkar_vendor/screens/add_product.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/Provider/provider_data.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
@@ -27,6 +30,7 @@ class ProductPage extends StatefulWidget {
 
 class _ProductPageState extends State<ProductPage> {
   int _carouselCurrentPage = 0;
+  String url="products";
 
   @override
   void initState() {
@@ -99,7 +103,7 @@ class _ProductPageState extends State<ProductPage> {
                         value: 1,
                         child: InkWell(
                           onTap: () {
-                            Nav.route(context, Edit_Product(widget.product));
+                            _navigate_edit_hell(context, widget.product);
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -270,5 +274,11 @@ class _ProductPageState extends State<ProductPage> {
               ),
             ),
           );
+  }
+
+  _navigate_edit_hell(BuildContext context, Product hall) async {
+    await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => Edit_Product(hall)));
+    Timer(Duration(seconds: 3), () => Provider.of<Provider_Data>(context,listen: false).getProducts(context,url));
   }
 }

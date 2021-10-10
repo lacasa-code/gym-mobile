@@ -214,7 +214,6 @@ class Product {
     serialId = json['serial_id'];
     approved = json['approved'];
     qty_reminder = json['qty_reminder'].toString();
-    print("wholesale ${json['holesale_price']}");
 
     holesalePrice = json['holesale_price']==null?'':json['holesale_price'].toString();
     noOfOrders = json['no_of_orders']==null?'':json['no_of_orders'].toString();

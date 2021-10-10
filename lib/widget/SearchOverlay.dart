@@ -28,6 +28,7 @@ class SearchOverlayState extends State<SearchOverlay>
   AnimationController controller;
   Animation<double> scaleAnimation;
   List<Product> products = [];
+  String search_index='';
   @override
   void initState() {
     super.initState();
@@ -84,23 +85,8 @@ class SearchOverlayState extends State<SearchOverlay>
                               child: TextFormField(
                                 onChanged: (string) {
                                   if (string.length >= 1) {
-                                    API(context).post(widget.url, {
-                                      "search_index": string,
-                                    }).then((value) {
-                                      if (value != null) {
-                                        if (value['status_code'] == 200) {
-                                          setState(() {
-                                            products =
-                                                Products_model.fromJson(value).product;
-                                          });
-                                        } else {
-                                          showDialog(
-                                              context: context,
-                                              builder: (_) => ResultOverlay(
-                                                  value['message']));
-                                        }
-                                      }
-                                    });
+                                    search_index=string;
+                                    get_search(string);
                                   } else {
                                     setState(() {
                                       products = [];
@@ -216,6 +202,7 @@ class SearchOverlayState extends State<SearchOverlay>
                                         value: 1,
                                         child: InkWell(
                                           onTap: (){
+                                            Navigator.pop(context);
                                             _navigate_edit_hell(context, products[index]);
                                           },
                                           child: Row(
@@ -271,6 +258,7 @@ class SearchOverlayState extends State<SearchOverlay>
   _navigate_edit_hell(BuildContext context, Product hall) async {
     await Navigator.push(
         context, MaterialPageRoute(builder: (context) => Edit_Product(hall)));
+    get_search(search_index);
   }
   Future<void> Delete_Products(int id) async {
     API(context).Delete('products/$id').then((value) {
@@ -287,7 +275,25 @@ class SearchOverlayState extends State<SearchOverlay>
       }
     });
   }
-
+get_search(String string){
+  API(context).post(widget.url, {
+    "search_index": string,
+  }).then((value) {
+    if (value != null) {
+      if (value['status_code'] == 200) {
+        setState(() {
+          products =
+              Products_model.fromJson(value).product;
+        });
+      } else {
+        showDialog(
+            context: context,
+            builder: (_) => ResultOverlay(
+                value['message']));
+      }
+    }
+  });
+}
 
 
 }

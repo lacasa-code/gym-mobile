@@ -310,7 +310,15 @@ int CheckBox=0;
                               : Container(
                               child: DropdownSearch<Main_Category>(
                                   showSearchBox: false,
-                                  showClearButton: false,
+                                  showClearButton: true,
+                                  clearButtonBuilder: (_) => Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: const Icon(
+                                      Icons.clear,
+                                      size: 24,
+                                      color: Colors.black,
+                                    ),
+                                  ),
                                   label: " ${getTransrlate(context, 'CarType')}",
                                   selectedItem: cartypes,
                                   validator: (Main_Category item) {
@@ -325,16 +333,19 @@ int CheckBox=0;
                                   "${themeColor.getlocal() == 'ar' ? u.mainCategoryName ?? u.mainCategoryNameen : u.mainCategoryNameen ?? u.mainCategoryName}",
                                   onChanged: (Main_Category data) {
                                     setState(() {
-                                      Main_categoryid = data.id;
-                                      _maincategory=  Main_Category(
-                                          lang: data.categories,
-                                          mainCategoryName: '',
-                                          mainCategoryNameen: '',
-                                          id: data.id);
-                                      category = [];
-                                      getAllCarMade(data.id.toString());
                                       categorysend=[];
-                                      categorysend.add(data.id);
+                                      _maincategory = null;
+                                      category = [];
+                                      if(data!=null){
+                                        Main_categoryid = data.id;
+                                        _maincategory=  Main_Category(
+                                            lang: data.categories,
+                                            mainCategoryName: '',
+                                            mainCategoryNameen: '',
+                                            id: data.id);
+                                        getAllCarMade(data.id.toString());
+                                        categorysend.add(data.id);
+                                      }
                                     });
                                   })),
                           SizedBox(
@@ -354,7 +365,15 @@ int CheckBox=0;
                               : Container(
                             child: DropdownSearch<Main_Category>(
                                 showSearchBox: false,
-                                showClearButton: false,
+                                showClearButton: true,
+                                clearButtonBuilder: (_) => Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: const Icon(
+                                    Icons.clear,
+                                    size: 24,
+                                    color: Colors.black,
+                                  ),
+                                ),
                                 label: "${getTransrlate(context, 'mainCategory')}",
                                 validator: (Main_Category item) {
                                   if (item == null) {
@@ -369,14 +388,16 @@ int CheckBox=0;
                                 onChanged: (Main_Category data) {
                                   setState(() {
                                     category = [];
-                                    data.categories.isEmpty?null: category.add(Main_Category(
-                                        lang: data.categories,
-                                        mainCategoryName: '',
-                                        mainCategoryNameen: '',
-                                        id: data.id));
+                                    categorysend= categorysend.getRange(0, 1).toList();
+                                    if(data!=null){
+                                      categorysend.add(data.id);
+                                      data.categories.isEmpty?null: category.add(Main_Category(
+                                          lang: data.categories,
+                                          mainCategoryName: '',
+                                          mainCategoryNameen: '',
+                                          id: data.id));
+                                    }
                                   });
-                                  categorysend= categorysend.getRange(0, 1).toList();
-                                  categorysend.add(data.id);
                                   print(categorysend
                                       .map((e) => e)
                                       .toList()
@@ -425,8 +446,15 @@ int CheckBox=0;
                                           1.15,
                                       child: DropdownSearch<Main_Category>(
                                           showSearchBox: false,
-                                          showClearButton: false,
-                                          label: "",
+                                          showClearButton: true,
+                                          clearButtonBuilder: (_) => Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: const Icon(
+                                              Icons.clear,
+                                              size: 24,
+                                              color: Colors.black,
+                                            ),
+                                          ),                                          label: "",
                                           validator: (Main_Category item) {
                                             if (category.length < 2) {
                                               if (item == null) {
@@ -446,13 +474,17 @@ int CheckBox=0;
 
                                             setState(() {
                                               categorysend= categorysend.getRange(0, index+2).toList();
-                                              categorysend.add(data.id);
                                               category=category.getRange(0, index+1).toList();
-                                              data.categories.isEmpty?null: category.add(Main_Category(
-                                                  lang: data.categories,
-                                                  mainCategoryName: '',
-                                                  mainCategoryNameen: '',
-                                                  id: data.id));                                                });
+
+                                              if(data!=null){
+                                                categorysend.add(data.id);
+                                                data.categories.isEmpty?null: category.add(Main_Category(
+                                                    lang: data.categories,
+                                                    mainCategoryName: '',
+                                                    mainCategoryNameen: '',
+                                                    id: data.id));
+                                              }
+                                               });
                                             print(categorysend
                                                 .map((e) => e)
                                                 .toList()
@@ -851,7 +883,6 @@ int CheckBox=0;
                                       onSaved: (String value) {
                                         setState(() {
                                           product.price = value;
-
                                           if (product.discount != null) {
                                             if (product.discount.isNotEmpty) {
                                               if (product.price != null) {
