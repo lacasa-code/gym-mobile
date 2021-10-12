@@ -133,6 +133,7 @@ class _Edit_ProductState extends State<Edit_Product> {
     categorysend=widget.product.allcategory.map((e) => e.id).toList();
     getAlltag();
     setState(() {
+      Main_categoryid=widget.product.allcategory[0].id;
       isqty_reminder = widget.product.qty_reminder != null;
       isdiscount = widget.product.discount != null;
     });
@@ -242,9 +243,6 @@ class _Edit_ProductState extends State<Edit_Product> {
                         return getTransrlate(context, 'requiredempty');
                       } else if (value.length <= 2) {
                         return "${getTransrlate(context, 'requiredlength')}";
-                      } else if (RegExp(r"^[+-]?([0-9]*[.])?[0-9]+")
-                          .hasMatch(value)) {
-                        return getTransrlate(context, 'invalidname');
                       }
                       return null;
                     }
@@ -269,9 +267,6 @@ class _Edit_ProductState extends State<Edit_Product> {
                         return getTransrlate(context, 'requiredempty');
                       } else if (value.length <= 2) {
                         return "${getTransrlate(context, 'requiredlength')}";
-                      } else if (RegExp(r"^[+-]?([0-9]*[.])?[0-9]+")
-                          .hasMatch(value)) {
-                        return getTransrlate(context, 'invalidname');
                       }
                       return null;
                     }
@@ -474,15 +469,6 @@ class _Edit_ProductState extends State<Edit_Product> {
                                               showSearchBox: false,
                                               showClearButton: true,
                                               label: "",
-                                              validator: (Main_Category item) {
-                                                if (category.length < 2) {
-                                                  if (item == null) {
-                                                    return "${getTransrlate(context, 'Required')}";
-                                                  } else
-                                                    return null;
-                                                } else
-                                                  return null;
-                                              },
                                             clearButtonBuilder: (_) => Padding(
                                               padding: const EdgeInsets.all(8.0),
                                               child: const Icon(
@@ -854,6 +840,8 @@ class _Edit_ProductState extends State<Edit_Product> {
                               setState(() {
                                 widget.product.productType_id =
                                     data.id.toString();
+                                widget.product.price=' ';
+                                widget.product.holesalePrice=' ';
                               });
                             }),
                       ),
@@ -1739,6 +1727,7 @@ class _Edit_ProductState extends State<Edit_Product> {
     cartypes=widget.product.allcategory[0];
    _maincategory=widget.product.allcategory[1];
   });
+
     API(context)
         .get('allcategories/details/${widget.product.allcategory[1].allcategory_id}')
         .then((value) {

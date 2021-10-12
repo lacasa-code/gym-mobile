@@ -30,6 +30,7 @@ class _add_StaffState extends State<add_Staff> {
   bool loading = false;
   final _formKey = GlobalKey<FormState>();
   List<Role> roles;
+  List<Store> listStore;
   List<Store> _listStore;
   bool passwordVisible = false;
   User user = User();
@@ -62,7 +63,7 @@ class _add_StaffState extends State<add_Staff> {
         ),
         backgroundColor: themeColor.getColor(),
       ),
-      body: _listStore==null?Custom_Loading():_listStore.isEmpty?NotFoundItem(title: '${getTransrlate(context, 'messagestaff')}',) :
+      body: listStore==null?Custom_Loading():listStore.isEmpty?NotFoundItem(title: '${getTransrlate(context, 'messagestaff')}',) :
       SingleChildScrollView(
         child: Column(
           children: [
@@ -101,9 +102,6 @@ class _add_StaffState extends State<add_Staff> {
                           return getTransrlate(context, 'requiredempty');
                         }else   if (value.length<2) {
                           return "${getTransrlate(context, 'requiredlength')}";
-                        }else if (RegExp(
-                            r"^[+-]?([0-9]*[.])?[0-9]+").hasMatch(value)) {
-                          return "${getTransrlate(context, 'invalidname')}";
                         }
                         return null;
                       },
@@ -341,6 +339,7 @@ class _add_StaffState extends State<add_Staff> {
       if (value != null) {
         setState(() {
           _listStore= Store_model.fromJson(value).data;
+          listStore= Store_model.fromJson(value).data;
         });
       }
     });
@@ -383,7 +382,6 @@ class _add_StaffState extends State<add_Staff> {
       ),
     );
   }
-
   _onSuggestionSelected(Store value) {
     if (value != null) {
       setState(() {
@@ -392,7 +390,6 @@ class _add_StaffState extends State<add_Staff> {
       });
     }
   }
-
   _onSuggestionRemoved(Store value) {
     // final Store exist =
     //     _Stores.firstWhere((text) => text.name == value, orElse: () {
@@ -405,7 +402,6 @@ class _add_StaffState extends State<add_Staff> {
       });
     }
   }
-
   _sugestionList({@required List<Store> Stores, @required String suggestion}) {
     List<Store> modifiedList = [];
     modifiedList.addAll(Stores);
@@ -415,5 +411,4 @@ class _add_StaffState extends State<add_Staff> {
     return Stores;
 
   }
-
 }

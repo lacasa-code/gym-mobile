@@ -111,7 +111,7 @@ class _Product_itemState extends State<Product_item> {
                 ),
               ),
               AutoSizeText(
-                '${getTransrlate(context, 'CarType')}  : ${widget.hall_model.carType!=null?themeColor.getlocal()=='ar'?widget.hall_model.carType.typeName??'':widget.hall_model.carType.name_en??'':''}',
+                '${getTransrlate(context, 'productType')}  : ${widget.hall_model.producttypeId!=null?themeColor.getlocal()=='ar'?widget.hall_model.producttypeId.producttype??'':widget.hall_model.producttypeId.name_en??'':''}',
                 minFontSize: 10,
                 style: TextStyle(
                   fontSize: 13,

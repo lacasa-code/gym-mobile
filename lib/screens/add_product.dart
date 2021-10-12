@@ -202,9 +202,6 @@ int CheckBox=0;
                                       context, 'requiredempty');
                                 } else if (value.length <= 2) {
                                   return "${getTransrlate(context, 'requiredlength')}";
-                                } else if (RegExp(r"^[+-]?([0-9]*[.])?[0-9]+")
-                                    .hasMatch(value)) {
-                                  return getTransrlate(context, 'invalidname');
                                 }
                                 return null;
                               }
@@ -229,9 +226,6 @@ int CheckBox=0;
                                       context, 'requiredempty');
                                 } else if (value.length <= 2) {
                                   return "${getTransrlate(context, 'requiredlength')}";
-                                } else if (RegExp(r"^[+-]?([0-9]*[.])?[0-9]+")
-                                    .hasMatch(value)) {
-                                  return getTransrlate(context, 'invalidname');
                                 }
                                 return null;
                               }
@@ -253,9 +247,6 @@ int CheckBox=0;
                                   return getTransrlate(context, 'description');
                                 }  else if (value.length <= 2) {
                                   return "${getTransrlate(context, 'requiredlength')}";
-                                } else if (RegExp(r"^[+-]?([0-9]*[.])?[0-9]+")
-                                    .hasMatch(value)) {
-                                  return getTransrlate(context, 'invalidname');
                                 }
                                 _formKey.currentState.save();
                                 return null;
@@ -279,9 +270,6 @@ int CheckBox=0;
                                       context, 'requiredempty');
                                 }  else if (value.length <= 2) {
                                   return "${getTransrlate(context, 'requiredlength')}";
-                                } else if (RegExp(r"^[+-]?([0-9]*[.])?[0-9]+")
-                                    .hasMatch(value)) {
-                                  return getTransrlate(context, 'invalidname');
                                 }
                                 _formKey.currentState.save();
                                 return null;
@@ -291,11 +279,9 @@ int CheckBox=0;
                              product.descriptionEn = value;
                             },
                           ),
-
                           SizedBox(
                             height: 10,
                           ),
-
                           _listCategory == null
                               ? Container(
                             child: DropdownSearch<String>(
@@ -471,11 +457,9 @@ int CheckBox=0;
                                           itemAsString: (Main_Category u) =>
                                           "${themeColor.getlocal() == 'ar' ? u.mainCategoryName ?? u.mainCategoryNameen : u.mainCategoryNameen ?? u.mainCategoryName}",
                                           onChanged: (Main_Category data) {
-
                                             setState(() {
                                               categorysend= categorysend.getRange(0, index+2).toList();
                                               category=category.getRange(0, index+1).toList();
-
                                               if(data!=null){
                                                 categorysend.add(data.id);
                                                 data.categories.isEmpty?null: category.add(Main_Category(
