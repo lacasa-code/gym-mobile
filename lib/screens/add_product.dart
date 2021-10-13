@@ -52,6 +52,7 @@ class _Add_ProductState extends State<Add_Product> {
   bool loading = false;
   bool isqty_reminder = false;
   bool isdiscount = false;
+  bool need_attributes = false;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
   List<Carmodel> carmodels;
@@ -331,6 +332,8 @@ int CheckBox=0;
                                             id: data.id);
                                         getAllCarMade(data.id.toString());
                                         categorysend.add(data.id);
+                                        need_attributes=data.need_attributes==1?true:false;
+
                                       }
                                     });
                                   })),
@@ -382,6 +385,8 @@ int CheckBox=0;
                                           mainCategoryName: '',
                                           mainCategoryNameen: '',
                                           id: data.id));
+                                      need_attributes=data.need_attributes==1?true:false;
+
                                     }
                                   });
                                   print(categorysend
@@ -390,9 +395,6 @@ int CheckBox=0;
                                       .toString());
                                 }),
 
-                          ),
-                          SizedBox(
-                            height: 5,
                           ),
                           category == null
                               ? Container(
@@ -467,6 +469,8 @@ int CheckBox=0;
                                                     mainCategoryName: '',
                                                     mainCategoryNameen: '',
                                                     id: data.id));
+
+                                                need_attributes=data.need_attributes==1?true:false;
                                               }
                                                });
                                             print(categorysend
@@ -478,6 +482,95 @@ int CheckBox=0;
                                   ],
                                 );
                               }),
+                          need_attributes?Container(
+                            height: ScreenUtil.getHeight(context)/2.5,
+                            width: ScreenUtil.getWidth(context) ,
+                            child: Stack(
+
+                              children: [
+                                Positioned(
+                                  right: 1,
+                                  child: Container(
+                                    width: ScreenUtil.getWidth(context) / 2.5,
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                                          child:  MyTextFormField(
+                                            intialLabel: product.width ?? '',
+                                            Keyboard_Type: TextInputType.number,
+                                            labelText: '${getTransrlate(context, 'width')}',
+                                            hintText: '${getTransrlate(context, 'width')}',
+                                            isPhone: true,
+                                            enabled: true,
+                                            validator: (String value) {
+                                              if (value.isEmpty) {
+                                                return '${getTransrlate(context, 'width')}';
+                                              }
+                                              _formKey.currentState.save();
+                                              return null;
+                                            },
+                                            onSaved: (String value) {
+                                              product.width = value;
+                                            },
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                                          child: MyTextFormField(
+                                            intialLabel: product.height ?? '',
+                                            Keyboard_Type: TextInputType.number,
+                                            labelText: '${getTransrlate(context, 'height')}',
+                                            hintText: '${getTransrlate(context, 'height')}',
+                                            isPhone: true,
+                                            enabled: true,
+                                            validator: (String value) {
+                                              if (value.isEmpty) {
+                                                return '${getTransrlate(context, 'height')}';
+                                              }
+                                              _formKey.currentState.save();
+                                              return null;
+                                            },
+                                            onSaved: (String value) {
+                                              product.height = value;
+                                            },
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                                          child:  MyTextFormField(
+                                            intialLabel: product.size ?? '',
+                                            Keyboard_Type: TextInputType.number,
+                                            labelText: '${getTransrlate(context, 'size')}',
+                                            hintText: '${getTransrlate(context, 'size')}',
+                                            isPhone: true,
+                                            enabled: true,
+                                            validator: (String value) {
+                                              if (value.isEmpty) {
+                                                return '${getTransrlate(context, 'size')}';
+                                              }
+                                              _formKey.currentState.save();
+                                              return null;
+                                            },
+                                            onSaved: (String value) {
+                                              product.size = value;
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
+                                  left: 1,
+                                  child: Image.asset(
+                                    'assets/images/tire.png',
+                                    width: ScreenUtil.getWidth(context) / 2.5,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ):Container(),
                           Main_categoryid==7?Container():  Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [

@@ -186,13 +186,10 @@ class _ProductPageState extends State<ProductPage> {
                       ' ${widget.product.allcategory.map((e) =>  "${themeColor.getlocal()=='ar'?e.mainCategoryName: e.mainCategoryNameen}${ widget.product.allcategory.last.id==e.id?'':'>>'}").toList()}'.replaceAll('[', '').replaceAll(']', ''),
                       Colors.white),
                   dataRow(
-                      '${getTransrlate(context, 'subCategory')}',
-                      "${widget.product.category != null ?themeColor.getlocal()=='ar'?widget.product.category.name??widget.product.category.name_en:widget.product.category.name_en??widget.product.category.name:''}",
+                      '${getTransrlate(context, 'tayars')}',
+                      "${widget.product.width??''}/ ${widget.product.height??''}/ ${widget.product.size??''}",
                       Colors.black26),
-                  dataRow(
-                      '${getTransrlate(context, 'PartCategory')}',
-                      "${widget.product.partCategory != null ?themeColor.getlocal()=='ar'?widget.product.partCategory.categoryName??widget.product.partCategory.categoryname_en:widget.product.partCategory.categoryname_en??widget.product.partCategory.categoryName:''}",
-                      Colors.white),
+
                   dataRow('${getTransrlate(context, 'serial')}',
                       "${widget.product.serialNumber}", Colors.black26),
                   dataRow('${getTransrlate(context, 'description')}',

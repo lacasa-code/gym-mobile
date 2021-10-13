@@ -12,10 +12,13 @@
   "store": "Store",
   "SelectAll": "Select All",
   "tickitDate": "Ticket Date",
-
+  "width": "Width",
+  "height": "Height",
+  "size": "rim",
   "duration": "duration",
   "from": "from",
   "to": "to",
+  "tayars": "Size",
 
   "good_morning": "Good Morning",
   "good_night": "Good Night",

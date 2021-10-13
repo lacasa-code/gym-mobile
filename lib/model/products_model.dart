@@ -94,6 +94,10 @@ class Product {
   int approved;
   String holesalePrice;
   String noOfOrders;
+
+  String width;
+  String height;
+  String size;
   List<Main_Category> allcategory;
 
   Product(
@@ -215,12 +219,19 @@ class Product {
     approved = json['approved'];
     qty_reminder = json['qty_reminder'].toString();
 
+    width = json['width'].toString();
+    height = json['height'].toString();
+    size = json['size'].toString();
+
     holesalePrice = json['holesale_price']==null?'':json['holesale_price'].toString();
     noOfOrders = json['no_of_orders']==null?'':json['no_of_orders'].toString();
   }
 
   Map<String, String> toJson() {
     final Map<String, String> data = new Map<String, String>();
+    data['width']=width??'';
+    data['height']=height??'';
+    data['size']=size??'';
 
     this.name == null ? null : data['name'] = this.name;
     this.description == null ? null : data['description'] = this.description;

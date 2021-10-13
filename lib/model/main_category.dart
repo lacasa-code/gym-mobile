@@ -51,6 +51,7 @@ class Main_category {
 class Main_Category {
   int _id;
   int _allcategory_id;
+  int need_attributes;
   String name;
   String name_en;
   int _status;
@@ -80,6 +81,7 @@ class Main_Category {
     _id = json["id"];
     _allcategory_id = json["allcategory_id"];
     name = json["name"];
+    need_attributes = json["need_attributes"];
     name_en = json["name_en"];
     _status = json["level"];
 

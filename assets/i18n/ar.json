@@ -254,6 +254,10 @@
   "MethodShipping": "طرق الشحن",
   "banklist": "قائمة البنوك",
 
+  "width": "عرض الإطار",
+  "height": "ارتفاع الإطار",
+  "size": "الجنط",
+  "tayars": "المقاس",
   "DeliveryTime": "موعد التسليم",
   "DeliveryDate": "تاريخ التسليم",
   "tickitDate": "تاريخ الشكوى",

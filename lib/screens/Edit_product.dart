@@ -52,6 +52,7 @@ class _Edit_ProductState extends State<Edit_Product> {
   List<int> photo_deleted = [];
   Main_Category _maincategory;
   Main_Category cartypes;
+  bool need_attributes = false;
 
   bool loading = false;
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -133,7 +134,7 @@ class _Edit_ProductState extends State<Edit_Product> {
     categorysend=widget.product.allcategory.map((e) => e.id).toList();
     getAlltag();
     setState(() {
-      Main_categoryid=widget.product.allcategory[0].id;
+      Main_categoryid=widget.product.allcategory.isNotEmpty? widget.product.allcategory[0].id:null;
       isqty_reminder = widget.product.qty_reminder != null;
       isdiscount = widget.product.discount != null;
     });
@@ -370,6 +371,8 @@ class _Edit_ProductState extends State<Edit_Product> {
                                       id: data.id);
                                   getAllCarMade(data.id.toString());
                                   categorysend.add(data.id);
+                                  need_attributes=data.need_attributes==1?true:false;
+
                                 }
                               });
                             })),
@@ -421,6 +424,8 @@ class _Edit_ProductState extends State<Edit_Product> {
                                 id: data.id));
                             categorysend= categorysend.getRange(0, 1).toList();
                             categorysend.add(data.id);
+                            need_attributes=data.need_attributes==1?true:false;
+
                           }
                         });
                       }),
@@ -487,7 +492,6 @@ class _Edit_ProductState extends State<Edit_Product> {
 
                                                 setState(() {
                                                   categorysend= categorysend.getRange(0, index+2).toList();
-
                                                   category=category.getRange(0, index+1).toList();
                                                   if(data!=null){
                                                     categorysend.add(data.id);
@@ -496,6 +500,8 @@ class _Edit_ProductState extends State<Edit_Product> {
                                                         mainCategoryName: '',
                                                         mainCategoryNameen: '',
                                                         id: data.id));
+                                                    need_attributes=data.need_attributes==1?true:false;
+
                                                   }
                                                   print(categorysend
                                                       .map((e) => e)
@@ -508,6 +514,96 @@ class _Edit_ProductState extends State<Edit_Product> {
                                     );
                             }),
                 SizedBox(height: 10,),
+                need_attributes?Container(
+                  height: ScreenUtil.getHeight(context)/2.5,
+                  width: ScreenUtil.getWidth(context) ,
+                  child: Stack(
+
+                    children: [
+                      Positioned(
+                        right: 1,
+                        child: Container(
+                          width: ScreenUtil.getWidth(context) / 2.5,
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 8),
+                                child:  MyTextFormField(
+                                  intialLabel: widget.product.width=='null'? '':widget.product.width,
+                                  Keyboard_Type: TextInputType.number,
+                                  labelText: '${getTransrlate(context, 'width')}',
+                                  hintText: '${getTransrlate(context, 'width')}',
+                                  isPhone: true,
+                                  enabled: true,
+                                  validator: (String value) {
+                                    if (value.isEmpty) {
+                                      return '${getTransrlate(context, 'width')}';
+                                    }
+                                    _formKey.currentState.save();
+                                    return null;
+                                  },
+                                  onSaved: (String value) {
+                                    widget.product.width = value;
+                                  },
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 8),
+                                child: MyTextFormField(
+                                  intialLabel: widget.product.height=='null'?'':widget.product.height,
+                                  Keyboard_Type: TextInputType.number,
+                                  labelText: '${getTransrlate(context, 'height')}',
+                                  hintText: '${getTransrlate(context, 'height')}',
+                                  isPhone: true,
+                                  enabled: true,
+                                  validator: (String value) {
+                                    if (value.isEmpty) {
+                                      return '${getTransrlate(context, 'height')}';
+                                    }
+                                    _formKey.currentState.save();
+                                    return null;
+                                  },
+                                  onSaved: (String value) {
+                                    widget.product.height = value;
+                                  },
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 8),
+                                child:  MyTextFormField(
+                                  intialLabel: widget.product.size=='null' ? '':widget.product.size,
+                                  Keyboard_Type: TextInputType.number,
+                                  labelText: '${getTransrlate(context, 'size')}',
+                                  hintText: '${getTransrlate(context, 'size')}',
+                                  isPhone: true,
+                                  enabled: true,
+                                  validator: (String value) {
+                                    if (value.isEmpty) {
+                                      return '${getTransrlate(context, 'size')}';
+                                    }
+                                    _formKey.currentState.save();
+                                    return null;
+                                  },
+                                  onSaved: (String value) {
+                                    widget.product.size = value;
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 1,
+                        child: Image.asset(
+                          'assets/images/tire.png',
+                          width: ScreenUtil.getWidth(context) / 2.5,
+                        ),
+                      )
+                    ],
+                  ),
+                ):Container(),
+
                 Main_categoryid == 7
                     ? Container()
                     : Column(
@@ -1726,6 +1822,9 @@ class _Edit_ProductState extends State<Edit_Product> {
   setState(() {
     cartypes=widget.product.allcategory[0];
    _maincategory=widget.product.allcategory[1];
+    need_attributes=cartypes.need_attributes==1?true:false;
+    need_attributes=_maincategory.need_attributes==1?true:false;
+
   });
 
     API(context)
@@ -1750,6 +1849,7 @@ setState(() {
           setState(() {
             element.categories=Main_category.fromJson(value).data;
             category=widget.product.allcategory;
+            need_attributes=element.need_attributes==1?true:false;
 
           });
         }
