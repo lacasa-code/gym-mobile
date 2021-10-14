@@ -185,10 +185,10 @@ class _ProductPageState extends State<ProductPage> {
                       '${getTransrlate(context, 'Category')}',
                       ' ${widget.product.allcategory.map((e) =>  "${themeColor.getlocal()=='ar'?e.mainCategoryName: e.mainCategoryNameen}${ widget.product.allcategory.last.id==e.id?'':'>>'}").toList()}'.replaceAll('[', '').replaceAll(']', ''),
                       Colors.white),
-                  dataRow(
+                  widget.product.tyres_belong==1?  dataRow(
                       '${getTransrlate(context, 'tayars')}',
                       "${widget.product.width??''}/ ${widget.product.height??''}/ ${widget.product.size??''}",
-                      Colors.black26),
+                      Colors.black26):Container(),
 
                   dataRow('${getTransrlate(context, 'serial')}',
                       "${widget.product.serialNumber}", Colors.black26),

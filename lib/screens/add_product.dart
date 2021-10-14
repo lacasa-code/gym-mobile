@@ -974,6 +974,15 @@ int CheckBox=0;
                                         });
                                       },  onChanged: (String value) {
                                         product.price = value;
+                                        if (value != null) {
+                                          if (value.isNotEmpty) {
+                                            if (product.discount!=null) {
+                                              if (product.discount.isNotEmpty) {
+                                                totaldiscount.text = "${(double.parse(product.discount) / 100) * double.parse(product.price)}";
+                                              }
+                                            }
+                                          }
+                                        }
                                       },
                                     ),
                                     MyTextFormField(

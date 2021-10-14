@@ -92,6 +92,7 @@ class Product {
   String actualPrice;
   String serialId;
   int approved;
+  int tyres_belong;
   String holesalePrice;
   String noOfOrders;
 
@@ -128,6 +129,7 @@ class Product {
       this.prodCountry,
       this.quantity,
       this.allcategory,
+      this.tyres_belong,
       this.maincategory_id,
       this.serialNumber});
 
@@ -137,6 +139,7 @@ class Product {
     description = json['description'];
     avg_valuations = json['avg_valuations'].toString();
     nameEn = json['name_en'];
+    tyres_belong = json['tyres_belong'];
     descriptionEn = json['description_en'];
     price = json['price']??'0';
     actualPrice = json['actual_price'].toString();

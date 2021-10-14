@@ -131,6 +131,7 @@ class _Edit_ProductState extends State<Edit_Product> {
 
   @override
   void initState() {
+    need_attributes=widget.product.tyres_belong==1;
     categorysend=widget.product.allcategory.map((e) => e.id).toList();
     getAlltag();
     setState(() {
@@ -1822,8 +1823,8 @@ class _Edit_ProductState extends State<Edit_Product> {
   setState(() {
     cartypes=widget.product.allcategory[0];
    _maincategory=widget.product.allcategory[1];
-    need_attributes=cartypes.need_attributes==1?true:false;
-    need_attributes=_maincategory.need_attributes==1?true:false;
+    //need_attributes=cartypes.need_attributes==1?true:false;
+    //need_attributes=_maincategory.need_attributes==1?true:false;
 
   });
 
@@ -1849,7 +1850,7 @@ setState(() {
           setState(() {
             element.categories=Main_category.fromJson(value).data;
             category=widget.product.allcategory;
-            need_attributes=element.need_attributes==1?true:false;
+          //  need_attributes=element.need_attributes==1?true:false;
 
           });
         }
