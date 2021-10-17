@@ -90,7 +90,6 @@ class _SplashScreenState extends State<SplashScreen>
     await SharedPreferences.getInstance();
     API(context).post('check/valid/session', {}).then((value) {
       if (value != null) {
-        print("dddddddd ${value['data']}");
         if (value['status_code'] == 200)
       {
         // Provider.of<Provider_Data>(context,listen: false).getAllstaff(context);

@@ -9,7 +9,6 @@ import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/Provider/provider_data.dart';
 import 'package:trkar_vendor/utils/local/AppLocalizations.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GlobalConfiguration().loadFromAsset("configurations");
