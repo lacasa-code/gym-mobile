@@ -111,7 +111,7 @@ class _Product_itemState extends State<Product_item> {
                 ),
               ),
               AutoSizeText(
-                '${getTransrlate(context, 'productType')}  : ${widget.hall_model.producttypeId!=null?themeColor.getlocal()=='ar'?widget.hall_model.producttypeId.producttype??'':widget.hall_model.producttypeId.name_en??'':''}',
+                '${getTransrlate(context, 'productType')}  : ${widget.hall_model.producttypeId!=null?themeColor.getlocal()=='ar'?widget.hall_model.producttypeId.producttype??widget.hall_model.producttypeId.name_en:widget.hall_model.producttypeId.name_en??widget.hall_model.producttypeId.producttype:''}',
                 minFontSize: 10,
                 style: TextStyle(
                   fontSize: 13,
