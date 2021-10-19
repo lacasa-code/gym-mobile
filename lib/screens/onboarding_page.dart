@@ -75,7 +75,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
               _buildPageContent(
                   image: 'assets/images/logo.png',
                   title: 'تركار',
-                  body: 'المنصة الأفضل لبيع قطع غيار السيارات والشاحنات.'),
+                  body: 'المنصة الأفضل\n لبيع قطع غيار السيارات والشاحنات.'),
               _buildPageContent(
                   image: 'assets/images/logo.png',
                   title: 'تركار',
@@ -130,7 +130,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                           ),
                         ),
                         SizedBox(
-                          height: ScreenUtil.getHeight(context) / 8,
+                          height: ScreenUtil.getHeight(context) / 3,
                         ),
                         Container(
                           height: 50,
@@ -203,8 +203,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
             padding: const EdgeInsets.all(16.0),
             child: AutoSizeText(
               body,
-              minFontSize: 30,
-              maxFontSize: 35,
+              minFontSize: 15,
+              maxFontSize: 15,
               maxLines: 3,
               textAlign: TextAlign.center,
               style: TextStyle(fontWeight: FontWeight.w600,

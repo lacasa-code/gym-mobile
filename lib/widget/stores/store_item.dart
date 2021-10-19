@@ -213,11 +213,13 @@ class _Stores_itemState extends State<Stores_item> {
                 ],
               ),
               PopupMenuButton<int>(
+
                 itemBuilder: (context) => [
                   PopupMenuItem(
                     value: 1,
                     child: InkWell(
                       onTap: (){
+                        Navigator.pop(context);
                         Nav.route(context, Edit_Store(widget.hall_model));
                       },
                       child: Row(
@@ -240,6 +242,8 @@ class _Stores_itemState extends State<Stores_item> {
                     value: 2,
                     child:  InkWell(
                       onTap: (){
+                        Navigator.pop(context);
+
                         API(context)
                             .Delete("stores/${widget.hall_model.id}")
                             .then((value) {

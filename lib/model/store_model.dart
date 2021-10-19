@@ -134,8 +134,8 @@ class Store {
       map["area_id"] = areaId;
       map["city_id"] = cityId;
       map["moderator_phone"] = moderatorPhone;
-      if (moderatorAltPhone.isNotEmpty) {
-        map["moderator_alt_phone"] = moderatorAltPhone;}
+      // if (moderatorAltPhone.isNotEmpty) {
+      //   map["moderator_alt_phone"] = moderatorAltPhone;}
     return map;
   }
 }

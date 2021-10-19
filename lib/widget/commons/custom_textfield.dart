@@ -86,6 +86,7 @@ class MyTextFormField extends StatelessWidget {
             enabled: enabled,
             keyboardType: Keyboard_Type,
           ),
+          SizedBox(height: 20),
         ],
       ),
     );

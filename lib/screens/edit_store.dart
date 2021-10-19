@@ -280,29 +280,29 @@ class _Edit_StoreState extends State<Edit_Store> {
                             widget.store.moderatorPhone = "+${widget.store.phonecode}${value}";
                           },
                         ),
-                        MyTextFormField(
-                          textEditingController:phone2,
-                          textDirection: TextDirection.ltr,
-                          Keyboard_Type: TextInputType.phone,
-                          labelText: "${getTransrlate(context, 'phone')} 2",
-                          hintText: "${getTransrlate(context, 'phone')} 2",
-                          isPhone: true,
-                         // suffixIcon: Container(width: 50,child: Center(child: Text(' ${widget.store.phonecode??''}', textDirection: TextDirection.ltr))),
-                          inputFormatters: [
-                            new LengthLimitingTextInputFormatter(15),
-                          ],
-                          enabled: true,
-                          validator: (String value) {
-                            if (value.length > 1&&value.length < 12) {
-                              return getTransrlate(context, 'Required');
-                            }
-                            _formKey.currentState.save();
-                            return null;
-                          },
-                          onSaved: (String value) {
-                            widget.store.moderatorAltPhone = value;
-                          },
-                        ),
+                        // MyTextFormField(
+                        //   textEditingController:phone2,
+                        //   textDirection: TextDirection.ltr,
+                        //   Keyboard_Type: TextInputType.phone,
+                        //   labelText: "${getTransrlate(context, 'phone')} 2",
+                        //   hintText: "${getTransrlate(context, 'phone')} 2",
+                        //   isPhone: true,
+                        //  // suffixIcon: Container(width: 50,child: Center(child: Text(' ${widget.store.phonecode??''}', textDirection: TextDirection.ltr))),
+                        //   inputFormatters: [
+                        //     new LengthLimitingTextInputFormatter(15),
+                        //   ],
+                        //   enabled: true,
+                        //   validator: (String value) {
+                        //     if (value.length > 1&&value.length < 12) {
+                        //       return getTransrlate(context, 'Required');
+                        //     }
+                        //     _formKey.currentState.save();
+                        //     return null;
+                        //   },
+                        //   onSaved: (String value) {
+                        //     widget.store.moderatorAltPhone = value;
+                        //   },
+                        // ),
                         SizedBox(
                           height: 20,
                         ),

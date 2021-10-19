@@ -353,6 +353,8 @@ class _ProductsState extends State<Products> {
                                               value: 2,
                                               child:  InkWell(
                                                 onTap: (){
+                                                  Navigator.pop(context);
+
                                                   Delete_Products(data.products[index].id);
 
                                                 },
@@ -379,6 +381,7 @@ class _ProductsState extends State<Products> {
                               ),
                             );
                           }),
+                      SizedBox(height: 50,)
                     ],
                   ),
     ),      onRefresh: _refreshLocalGallery,

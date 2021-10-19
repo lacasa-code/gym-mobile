@@ -134,6 +134,23 @@ class _HiddenMenuState extends State<HiddenMenu> {
                           fontWeight: FontWeight.w800),
                       colorLineSelected: Colors.orange,
                     ),
+                    ItemHiddenMenu(
+                      onTap: () {
+                        Nav.route(context, Stores());
+                      },
+                      icon: SvgPicture.asset(
+                        "assets/icons/store.svg",
+                        height: 30,
+                        width: 30,
+                        color: Colors.orange,
+                      ),
+                      name: getTransrlate(context, 'stores'),
+                      baseStyle: TextStyle(
+                          color: Colors.white.withOpacity(0.6),
+                          fontSize: 19.0,
+                          fontWeight: FontWeight.w800),
+                      colorLineSelected: Colors.black,
+                    ),
                     roles=='Staff'?Container():  ItemHiddenMenu(
                       onTap: () {
 
@@ -151,23 +168,6 @@ class _HiddenMenuState extends State<HiddenMenu> {
                           fontSize: 19.0,
                           fontWeight: FontWeight.w800),
                       colorLineSelected: Colors.orange,
-                    ),
-                    ItemHiddenMenu(
-                      onTap: () {
-                        Nav.route(context, Stores());
-                      },
-                      icon: SvgPicture.asset(
-                        "assets/icons/store.svg",
-                        height: 30,
-                        width: 30,
-                        color: Colors.orange,
-                      ),
-                      name: getTransrlate(context, 'stores'),
-                      baseStyle: TextStyle(
-                          color: Colors.white.withOpacity(0.6),
-                          fontSize: 19.0,
-                          fontWeight: FontWeight.w800),
-                      colorLineSelected: Colors.black,
                     ),
                     roles=='Staff'?Container():      ItemHiddenMenu(
                       onTap: () {

@@ -164,6 +164,7 @@ class _User_itemState extends State<User_item> {
                   value: 1,
                   child: InkWell(
                     onTap: (){
+                      Navigator.pop(context);
                       Nav.route(context, EditStaff(widget.hall_model));
                     },
                     child: Row(
@@ -183,6 +184,7 @@ class _User_itemState extends State<User_item> {
                   value: 2,
                   child:  InkWell(
                     onTap: (){
+                      Navigator.pop(context);
                       API(context)
                           .Delete("users/${widget.hall_model.id}")
                           .then((value) {

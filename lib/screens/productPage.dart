@@ -196,7 +196,7 @@ class _ProductPageState extends State<ProductPage> {
                       "${themeColor.getlocal()=='ar'?widget.product.description??widget.product.descriptionEn:widget.product.descriptionEn??widget.product.description}", Colors.white),
                   dataRow(
                       '${getTransrlate(context, 'brand')}',
-                      "${widget.product.carMade == null ? '' :themeColor.getlocal()=='ar'? widget.product.carMade.carMade :widget.product.carMade.name_en}",
+                      "${widget.product.manufacturer == null ? '' :themeColor.getlocal()=='ar'? widget.product.manufacturer.manufacturerName??widget.product.manufacturer.name_en :widget.product.manufacturer.name_en??widget.product.manufacturer.manufacturerName}",
                       Colors.black26),
                   dataRow(
                       '${getTransrlate(context, 'prodcountry')}',
@@ -218,11 +218,11 @@ class _ProductPageState extends State<ProductPage> {
                       Colors.black26),
                   dataRow(
                       '${getTransrlate(context, 'Compatiblecars')}',
-                      "${widget.product.carModel == null ? '' : widget.product.carModel.map((e) => themeColor.getlocal()=='ar'?e.carmodel??e.name_en:e.name_en??e.carmodel).toList().toString()}",
+                      "${widget.product.carModel == null ? '' :widget.product.carModel.isEmpty ? '' : widget.product.carModel.map((e) => themeColor.getlocal()=='ar'?e.carmodel??e.name_en:e.name_en??e.carmodel).toList().toString()}",
                       Colors.white),
                   dataRow(
                       '${getTransrlate(context, 'tags')}',
-                      "${widget.product.tags == null ? '' : widget.product.tags.map((e) => themeColor.getlocal()=='ar'? e.name??e.name_en:e.name_en??e.name).toList().toString()}",
+                      "${widget.product.tags == null ? '' : widget.product.tags.isEmpty? '' : widget.product.tags.map((e) => themeColor.getlocal()=='ar'? e.name??e.name_en:e.name_en??e.name).toList().toString()}",
                       Colors.black26),
                   widget.product.producttypeId.id==2?Container():   dataRow(
                       '${getTransrlate(context, 'qty_reminder')}',

@@ -284,28 +284,28 @@ class _add_StoreState extends State<add_Store> {
                             print("+$code$value");
                           },
                         ),
-                        MyTextFormField(
-                          Keyboard_Type: TextInputType.phone,
-                          textDirection: TextDirection.ltr,
-                          labelText:"${getTransrlate(context, 'phone')} 2",
-                          inputFormatters: [
-                            new LengthLimitingTextInputFormatter(10),
-                          ],
-                          hintText: getTransrlate(context, 'phone'),
-                          suffixIcon: Container(width: 50,child: Center(child: Text(' $code', textDirection: TextDirection.ltr))),
-                          isPhone: true,
-                          validator: (String value) {
-                            if (value.length > 1&&value.length < 9) {
-                              return getTransrlate(context, 'Required');
-                            }
-                            _formKey.currentState.save();
-                            return null;
-                          },
-                          enabled: true,
-                          onSaved: (String value) {
-                            store.moderatorAltPhone = value.isEmpty?'':"+$code$value";
-                          },
-                        ),
+                        // MyTextFormField(
+                        //   Keyboard_Type: TextInputType.phone,
+                        //   textDirection: TextDirection.ltr,
+                        //   labelText:"${getTransrlate(context, 'phone')} 2",
+                        //   inputFormatters: [
+                        //     new LengthLimitingTextInputFormatter(10),
+                        //   ],
+                        //   hintText: getTransrlate(context, 'phone'),
+                        //   suffixIcon: Container(width: 50,child: Center(child: Text(' $code', textDirection: TextDirection.ltr))),
+                        //   isPhone: true,
+                        //   validator: (String value) {
+                        //     if (value.length > 1&&value.length < 9) {
+                        //       return getTransrlate(context, 'Required');
+                        //     }
+                        //     _formKey.currentState.save();
+                        //     return null;
+                        //   },
+                        //   enabled: true,
+                        //   onSaved: (String value) {
+                        //     store.moderatorAltPhone = value.isEmpty?'':"+$code$value";
+                        //   },
+                        // ),
                         SizedBox(
                           height: 20,
                         ),
