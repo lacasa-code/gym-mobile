@@ -980,7 +980,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                             },
                           ),
                           MyTextFormField(
-                            intialLabel: widget.product.quantity ?? '',
+                            intialLabel: widget.product.quantity=='null'?'':widget.product.quantity ?? '',
                             Keyboard_Type: TextInputType.number,
                             labelText: "${getTransrlate(context, 'quantity')}",
                             hintText: '${getTransrlate(context, 'quantity')}',
@@ -1094,7 +1094,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                               ? Container()
                               : MyTextFormField(
                                   intialLabel:
-                                      widget.product.qty_reminder ?? ' ',
+                                      widget.product.qty_reminder=='null'?'':widget.product.qty_reminder ?? ' ',
                                   Keyboard_Type: TextInputType.number,
                                   labelText:
                                       " ${getTransrlate(context, 'qty_reminder')} ",

@@ -9,7 +9,6 @@ import 'package:provider/provider.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trkar_vendor/model/basic_report.dart';
-import 'package:trkar_vendor/model/faq_model.dart';
 import 'package:trkar_vendor/model/products_model.dart';
 import 'package:trkar_vendor/screens/Orders.dart';
 import 'package:trkar_vendor/screens/faq.dart';
@@ -45,10 +44,8 @@ class _HomeMobileState extends State<HomeMobile> {
   TextEditingController _tocontroller = TextEditingController(
       text: DateFormat('yyyy-MM-dd').format(DateTime.now()));
   TextEditingController _fromcontroller = TextEditingController(
-      text: DateFormat('yyyy-MM-dd')
-          .format(DateTime.now().subtract(Duration(days: 7))));
+      text: DateFormat('yyyy-MM-dd').format(DateTime.now().subtract(Duration(days: 7))));
   String name, roles;
-
   Future<void> _selectDatefrom(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
@@ -62,7 +59,6 @@ class _HomeMobileState extends State<HomeMobile> {
       });
     get_report(_tocontroller.text, _fromcontroller.text);
   }
-
   Future<void> _selectDateto(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context, initialDate: date, firstDate: from, lastDate: date);
@@ -74,7 +70,6 @@ class _HomeMobileState extends State<HomeMobile> {
       });
     get_report(_tocontroller.text, _fromcontroller.text);
   }
-
   @override
   void initState() {
     SharedPreferences.getInstance().then((prefs) {
@@ -96,7 +91,6 @@ class _HomeMobileState extends State<HomeMobile> {
     });
     super.initState();
   }
-
   @override
   Widget build(BuildContext context) {
     final themeColor = Provider.of<Provider_control>(context);
@@ -541,7 +535,6 @@ class _HomeMobileState extends State<HomeMobile> {
       ),
     );
   }
-
   void _loadData() {
     setState(() {
       data =
@@ -550,7 +543,6 @@ class _HomeMobileState extends State<HomeMobile> {
           basic_report.periodDetails.map((e) => e.dayName ?? e.day).toList();
     });
   }
-
   void get_report(String to, String from) {
     API(context)
         .post('vendor/day/month/filter', {"from": "$from", "to": "$to"}).then(
@@ -564,7 +556,6 @@ class _HomeMobileState extends State<HomeMobile> {
       }
     });
   }
-
   CustomCard(GestureTapCallback ontap, Widget icon, String title, Color color,
       String value, Provider_control themeColor) {
     return value=="null"?Container(): InkWell(
