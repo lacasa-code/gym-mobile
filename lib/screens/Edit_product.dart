@@ -285,6 +285,8 @@ class _Edit_ProductState extends State<Edit_Product> {
                   labelText: getTransrlate(context, 'description'),
                   hintText: getTransrlate(context, 'description'),
                   isPhone: false,
+                  minLines: 3,
+                  maxLines: 4,
                   enabled: true,
                   validator: (String value) {
                     if (themeColor.local == 'ar') {
@@ -308,6 +310,8 @@ class _Edit_ProductState extends State<Edit_Product> {
                   hintText: getTransrlate(context, 'descriptionEn'),
                   isPhone: true,
                   enabled: true,
+                  minLines: 3,
+                  maxLines: 4,
                   validator: (String value) {
                     if (themeColor.local == 'en') {
                       if (value.isEmpty) {
@@ -846,7 +850,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                 ),
                 MyTextFormField(
                   intialLabel: widget.product.serialNumber ?? ' ',
-                  Keyboard_Type: TextInputType.number,
+                  Keyboard_Type: TextInputType.text,
                   labelText: '${getTransrlate(context, 'serial')}',
                   hintText: '${getTransrlate(context, 'serial')}',
                   isPhone: true,

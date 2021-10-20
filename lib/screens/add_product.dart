@@ -242,6 +242,8 @@ int CheckBox=0;
                             hintText: getTransrlate(context, 'description'),
                             isPhone: true,
                             enabled: true,
+                            minLines: 3,
+                            maxLines: 4,
                             validator: (String value) {
                               if(themeColor.local=='ar'){
                                 if (value.isEmpty) {
@@ -264,6 +266,8 @@ int CheckBox=0;
                             hintText: getTransrlate(context, 'descriptionEn'),
                             isPhone: true,
                             enabled: true,
+                            minLines: 3,
+                            maxLines: 4,
                             validator: (String value) {
                               if(themeColor.local=='en'){
                                 if (value.isEmpty) {
@@ -836,7 +840,7 @@ int CheckBox=0;
                           ),
                           MyTextFormField(
                             intialLabel: product.serialNumber ?? '',
-                            Keyboard_Type: TextInputType.number,
+                            Keyboard_Type: TextInputType.text,
                             labelText: '${getTransrlate(context, 'serial')}',
                             hintText: '${getTransrlate(context, 'serial')}',
                             isPhone: true,
@@ -886,6 +890,10 @@ int CheckBox=0;
                                       onChanged: (Store data) =>
                                           product.storeId = data.id.toString()),
                                 ),
+                          SizedBox(
+                            height: 10,
+                          ),
+
                           Text(
                             "${getTransrlate(context, 'productType')}",
                             style: TextStyle(color: Colors.black, fontSize: 16),
@@ -938,6 +946,10 @@ int CheckBox=0;
                                             });
                                           }),
                                     ),
+                          SizedBox(
+                            height: 10,
+                          ),
+
                           product.productType_id == "1"
                               ? Column(
                                   children: [
@@ -1382,6 +1394,10 @@ int CheckBox=0;
 
                                       ],
                                     ),
+                          SizedBox(
+                            height: 10,
+                          ),
+
                           Text(
                             "${getTransrlate(context, 'prodcountry')}",
                             style: TextStyle(color: Colors.black, fontSize: 16),

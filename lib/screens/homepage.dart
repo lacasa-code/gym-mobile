@@ -378,8 +378,7 @@ class _HomeMobileState extends State<HomeMobile> {
                                       reverse: true,
                                       getColor: DataRepository.getColor,
                                       //getIcon: DataRepository.getIcon,
-                                      barWidth:
-                                          ScreenUtil.divideWidth(context) / 5,
+                                      barWidth:100,
                                       barSeparation: 5,
                                       animationDuration:
                                           Duration(milliseconds: 5000),

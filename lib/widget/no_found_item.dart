@@ -19,8 +19,8 @@ String title;
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SvgPicture.asset(
-                "assets/icons/reload.svg",
-                width: ScreenUtil.getWidth(context) / 3,
+                "assets/icons/open-cardboard-box.svg",
+                width: ScreenUtil.getWidth(context) / 2,
                 color: Colors.black12,
               ),
               SizedBox(

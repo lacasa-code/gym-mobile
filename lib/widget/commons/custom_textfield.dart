@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 
 class MyTextFormField extends StatelessWidget {
   final TextStyle textStyle;
+  final int maxLines;
+  final int minLines;
   final String hintText;
   final String labelText;
   final Function validator;
@@ -27,6 +29,8 @@ class MyTextFormField extends StatelessWidget {
         this.validator,
         this.enabled,
         this.onSaved,
+        this.maxLines,
+        this.minLines,
         this.isPassword = false,
         this.isEmail = false,
         this.isPhone = false,
@@ -52,6 +56,8 @@ class MyTextFormField extends StatelessWidget {
           SizedBox(height: 5),
           TextFormField(
             onTap: press,
+            minLines: minLines,
+            maxLines: maxLines??1,
             controller: textEditingController,
             initialValue: intialLabel ,
             inputFormatters:inputFormatters??[
@@ -80,6 +86,7 @@ class MyTextFormField extends StatelessWidget {
             ),
             obscureText: isPassword ? true : false,
             validator: validator,
+
             onChanged: onChanged,
             textDirection: textDirection,
             onSaved: onSaved,

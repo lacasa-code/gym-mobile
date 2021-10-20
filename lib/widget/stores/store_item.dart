@@ -55,7 +55,7 @@ class _Stores_itemState extends State<Stores_item> {
             ],
           ),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
@@ -212,6 +212,7 @@ class _Stores_itemState extends State<Stores_item> {
                   ),
                 ],
               ),
+              Expanded(child: Container()),
               PopupMenuButton<int>(
 
                 itemBuilder: (context) => [
