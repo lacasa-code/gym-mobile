@@ -337,7 +337,6 @@ int CheckBox=0;
                                         getAllCarMade(data.id.toString());
                                         categorysend.add(data.id);
                                         need_attributes=data.need_attributes==1?true:false;
-
                                       }
                                     });
                                   })),
@@ -371,8 +370,10 @@ int CheckBox=0;
                                 validator: (Main_Category item) {
                                   if (item == null) {
                                     return "${getTransrlate(context, 'Required')}";
-                                  } else
-                                    return null;
+                                  } else if (item != null) {
+                                    if (item.mainCategoryName=='') {
+                                      return "${getTransrlate(context, 'Required')}";
+                                    }} else return null;
                                 },
                                 items: _maincategory.categories,
                                 selectedItem: _maincategory,

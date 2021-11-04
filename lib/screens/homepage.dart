@@ -128,7 +128,7 @@ class _HomeMobileState extends State<HomeMobile> {
               AutoSizeText(
                 "${getTransrlate(context, 'welcome')}  ${name == null ? ' ' : name}",
                 style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 14,
                     color: Colors.black,
                     fontWeight: FontWeight.bold),
               ),
@@ -151,7 +151,7 @@ class _HomeMobileState extends State<HomeMobile> {
                               Container(
                                   width: ScreenUtil.getWidth(context) / 6,
                                   child: Text(
-                                      '${getTransrlate(context, 'duration')} : ')),
+                                      '${getTransrlate(context, 'duration')} : ',style: TextStyle(fontSize: 12),)),
                               InkWell(
                                 onTap: () {
                                   _selectDatefrom(context);
@@ -170,7 +170,7 @@ class _HomeMobileState extends State<HomeMobile> {
                                             ScreenUtil.getWidth(context) / 3.2,
                                         child: Text(
                                           " ${getTransrlate(context, 'from')} : ${_fromcontroller.text}",
-                                          style: TextStyle(fontSize: 14),
+                                          style: TextStyle(fontSize: 12),
                                         )),
                                   ],
                                 ),
@@ -193,7 +193,7 @@ class _HomeMobileState extends State<HomeMobile> {
                                             ScreenUtil.getWidth(context) / 3.2,
                                         child: Text(
                                             " ${getTransrlate(context, 'to')} : ${_tocontroller.text}",
-                                            style: TextStyle(fontSize: 14))),
+                                            style: TextStyle(fontSize: 12))),
                                   ],
                                 ),
                               ),
@@ -206,8 +206,7 @@ class _HomeMobileState extends State<HomeMobile> {
                             Container(
                               child: ResponsiveGridList(
                                 scroll: false,
-                                desiredItemWidth:
-                                    ScreenUtil.getWidth(context) / 2.3,
+                                desiredItemWidth: ScreenUtil.getWidth(context) / 2.3,
                                 minSpacing: 10,
                                 children: [
                                   CustomCard(() {
@@ -229,6 +228,7 @@ class _HomeMobileState extends State<HomeMobile> {
                                       Icon(
                                         Icons.local_shipping_outlined,
                                         color: Colors.orange,
+                                        size: 20,
                                       ),
                                       getTransrlate(context, 'pending_orders'),
                                       Colors.orange,
@@ -240,6 +240,8 @@ class _HomeMobileState extends State<HomeMobile> {
                                       Icon(
                                         Icons.local_shipping_outlined,
                                         color: Colors.brown,
+                                        size: 20,
+
                                       ),
                                       getTransrlate(context, 'total_products'),
                                       Colors.brown,
@@ -257,7 +259,6 @@ class _HomeMobileState extends State<HomeMobile> {
                                       Colors.lightGreen,
                                       "${basic_report.totalSale}",
                                       themeColor),
-
                                   InkWell(
                                     onTap: () {
                                       Nav.route(context, FaqPage());
@@ -416,7 +417,7 @@ class _HomeMobileState extends State<HomeMobile> {
                                           "${getTransrlate(context, 'Inventoryplay')}",
                                           maxLines: 2,
                                           style: TextStyle(
-                                            fontSize: 14,
+                                            fontSize: 12,
                                             fontWeight: FontWeight.bold,
                                           ),
                                           minFontSize: 11,
@@ -429,7 +430,7 @@ class _HomeMobileState extends State<HomeMobile> {
                                       ),
                                       Text(
                                         "${getTransrlate(context, 'residual')}",
-                                        style: TextStyle(color: Colors.black),
+                                        style: TextStyle(color: Colors.black,fontSize: 12),
                                       )
                                     ],
                                   ),
@@ -576,9 +577,9 @@ class _HomeMobileState extends State<HomeMobile> {
                     width: ScreenUtil.getWidth(context) / 3.2,
                     child: AutoSizeText(
                       "$title",
-                      minFontSize: 13,
+                      minFontSize: 10,
                       maxLines: 1,
-                      maxFontSize: 14,
+                      maxFontSize: 12,
                       style:
                           TextStyle(color: color, fontWeight: FontWeight.bold),
                     ),
