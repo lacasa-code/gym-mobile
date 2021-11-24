@@ -122,7 +122,7 @@ class _HomeDesktopState extends State<HomeDesktop> {
                           Center(
                             child: Image.asset(
                               'assets/images/trkar_logo_white.png',
-                              // color: Colors.orange,
+                              // color: Colors.blue,
                               height: ScreenUtil.getHeight(context) / 8,
                               fit: BoxFit.contain,
                             ),
@@ -143,7 +143,7 @@ class _HomeDesktopState extends State<HomeDesktop> {
                                 : name,
                             style: TextStyle(
                                 fontSize: 17,
-                                color: Colors.orange,
+                                color: Colors.blue,
                                 fontWeight: FontWeight.w400),
                           )
                         ],
@@ -160,14 +160,14 @@ class _HomeDesktopState extends State<HomeDesktop> {
                           icon: Icon(
                             Icons.supervised_user_circle,
                             size: 25,
-                            color: Colors.orange.withOpacity(0.8),
+                            color: Colors.blue.withOpacity(0.8),
                           ),
                           name: getTransrlate(context, 'staff'),
                           baseStyle: TextStyle(
-                              color: Colors.orange.withOpacity(0.6),
+                              color: Colors.blue.withOpacity(0.6),
                               fontSize: 19.0,
                               fontWeight: FontWeight.w800),
-                          colorLineSelected: Colors.orange,
+                          colorLineSelected: Colors.blue,
                         ),
                       ),
                       InkWell(
@@ -178,14 +178,14 @@ class _HomeDesktopState extends State<HomeDesktop> {
                           icon: Icon(
                             Icons.store,
                             size: 25,
-                            color: Colors.orange.withOpacity(0.8),
+                            color: Colors.blue.withOpacity(0.8),
                           ),
                           name: getTransrlate(context, 'stores'),
                           baseStyle: TextStyle(
-                              color: Colors.orange.withOpacity(0.6),
+                              color: Colors.blue.withOpacity(0.6),
                               fontSize: 19.0,
                               fontWeight: FontWeight.w800),
-                          colorLineSelected: Colors.orange,
+                          colorLineSelected: Colors.blue,
                         ),
                       ),
                       InkWell(
@@ -196,14 +196,14 @@ class _HomeDesktopState extends State<HomeDesktop> {
                           icon: Icon(
                             Icons.shopping_bag,
                             size: 25,
-                            color: Colors.orange.withOpacity(0.8),
+                            color: Colors.blue.withOpacity(0.8),
                           ),
                           name: getTransrlate(context, 'product'),
                           baseStyle: TextStyle(
-                              color: Colors.orange.withOpacity(0.6),
+                              color: Colors.blue.withOpacity(0.6),
                               fontSize: 19.0,
                               fontWeight: FontWeight.w800),
-                          colorLineSelected: Colors.orange,
+                          colorLineSelected: Colors.blue,
                         ),
                       ),
                       InkWell(
@@ -214,14 +214,14 @@ class _HomeDesktopState extends State<HomeDesktop> {
                           icon: Icon(
                             Icons.shopping_cart,
                             size: 25,
-                            color: Colors.orange.withOpacity(0.8),
+                            color: Colors.blue.withOpacity(0.8),
                           ),
                           name: getTransrlate(context, 'Myorders'),
                           baseStyle: TextStyle(
-                              color: Colors.orange.withOpacity(0.6),
+                              color: Colors.blue.withOpacity(0.6),
                               fontSize: 19.0,
                               fontWeight: FontWeight.w800),
-                          colorLineSelected: Colors.orange,
+                          colorLineSelected: Colors.blue,
                         ),
                       ),
                       InkWell(
@@ -232,14 +232,14 @@ class _HomeDesktopState extends State<HomeDesktop> {
                           icon: Icon(
                             Icons.assignment_sharp,
                             size: 25,
-                            color: Colors.orange.withOpacity(0.8),
+                            color: Colors.blue.withOpacity(0.8),
                           ),
                           name: getTransrlate(context, 'invoices'),
                           baseStyle: TextStyle(
-                              color: Colors.orange.withOpacity(0.6),
+                              color: Colors.blue.withOpacity(0.6),
                               fontSize: 19.0,
                               fontWeight: FontWeight.w800),
-                          colorLineSelected: Colors.orange,
+                          colorLineSelected: Colors.blue,
                         ),
                       ),
                       InkWell(
@@ -250,21 +250,21 @@ class _HomeDesktopState extends State<HomeDesktop> {
                           icon: Icon(
                             Icons.message,
                             size: 25,
-                            color: Colors.orange.withOpacity(0.8),
+                            color: Colors.blue.withOpacity(0.8),
                           ),
                           name: getTransrlate(context, 'ticket'),
                           baseStyle: TextStyle(
-                              color: Colors.orange.withOpacity(0.6),
+                              color: Colors.blue.withOpacity(0.6),
                               fontSize: 19.0,
                               fontWeight: FontWeight.w800),
-                          colorLineSelected: Colors.orange,
+                          colorLineSelected: Colors.blue,
                         ),
                       ),
                       Container(
                           height: 28,
                           margin: EdgeInsets.only(left: 24, right: 48),
                           child: Divider(
-                            color: Colors.orange.withOpacity(0.5),
+                            color: Colors.blue.withOpacity(0.5),
                           )),
                       InkWell(
                         onTap: () {
@@ -274,14 +274,14 @@ class _HomeDesktopState extends State<HomeDesktop> {
                           icon: Icon(
                             Icons.person,
                             size: 25,
-                            color: Colors.orange.withOpacity(0.8),
+                            color: Colors.blue.withOpacity(0.8),
                           ),
                           name: getTransrlate(context, 'ProfileSettings'),
                           baseStyle: TextStyle(
-                              color: Colors.orange.withOpacity(0.6),
+                              color: Colors.blue.withOpacity(0.6),
                               fontSize: 19.0,
                               fontWeight: FontWeight.w800),
-                          colorLineSelected: Colors.orange,
+                          colorLineSelected: Colors.blue,
                         ),
                       ),
                       InkWell(
@@ -290,14 +290,14 @@ class _HomeDesktopState extends State<HomeDesktop> {
                           icon: Icon(
                             Icons.call,
                             size: 25,
-                            color: Colors.orange.withOpacity(0.8),
+                            color: Colors.blue.withOpacity(0.8),
                           ),
                           name: getTransrlate(context, 'contact'),
                           baseStyle: TextStyle(
-                              color: Colors.orange.withOpacity(0.6),
+                              color: Colors.blue.withOpacity(0.6),
                               fontSize: 19.0,
                               fontWeight: FontWeight.w800),
-                          colorLineSelected: Colors.orange,
+                          colorLineSelected: Colors.blue,
                         ),
                       ),
                       InkWell(
@@ -308,14 +308,14 @@ class _HomeDesktopState extends State<HomeDesktop> {
                           icon: Icon(
                             Icons.info_outline,
                             size: 25,
-                            color: Colors.orange.withOpacity(0.8),
+                            color: Colors.blue.withOpacity(0.8),
                           ),
                           name: getTransrlate(context, 'FAQ'),
                           baseStyle: TextStyle(
-                              color: Colors.orange.withOpacity(0.6),
+                              color: Colors.blue.withOpacity(0.6),
                               fontSize: 19.0,
                               fontWeight: FontWeight.w800),
-                          colorLineSelected: Colors.orange,
+                          colorLineSelected: Colors.blue,
                         ),
                       ),
                       InkWell(
@@ -335,16 +335,16 @@ class _HomeDesktopState extends State<HomeDesktop> {
                           icon: Icon(
                             Icons.exit_to_app,
                             size: 19,
-                            color: Colors.orange.withOpacity(0.8),
+                            color: Colors.blue.withOpacity(0.8),
                           ),
                           name: themeColor.isLogin
                               ? getTransrlate(context, 'Logout')
                               : getTransrlate(context, 'login'),
                           baseStyle: TextStyle(
-                              color: Colors.orange.withOpacity(0.6),
+                              color: Colors.blue.withOpacity(0.6),
                               fontSize: 19.0,
                               fontWeight: FontWeight.w800),
-                          colorLineSelected: Colors.orange,
+                          colorLineSelected: Colors.blue,
                         ),
                       ),
                       Container(
@@ -373,7 +373,7 @@ class _HomeDesktopState extends State<HomeDesktop> {
                                   icon: Icon(
                                     Icons.language,
                                     size: 25,
-                                    color: Colors.orange.withOpacity(0.8),
+                                    color: Colors.blue.withOpacity(0.8),
                                   ),
                                   name: Provider.of<Provider_control>(context)
                                               .local ==
@@ -381,10 +381,10 @@ class _HomeDesktopState extends State<HomeDesktop> {
                                       ? 'English'
                                       : 'عربى',
                                   baseStyle: TextStyle(
-                                      color: Colors.orange.withOpacity(0.6),
+                                      color: Colors.blue.withOpacity(0.6),
                                       fontSize: 19.0,
                                       fontWeight: FontWeight.w800),
-                                  colorLineSelected: Colors.orange,
+                                  colorLineSelected: Colors.blue,
                                 ),
                               ),
                             ],
@@ -557,7 +557,7 @@ class _HomeDesktopState extends State<HomeDesktop> {
                                             children: [
                                               Icon(
                                                 Icons.local_shipping_outlined,
-                                                color: Colors.orange,
+                                                color: Colors.blue,
                                               ),
                                               SizedBox(
                                                 width: 5,
@@ -571,7 +571,7 @@ class _HomeDesktopState extends State<HomeDesktop> {
                                                   Text(
                                                     "${getTransrlate(context, 'pending_orders')}",
                                                     style: TextStyle(
-                                                        color: Colors.orange,
+                                                        color: Colors.blue,
                                                         fontSize: 13,
                                                         fontWeight:
                                                             FontWeight.bold),

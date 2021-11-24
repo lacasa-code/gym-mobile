@@ -285,7 +285,7 @@ bool Cloading=false;
                                                         child: Center(
                                                             child: CircularProgressIndicator(
                                                               valueColor:
-                                                              AlwaysStoppedAnimation<Color>(Colors.orange,
+                                                              AlwaysStoppedAnimation<Color>(Colors.blue,
                                                               ),
                                                             )),
                                                       ),
@@ -359,7 +359,7 @@ bool Cloading=false;
                                                         child: Center(
                                                             child: CircularProgressIndicator(
                                                               valueColor:
-                                                              AlwaysStoppedAnimation<Color>(Colors.orange,
+                                                              AlwaysStoppedAnimation<Color>(Colors.blue,
                                                               ),
                                                             )),
                                                       ),

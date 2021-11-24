@@ -333,7 +333,7 @@ class _add_StoreState extends State<add_Store> {
                 children: [
                   loading?FlatButton(
                     minWidth: ScreenUtil.getWidth(context) / 2.5,
-                    color: Colors.orange,
+                    color: Colors.blue,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child:Container(
@@ -351,13 +351,13 @@ class _add_StoreState extends State<add_Store> {
                       minWidth: ScreenUtil.getWidth(context) / 2.5,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(1),
-                          side: BorderSide(color: Colors.orange, width: 1)),
+                          side: BorderSide(color: Colors.blue, width: 1)),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
                           getTransrlate(context, 'save'),
                           style: TextStyle(
-                            color: Colors.orange,
+                            color: Colors.blue,
                             fontSize: 14,
                           ),
                         ),

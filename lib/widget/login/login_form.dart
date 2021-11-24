@@ -95,7 +95,7 @@ class _LoginFormState extends State<LoginForm> {
               margin: EdgeInsets.only(top: 48, bottom: 12),
               child: _isLoading?FlatButton(
                 minWidth: ScreenUtil.getWidth(context) / 2.5,
-                color: Colors.orange,
+                color: Colors.blue,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child:Container(
@@ -113,7 +113,7 @@ class _LoginFormState extends State<LoginForm> {
                 shape: RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(1.0),
                 ),
-                color: Colors.orange,
+                color: Colors.blue,
                 onPressed: () async {
                   if (_formKey.currentState.validate()) {
                     _formKey.currentState.save();
@@ -166,7 +166,7 @@ class _LoginFormState extends State<LoginForm> {
               child: FlatButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(1.0),
-                    side: BorderSide(color: Colors.orange)),
+                    side: BorderSide(color: Colors.blue)),
                 color: Colors.white,
                 onPressed: () async {
                   Nav.route(context, LostPassword());
@@ -175,7 +175,7 @@ class _LoginFormState extends State<LoginForm> {
                   getTransrlate(context, 'LostPassword'),
                   style: TextStyle(
                     fontSize: 16,
-                    color: Colors.orange,
+                    color: Colors.blue,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

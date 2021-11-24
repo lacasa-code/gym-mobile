@@ -57,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       Image.asset(
                         'assets/images/logo.png',
-                        width: ScreenUtil.getWidth(context) / 1.7,
+                        width: ScreenUtil.getWidth(context) / 3,
                         fit: BoxFit.contain,
                        // color: themeColor.getColor(),
                       ),
@@ -66,8 +66,7 @@ class _LoginPageState extends State<LoginPage> {
 
                         child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Text('vendor',style: TextStyle(color: Colors.white),),
-                            Text('البائع',style: TextStyle(color: Colors.white),),
+                            Text('Gym',style: TextStyle(color: Colors.white),),
                           ],
                         ),
                       )

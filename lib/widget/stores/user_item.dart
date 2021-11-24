@@ -58,7 +58,7 @@ class _User_itemState extends State<User_item> {
               ),
               child: widget.isSelect
                   ? Checkbox(
-                activeColor: Colors.orange,
+                activeColor: Colors.blue,
                       value: widget.hall_model.isSelect,
                       onChanged: (bool value) {
                         setState(() {
@@ -94,7 +94,7 @@ class _User_itemState extends State<User_item> {
                   "${widget.hall_model.roles.title}",
                   maxLines: 1,
                   style: TextStyle(
-                      color: Colors.orange,
+                      color: Colors.blue,
                       fontWeight: FontWeight.bold,
                       fontSize: 12),
                 ),

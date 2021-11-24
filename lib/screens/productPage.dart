@@ -180,7 +180,7 @@ class _ProductPageState extends State<ProductPage> {
 
                   dataRow(
                       '${getTransrlate(context, 'Category')}',
-                      ' ${widget.product.allcategory.map((e) =>  "${themeColor.getlocal()=='ar'?e.mainCategoryName: e.mainCategoryNameen}${ widget.product.allcategory.last.id==e.id?'':'>>'}").toList()}'.replaceAll('[', '').replaceAll(']', ''),
+                      ' ${widget.product.allcategory?.map((e) =>  "${themeColor.getlocal()=='ar'?e.mainCategoryName: e.mainCategoryNameen}${ widget.product.allcategory.last.id==e.id?'':'>>'}")?.toList()}'.replaceAll('[', '').replaceAll(']', ''),
                       Colors.white),
                   widget.product.tyres_belong==1?  dataRow(
                       '${getTransrlate(context, 'tayars')}',

@@ -210,7 +210,7 @@ class Ticket_item extends StatelessWidget {
         return Colors.lightGreen;
         break;
       case 'to admin':
-        return Colors.orange;
+        return Colors.blue;
         break;
       default:
         return Colors.blue;

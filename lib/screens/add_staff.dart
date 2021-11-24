@@ -226,7 +226,7 @@ class _add_StaffState extends State<add_Staff> {
                     children: [
                       loading?FlatButton(
                         minWidth: ScreenUtil.getWidth(context) / 2.5,
-                        color: Colors.orange,
+                        color: Colors.blue,
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child:Container(
@@ -245,13 +245,13 @@ class _add_StaffState extends State<add_Staff> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(1),
                               side: BorderSide(
-                                  color: Colors.orange, width: 1)),
+                                  color: Colors.blue, width: 1)),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
                               getTransrlate(context, 'save'),
                               style: TextStyle(
-                                color: Colors.orange,
+                                color: Colors.blue,
                                 fontSize: 14,
                               ),
                             ),
@@ -356,8 +356,8 @@ class _add_StaffState extends State<add_Staff> {
           return ItemTags(
             index: index,
             title:  user.stores[index].nameStore,
-            color: Colors.orange,
-            activeColor: Colors.orange,
+            color: Colors.blue,
+            activeColor: Colors.blue,
             onPressed: (Item item) {
               print('pressed');
             },

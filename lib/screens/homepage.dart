@@ -122,16 +122,16 @@ class _HomeMobileState extends State<HomeMobile> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 5,
-              ),
-              AutoSizeText(
-                "${getTransrlate(context, 'welcome')}  ${name == null ? ' ' : name}",
-                style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold),
-              ),
+              // SizedBox(
+              //   height: 5,
+              // ),
+              // AutoSizeText(
+              //   "${getTransrlate(context, 'welcome')}  ${name == null ? ' ' : name}",
+              //   style: TextStyle(
+              //       fontSize: 14,
+              //       color: Colors.black,
+              //       fontWeight: FontWeight.bold),
+              // ),
               SizedBox(
                 height: 20,
               ),
@@ -145,60 +145,60 @@ class _HomeMobileState extends State<HomeMobile> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Container(
-                                  width: ScreenUtil.getWidth(context) / 6,
-                                  child: Text(
-                                      '${getTransrlate(context, 'duration')} : ',style: TextStyle(fontSize: 12),)),
-                              InkWell(
-                                onTap: () {
-                                  _selectDatefrom(context);
-                                },
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.calendar_today_outlined,
-                                      color: Colors.black26,
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Container(
-                                        width:
-                                            ScreenUtil.getWidth(context) / 3.2,
-                                        child: Text(
-                                          " ${getTransrlate(context, 'from')} : ${_fromcontroller.text}",
-                                          style: TextStyle(fontSize: 12),
-                                        )),
-                                  ],
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  _selectDateto(context);
-                                },
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.calendar_today_outlined,
-                                      color: Colors.black26,
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Container(
-                                        width:
-                                            ScreenUtil.getWidth(context) / 3.2,
-                                        child: Text(
-                                            " ${getTransrlate(context, 'to')} : ${_tocontroller.text}",
-                                            style: TextStyle(fontSize: 12))),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          //   children: [
+                          //     Container(
+                          //         width: ScreenUtil.getWidth(context) / 6,
+                          //         child: Text(
+                          //             '${getTransrlate(context, 'duration')} : ',style: TextStyle(fontSize: 12),)),
+                          //     InkWell(
+                          //       onTap: () {
+                          //         _selectDatefrom(context);
+                          //       },
+                          //       child: Row(
+                          //         children: [
+                          //           Icon(
+                          //             Icons.calendar_today_outlined,
+                          //             color: Colors.black26,
+                          //           ),
+                          //           SizedBox(
+                          //             width: 5,
+                          //           ),
+                          //           Container(
+                          //               width:
+                          //                   ScreenUtil.getWidth(context) / 3.2,
+                          //               child: Text(
+                          //                 " ${getTransrlate(context, 'from')} : ${_fromcontroller.text}",
+                          //                 style: TextStyle(fontSize: 12),
+                          //               )),
+                          //         ],
+                          //       ),
+                          //     ),
+                          //     InkWell(
+                          //       onTap: () {
+                          //         _selectDateto(context);
+                          //       },
+                          //       child: Row(
+                          //         children: [
+                          //           Icon(
+                          //             Icons.calendar_today_outlined,
+                          //             color: Colors.black26,
+                          //           ),
+                          //           SizedBox(
+                          //             width: 5,
+                          //           ),
+                          //           Container(
+                          //               width:
+                          //                   ScreenUtil.getWidth(context) / 3.2,
+                          //               child: Text(
+                          //                   " ${getTransrlate(context, 'to')} : ${_tocontroller.text}",
+                          //                   style: TextStyle(fontSize: 12))),
+                          //         ],
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
                           Divider(),
                           if (basic_report == null)
                             Container()
@@ -206,7 +206,7 @@ class _HomeMobileState extends State<HomeMobile> {
                             Container(
                               child: ResponsiveGridList(
                                 scroll: false,
-                                desiredItemWidth: ScreenUtil.getWidth(context) / 2.3,
+                                desiredItemWidth: ScreenUtil.getWidth(context) / 1.5,
                                 minSpacing: 10,
                                 children: [
                                   CustomCard(() {
@@ -216,46 +216,46 @@ class _HomeMobileState extends State<HomeMobile> {
                                         'assets/icons/Bell.svg',
                                         width: 18,
                                         height: 18,
-                                        color: Colors.green,
+                                        color: Colors.blue,
                                       ),
-                                      getTransrlate(context, 'total_orders'),
-                                      Colors.green,
+                                      "Transactions",
+                                      Colors.blue,
                                       "${basic_report.totalOrders}",
                                       themeColor),
                                   CustomCard(() {
                                     Nav.route(context, Orders());
                                   },
                                       Icon(
-                                        Icons.local_shipping_outlined,
-                                        color: Colors.orange,
+                                        Icons.shopping_cart_outlined,
+                                        color: Colors.green,
                                         size: 20,
                                       ),
-                                      getTransrlate(context, 'pending_orders'),
-                                      Colors.orange,
+                                      "Packages",
+                                      Colors.green,
                                       "${basic_report.pending_orders}",
                                       themeColor),
                                   CustomCard(() {
                                     Nav.route(context, Products());
                                   },
                                       Icon(
-                                        Icons.local_shipping_outlined,
-                                        color: Colors.brown,
+                                        Icons.person,
+                                        color: Colors.red,
                                         size: 20,
 
                                       ),
-                                      getTransrlate(context, 'total_products'),
-                                      Colors.brown,
+                                      "Customers",
+                                      Colors.red,
                                       "${basic_report.totalProducts}",
                                       themeColor),
                                   CustomCard(() {
                                     Nav.route(context, Invoices());
                                   },
                                       Icon(
-                                        Icons.money,
+                                        Icons.check_box_outline_blank,
                                         color: Colors.lightGreen,
                                         size: 18,
                                       ),
-                                      getTransrlate(context, 'total_sale'),
+                                      "Items",
                                       Colors.lightGreen,
                                       "${basic_report.totalSale}",
                                       themeColor),
@@ -274,7 +274,7 @@ class _HomeMobileState extends State<HomeMobile> {
                                               'assets/icons/Question mark.svg',
                                               width: 18,
                                               height: 18,
-                                              color: Colors.blue,
+                                              color: Colors.yellow,
                                             ),
                                             SizedBox(
                                               width: 3,
@@ -288,12 +288,12 @@ class _HomeMobileState extends State<HomeMobile> {
                                                           context) /
                                                       3.1,
                                                   child: AutoSizeText(
-                                                    "${getTransrlate(context, 'prod_questions')}",
+                                                    "Overdue Bills",
                                                     minFontSize: 10,
                                                     maxLines: 1,
                                                     maxFontSize: 15,
                                                     style: TextStyle(
-                                                        color: Colors.blue,
+                                                        color: Colors.yellow,
                                                         fontWeight:
                                                             FontWeight.bold),
                                                   ),
@@ -302,8 +302,7 @@ class _HomeMobileState extends State<HomeMobile> {
                                                     "${basic_report.prod_questions ?? '0'}",
                                                     maxLines: 1,
                                                     style: TextStyle(
-                                                        color: themeColor
-                                                            .getColor())),
+                                                        color: Colors.yellow)),
                                               ],
                                             ),
                                           ],
@@ -311,57 +310,57 @@ class _HomeMobileState extends State<HomeMobile> {
                                       ),
                                     ),
                                   ),
-                                  InkWell(
-                                    onTap: () {
-                                      Nav.route(context, Tickets());
-                                    },
-                                    child: Card(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Icon(
-                                              Icons.error_outline,
-                                              color: Colors.red,
-                                              size: 18,
-                                            ),
-                                            SizedBox(
-                                              width: 3,
-                                            ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Container(
-                                                  width: ScreenUtil.getWidth(
-                                                          context) /
-                                                      3.1,
-                                                  child: AutoSizeText(
-                                                    "${getTransrlate(context, 'tickets')}",
-                                                    minFontSize: 13,
-                                                    maxLines: 1,
-                                                    maxFontSize: 14,
-                                                    style: TextStyle(
-                                                        color: Colors.red,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                ),
-                                                Text(
-                                                    "${basic_report.tickets ?? '0'}",
-                                                    maxLines: 1,
-                                                    style: TextStyle(
-                                                        color: themeColor
-                                                            .getColor())),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                                  // InkWell(
+                                  //   onTap: () {
+                                  //     Nav.route(context, Tickets());
+                                  //   },
+                                  //   child: Card(
+                                  //     child: Padding(
+                                  //       padding: const EdgeInsets.all(8.0),
+                                  //       child: Row(
+                                  //         crossAxisAlignment:
+                                  //             CrossAxisAlignment.start,
+                                  //         children: [
+                                  //           Icon(
+                                  //             Icons.error_outline,
+                                  //             color: Colors.red,
+                                  //             size: 18,
+                                  //           ),
+                                  //           SizedBox(
+                                  //             width: 3,
+                                  //           ),
+                                  //           Column(
+                                  //             crossAxisAlignment:
+                                  //                 CrossAxisAlignment.start,
+                                  //             children: [
+                                  //               Container(
+                                  //                 width: ScreenUtil.getWidth(
+                                  //                         context) /
+                                  //                     3.1,
+                                  //                 child: AutoSizeText(
+                                  //                   "${getTransrlate(context, 'tickets')}",
+                                  //                   minFontSize: 13,
+                                  //                   maxLines: 1,
+                                  //                   maxFontSize: 14,
+                                  //                   style: TextStyle(
+                                  //                       color: Colors.red,
+                                  //                       fontWeight:
+                                  //                           FontWeight.bold),
+                                  //                 ),
+                                  //               ),
+                                  //               Text(
+                                  //                   "${basic_report.tickets ?? '0'}",
+                                  //                   maxLines: 1,
+                                  //                   style: TextStyle(
+                                  //                       color: themeColor
+                                  //                           .getColor())),
+                                  //             ],
+                                  //           ),
+                                  //         ],
+                                  //       ),
+                                  //     ),
+                                  //   ),
+                                  // ),
                                 ],
                               ),
                             ),
@@ -393,142 +392,142 @@ class _HomeMobileState extends State<HomeMobile> {
                         ],
                       ),
                     ),
-              product == null
-                  ? Container()
-                  : product.isEmpty
-                      ? Container()
-                      : Card(
-                          child: Container(
-                            decoration: BoxDecoration(
-                                border: Border.all(color: Colors.black12)),
-                            padding: const EdgeInsets.all(12.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        width: ScreenUtil.getWidth(context) / 2,
-                                        child: AutoSizeText(
-                                          "${getTransrlate(context, 'Inventoryplay')}",
-                                          maxLines: 2,
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                          minFontSize: 11,
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: SizedBox(
-                                          width: 10,
-                                        ),
-                                      ),
-                                      Text(
-                                        "${getTransrlate(context, 'residual')}",
-                                        style: TextStyle(color: Colors.black,fontSize: 12),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                ListView.builder(
-                                  padding: EdgeInsets.all(1),
-                                  primary: false,
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemCount: product.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return InkWell(
-                                      onTap: () {
-                                        Nav.route(
-                                            context,
-                                            ProductPage(
-                                                product: product[index]));
-                                      },
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Container(
-                                                width: ScreenUtil.getWidth(
-                                                        context) /
-                                                    8,
-                                                height: ScreenUtil.getWidth(
-                                                        context) /
-                                                    8,
-                                                child: CachedNetworkImage(
-                                                  imageUrl: product[index]
-                                                          .photo
-                                                          .isNotEmpty
-                                                      ? product[index]
-                                                          .photo[0]
-                                                          .image
-                                                      : '',
-                                                  errorWidget:
-                                                      (context, url, error) =>
-                                                          Icon(
-                                                    Icons.image,
-                                                    color: Colors.black12,
-                                                  ),
-                                                  fit: BoxFit.contain,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: 10,
-                                              ),
-                                              Container(
-                                                width: ScreenUtil.getWidth(
-                                                        context) /
-                                                    2,
-                                                child: AutoSizeText(
-                                                  "${themeColor.getlocal() == 'ar' ? product[index].name ?? product[index].nameEn : product[index].nameEn ?? product[index].name}",
-                                                  maxLines: 2,
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                  minFontSize: 13,
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: SizedBox(
-                                                  width: 10,
-                                                ),
-                                              ),
-                                              Text(
-                                                "${product[index].quantity}",
-                                                style: TextStyle(
-                                                    color: Colors.red),
-                                              ),
-                                              SizedBox(
-                                                width: 20,
-                                              )
-                                            ],
-                                          ),
-                                          Container(
-                                            height: 1,
-                                            color: Colors.black12,
-                                          )
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                ),
-                                Container(
-                                  height: 1,
-                                  color: Colors.black12,
-                                ),
-                              ],
-                            ),
-                          ),
-                        )
+              // product == null
+              //     ? Container()
+              //     : product.isEmpty
+              //         ? Container()
+              //         : Card(
+              //             child: Container(
+              //               decoration: BoxDecoration(
+              //                   border: Border.all(color: Colors.black12)),
+              //               padding: const EdgeInsets.all(12.0),
+              //               child: Column(
+              //                 crossAxisAlignment: CrossAxisAlignment.start,
+              //                 children: [
+              //                   Padding(
+              //                     padding: const EdgeInsets.all(8.0),
+              //                     child: Row(
+              //                       crossAxisAlignment:
+              //                           CrossAxisAlignment.start,
+              //                       children: [
+              //                         Container(
+              //                           width: ScreenUtil.getWidth(context) / 2,
+              //                           child: AutoSizeText(
+              //                             "${getTransrlate(context, 'Inventoryplay')}",
+              //                             maxLines: 2,
+              //                             style: TextStyle(
+              //                               fontSize: 12,
+              //                               fontWeight: FontWeight.bold,
+              //                             ),
+              //                             minFontSize: 11,
+              //                           ),
+              //                         ),
+              //                         Expanded(
+              //                           child: SizedBox(
+              //                             width: 10,
+              //                           ),
+              //                         ),
+              //                         Text(
+              //                           "${getTransrlate(context, 'residual')}",
+              //                           style: TextStyle(color: Colors.black,fontSize: 12),
+              //                         )
+              //                       ],
+              //                     ),
+              //                   ),
+              //                   ListView.builder(
+              //                     padding: EdgeInsets.all(1),
+              //                     primary: false,
+              //                     shrinkWrap: true,
+              //                     physics: NeverScrollableScrollPhysics(),
+              //                     itemCount: product.length,
+              //                     itemBuilder:
+              //                         (BuildContext context, int index) {
+              //                       return InkWell(
+              //                         onTap: () {
+              //                           Nav.route(
+              //                               context,
+              //                               ProductPage(
+              //                                   product: product[index]));
+              //                         },
+              //                         child: Column(
+              //                           children: [
+              //                             Row(
+              //                               crossAxisAlignment:
+              //                                   CrossAxisAlignment.center,
+              //                               children: [
+              //                                 Container(
+              //                                   width: ScreenUtil.getWidth(
+              //                                           context) /
+              //                                       8,
+              //                                   height: ScreenUtil.getWidth(
+              //                                           context) /
+              //                                       8,
+              //                                   child: CachedNetworkImage(
+              //                                     imageUrl: product[index]
+              //                                             .photo
+              //                                             .isNotEmpty
+              //                                         ? product[index]
+              //                                             .photo[0]
+              //                                             .image
+              //                                         : '',
+              //                                     errorWidget:
+              //                                         (context, url, error) =>
+              //                                             Icon(
+              //                                       Icons.image,
+              //                                       color: Colors.black12,
+              //                                     ),
+              //                                     fit: BoxFit.contain,
+              //                                   ),
+              //                                 ),
+              //                                 SizedBox(
+              //                                   width: 10,
+              //                                 ),
+              //                                 Container(
+              //                                   width: ScreenUtil.getWidth(
+              //                                           context) /
+              //                                       2,
+              //                                   child: AutoSizeText(
+              //                                     "${themeColor.getlocal() == 'ar' ? product[index].name ?? product[index].nameEn : product[index].nameEn ?? product[index].name}",
+              //                                     maxLines: 2,
+              //                                     style: TextStyle(
+              //                                       fontSize: 14,
+              //                                       fontWeight: FontWeight.bold,
+              //                                     ),
+              //                                     minFontSize: 13,
+              //                                   ),
+              //                                 ),
+              //                                 Expanded(
+              //                                   child: SizedBox(
+              //                                     width: 10,
+              //                                   ),
+              //                                 ),
+              //                                 Text(
+              //                                   "${product[index].quantity}",
+              //                                   style: TextStyle(
+              //                                       color: Colors.red),
+              //                                 ),
+              //                                 SizedBox(
+              //                                   width: 20,
+              //                                 )
+              //                               ],
+              //                             ),
+              //                             Container(
+              //                               height: 1,
+              //                               color: Colors.black12,
+              //                             )
+              //                           ],
+              //                         ),
+              //                       );
+              //                     },
+              //                   ),
+              //                   Container(
+              //                     height: 1,
+              //                     color: Colors.black12,
+              //                   ),
+              //                 ],
+              //               ),
+              //             ),
+              //           )
             ],
           ),
         ),

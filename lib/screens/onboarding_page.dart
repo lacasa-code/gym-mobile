@@ -25,7 +25,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
       height: isCurrentPage ? 12.0 : 8.0,
       width: isCurrentPage ? 12.0 : 8.0,
       decoration: BoxDecoration(
-        color: isCurrentPage ? Colors.orange : Colors.grey[300],
+        color: isCurrentPage ? Colors.blue : Colors.grey[300],
         borderRadius: BorderRadius.all(Radius.circular(1)),
       ),
     );
@@ -74,16 +74,16 @@ class _OnboardingPageState extends State<OnboardingPage> {
             children: <Widget>[
               _buildPageContent(
                   image: 'assets/images/logo.png',
-                  title: 'تركار',
-                  body: 'المنصة الأفضل\n لبيع قطع غيار السيارات والشاحنات.'),
+                  title: 'GYM',
+                  body: 'المنصة الأفضل\n لأدارة نوادة الجيم.'),
               _buildPageContent(
                   image: 'assets/images/logo.png',
-                  title: 'تركار',
-                  body: 'سجل كبائع ليمكنك عرض منتجاتك لآلاف المستخدمين'),
+                  title: 'GYM',
+                  body: 'المنصة الأفضل\n لأدارة نوادة الجيم.'),
               _buildPageContent(
                   image: 'assets/images/logo.png',
-                  title: 'هيا بنا',
-                  body: 'للمزيد من المعلومات قم بزيارة موقعنا www.trkar.com'),
+                  title: 'GYM',
+                  body: 'المنصة الأفضل\n لأدارة نوادة الجيم.'),
             ],
           ),
         ),
@@ -109,26 +109,26 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       children: [
                         Image.asset(
                           'assets/images/logo.png',
-                          width: ScreenUtil.getWidth(context) / 1.7,
+                          width: ScreenUtil.getWidth(context) /3,
                           fit: BoxFit.contain,
                           // color: themeColor.getColor(),
                         ),
-                        Container(
-                          width: ScreenUtil.getWidth(context) / 2,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Text(
-                                'vendor',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              Text(
-                                'البائع',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ],
-                          ),
-                        ),
+                        // Container(
+                        //   width: ScreenUtil.getWidth(context) / 2,
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        //     children: [
+                        //       Text(
+                        //         'vendor',
+                        //         style: TextStyle(color: Colors.white),
+                        //       ),
+                        //       Text(
+                        //         'البائع',
+                        //         style: TextStyle(color: Colors.white),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
                         SizedBox(
                           height: ScreenUtil.getHeight(context) / 3,
                         ),
@@ -136,7 +136,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                           height: 50,
                           width: ScreenUtil.getWidth(context) / 1.4,
                           child: FlatButton(
-                            color: Colors.orange,
+                            color: Colors.blue,
                             onPressed: () {
                               Nav.routeReplacement(context, LoginPage());
                             },
@@ -158,7 +158,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         //     shape: RoundedRectangleBorder(
                         //         borderRadius: BorderRadius.circular(1),
                         //         side:
-                        //             BorderSide(color: Colors.orange, width: 2)),
+                        //             BorderSide(color: Colors.blue, width: 2)),
                         //     color: Colors.white,
                         //     onPressed: () {
                         //       Nav.routeReplacement(context, LoginPage());
@@ -166,7 +166,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         //     child: Text(
                         //       "سجل كبائع",
                         //       style: TextStyle(
-                        //           color: Colors.orange,
+                        //           color: Colors.blue,
                         //           fontWeight: FontWeight.w700),
                         //     ),
                         //   ),
@@ -250,7 +250,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         splashColor: Colors.blue[50],
                         child: Text(
                           'التالى',
-                          style: TextStyle(color: Colors.orange),
+                          style: TextStyle(color: Colors.blue),
                         ),
                       )
                     ],

@@ -68,7 +68,7 @@ class _Stores_itemState extends State<Stores_item> {
                 ),
                 child: widget.isSelect
                     ?widget.hall_model.headCenter!=1?  Checkbox(
-                        activeColor: Colors.orange,
+                        activeColor: Colors.blue,
                         value: widget.hall_model.isSelect,
                         onChanged: (bool value) {
                           setState(() {
@@ -169,7 +169,7 @@ class _Stores_itemState extends State<Stores_item> {
                       maxLines: 1,
                       style: TextStyle(
                         fontSize: 13,
-                        color: Colors.orange,
+                        color: Colors.blue,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

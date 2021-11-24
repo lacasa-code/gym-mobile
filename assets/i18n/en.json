@@ -71,7 +71,7 @@
   "delete": "Delete ",
   "select": "Select ",
   "filter": "Filter ",
-  "staf": " Staff ",
+  "staf": " Customers ",
   "approved": " Approved ",
 
   "total_orders": "Approved Orders",
@@ -155,7 +155,7 @@
   "Order": "Order",
   "search": "  search  .  . ",
   "ProfileSettings": "Profile Settings",
-  "FAQ": "General inquiries",
+  "FAQ": " System Settings ",
 
   "NoFAQ": "No General inquiries founded ",
 
@@ -167,12 +167,12 @@
 
   "About": "About Us",
   "Support": "Support",
-  "HomePage": "Home Page",
+  "HomePage": "Dashboard",
   "Logout": "Log out",
-  "Myorders": "My Orders",
+  "Myorders": " Items & Packages ",
   "MyProfile": "My Profile",
   "productRateing": "Product ratings",
-  "invoices": "Invoices",
+  "invoices": " Bills & Payments ",
   "invoice": "Invoices",
   "MyProfileInfo": "My Profile Info",
   "changePassword": "Change Password",
@@ -229,7 +229,7 @@
   "totalOrder": "Total Order",
   "Orders": "Orders",
   "totalShipping": "Total Shipping",
-  "staff": "Staff",
+  "staff": "Users",
   "addstaff": "Add staff",
   "addStore": "Add Store",
 

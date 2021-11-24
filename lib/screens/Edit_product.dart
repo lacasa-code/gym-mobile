@@ -1005,8 +1005,8 @@ class _Edit_ProductState extends State<Edit_Product> {
                             children: [
                               Checkbox(
                                 checkColor: Colors.white,
-                                activeColor:Colors.orange ,
-                                //fillColor:Colors.orange,
+                                activeColor:Colors.blue ,
+                                //fillColor:Colors.blue,
                                 value:isdiscount ,
                                 onChanged: (bool value) {
                                   setState(() {
@@ -1082,8 +1082,8 @@ class _Edit_ProductState extends State<Edit_Product> {
                             children: [
                               Checkbox(
                                 checkColor: Colors.white,
-                                activeColor: Colors.orange,
-                                //fillColor:Colors.orange,
+                                activeColor: Colors.blue,
+                                //fillColor:Colors.blue,
                                 value: isqty_reminder,
                                 onChanged: (bool value) {
                                   setState(() {
@@ -1224,8 +1224,8 @@ class _Edit_ProductState extends State<Edit_Product> {
                                 children: [
                                   Checkbox(
                                     checkColor: Colors.white,
-                                    activeColor:Colors.orange ,
-                                    //fillColor:Colors.orange,
+                                    activeColor:Colors.blue ,
+                                    //fillColor:Colors.blue,
                                     value:isdiscount ,
                                     onChanged: (bool value) {
                                       setState(() {
@@ -1344,8 +1344,8 @@ class _Edit_ProductState extends State<Edit_Product> {
                                 children: [
                                   Checkbox(
                                     checkColor: Colors.white,
-                                    activeColor: Colors.orange,
-                                    //fillColor:Colors.orange,
+                                    activeColor: Colors.blue,
+                                    //fillColor:Colors.blue,
                                     value: isqty_reminder,
                                     onChanged: (bool value) {
                                       setState(() {
@@ -1560,7 +1560,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                                   right: 1,
                                   child: Radio(
                                       value: index,
-                                      activeColor: Colors.orange,
+                                      activeColor: Colors.blue,
                                       groupValue: CheckBox,
                                       onChanged: (index) {
                                         API(context).post(
@@ -1597,7 +1597,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                 FlatButton(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(1),
-                        side: BorderSide(color: Colors.orange, width: 1)),
+                        side: BorderSide(color: Colors.blue, width: 1)),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
@@ -1605,12 +1605,12 @@ class _Edit_ProductState extends State<Edit_Product> {
                         children: [
                           Icon(
                             Icons.add,
-                            color: Colors.orange,
+                            color: Colors.blue,
                           ),
                           Text(
                             '${getTransrlate(context, 'add')}',
                             style: TextStyle(
-                              color: Colors.orange,
+                              color: Colors.blue,
                               fontSize: 14,
                             ),
                           ),
@@ -1630,7 +1630,7 @@ class _Edit_ProductState extends State<Edit_Product> {
                     children: [
                       if (loading) FlatButton(
                               minWidth: ScreenUtil.getWidth(context) / 2.5,
-                              color: Colors.orange,
+                              color: Colors.blue,
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Container(
@@ -1648,13 +1648,13 @@ class _Edit_ProductState extends State<Edit_Product> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(1),
                                   side: BorderSide(
-                                      color: Colors.orange, width: 1)),
+                                      color: Colors.blue, width: 1)),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
                                   getTransrlate(context, "save"),
                                   style: TextStyle(
-                                    color: Colors.orange,
+                                    color: Colors.blue,
                                     fontSize: 14,
                                   ),
                                 ),
@@ -1917,8 +1917,8 @@ setState(() {
                           widget.product.carModel[index].name_en
                       : widget.product.carModel[index].name_en ??
                           widget.product.carModel[index].carmodel,
-                  color: Colors.orange.shade400,
-                  activeColor: Colors.orange.shade400,
+                  color: Colors.blue.shade400,
+                  activeColor: Colors.blue.shade400,
 
                   highlightColor: Colors.transparent,
                   splashColor: Colors.transparent,

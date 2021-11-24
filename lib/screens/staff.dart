@@ -97,7 +97,7 @@ class _StaffState extends State<Staff> {
         child: Align(
           alignment: Alignment.bottomRight,
           child: FlatButton(
-              color: Colors.orange,
+              color: Colors.blue,
               onPressed: () {
                 Nav.route(context, add_Staff());
               },

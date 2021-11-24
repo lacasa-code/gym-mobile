@@ -360,7 +360,7 @@ class _Edit_profileState extends State<Edit_profile> {
           children: <Widget>[
             loading?FlatButton(
               minWidth: ScreenUtil.getWidth(context) / 2.5,
-              color: Colors.orange,
+              color: Colors.blue,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(1),
                   side: BorderSide( width: 1)),
@@ -416,13 +416,13 @@ class _Edit_profileState extends State<Edit_profile> {
                       width: ScreenUtil.getWidth(context) / 2.5,
                       padding: const EdgeInsets.all(10.0),
                       decoration:
-                      BoxDecoration(border: Border.all(color: Colors.orange)),
+                      BoxDecoration(border: Border.all(color: Colors.blue)),
                       child: Center(
                         child: Text(
                           "حفظ",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: Colors.orange),
+                              color: Colors.blue),
                         ),
                       )),
                 ),
@@ -467,7 +467,7 @@ class _Edit_profileState extends State<Edit_profile> {
         child: Container(
           width: ScreenUtil.getWidth(context) / 2.5,
           padding: const EdgeInsets.all(10.0),
-          decoration: BoxDecoration(border: Border.all(color: Colors.orange)),
+          decoration: BoxDecoration(border: Border.all(color: Colors.blue)),
           child: Center(
             child: AutoSizeText(
               getTransrlate(context, 'edit'),
@@ -476,7 +476,7 @@ class _Edit_profileState extends State<Edit_profile> {
               maxLines: 1,
               minFontSize: 10,
               style:
-              TextStyle(fontWeight: FontWeight.bold, color: Colors.orange),
+              TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
             ),
           ),
         ),
@@ -495,7 +495,7 @@ class _Edit_profileState extends State<Edit_profile> {
         child: Container(
           width: ScreenUtil.getWidth(context) / 2.5,
           padding: const EdgeInsets.all(10.0),
-          decoration: BoxDecoration(border: Border.all(color: Colors.orange)),
+          decoration: BoxDecoration(border: Border.all(color: Colors.blue)),
           child: Center(
             child: AutoSizeText(
               getTransrlate(context, 'changePassword'),
@@ -504,7 +504,7 @@ class _Edit_profileState extends State<Edit_profile> {
               maxLines: 1,
               minFontSize: 10,
               style:
-              TextStyle(fontWeight: FontWeight.bold, color: Colors.orange),
+              TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
             ),
           ),
         ),

@@ -168,7 +168,7 @@ class _tickets_informationState extends State<tickets_information> {
                         ),),   SizedBox(
                       width: ScreenUtil.getWidth(context)/2,
                       child: Text("${widget.orders_model.attachment!=null?widget.orders_model.attachment.name ?? '':''}",
-                          maxLines: 1,style: TextStyle(color: Colors.orange,decoration: TextDecoration.underline, fontSize: 12)),
+                          maxLines: 1,style: TextStyle(color: Colors.blue,decoration: TextDecoration.underline, fontSize: 12)),
                     ),
                   ],
                 ),
@@ -311,7 +311,7 @@ class _tickets_informationState extends State<tickets_information> {
               Center(
                 child: loading?FlatButton(
                   minWidth: ScreenUtil.getWidth(context) / 2.5,
-                  color: Colors.orange,
+                  color: Colors.blue,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child:Container(
@@ -330,7 +330,7 @@ class _tickets_informationState extends State<tickets_information> {
                     width: ScreenUtil.getWidth(context) / 2.5,
                     padding: const EdgeInsets.all(10.0),
                     decoration:
-                    BoxDecoration(border: Border.all(color: Colors.orange)),
+                    BoxDecoration(border: Border.all(color: Colors.blue)),
                     child: Center(
                       child: AutoSizeText(
                         "${getTransrlate(context, 'send')}",
@@ -339,7 +339,7 @@ class _tickets_informationState extends State<tickets_information> {
                         maxLines: 1,
                         minFontSize: 10,
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.orange),
+                            fontWeight: FontWeight.bold, color: Colors.blue),
                       ),
                     ),
                   ),

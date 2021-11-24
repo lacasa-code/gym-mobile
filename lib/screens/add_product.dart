@@ -1022,8 +1022,8 @@ int CheckBox=0;
                                       children: [
                                         Checkbox(
                                           checkColor: Colors.white,
-                                          activeColor:Colors.orange ,
-                                          //fillColor:Colors.orange,
+                                          activeColor:Colors.blue ,
+                                          //fillColor:Colors.blue,
                                           value:isdiscount ,
                                           onChanged: (bool value) {
                                             setState(() {
@@ -1099,8 +1099,8 @@ int CheckBox=0;
                                       children: [
                                         Checkbox(
                                           checkColor: Colors.white,
-                                          activeColor:Colors.orange ,
-                                          //fillColor:Colors.orange,
+                                          activeColor:Colors.blue ,
+                                          //fillColor:Colors.blue,
                                           value: isqty_reminder,
                                           onChanged: (bool value) {
                                             setState(() {
@@ -1243,8 +1243,8 @@ int CheckBox=0;
                                           children: [
                                             Checkbox(
                                               checkColor: Colors.white,
-                                              activeColor:Colors.orange ,
-                                              //fillColor:Colors.orange,
+                                              activeColor:Colors.blue ,
+                                              //fillColor:Colors.blue,
                                               value:isdiscount ,
                                               onChanged: (bool value) {
                                                 setState(() {
@@ -1359,8 +1359,8 @@ int CheckBox=0;
                                           children: [
                                             Checkbox(
                                               checkColor: Colors.white,
-                                              activeColor:Colors.orange ,
-                                              //fillColor:Colors.orange,
+                                              activeColor:Colors.blue ,
+                                              //fillColor:Colors.blue,
                                               value: isqty_reminder,
                                               onChanged: (bool value) {
                                                 setState(() {
@@ -1526,7 +1526,7 @@ int CheckBox=0;
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(1),
                                   side: BorderSide(
-                                      color: Colors.orange, width: 1)),
+                                      color: Colors.blue, width: 1)),
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Row(
@@ -1534,12 +1534,12 @@ int CheckBox=0;
                                   children: [
                                     Icon(
                                       Icons.add,
-                                      color: Colors.orange,
+                                      color: Colors.blue,
                                     ),
                                     Text(
                                       '${getTransrlate(context, 'add')}',
                                       style: TextStyle(
-                                        color: Colors.orange,
+                                        color: Colors.blue,
                                         fontSize: 14,
                                       ),
                                     ),
@@ -1559,7 +1559,7 @@ int CheckBox=0;
                               children: [
                                 loading?FlatButton(
                                   minWidth: ScreenUtil.getWidth(context) / 2.5,
-                                  color: Colors.orange,
+                                  color: Colors.blue,
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child:Container(
@@ -1578,13 +1578,13 @@ int CheckBox=0;
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(1),
                                       side: BorderSide(
-                                          color: Colors.orange, width: 1)),
+                                          color: Colors.blue, width: 1)),
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text(
                                       getTransrlate(context, "save"),
                                       style: TextStyle(
-                                        color: Colors.orange,
+                                        color: Colors.blue,
                                         fontSize: 14,
                                       ),
                                     ),
@@ -1898,7 +1898,7 @@ int CheckBox=0;
                       title:
                       themeColor.getlocal()=='ar'?product.carModel[index].carmodel??product.carModel[index].name_en:product.carModel[index].name_en??product.carModel[index].carmodel,
                       color: Colors.blue,
-                      activeColor: Colors.orange.shade400,
+                      activeColor: Colors.blue.shade400,
                       onPressed: (Item item) {
                         print('pressed');
                       },

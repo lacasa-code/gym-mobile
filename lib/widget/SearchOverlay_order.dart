@@ -72,7 +72,7 @@ class SearchOverlay_OrderState extends State<SearchOverlay_Order>
                           child: Container(
                             margin: const EdgeInsets.all(15.0),
                             padding: const EdgeInsets.all(3.0),
-                            color: Colors.orange,
+                            color: Colors.blue,
                             child: Icon(
                               Icons.search,
                               color: Colors.white,

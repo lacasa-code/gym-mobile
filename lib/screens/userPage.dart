@@ -110,7 +110,7 @@ class _UserPageState extends State<UserPage> {
                   "${widget.user.roles.title}",
                   maxLines: 1,
                   style: TextStyle(
-                      color: Colors.orange,
+                      color: Colors.blue,
                       fontWeight: FontWeight.bold,
                       fontSize: 12),
                 ),

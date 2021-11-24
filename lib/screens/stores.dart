@@ -101,7 +101,7 @@ class _StoresState extends State<Stores> {
         child: Align(
           alignment: Alignment.bottomRight,
           child: FlatButton(
-              color: Colors.orange,
+              color: Colors.blue,
               onPressed: () {
                 Nav.route(context, add_Store());
               },

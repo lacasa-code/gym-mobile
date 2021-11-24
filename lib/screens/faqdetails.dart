@@ -108,7 +108,7 @@ bool loading=false;
               Center(
                 child:loading?FlatButton(
                   minWidth: ScreenUtil.getWidth(context) / 2.5,
-                  color: Colors.orange,
+                  color: Colors.blue,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child:Container(
@@ -127,7 +127,7 @@ bool loading=false;
                     width: ScreenUtil.getWidth(context) / 2.5,
                     padding: const EdgeInsets.all(10.0),
                     decoration:
-                        BoxDecoration(border: Border.all(color: Colors.orange)),
+                        BoxDecoration(border: Border.all(color: Colors.blue)),
                     child: Center(
                       child: AutoSizeText(
                         "${getTransrlate(context, 'send')}",
@@ -136,7 +136,7 @@ bool loading=false;
                         maxLines: 1,
                         minFontSize: 10,
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.orange),
+                            fontWeight: FontWeight.bold, color: Colors.blue),
                       ),
                     ),
                   ),

@@ -58,7 +58,7 @@ class _SortdialogState extends State<Sortdialog> {
             child: RadioListTile<String>(
               title:  Text('${getTransrlate(context, 'SortByold')}'),
               value: characters[0],
-              activeColor: Colors.orange,
+              activeColor: Colors.blue,
               groupValue: widget.character,
               onChanged: (String value) {
                 setState(() {
@@ -74,7 +74,7 @@ class _SortdialogState extends State<Sortdialog> {
             child: RadioListTile<String>(
               title:  Text('${getTransrlate(context, "SortByNew")}'),
               value: characters[1],
-              activeColor: Colors.orange,
+              activeColor: Colors.blue,
 
               groupValue: widget.character,
               onChanged: (String value) {
@@ -90,7 +90,7 @@ class _SortdialogState extends State<Sortdialog> {
           //   child: RadioListTile<String>(
           //     title: const Text('الأكثر مشاهدة'),
           //     value: characters[2],
-          //     activeColor: Colors.orange,
+          //     activeColor: Colors.blue,
           //     groupValue: _character,
           //     onChanged: (String value) {
           //       setState(() {
@@ -106,7 +106,7 @@ class _SortdialogState extends State<Sortdialog> {
           //   child: RadioListTile<String>(
           //     title: const Text('الأعلى مبيعا'),
           //     value: characters[3],
-          //     activeColor: Colors.orange,
+          //     activeColor: Colors.blue,
           //     groupValue:_character,
           //     onChanged: (String value) {
           //       setState(() {

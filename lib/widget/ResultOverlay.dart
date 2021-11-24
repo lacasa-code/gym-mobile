@@ -58,7 +58,7 @@ class ResultOverlayState extends State<ResultOverlay>
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Container(height: 25,color: Colors.orange,),
+                Container(height: 25,color: Colors.blue,),
                 SizedBox(height: 15,),
                 Icon(
                   Icons.info_outline,
@@ -90,7 +90,7 @@ class ResultOverlayState extends State<ResultOverlay>
                   child: Container(
                       margin: const EdgeInsets.all(15.0),
                       padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 50),
-                      color: Colors.orange,
+                      color: Colors.blue,
                       child: Text(getTransrlate(context, 'close'),style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),)),
                 )
               ],
