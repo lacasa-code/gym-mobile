@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:trkar_vendor/model/item_model.dart';
 import 'package:trkar_vendor/model/orders_model.dart';
 import 'package:trkar_vendor/screens/orderdetails.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
@@ -26,11 +27,11 @@ class Orders extends StatefulWidget {
 }
 
 class _OrdersState extends State<Orders> {
-  List<Order> orders;
+  List<Item> orders;
   final debouncer = Search(milliseconds: 1000);
   ScrollController _scrollController = new ScrollController();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  String url = "show/orders";
+  String url = "items";
   int i = 2;
 bool Cloading=false;
   @override
@@ -71,7 +72,7 @@ bool Cloading=false;
             SizedBox(
               width: 10,
             ),
-            Text(getTransrlate(context, 'Myorders')),
+            Text(getTransrlate(context, 'items')),
           ],
         ),
         actions: [
@@ -120,7 +121,7 @@ bool Cloading=false;
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Text(
-                                '${orders.length} ${getTransrlate(context, 'Orders')}'),
+                                '${orders.length} ${getTransrlate(context, 'items')}'),
                             SizedBox(
                               width: 100,
                             ),
@@ -185,257 +186,17 @@ bool Cloading=false;
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (BuildContext context, int index) {
-                          return InkWell(
-                            onTap: () {
-                              Nav.route(
-                                  context,
-                                  Order_information(
-                                    orders: orders,
-                                    orders_model: orders[index],
-                                  ));
-                            },
-                            child: Container(
-                              color: index.isOdd
-                                  ? Color(0xffF6F6F6)
-                                  : Colors.white,
-                              child: Column(
-                                children: [
-                                  OrderItem(
-                                    orders_model: orders[index],
-                                    themeColor: themeColor,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 40, left: 16),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          ' ${getTransrlate(context, 'totalOrder')} : ${orders[index].orderTotal} ${getTransrlate(context, 'Currency')} ',
-                                          style: TextStyle(
-                                            fontSize: 13,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                        orders[index].need_approval == 0
-                                            ? Container(
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: <Widget>[
-                                                    Text(
-                                                      getTransrlate(context,
-                                                          'OrderState'),
-                                                      style: TextStyle(
-                                                        fontSize: 13,
-                                                        color: Colors.black,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 5,
-                                                    ),
-                                                    Container(
-                                                      width: 80,
-                                                      padding:
-                                                          EdgeInsets.all(3),
-                                                      decoration: BoxDecoration(
-                                                          border: Border.all(
-                                                              width: 1,
-                                                              color: isPassed(
-                                                                  orders[
-                                                                          index]
-                                                                      .orderStatus
-                                                                      .toString()))),
-                                                      child: Center(
-                                                        child: Text(
-                                                          '${orders[index].orderStatus}',
-                                                          maxLines: 1,
-                                                          style: TextStyle(
-                                                            fontSize: 13,
-                                                            color: isPassed(
-                                                                orders[
-                                                                        index]
-                                                                    .orderStatus
-                                                                    .toString()),
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              )
-                                            : Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceAround,
-                                                children: [
-                                                  orders[index].loading?FlatButton(
-                                                    minWidth: ScreenUtil.getWidth(context) / 4.5,
-                                                    child: Padding(
-                                                      padding: const EdgeInsets.all(8.0),
-                                                      child:Container(
-                                                        height: 30,
-                                                        child: Center(
-                                                            child: CircularProgressIndicator(
-                                                              valueColor:
-                                                              AlwaysStoppedAnimation<Color>(Colors.blue,
-                                                              ),
-                                                            )),
-                                                      ),
-                                                    ),
-                                                    onPressed: () async {
-                                                    },
-                                                  ):  FlatButton(
-                                                    padding: EdgeInsets.all(4),
-                                                    onPressed: () {
-                                                      setState(() => orders[index].loading = true);
-
-                                                      API(context).post(
-                                                          'vendor/approve/orders',
-                                                          {
-                                                            "status": "1",
-                                                            "order_id":
-                                                                orders[
-                                                                        index]
-                                                                    .id
-                                                          }).then((value) {
-                                                        setState(() => orders[index].loading = false);
-
-                                                        if (value != null) {
-                                                          showDialog(
-                                                            context: context,
-                                                            builder: (_) =>
-                                                                ResultOverlay(
-                                                              value.containsKey(
-                                                                      'message')
-                                                                  ? value[
-                                                                      'message']
-                                                                  : '${getTransrlate(context, 'Done')}',
-                                                            ),
-                                                          );
-                                                          getAllStore();
-                                                        }
-                                                      });
-                                                    },
-                                                    child: Row(
-                                                      children: [
-                                                        Icon(
-                                                            Icons
-                                                                .check_circle_outline,
-                                                            color: Colors
-                                                                .lightGreen),
-                                                        SizedBox(
-                                                          width: 5,
-                                                        ),
-                                                        Text(
-                                                          '${getTransrlate(context, 'accept')}',
-                                                          style: TextStyle(
-                                                              color: Colors
-                                                                  .lightGreen,
-                                                              fontSize: 15,
-                                                              decoration:
-                                                                  TextDecoration
-                                                                      .underline,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Cloading?FlatButton(
-                                                    minWidth: ScreenUtil.getWidth(context) / 4.5,
-                                                    child: Padding(
-                                                      padding: const EdgeInsets.all(8.0),
-                                                      child:Container(
-                                                        height: 30,
-                                                        child: Center(
-                                                            child: CircularProgressIndicator(
-                                                              valueColor:
-                                                              AlwaysStoppedAnimation<Color>(Colors.blue,
-                                                              ),
-                                                            )),
-                                                      ),
-                                                    ),
-                                                    onPressed: () async {
-                                                    },
-                                                  ):  FlatButton(
-                                                    padding: EdgeInsets.all(4),
-                                                    onPressed: () {
-                                                      setState(() => Cloading = true);
-
-                                                      API(context).post(
-                                                          'vendor/cancel/order',
-                                                          {
-                                                            "order_id":
-                                                                orders[
-                                                                        index]
-                                                                    .id
-                                                          }).then((value) {
-                                                        if (value != null) {
-                                                          setState(() => Cloading = false);
-
-                                                          showDialog(
-                                                            context: context,
-                                                            builder: (_) =>
-                                                                ResultOverlay(
-                                                              value.containsKey(
-                                                                      'message')
-                                                                  ? value[
-                                                                      'message']
-                                                                  : '${getTransrlate(context, 'Done')}',
-                                                            ),
-                                                          );
-                                                        }
-                                                        getAllStore();
-                                                      });
-                                                    },
-                                                    child: Row(
-                                                      children: [
-                                                        Icon(
-                                                            CupertinoIcons
-                                                                .clear_circled,
-                                                            size: 25,
-                                                            color: Colors.red),
-                                                        SizedBox(
-                                                          width: 5,
-                                                        ),
-                                                        Text(
-                                                          '${getTransrlate(context, 'reject')}',
-                                                          style: TextStyle(
-                                                              color: Colors.red,
-                                                              fontSize: 15,
-                                                              decoration:
-                                                                  TextDecoration
-                                                                      .underline,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Container(
-                                    height: 1,
-                                    color: Colors.black12,
-                                  )
-                                ],
-                              ),
+                          return Container(
+                            color: index.isOdd
+                                ? Color(0xffF6F6F6)
+                                : Colors.white,
+                            child: Column(
+                              children: [
+                                Item_item(
+                                  orders_model: orders[index],
+                                  themeColor: themeColor,
+                                ),
+                              ],
                             ),
                           );
                         },
@@ -449,13 +210,12 @@ bool Cloading=false;
   Future<void> getAllStore() async {
     i=2;
     API(context)
-        .post('${url}', {}).then((value) {
+        .get('${url}').then((value) {
       if (value != null) {
         print(value);
         setState(() {
-           orders = Orders_model.fromJson(value).data;
+           orders = Item_model.fromJson(value).data;
         });
-        print(Orders_model.fromJson(value).total);
 
       }
     });
@@ -488,7 +248,7 @@ bool Cloading=false;
         {}).then((value) {
       print(value);
       setState(() {
-        orders.addAll(Orders_model.fromJson(value).data);
+        orders.addAll(Item_model.fromJson(value).data);
       });
     });
   }

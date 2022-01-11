@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/user_model.dart';
-import 'package:trkar_vendor/screens/add_staff.dart';
-import 'package:trkar_vendor/screens/edit_staf.dart';
+import 'package:trkar_vendor/screens/Users/add_coustomer.dart';
+import 'package:trkar_vendor/screens/Users/add_staff.dart';
+import 'package:trkar_vendor/screens/Users/edit_staff.dart';
 import 'package:trkar_vendor/screens/userPage.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/Provider/provider_data.dart';
@@ -32,7 +33,7 @@ class _StaffState extends State<Staff> {
   final debouncer = Search(milliseconds: 1000);
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   bool isSelect = false;
-  String url="users";
+  String url="staffs";
   ScrollController _scrollController = new ScrollController();
 
   @override
@@ -74,21 +75,21 @@ class _StaffState extends State<Staff> {
             SizedBox(
               width: 10,
             ),
-            Text(getTransrlate(context, 'staff')),
+            Text(getTransrlate(context, 'staf')),
           ],
         ),
         actions: [
-          IconButton(
-            icon: Icon(
-              Icons.search,
-              color: Colors.white,
-            ),
-            onPressed: (){
-              showDialog(
-              context: context,
-              builder: (_) => SearchOverlay_Staff(url: 'users/search/name',),
-            );},
-          )
+          // IconButton(
+          //   icon: Icon(
+          //     Icons.search,
+          //     color: Colors.white,
+          //   ),
+          //   onPressed: (){
+          //     showDialog(
+          //     context: context,
+          //     builder: (_) => SearchOverlay_Staff(url: 'users/search/name',),
+          //   );},
+          // )
         ],
         backgroundColor: themeColor.getColor(),
       ),
@@ -218,29 +219,29 @@ class _StaffState extends State<Staff> {
                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: [
                                   Text('${data.staff.length} ${getTransrlate(context, 'staf')}'),
-                                  InkWell(
-                                    onTap: () {
-                                      setState(() {
-                                        isSelect
-                                            ? isSelect = false
-                                            : isSelect = true;
-                                      });
-                                    },
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.check_box,
-                                          color: Colors.black45,
-                                          size: 25,
-                                        ),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Text('${getTransrlate(context, 'select')}')
-                                      ],
-                                    ),
-                                    // color: Color(0xffE4E4E4),
-                                  ),
+                                  // InkWell(
+                                  //   onTap: () {
+                                  //     setState(() {
+                                  //       isSelect
+                                  //           ? isSelect = false
+                                  //           : isSelect = true;
+                                  //     });
+                                  //   },
+                                  //   child: Row(
+                                  //     children: [
+                                  //       Icon(
+                                  //         Icons.check_box,
+                                  //         color: Colors.black45,
+                                  //         size: 25,
+                                  //       ),
+                                  //       SizedBox(
+                                  //         width: 5,
+                                  //       ),
+                                  //       Text('${getTransrlate(context, 'select')}')
+                                  //     ],
+                                  //   ),
+                                  //   // color: Color(0xffE4E4E4),
+                                  // ),
                                   // InkWell(
                                   //   onTap: () {
                                   //     // showDialog(
@@ -266,7 +267,7 @@ class _StaffState extends State<Staff> {
                                             print(val);
                                         if(val!=null){
                                           data.setstaff(null);
-                                          url = 'users?sort_type=${val ?? 'ASC'}';
+                                          url = 'staff?sort_type=${val ?? 'ASC'}';
                                           data.getAllstaff(context,url);
                                         }
                                       });
@@ -328,7 +329,7 @@ class _StaffState extends State<Staff> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text(
-          productModel.name,
+          productModel.fname,
           style: TextStyle(fontSize: 16.0),
         ),
         SizedBox(

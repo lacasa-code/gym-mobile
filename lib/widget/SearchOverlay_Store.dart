@@ -7,7 +7,7 @@ import 'package:trkar_vendor/model/products_model.dart';
 import 'package:trkar_vendor/model/store_model.dart';
 import 'package:trkar_vendor/model/user_model.dart';
 import 'package:trkar_vendor/screens/Edit_product.dart';
-import 'package:trkar_vendor/screens/edit_staf.dart';
+import 'package:trkar_vendor/screens/Users/edit_staff.dart';
 import 'package:trkar_vendor/screens/edit_store.dart';
 import 'package:trkar_vendor/screens/orderdetails.dart';
 import 'package:trkar_vendor/screens/productPage.dart';

@@ -176,7 +176,7 @@ class _add_StoreState extends State<add_Store> {
                                 return null;
                             },
                             selectedItem: store.countryId == null
-                                ? Country(countryName: ' ')
+                                ? Country(name: ' ')
                                 : contries
                                 .where((element) =>
                             element.id == store.countryId)
@@ -184,11 +184,11 @@ class _add_StoreState extends State<add_Store> {
                             showSearchBox: true,
                             items: contries,
                             //  onFind: (String filter) => getData(filter),
-                            itemAsString: (Country u) => u.countryName,
+                            itemAsString: (Country u) => u.name,
                             onChanged: (Country data) {
                               store.countryId = data.id;
                               setState(() {
-                                code=data.phonecode.toString();
+                                code=data.phoneCode;
                                 area=null;
                                 cities=null;
                               });

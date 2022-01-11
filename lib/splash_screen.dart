@@ -61,19 +61,9 @@ class _SplashScreenState extends State<SplashScreen>
                //   height: ScreenUtil.getHeight(context) / 2,
                   width: ScreenUtil.getWidth(context) / 1.5,
                   child: Image.asset(
-                    'assets/images/splashscreen-trkar-logo-white.gif',
+                    'assets/images/splashscreen-trkar-logo.gif',
                   ),
                 ),
-                Container(
-                  width: ScreenUtil.getWidth(context) / 1.5,
-
-                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Text('vendor',style: TextStyle(color: Colors.white),),
-                      Text('البائع',style: TextStyle(color: Colors.white),),
-                    ],
-                  ),
-                )
 
               ],
             ),
@@ -85,22 +75,21 @@ class _SplashScreenState extends State<SplashScreen>
 
   void _auth() async {
 
-    //themeColor.setCar_made(getTransrlate(context, 'selectCar'));
-    final SharedPreferences prefs =
-    await SharedPreferences.getInstance();
     API(context).post('check/valid/session', {}).then((value) {
       if (value != null) {
+        print(value);
         if (value['status_code'] == 200)
       {
-        // Provider.of<Provider_Data>(context,listen: false).getAllstaff(context);
-        // Provider.of<Provider_Data>(context,listen: false).getAllStore(context);
-        // Provider.of<Provider_Data>(context,listen: false).getProducts(context);
+        SharedPreferences.getInstance().then((prefs){
+          var user = value['data'];
+          prefs.setString("user_email", user['email']);
+          prefs.setString("name", user['name']);
+          prefs.setString("user_name", user['username']);
+          prefs.setString("roles", user['userAuthority']['role_name']['title']);
+          prefs.setString("token", value['token']);
+          prefs.setInt("user_id", user['id']);
+        });
 
-        var user = value['data'];
-        prefs.setString("user_email", user['email']);
-        prefs.setString("user_name", user['name']);
-        prefs.setInt("user_id", user['id']);
-        prefs.setString("roles", user['roles'][0]['title']);
         Provider.of<Provider_control>(context,listen: false).setLogin(true);
         Nav.routeReplacement(context, Home());
       }else {

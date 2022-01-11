@@ -20,7 +20,15 @@
       "else": "لقد ضغطت الزر {{value}} مرة"
     }
   },
-  "Selectimage": "حدد الصور",
+
+  "items": "الوحدات",
+  "packages": "الباقات",
+
+  "bills": "الفواتير",
+  "payments": "المدفوعات",
+
+
+"Selectimage": "حدد الصور",
   "SelectAll": "اختر الكل",
 
   "language": "اللغة",
@@ -193,7 +201,7 @@
   "Support": "دعم فنى",
   "HomePage": "الرئيسية",
   "Logout": "تسجيل الخروج",
-  "OrderDetails": "تفاصيل الطلب",
+  "ItemDetails": "تفاصيل العنصر",
   "MyProfileInfo": "البيانات الشخصية",
   "changePassword": "تغير كلمة المرور",
   "MyAddress": "العناوين ",
@@ -275,6 +283,8 @@
   "addressShipping": "عنوان الشحن",
   "totalOrder": "إجمالى ",
   "staff": "طاقم العمل",
+  "customers": "العملاء",
+  "addcustomer": "أضف عميل جديداً",
   "addstaff": "أضف عضو جديداً",
   "addStore": "أضف مخزناً جديداً",
 
@@ -286,6 +296,7 @@
   "addraddressSelected": "لا توجد عناوين محددة",
   "changeAddress": "تغير العنوان",
   "address": "العنوان",
+  "address2": "العنوان 2",
   "NoAddressFound": "لا يوجد عناوين مححدة",
   "Addnaw": "أضف الأن",
   "AddNewAddress": "أضافة عنوان جديد",
@@ -338,6 +349,8 @@
   "OrderShipping": "بيانات الشحن",
   "custCode": "كود العميل",
   "title": "ألاسم",
+  "fname": "الاسم الاول",
+  "lname": "الاسم التالى",
   "name": "ألاسم (عربى)",
   "nameEn": "ألاسم (أنجليزى)",
   "shipingclass": "شريحة الشحن",

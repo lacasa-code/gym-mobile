@@ -17,7 +17,7 @@ import 'package:trkar_vendor/screens/faq.dart';
 import 'package:trkar_vendor/screens/invoices.dart';
 import 'package:trkar_vendor/screens/login.dart';
 import 'package:trkar_vendor/screens/product.dart';
-import 'package:trkar_vendor/screens/staff.dart';
+import 'package:trkar_vendor/screens/Users/staff.dart';
 import 'package:trkar_vendor/screens/stores.dart';
 import 'package:trkar_vendor/screens/tickets.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
@@ -162,7 +162,7 @@ class _HomeDesktopState extends State<HomeDesktop> {
                             size: 25,
                             color: Colors.blue.withOpacity(0.8),
                           ),
-                          name: getTransrlate(context, 'staff'),
+                          name: getTransrlate(context, 'customers'),
                           baseStyle: TextStyle(
                               color: Colors.blue.withOpacity(0.6),
                               fontSize: 19.0,

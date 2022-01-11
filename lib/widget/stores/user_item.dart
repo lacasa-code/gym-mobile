@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/user_model.dart';
-import 'package:trkar_vendor/screens/edit_staf.dart';
-import 'package:trkar_vendor/screens/staff.dart';
+import 'package:trkar_vendor/screens/Users/edit_coustomer.dart';
+import 'package:trkar_vendor/screens/Users/edit_staff.dart';
+import 'package:trkar_vendor/screens/Users/staff.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/Provider/provider_data.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
@@ -80,7 +81,7 @@ class _User_itemState extends State<User_item> {
                   height: 10,
                 ),
                 AutoSizeText(
-                  widget.hall_model.name,
+                  widget.hall_model.fname,
                   minFontSize: 10,
                   style: TextStyle(
                     color: Colors.black,
@@ -90,14 +91,14 @@ class _User_itemState extends State<User_item> {
                   maxLines: 1,
                 ),
 
-                widget.hall_model.roles==null?Container():  Text(
-                  "${widget.hall_model.roles.title}",
-                  maxLines: 1,
-                  style: TextStyle(
-                      color: Colors.blue,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12),
-                ),
+                // widget.hall_model.roles==null?Container():  Text(
+                //   "${widget.hall_model.roles.title}",
+                //   maxLines: 1,
+                //   style: TextStyle(
+                //       color: Colors.blue,
+                //       fontWeight: FontWeight.bold,
+                //       fontSize: 12),
+                // ),
                 AutoSizeText(
                   'ID رقم : ${widget.hall_model.id}',
                   minFontSize: 10,
@@ -117,41 +118,41 @@ class _User_itemState extends State<User_item> {
                   ),
                 ),
 
-                widget.hall_model.approved==0?InkWell(
-                  onTap: (){
-                    API(context)
-                        .post("vendor/approve/staff",{
-                      "staff_id":"${widget.hall_model.id}"
-                    })
-                        .then((value) {
-                      if (value != null) {
-                        data.getAllstaff(context,'users');
-                        showDialog(
-                          context: context,
-                          builder: (_) => ResultOverlay(
-                            value.containsKey('errors')
-                                ? "${value['errors']}"
-                                : '${value['message']}',
-                          ),
-                        );
-
-                      }
-                     // getAllStore();
-                    });
-                  },
-                  child: Row(
-                    mainAxisAlignment:
-                    MainAxisAlignment.spaceAround,
-                    children: [
-                      Text("${getTransrlate(context, 'approved')}",style: TextStyle(decoration: TextDecoration.underline),),
-                      SizedBox(width: 10,),
-                      Icon(
-                        CupertinoIcons.check_mark_circled_solid,
-                        color: Colors.lightGreen,
-                      )
-                    ],
-                  ),
-                ):Container(),
+                // widget.hall_model.approved==0?InkWell(
+                //   onTap: (){
+                //     API(context)
+                //         .post("vendor/approve/staff",{
+                //       "staff_id":"${widget.hall_model.id}"
+                //     })
+                //         .then((value) {
+                //       if (value != null) {
+                //         data.getAllstaff(context,'users');
+                //         showDialog(
+                //           context: context,
+                //           builder: (_) => ResultOverlay(
+                //             value.containsKey('errors')
+                //                 ? "${value['errors']}"
+                //                 : '${value['message']}',
+                //           ),
+                //         );
+                //
+                //       }
+                //      // getAllStore();
+                //     });
+                //   },
+                //   child: Row(
+                //     mainAxisAlignment:
+                //     MainAxisAlignment.spaceAround,
+                //     children: [
+                //       Text("${getTransrlate(context, 'approved')}",style: TextStyle(decoration: TextDecoration.underline),),
+                //       SizedBox(width: 10,),
+                //       Icon(
+                //         CupertinoIcons.check_mark_circled_solid,
+                //         color: Colors.lightGreen,
+                //       )
+                //     ],
+                //   ),
+                // ):Container(),
                 SizedBox(
                   height: 15,
                 ),
@@ -186,7 +187,7 @@ class _User_itemState extends State<User_item> {
                     onTap: (){
                       Navigator.pop(context);
                       API(context)
-                          .Delete("users/${widget.hall_model.id}")
+                          .Delete("staff/${widget.hall_model.id}")
                           .then((value) {
                         if (value != null) {
                           showDialog(
@@ -195,7 +196,7 @@ class _User_itemState extends State<User_item> {
                             ),
                           );
                         }
-                        data.getAllstaff(context,'users');
+                        data.getAllstaff(context,'staff');
                       });
                     },
                     child: Row(

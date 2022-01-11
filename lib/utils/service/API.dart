@@ -87,6 +87,7 @@ class API {
         '${GlobalConfiguration().getString('api_base_url')}$url';
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    print("full_url: ${full_url}");
     print("body: ${body}");
 
     try {

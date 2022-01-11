@@ -1453,7 +1453,7 @@ int CheckBox=0;
                               itemBuilder: (context, suggestion) {
                                 return ListTile(
                                   title: Text(
-                                    themeColor.getlocal()=='ar'?suggestion.name??suggestion.name_en:suggestion.name_en??suggestion.name,
+                                    themeColor.getlocal()=='ar'?suggestion.fname??suggestion.name_en:suggestion.name_en??suggestion.fname,
                                   ),
                                 );
                               },

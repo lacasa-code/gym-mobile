@@ -9,7 +9,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/store_model.dart';
 import 'package:trkar_vendor/model/user_model.dart';
-import 'package:trkar_vendor/screens/edit_staf.dart';
+import 'package:trkar_vendor/screens/Users/edit_staff.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/Provider/provider_data.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
@@ -97,7 +97,7 @@ class _UserPageState extends State<UserPage> {
                   height: 10,
                 ),
                 AutoSizeText(
-                  widget.user.name,
+                  widget.user.fname,
                   minFontSize: 10,
                   style: TextStyle(
                     color: Colors.black,
@@ -106,14 +106,14 @@ class _UserPageState extends State<UserPage> {
                   ),
                   maxLines: 1,
                 ),
-                Text(
-                  "${widget.user.roles.title}",
-                  maxLines: 1,
-                  style: TextStyle(
-                      color: Colors.blue,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12),
-                ),
+                // Text(
+                //   "${widget.user.roles.title}",
+                //   maxLines: 1,
+                //   style: TextStyle(
+                //       color: Colors.blue,
+                //       fontWeight: FontWeight.bold,
+                //       fontSize: 12),
+                // ),
                 AutoSizeText(
                   'ID رقم : ${widget.user.id}',
                   minFontSize: 10,
@@ -141,35 +141,35 @@ class _UserPageState extends State<UserPage> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                widget.user.stores == null
-                    ? Container()
-                    : Container(
-                  width: ScreenUtil.getWidth(context) / 1.5,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: widget.user.stores.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Row(
-                        mainAxisAlignment:
-                        MainAxisAlignment.spaceBetween,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Container(
-                            width: ScreenUtil.getWidth(context) / 2,
-                            child: Text(
-                              " ${widget.user.stores[index].nameStore}",
-                              style: TextStyle(
-                                //color: themeColor.getColor(),
-                                  fontWeight: FontWeight.w300,
-                                  fontSize: 13),
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                ),
+                // widget.user.stores == null
+                //     ? Container()
+                //     : Container(
+                //   width: ScreenUtil.getWidth(context) / 1.5,
+                //   child: ListView.builder(
+                //     shrinkWrap: true,
+                //     physics: NeverScrollableScrollPhysics(),
+                //     itemCount: widget.user.stores.length,
+                //     itemBuilder: (BuildContext context, int index) {
+                //       return Row(
+                //         mainAxisAlignment:
+                //         MainAxisAlignment.spaceBetween,
+                //         mainAxisSize: MainAxisSize.min,
+                //         children: <Widget>[
+                //           Container(
+                //             width: ScreenUtil.getWidth(context) / 2,
+                //             child: Text(
+                //               " ${widget.user.stores[index].nameStore}",
+                //               style: TextStyle(
+                //                 //color: themeColor.getColor(),
+                //                   fontWeight: FontWeight.w300,
+                //                   fontSize: 13),
+                //             ),
+                //           ),
+                //         ],
+                //       );
+                //     },
+                //   ),
+                // ),
                 SizedBox(
                   height: 15,
                 ),
@@ -215,7 +215,7 @@ class _UserPageState extends State<UserPage> {
                             ),
                           );
                         }
-                        data.getAllstaff(context,'users');
+                        data.getAllstaff(context,'customers');
                       });
                     },
                     child: Row(

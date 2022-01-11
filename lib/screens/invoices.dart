@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:trkar_vendor/model/invoices.dart';
 import 'package:trkar_vendor/model/orders_model.dart';
+import 'package:trkar_vendor/model/packages_model.dart';
 import 'package:trkar_vendor/screens/orderdetails.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/SerachLoading.dart';
@@ -31,13 +32,13 @@ class Invoices extends StatefulWidget {
 }
 
 class _InvoicesState extends State<Invoices> {
-  List<Invoice> invoices;
+  List<Package> invoices;
   String _character='ASC';
 
   final debouncer = Search(milliseconds: 1000);
   ScrollController _scrollController = new ScrollController();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  String url="show/invoices";
+  String url="packages";
   int i = 2;
  
   @override
@@ -79,7 +80,7 @@ class _InvoicesState extends State<Invoices> {
             SizedBox(
               width: 10,
             ),
-            Text(getTransrlate(context, 'invoices')),
+            Text(getTransrlate(context, 'packages')),
           ],
         ),
         actions: [
@@ -121,7 +122,7 @@ class _InvoicesState extends State<Invoices> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Text('${invoices.length} ${getTransrlate(context, 'invoice')}'),
+                  Text('${invoices.length} ${getTransrlate(context, 'packages')}'),
                   SizedBox(
                     width: 100,
                   ),
@@ -149,7 +150,7 @@ class _InvoicesState extends State<Invoices> {
                        setState(() {
                          _character=val;
                        });
-                       url="show/invoices?sort_type=${val??'DESC'}";
+                       url="packages?sort_type=${val??'DESC'}";
                     getAllStore();
                       });
                     },
@@ -184,49 +185,9 @@ class _InvoicesState extends State<Invoices> {
                     color: index.isOdd
                         ? Color(0xffF6F6F6)
                         : Colors.white,
-                    child: Column(
-                      children: [
-                        InvoiceItem(
-                          orders_model: invoices[index],
-                          themeColor: themeColor,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              right: 40, left: 16),
-                          child: Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                ' ${getTransrlate(context, 'totalOrder')} : ${invoices[index].invoiceTotal} ${getTransrlate(context, 'Currency')} ',
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              AutoSizeText(
-                                  invoices[index].createdAt==null?'': DateFormat('yyyy-MM-dd').format(DateTime.parse(invoices[index].createdAt)),
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                maxLines: 2,
-                                minFontSize: 11,
-                              ),
-
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          height: 1,
-                          color: Colors.black12,
-                        )
-                      ],
+                    child: InvoiceItem(
+                      orders_model: invoices[index],
+                      themeColor: themeColor,
                     ),
                   ),
                 );
@@ -245,7 +206,7 @@ class _InvoicesState extends State<Invoices> {
         .then((value) {
       if (value != null) {
         setState(() {
-          invoices = Invoices_model.fromJson(value).data;
+          invoices = Packages_model.fromJson(value).data;
         });
       }
     });
@@ -277,7 +238,7 @@ class _InvoicesState extends State<Invoices> {
         .get('${url}${url.contains("?")?'&':'?'}page=${i++}')
         .then((value) {
       setState(() {
-        invoices.addAll(Invoices_model.fromJson(value).data);
+        invoices.addAll(Packages_model.fromJson(value).data);
       });
     });
   }

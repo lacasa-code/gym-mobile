@@ -75,15 +75,15 @@ class _OnboardingPageState extends State<OnboardingPage> {
               _buildPageContent(
                   image: 'assets/images/logo.png',
                   title: 'GYM',
-                  body: 'المنصة الأفضل\n لأدارة نوادة الجيم.'),
+                  body: 'المنصة الأفضل\n لأدارة أندية الجيم.'),
               _buildPageContent(
                   image: 'assets/images/logo.png',
                   title: 'GYM',
-                  body: 'المنصة الأفضل\n لأدارة نوادة الجيم.'),
+                  body: 'المنصة الأفضل\n لأدارة أندية الجيم.'),
               _buildPageContent(
                   image: 'assets/images/logo.png',
                   title: 'GYM',
-                  body: 'المنصة الأفضل\n لأدارة نوادة الجيم.'),
+                  body: 'المنصة الأفضل\n لأدارة أندية الجيم.'),
             ],
           ),
         ),

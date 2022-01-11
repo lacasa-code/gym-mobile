@@ -38,14 +38,16 @@ class _HomeMobileState extends State<HomeMobile> {
   List<String> labels = [];
   bool loaded = false;
   List<Product> product;
-  Basic_report basic_report;
+  Basic_report basic_report=Basic_report();
   DateTime date = DateTime.now();
   DateTime from = DateTime.now().subtract(Duration(days: 7));
   TextEditingController _tocontroller = TextEditingController(
       text: DateFormat('yyyy-MM-dd').format(DateTime.now()));
   TextEditingController _fromcontroller = TextEditingController(
-      text: DateFormat('yyyy-MM-dd').format(DateTime.now().subtract(Duration(days: 7))));
+      text: DateFormat('yyyy-MM-dd')
+          .format(DateTime.now().subtract(Duration(days: 7))));
   String name, roles;
+
   Future<void> _selectDatefrom(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
@@ -59,6 +61,7 @@ class _HomeMobileState extends State<HomeMobile> {
       });
     get_report(_tocontroller.text, _fromcontroller.text);
   }
+
   Future<void> _selectDateto(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context, initialDate: date, firstDate: from, lastDate: date);
@@ -70,6 +73,7 @@ class _HomeMobileState extends State<HomeMobile> {
       });
     get_report(_tocontroller.text, _fromcontroller.text);
   }
+
   @override
   void initState() {
     SharedPreferences.getInstance().then((prefs) {
@@ -78,19 +82,20 @@ class _HomeMobileState extends State<HomeMobile> {
         roles = prefs.getString("roles");
       });
 
-      get_report(DateFormat('yyyy-MM-dd').format(DateTime.now()),
-          DateFormat('yyyy-MM-dd').format(DateTime.now()));
+      // get_report(DateFormat('yyyy-MM-dd').format(DateTime.now()),
+      //     DateFormat('yyyy-MM-dd').format(DateTime.now()));
     });
 
-    API(context).get('vendor/about/rare/products').then((value) {
-      if (value != null) {
-        setState(() {
-          product = Products_model.fromJson(value).product;
-        });
-      }
-    });
+    // API(context).get('vendor/about/rare/products').then((value) {
+    //   if (value != null) {
+    //     setState(() {
+    //       product = Products_model.fromJson(value).product;
+    //     });
+    //   }
+    // });
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     final themeColor = Provider.of<Provider_control>(context);
@@ -103,18 +108,18 @@ class _HomeMobileState extends State<HomeMobile> {
           "assets/images/logo.png",
           width: ScreenUtil.getWidth(context) / 4,
         ),
-        actions: [
-          IconButton(
-              onPressed: () {
-                Nav.route(context, Message_show());
-              },
-              icon: Icon(Icons.messenger_outline)),
-          IconButton(
-              onPressed: () {
-                Nav.route(context, Notification_show());
-              },
-              icon: Icon(Icons.notifications_none)),
-        ],
+        // actions: [
+        //   IconButton(
+        //       onPressed: () {
+        //         Nav.route(context, Message_show());
+        //       },
+        //       icon: Icon(Icons.messenger_outline)),
+        //   IconButton(
+        //       onPressed: () {
+        //         Nav.route(context, Notification_show());
+        //       },
+        //       icon: Icon(Icons.notifications_none)),
+        // ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -122,25 +127,20 @@ class _HomeMobileState extends State<HomeMobile> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // SizedBox(
-              //   height: 5,
-              // ),
-              // AutoSizeText(
-              //   "${getTransrlate(context, 'welcome')}  ${name == null ? ' ' : name}",
-              //   style: TextStyle(
-              //       fontSize: 14,
-              //       color: Colors.black,
-              //       fontWeight: FontWeight.bold),
-              // ),
+              SizedBox(
+                height: 5,
+              ),
+              AutoSizeText(
+                "${getTransrlate(context, 'welcome')}  ${name == null ? ' ' : name}",
+                style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold),
+              ),
               SizedBox(
                 height: 20,
               ),
-              basic_report == null
-                  ? Container(
-                      child: Center(
-                          child: Custom_Loading()),
-                    )
-                  : Container(
+           Container(
                       color: Color(0xffF6F6F6),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -200,13 +200,11 @@ class _HomeMobileState extends State<HomeMobile> {
                           //   ],
                           // ),
                           Divider(),
-                          if (basic_report == null)
-                            Container()
-                          else
                             Container(
                               child: ResponsiveGridList(
                                 scroll: false,
-                                desiredItemWidth: ScreenUtil.getWidth(context) / 1.5,
+                                desiredItemWidth:
+                                    ScreenUtil.getWidth(context) / 1.5,
                                 minSpacing: 10,
                                 children: [
                                   CustomCard(() {
@@ -220,7 +218,7 @@ class _HomeMobileState extends State<HomeMobile> {
                                       ),
                                       "Transactions",
                                       Colors.blue,
-                                      "${basic_report.totalOrders}",
+                                      "${basic_report.totalOrders ?? '0'}",
                                       themeColor),
                                   CustomCard(() {
                                     Nav.route(context, Orders());
@@ -232,7 +230,7 @@ class _HomeMobileState extends State<HomeMobile> {
                                       ),
                                       "Packages",
                                       Colors.green,
-                                      "${basic_report.pending_orders}",
+                                      "${basic_report.pending_orders ?? '0'}",
                                       themeColor),
                                   CustomCard(() {
                                     Nav.route(context, Products());
@@ -241,11 +239,10 @@ class _HomeMobileState extends State<HomeMobile> {
                                         Icons.person,
                                         color: Colors.red,
                                         size: 20,
-
                                       ),
                                       "Customers",
                                       Colors.red,
-                                      "${basic_report.totalProducts}",
+                                      "${basic_report.totalProducts ?? '0'}",
                                       themeColor),
                                   CustomCard(() {
                                     Nav.route(context, Invoices());
@@ -257,7 +254,7 @@ class _HomeMobileState extends State<HomeMobile> {
                                       ),
                                       "Items",
                                       Colors.lightGreen,
-                                      "${basic_report.totalSale}",
+                                      "${basic_report.totalSale ?? '0'}",
                                       themeColor),
                                   InkWell(
                                     onTap: () {
@@ -378,7 +375,7 @@ class _HomeMobileState extends State<HomeMobile> {
                                       reverse: true,
                                       getColor: DataRepository.getColor,
                                       //getIcon: DataRepository.getIcon,
-                                      barWidth:100,
+                                      barWidth: 100,
                                       barSeparation: 5,
                                       animationDuration:
                                           Duration(milliseconds: 5000),
@@ -534,6 +531,7 @@ class _HomeMobileState extends State<HomeMobile> {
       ),
     );
   }
+
   void _loadData() {
     setState(() {
       data =
@@ -542,6 +540,7 @@ class _HomeMobileState extends State<HomeMobile> {
           basic_report.periodDetails.map((e) => e.dayName ?? e.day).toList();
     });
   }
+
   void get_report(String to, String from) {
     API(context)
         .post('vendor/day/month/filter', {"from": "$from", "to": "$to"}).then(
@@ -551,47 +550,50 @@ class _HomeMobileState extends State<HomeMobile> {
         setState(() {
           basic_report = Basic_report.fromJson(value);
         });
-        roles=='Staff'?null:_loadData();
+        roles == 'Staff' ? null : _loadData();
       }
     });
   }
+
   CustomCard(GestureTapCallback ontap, Widget icon, String title, Color color,
       String value, Provider_control themeColor) {
-    return value=="null"?Container(): InkWell(
-      onTap:ontap,
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              icon,
-              SizedBox(
-                width: 2,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: ScreenUtil.getWidth(context) / 3.2,
-                    child: AutoSizeText(
-                      "$title",
-                      minFontSize: 10,
-                      maxLines: 1,
-                      maxFontSize: 12,
-                      style:
-                          TextStyle(color: color, fontWeight: FontWeight.bold),
+    return value == "null"
+        ? Container()
+        : InkWell(
+            onTap: ontap,
+            child: Card(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    icon,
+                    SizedBox(
+                      width: 2,
                     ),
-                  ),
-                  Text("$value",
-                      maxLines: 1,
-                      style: TextStyle(color: themeColor.getColor())),
-                ],
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: ScreenUtil.getWidth(context) / 3.2,
+                          child: AutoSizeText(
+                            "$title",
+                            minFontSize: 10,
+                            maxLines: 1,
+                            maxFontSize: 12,
+                            style: TextStyle(
+                                color: color, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Text("$value",
+                            maxLines: 1,
+                            style: TextStyle(color: themeColor.getColor())),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
-        ),
-      ),
-    );
+            ),
+          );
   }
 }

@@ -5,24 +5,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:trkar_vendor/model/item_model.dart';
 import 'package:trkar_vendor/model/orders_model.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
+import 'package:trkar_vendor/widget/commons/custom_textfield.dart';
 
 class Order_information extends StatefulWidget {
   Order_information({Key key, this.orders_model, this.orders})
       : super(key: key);
 
-  final Order orders_model;
-  List<Order> orders;
+  Item orders_model;
+  List<Item> orders;
 
   @override
   _Order_informationState createState() => _Order_informationState();
 }
 
 class _Order_informationState extends State<Order_information> {
+  Item item=Item();
   @override
   Widget build(BuildContext context) {
     final themeColor = Provider.of<Provider_control>(context);
@@ -37,7 +40,7 @@ class _Order_informationState extends State<Order_information> {
             SizedBox(
               width: 10,
             ),
-            Text(getTransrlate(context, 'OrderDetails')),
+            Text('${widget.orders_model.title}'),
           ],
         ),
         backgroundColor: themeColor.getColor(),
@@ -49,180 +52,49 @@ class _Order_informationState extends State<Order_information> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              AutoSizeText(
-                getTransrlate(context, 'OrderNO') +
-                    ' : ${widget.orders_model.orderNumber}',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w600,
-                ),
-                maxLines: 2,
-                minFontSize: 11,
-              ),
-              AutoSizeText(
-                getTransrlate(context, 'OrderDate') +
-                    ' :' +
-                    DateFormat('yyyy-MM-dd').format(
-                        DateTime.parse(widget.orders_model.createdAt)),
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w600,
-                ),
-                maxLines: 2,
-                minFontSize: 11,
-              ),
-              AutoSizeText(
-                ' ${getTransrlate(context, 'paymentMethod')}  :${widget.orders_model.payment == null ? '' : widget.orders_model.payment.paymentName}',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w600,
-                ),
-                maxLines: 2,
-                minFontSize: 11,
-              ),
-              AutoSizeText(
-                getTransrlate(context, 'addressShipping') + " : ",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-                maxLines: 5,
-                minFontSize: 11,
-              ),
-              AutoSizeText(
-                widget.orders_model.shipping == null
-                    ? ''
-                    : "${widget.orders_model.shipping.area == null ? '' : widget.orders_model.shipping.area.areaName} , "
-                        "${widget.orders_model.shipping.city == null ? '' : widget.orders_model.shipping.city.cityName} , "
-                        "${widget.orders_model.shipping.street} , "
-                        "${widget.orders_model.shipping.district} , "
-                        "${widget.orders_model.shipping.floorNo} , "
-                        "${widget.orders_model.shipping.apartmentNo}",
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w600,
-                ),
-                maxLines: 5,
-                minFontSize: 11,
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Container(
-                height: 1,
-                color: Colors.black12,
-              ),
-              SizedBox(
-                height: 2,
-              ),
-              AutoSizeText(
-                "${getTransrlate(context, 'shipping')}",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w600,
-                ),
-                maxLines: 5,
-                minFontSize: 11,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: widget.orders_model.orderDetails.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Padding(
-                      padding: EdgeInsets.only(
-                        right: 7,
-                        left: 10,
-                        top: 10,
-                      ),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(3.0),
-                                child: CachedNetworkImage(
-                                  imageUrl: widget.orders_model
-                                          .orderDetails[index].photo.isEmpty
-                                      ? ""
-                                      : widget.orders_model
-                                          .orderDetails[index].photo[0].image,
-                                  width: 25,
-                                  height: 25,
-                                ),
-                              ),
-                              Container(
-                                width: ScreenUtil.getWidth(context) / 2,
-                                child: Text(
-                                 "${ themeColor.getlocal() == 'ar'
-                    ? widget.orders_model
-                        .orderDetails[index].productName??widget.orders_model
-                        .orderDetails[index].name_en
-                        : widget.orders_model
-                        .orderDetails[index].name_en ??
-                    widget.orders_model.orderDetails[index]
-                    .
-                    productName
-                  }",
-                                  style: TextStyle(
-                                      color: themeColor.getColor(),
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              AutoSizeText(
-                                " كمية : ${widget.orders_model.orderDetails[index].quantity}",
-                                maxLines: 2,
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.black),
-                                minFontSize: 11,
-                              ),
-                              AutoSizeText(
-                                "${widget.orders_model.orderDetails[index].total} ${getTransrlate(context, 'Currency')}",
-                                maxLines: 2,
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.black),
-                                minFontSize: 11,
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 10),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
-              SizedBox(height: 10),
-              Align(
-                alignment: Alignment.bottomLeft,
-                child: Text(
-                  ' ${getTransrlate(context, 'totalOrder')} : ${widget.orders_model.orderTotal} ${getTransrlate(context, 'Currency')} ',
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w600,
+              Text("#id : ${widget.orders_model.id}"),
+              MyTextFormField(
+                labelText: getTransrlate(context, 'name'),
+                intialLabel: "${widget.orders_model.title}",
+                hintText: getTransrlate(context, 'name'),
+                validator: (String value) {
+                  if (value.isEmpty) {
+                    return getTransrlate(context, 'requiredempty');
+                  }else   if (value.length<2) {
+                    return "${getTransrlate(context, 'requiredlength')}";
+                  }
+                  return null;
+                },
+                onSaved: (String value) {
+                  item.title = value;
+                },),
+              MyTextFormField(
+                labelText: getTransrlate(context, 'description'),
+                intialLabel: "${widget.orders_model.shortDescription}",
+                hintText: getTransrlate(context, 'description'),
+                validator: (String value) {
+                  if (value.isEmpty) {
+                    return getTransrlate(context, 'requiredempty');
+                  }else   if (value.length<2) {
+                    return "${getTransrlate(context, 'requiredlength')}";
+                  }
+                  return null;
+                },
+                onSaved: (String value) {
+                  item.title = value;
+                },),
+              Transform.scale(
+                  scale: 2,
+                  child: Switch(
+                    onChanged: (v){
+                      setState(() {
+                        v? widget.orders_model.status='Active':widget.orders_model.status='Suspended';
+
+                      });
+                    },
+                  value: widget.orders_model.status=='Active'),
                   ),
-                ),
-              ),
+              Text("${widget.orders_model.status}", style: TextStyle(fontSize: 20),)
             ],
           ),
         ),
@@ -251,15 +123,4 @@ class _Order_informationState extends State<Order_information> {
     }
   }
 
-  Future<void> getAllStore() async {
-    API(context)
-        .get('show/orders?ordered_by=created_at&sort_type=desc')
-        .then((value) {
-      if (value != null) {
-        setState(() {
-          widget.orders = Orders_model.fromJson(value).data;
-        });
-      }
-    });
-  }
 }

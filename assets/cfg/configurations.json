@@ -1,4 +1,4 @@
 {
-  "base_url": "https://development.lacasacode.dev/",
-  "api_base_url": "https://development.lacasacode.dev/api/v1/"
+  "base_url": "http://gym.lacasacode.com/",
+  "api_base_url": "http://gym.lacasacode.com/api/v1/"
 }

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
+import 'package:trkar_vendor/model/item_model.dart';
 import 'package:trkar_vendor/model/orders_model.dart';
 import 'package:trkar_vendor/model/products_model.dart';
 import 'package:trkar_vendor/screens/Edit_product.dart';
@@ -29,7 +30,7 @@ class SearchOverlay_OrderState extends State<SearchOverlay_Order>
     with SingleTickerProviderStateMixin {
   AnimationController controller;
   Animation<double> scaleAnimation;
-  List<Order> products = [];
+  List<Item> products = [];
 
   @override
   void initState() {
@@ -94,7 +95,7 @@ class SearchOverlay_OrderState extends State<SearchOverlay_Order>
                                         if (value['status_code'] == 200) {
                                           setState(() {
                                             products =
-                                                Orders_model.fromJson(value).data;
+                                                Item_model.fromJson(value).data;
                                           });
                                         } else {
                                           // showDialog(
@@ -199,12 +200,12 @@ class SearchOverlay_OrderState extends State<SearchOverlay_Order>
                     itemBuilder: (BuildContext context, int index) {
                       return InkWell(
                         onTap: (){
-                          Nav.route(
-                              context,
-                              Order_information(
-                                orders: products,
-                                orders_model: products[index],
-                              ));
+                          // Nav.route(
+                          //     context,
+                          //     Order_information(
+                          //       orders: products,
+                          //       orders_model: products[index],
+                          //     ));
                         },
                         child: Container(
                           color: index.isOdd
@@ -212,7 +213,7 @@ class SearchOverlay_OrderState extends State<SearchOverlay_Order>
                               : Colors.white,
                           child: Column(
                             children: [
-                              OrderItem(
+                              Item_item(
                                 orders_model: products[index],
                                 themeColor: themeColor,
                               ),
@@ -224,199 +225,13 @@ class SearchOverlay_OrderState extends State<SearchOverlay_Order>
                                   MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      ' ${getTransrlate(context, 'totalOrder')} : ${products[index].orderTotal} ${getTransrlate(context, 'Currency')} ',
+                                      ' ${getTransrlate(context, 'totalOrder')} : ${products[index].title} ${getTransrlate(context, 'Currency')} ',
                                       style: TextStyle(
                                         fontSize: 13,
                                         color: Colors.black,
                                         fontWeight: FontWeight.w600,
                                       ),
-                                    ),
-                                    products[index].need_approval==0
-                                        ? Container(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment
-                                            .spaceBetween,
-                                        children: <Widget>[
-                                          Text(
-                                            getTransrlate(context,
-                                                'OrderState'),
-                                            style: TextStyle(
-                                              fontSize: 13,
-                                              color: Colors.black,
-                                              fontWeight:
-                                              FontWeight.w600,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Container(
-                                            width: 80,
-                                            padding:
-                                            EdgeInsets.all(3),
-                                            decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    width: 1)),
-                                            child: Center(
-                                              child: Text(
-                                                '${products[index].orderStatus}',
-                                                maxLines: 1,
-                                                style: TextStyle(
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                        :products[index].orderStatus=='cancelled due to expiration'?Container(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment
-                                            .spaceBetween,
-                                        children: <Widget>[
-                                          Text(
-                                            getTransrlate(context,
-                                                'OrderState'),
-                                            style: TextStyle(
-                                              fontSize: 13,
-                                              color: Colors.black,
-                                              fontWeight:
-                                              FontWeight.w600,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Container(
-                                            width: 80,
-                                            padding:
-                                            EdgeInsets.all(3),
-                                            decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    width: 1)),
-                                            child: Center(
-                                              child: Text(
-                                                '${products[index].orderStatus}',
-                                                maxLines: 1,
-                                                style: TextStyle(
-                                                  fontSize: 13,
-                                                  fontWeight:
-                                                  FontWeight.w600,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ): Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment
-                                          .spaceAround,
-                                      children: [
-                                        FlatButton(
-                                          padding: EdgeInsets.all(4),
-                                          onPressed: () {
-                                            API(context).post(
-                                                'vendor/approve/orders',
-                                                {
-                                                  "status": "1",
-                                                  "order_id": products[index].id
-                                                }).then((value) {
-                                              if (value != null) {
-                                                showDialog(
-                                                  context: context,
-                                                  builder: (_) =>
-                                                      ResultOverlay(value.containsKey('message') ? value['message'] : '${getTransrlate(context,'Done')}',),
-                                                );
-                                                Navigator.pop(context);
-                                              }
-                                            });
-                                          },
-                                          child: Row(
-                                            children: [
-                                              Icon(
-                                                  Icons
-                                                      .check_circle_outline,
-                                                  color: Colors
-                                                      .lightGreen),
-                                              SizedBox(
-                                                width: 5,
-                                              ),
-                                              Text(
-                                                'قبول',
-                                                style: TextStyle(
-                                                    color: Colors
-                                                        .lightGreen,
-                                                    fontSize: 15,
-                                                    decoration:
-                                                    TextDecoration
-                                                        .underline,
-                                                    fontWeight:
-                                                    FontWeight
-                                                        .bold),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        FlatButton(
-                                          padding: EdgeInsets.all(4),
-                                          onPressed: () {
-                                            API(context).post(
-                                                'vendor/cancel/order',
-                                                {
-                                                  "order_id":
-                                                  products[
-                                                  index]
-                                                      .id
-                                                }).then((value) {
-                                              if (value != null) {
-                                                showDialog(
-                                                  context: context,
-                                                  builder: (_) =>
-                                                      ResultOverlay(
-                                                        value.containsKey(
-                                                            'message')
-                                                            ? value[
-                                                        'message']
-                                                            : '${getTransrlate(context,'Done')}',
-                                                      ),
-                                                );
-                                              }
-                                              Navigator.pop(context);
-                                            });
-                                          },
-                                          child: Row(
-                                            children: [
-                                              Icon(
-                                                  CupertinoIcons
-                                                      .clear_circled,
-                                                  size: 25,
-                                                  color: Colors.red),
-                                              SizedBox(
-                                                width: 5,
-                                              ),
-                                              Text(
-                                                'رفض',
-                                                style: TextStyle(
-                                                    color: Colors.red,
-                                                    fontSize: 15,
-                                                    decoration:
-                                                    TextDecoration
-                                                        .underline,
-                                                    fontWeight:
-                                                    FontWeight
-                                                        .bold),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                    ),],
                                 ),
                               ),
                               SizedBox(

@@ -5,13 +5,14 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trkar_vendor/main.dart';
 import 'package:trkar_vendor/screens/Orders.dart';
+import 'package:trkar_vendor/screens/Users/coustomer.dart';
 import 'package:trkar_vendor/screens/edit_profile.dart';
 import 'package:trkar_vendor/screens/faq.dart';
 import 'package:trkar_vendor/screens/home.dart';
 import 'package:trkar_vendor/screens/invoices.dart';
 import 'package:trkar_vendor/screens/login.dart';
 import 'package:trkar_vendor/screens/product.dart';
-import 'package:trkar_vendor/screens/staff.dart';
+import 'package:trkar_vendor/screens/Users/staff.dart';
 import 'package:trkar_vendor/screens/stores.dart';
 import 'package:trkar_vendor/screens/tickets.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
@@ -134,22 +135,23 @@ class _HiddenMenuState extends State<HiddenMenu> {
                           fontWeight: FontWeight.w800),
                       colorLineSelected: Colors.blue,
                     ),
-                    ItemHiddenMenu(
+                    roles=='Staff'?Container():  ItemHiddenMenu(
                       onTap: () {
-                        Nav.route(context, Stores());
+
+                        Nav.route(context, Coustomers());
                       },
                       icon: SvgPicture.asset(
-                        "assets/icons/store.svg",
+                        "assets/icons/staff.svg",
                         height: 30,
                         width: 30,
                         color: Colors.blue,
                       ),
-                      name: getTransrlate(context, 'stores'),
+                      name: getTransrlate(context, 'customers'),
                       baseStyle: TextStyle(
-                          color: Colors.white.withOpacity(0.6),
+                          color: Colors.black.withOpacity(0.6),
                           fontSize: 19.0,
                           fontWeight: FontWeight.w800),
-                      colorLineSelected: Colors.black,
+                      colorLineSelected: Colors.blue,
                     ),
                     roles=='Staff'?Container():  ItemHiddenMenu(
                       onTap: () {
@@ -162,7 +164,7 @@ class _HiddenMenuState extends State<HiddenMenu> {
                         width: 30,
                         color: Colors.blue,
                       ),
-                      name: getTransrlate(context, 'staff'),
+                      name: getTransrlate(context, 'staf'),
                       baseStyle: TextStyle(
                           color: Colors.black.withOpacity(0.6),
                           fontSize: 19.0,
@@ -179,30 +181,13 @@ class _HiddenMenuState extends State<HiddenMenu> {
                         width: 30,
                         color: Colors.blue,
                       ),
-                      name: getTransrlate(context, 'Myorders'),
+                      name: getTransrlate(context, 'items'),
                       baseStyle: TextStyle(
                           color: Colors.black.withOpacity(0.6),
                           fontSize: 19.0,
                           fontWeight: FontWeight.w800),
                       colorLineSelected: Colors.blue,
                     ),
-                    // ItemHiddenMenu(
-                    //   onTap: () {
-                    //     Nav.route(context, Products());
-                    //   },
-                    //   icon: SvgPicture.asset(
-                    //     "assets/icons/products.svg",
-                    //     height: 30,
-                    //     width: 30,
-                    //     color: Colors.blue,
-                    //   ),
-                    //   name: getTransrlate(context, 'products'),
-                    //   baseStyle: TextStyle(
-                    //       color: Colors.black.withOpacity(0.6),
-                    //       fontSize: 19.0,
-                    //       fontWeight: FontWeight.w800),
-                    //   colorLineSelected: Colors.blue,
-                    // ),
                     roles=='Staff'?Container():      ItemHiddenMenu(
                       onTap: () {
                         Nav.route(context, Invoices());
@@ -213,43 +198,41 @@ class _HiddenMenuState extends State<HiddenMenu> {
                         width: 30,
                         color: Colors.blue,
                       ),
-                      name: getTransrlate(context, 'invoices'),
+                      name: getTransrlate(context, 'packages'),
                       baseStyle: TextStyle(
                           color: Colors.white.withOpacity(0.6),
                           fontSize: 19.0,
                           fontWeight: FontWeight.w800),
                       colorLineSelected: Colors.blue,
                     ),
-                    // ItemHiddenMenu(
-                    //   onTap: () {
-                    //     Nav.route(context, Tickets());
-                    //   },
-                    //   icon: SvgPicture.asset(
-                    //     "assets/icons/tickets.svg",
-                    //     height: 30,
-                    //     width: 30,
-                    //     color: Colors.blue,
-                    //   ),
-                    //   name: getTransrlate(context, 'ticket'),
-                    //   baseStyle: TextStyle(
-                    //       color: Colors.white.withOpacity(0.6),
-                    //       fontSize: 19.0,
-                    //       fontWeight: FontWeight.w800),
-                    //   colorLineSelected: Colors.blue,
-                    // ),
-                    ItemHiddenMenu(
+                    roles=='Staff'?Container():      ItemHiddenMenu(
                       onTap: () {
-                        Nav.route(context, FaqPage());
+                        Nav.route(context, Invoices());
                       },
-                      icon: SvgPicture.asset(
-                        "assets/icons/faq.svg",
-                        height: 30,
-                        width: 30,
+                      icon: Icon(
+                        Icons.attach_money,
+                        size: 30,
                         color: Colors.blue,
                       ),
-                      name: getTransrlate(context, 'FAQ'),
+                      name: getTransrlate(context, 'bills'),
                       baseStyle: TextStyle(
-                          color: Colors.blue.withOpacity(0.6),
+                          color: Colors.white.withOpacity(0.6),
+                          fontSize: 19.0,
+                          fontWeight: FontWeight.w800),
+                      colorLineSelected: Colors.blue,
+                    ),
+                    roles=='Staff'?Container():      ItemHiddenMenu(
+                      onTap: () {
+                        Nav.route(context, Invoices());
+                      },
+                      icon:Icon(
+                        Icons.payment,
+                        size: 30,
+                        color: Colors.blue,
+                      ),
+                      name: getTransrlate(context, 'payments'),
+                      baseStyle: TextStyle(
+                          color: Colors.white.withOpacity(0.6),
                           fontSize: 19.0,
                           fontWeight: FontWeight.w800),
                       colorLineSelected: Colors.blue,
@@ -272,74 +255,6 @@ class _HiddenMenuState extends State<HiddenMenu> {
                           fontWeight: FontWeight.w800),
                       colorLineSelected: Colors.blue,
                     ),
-                    // Container(
-                    //   child:
-                    //   NotificationListener<OverscrollIndicatorNotification>(
-                    //     onNotification: (scroll) {
-                    //       scroll.disallowGlow();
-                    //       return false;
-                    //     },
-                    //     child: ListView(
-                    //       shrinkWrap: true,
-                    //       padding: EdgeInsets.all(0.0),
-                    //       children: <Widget>[
-                    //         InkWell(
-                    //           onTap: () async {
-                    //             await themeColor.local == 'ar'
-                    //                 ? themeColor.setLocal('en')
-                    //                 : themeColor.setLocal('ar');
-                    //             MyApp.setlocal(
-                    //                 context, Locale(themeColor.getlocal(), ''));
-                    //             SharedPreferences.getInstance().then((prefs) {
-                    //               prefs.setString('local', themeColor.local);
-                    //             });
-                    //             Navigator.pop(context);
-                    //
-                    //           },
-                    //           child: ItemHiddenMenu(
-                    //             icon: SvgPicture.asset(
-                    //               "assets/icons/globe (1).svg",
-                    //               height: 25,
-                    //               width: 25,
-                    //               color: Colors.blue,
-                    //             ),
-                    //             name: Provider.of<Provider_control>(context)
-                    //                 .local ==
-                    //                 'ar'
-                    //                 ? 'English'
-                    //                 : 'عربى',
-                    //             baseStyle: TextStyle(
-                    //                 color: Colors.white.withOpacity(0.6),
-                    //                 fontSize: 19.0,
-                    //                 fontWeight: FontWeight.w800),
-                    //             colorLineSelected: Colors.blue,
-                    //           ),
-                    //         ),
-                    //       ],
-                    //     ),
-                    //   ),
-                    // ),
-
-                    // InkWell(
-                    //   onTap: (){
-                    //   //  launchURL('tel:+201111511190');
-                    //     _launchURL('https://www.instagram.com/');
-                    //   },
-                    //   child: ItemHiddenMenu(
-                    //     icon: SvgPicture.asset(
-                    //       "assets/icons/Call.svg",
-                    //       height: 30,
-                    //       width: 30,
-                    //       color: Colors.blue,
-                    //     ),
-                    //     name: getTransrlate(context, 'contact'),
-                    //     baseStyle: TextStyle(
-                    //         color: Colors.white.withOpacity(0.6),
-                    //         fontSize: 19.0,
-                    //         fontWeight: FontWeight.w800),
-                    //     colorLineSelected: Colors.blue,
-                    //   ),
-                    // ),
                     ItemHiddenMenu(
                       onTap: () {
                         Nav.route(context, FaqPage());

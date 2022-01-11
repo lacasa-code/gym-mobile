@@ -1,20 +1,17 @@
-import 'package:trkar_vendor/model/roles_model.dart';
-import 'package:trkar_vendor/model/store_model.dart';
-
 class User_model {
   List<User> data;
-  int total;
+  int statusCode;
 
-  User_model({this.data, this.total});
+  User_model({this.data, this.statusCode});
 
   User_model.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
-      data = new List<User>();
+      data = <User>[];
       json['data'].forEach((v) {
         data.add(new User.fromJson(v));
       });
     }
-    total = json['total'];
+    statusCode = json['status_code'];
   }
 
   Map<String, dynamic> toJson() {
@@ -22,89 +19,122 @@ class User_model {
     if (this.data != null) {
       data['data'] = this.data.map((v) => v.toJson()).toList();
     }
-    data['total'] = this.total;
+    data['status_code'] = this.statusCode;
     return data;
   }
 }
 
 class User {
   int id;
-  String name;
-  String email;
+  String fname;
+  String lname;
+  String mobile_number;
   String password;
-  bool isSelect=false;
-  String emailVerifiedAt;
+  String password_confirmation;
+  String address_line_1;
+  String address_line_2;
+  String countries__id;
+  String status;
+  bool isSelect;
+  String username;
+  String email;
   String createdAt;
-  String updatedAt;
-  int addedById;
-  String serialId;
-  String rolesid;
-  String storeid;
-  List<Store> stores;
-  int approved;
-  Role roles;
+  String since;
+  String deletedAt;
+  String profilePicture;
+  UserAuthority userAuthority;
+
 
   User(
       {this.id,
-        this.name,
-        this.email,
-        this.emailVerifiedAt,
-        this.createdAt,
-        this.updatedAt,
-        this.addedById,
-        this.serialId,
-        this.stores,
-        this.approved,this.rolesid,
-        this.storeid,
-        this.roles});
+      this.fname,
+      this.lname,
+      this.mobile_number,
+      this.password,
+      this.password_confirmation,
+      this.address_line_1,
+      this.address_line_2,
+      this.countries__id,
+      this.status,
+      this.isSelect,
+      this.username,
+      this.email,
+      this.createdAt,
+      this.since,
+      this.deletedAt,
+      this.profilePicture,
+      this.userAuthority});
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    name = json['name'];
+    fname = json['name'];
+    username = json['username'];
     email = json['email'];
-    emailVerifiedAt = json['email_verified_at'];
     createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-    addedById = json['added_by_id'];
-    serialId = json['serial_id'];
-    if (json['stores'] != null) {
-      stores = new List<Store>();
-      json['stores'].forEach((v) {
-        stores.add(new Store.fromJson(v));
-      });
-    }
-    approved = json['approved'];
-    roles = json['roles'] != null ? new Role.fromJson(json['roles']) : null;
+    since = json['since'];
+    deletedAt = json['deleted_at'];
+    profilePicture = json['profile_picture'];
+    userAuthority = json['userAuthority'] != null
+        ? new UserAuthority.fromJson(json['userAuthority'])
+        : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['first_name'] = this.fname;
+    data['last_name'] = this.lname;
+    data['username'] = this.username;
+    data['mobile_number'] = this.mobile_number;
+    data['email'] = this.email;
+    data['password'] = this.password;
+    data['password_confirmation'] = this.password_confirmation;
+    data['address_line_1'] = this.address_line_1;
+    data['address_line_2'] = this.address_line_2;
+    data['countries__id'] = this.countries__id;
+    data['status'] = this.status;
+
+    return data;
+  }
+}
+
+class UserAuthority {
+  int id;
+  RoleName roleName;
+
+  UserAuthority({this.id, this.roleName});
+
+  UserAuthority.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    roleName = json['role_name'] != null
+        ? new RoleName.fromJson(json['role_name'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['name'] = this.name;
-    data['email'] = this.email;
-    data['rolesid'] = this.rolesid;
-    data['storeid'] = this.storeid;
-  }
-}
-
-
-class Pivot {
-  int vendorstaffId;
-  int storeId;
-
-  Pivot({this.vendorstaffId, this.storeId});
-
-  Pivot.fromJson(Map<String, dynamic> json) {
-    vendorstaffId = json['vendorstaff_id'];
-    storeId = json['store_id'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['vendorstaff_id'] = this.vendorstaffId;
-    data['store_id'] = this.storeId;
+    if (this.roleName != null) {
+      data['role_name'] = this.roleName.toJson();
+    }
     return data;
   }
 }
 
+class RoleName {
+  int id;
+  String title;
 
+  RoleName({this.id, this.title});
+
+  RoleName.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    title = json['title'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['title'] = this.title;
+    return data;
+  }
+}

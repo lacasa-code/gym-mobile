@@ -39,7 +39,7 @@ class _LoginFormState extends State<LoginForm> {
           children: <Widget>[
             MyTextFormField(
               textStyle: TextStyle(color: Colors.white, fontSize: 16),
-              intialLabel: '',
+              intialLabel: 'admin ',
               Keyboard_Type: TextInputType.emailAddress,
               labelText: getTransrlate(context, 'mail'),
               hintText: getTransrlate(context, 'mail'),
@@ -47,10 +47,6 @@ class _LoginFormState extends State<LoginForm> {
               validator: (String value) {
                 if (value.isEmpty) {
                   return getTransrlate(context, 'mail');
-                } else if (!RegExp(
-                        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
-                    .hasMatch(value)) {
-                  return getTransrlate(context, 'invalidemail');
                 }
                 _formKey.currentState.save();
                 return null;
@@ -61,7 +57,7 @@ class _LoginFormState extends State<LoginForm> {
             ),
             MyTextFormField(
               textStyle: TextStyle(color: Colors.white, fontSize: 16),
-              intialLabel: '',
+              intialLabel: 'firstadmin123',
               labelText: getTransrlate(context, 'password'),
               hintText: getTransrlate(context, 'password'),
               suffixIcon: IconButton(
@@ -121,23 +117,22 @@ class _LoginFormState extends State<LoginForm> {
                     final SharedPreferences prefs =
                         await SharedPreferences.getInstance();
                     API(context).post('login', {
-                      'email': model.email,
+                      'usernameOrEmail': model.email,
                       'password': model.password,
                     }).then((value) {
                       setState(() => _isLoading = false);
 
                       if (value != null) {
-                        if (value['status_code'] == 200) {
+                        print(value);
+                        if (value['status_code'] == 400) {
                           var user = value['data'];
                           prefs.setString("user_email", user['email']);
-                          prefs.setString("user_name", user['name']);
-                          prefs.setString("roles", user['roles'][0]['title']);
-                          prefs.setString("token", user['token']);
+                          prefs.setString("name", user['name']);
+                          prefs.setString("user_name", user['username']);
+                          prefs.setString("roles", user['userAuthority']['role_name']['title']);
+                          prefs.setString("token", value['token']);
                           prefs.setInt("user_id", user['id']);
                           themeColor.setLogin(true);
-                          // Provider.of<Provider_Data>(context,listen: false).getAllstaff(context);
-                          // Provider.of<Provider_Data>(context,listen: false).getAllStore(context);
-                          // Provider.of<Provider_Data>(context,listen: false).getProducts(context);
                           Nav.routeReplacement(context, Home());
 
                       } else {

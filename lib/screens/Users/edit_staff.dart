@@ -37,8 +37,8 @@ class _EditStaffState extends State<EditStaff> {
 
   @override
   void initState() {
-    getRoles();
-    getStore();
+    // getRoles();
+    // getStore();
     super.initState();
   }
 
@@ -75,12 +75,12 @@ class _EditStaffState extends State<EditStaff> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       MyTextFormField(
-                        intialLabel: widget.user.name ?? ' ',
+                        intialLabel: widget.user.fname ?? ' ',
                         Keyboard_Type: TextInputType.name,
-                           labelText: getTransrlate(context, 'title'),inputFormatters: [
+                           labelText: getTransrlate(context, 'fname'),inputFormatters: [
                             new LengthLimitingTextInputFormatter(200),
                           ],
-                        hintText: getTransrlate(context, 'title'),
+                        hintText: getTransrlate(context, 'fname'),
                         isPhone: true,
                         enabled: true,
                         validator: (String value) {
@@ -92,7 +92,28 @@ class _EditStaffState extends State<EditStaff> {
                           return null;
                         },
                         onSaved: (String value) {
-                          widget.user.name = value;
+                          widget.user.lname = value;
+                        },
+                      ),
+                      MyTextFormField(
+                        intialLabel: widget.user.username ?? ' ',
+                        Keyboard_Type: TextInputType.name,
+                           labelText: getTransrlate(context, 'Username'),inputFormatters: [
+                            new LengthLimitingTextInputFormatter(200),
+                          ],
+                        hintText: getTransrlate(context, 'username'),
+                        isPhone: true,
+                        enabled: true,
+                        validator: (String value) {
+                          if (value.isEmpty) {
+                            return getTransrlate(context, 'requiredempty');
+                          } else if (value.length <= 2) {
+                            return "${getTransrlate(context, 'requiredlength')}";
+                          }
+                          return null;
+                        },
+                        onSaved: (String value) {
+                          widget.user.username = value;
                         },
                       ),
                       MyTextFormField(
@@ -100,8 +121,6 @@ class _EditStaffState extends State<EditStaff> {
                         Keyboard_Type: TextInputType.emailAddress,
                         labelText: getTransrlate(context, 'Email'),
                         hintText: getTransrlate(context, 'Email'),
-                        isPhone: true,
-                        enabled: false,
                         validator: (String value) {
                           if (value.isEmpty) {
                             return getTransrlate(context, 'mail');
@@ -117,75 +136,7 @@ class _EditStaffState extends State<EditStaff> {
                         //   widget.user.email = value;
                         // },
                       ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        "${getTransrlate(context, 'role')}",
-                        style: TextStyle(color: Colors.black, fontSize: 16),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      roles == null
-                          ? Container()
-                          : DropdownSearch<Role>(
-                              maxHeight: ScreenUtil.getWidth(context) / 3,
-                              showSearchBox: false,
-                              showClearButton: false,
-                              selectedItem: widget.user.roles,
-                              label: "   ",
-                              validator: (Role item) {
-                                if (item == null) {
-                                  return "${getTransrlate(context, 'Required')}";
-                                } else
-                                  return null;
-                              },
-                              items: roles,
-                              //  onFind: (String filter) => getData(filter),
-                              itemAsString: (Role u) => u.title,
-                              onChanged: (Role data) =>
-                                  widget.user.rolesid = data.id.toString()),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        "${getTransrlate(context, 'stores')}",
-                        style: TextStyle(color: Colors.black, fontSize: 16),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      _listStore == null
-                          ? Container()
-                          : _generateStores(themeColor),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                            border: Border.all(width: 1, color: Colors.black26)),
-                        child: TypeAheadField(
-                          // hideOnLoading: true,
-                          // hideOnEmpty: true,
-                          getImmediateSuggestions: false,
-                          onSuggestionSelected: (val) {
-                            _onSuggestionSelected(val);
-                          },
-                          itemBuilder: (context, suggestion) {
-                            return ListTile(
-                              title: Text( suggestion.nameStore
-                              ),
-                            );
-                          },
-                          suggestionsCallback: (val) {
-                            return _sugestionList(
-                              Stores:  _listStore,
-                              suggestion: val,
-                            );
-                          },
-                        ),
-                      ),
+
                     ],
                   ),
                 ),
@@ -240,13 +191,7 @@ class _EditStaffState extends State<EditStaff> {
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save();
                             setState(() => loading = true);
-                            print("users/${widget.user.id}");
-                            API(context).Put("users/${widget.user.id}", {
-                              "name": widget.user.name,
-                              "email": widget.user.email,
-                              "roles": widget.user.rolesid??widget.user.roles.id,
-                              "stores": widget.user.stores!=null? widget.user.stores.isNotEmpty?widget.user.stores.map((e) => e.id).toList().toString():"":""
-                            }).then((value) {
+                            API(context).Put("edit/customer/${widget.user.id}",widget.user.toJson()).then((value) {
                               if (value != null) {
                                 setState(() {
                                   loading = false;
@@ -311,67 +256,67 @@ class _EditStaffState extends State<EditStaff> {
       }
     });
   }
-  _generateStores(Provider_control themeColor) {
-    return widget.user.stores.isEmpty
-        ? Container()
-        : Container(
-      alignment: Alignment.topLeft,
-      child: Tags(
-        alignment: WrapAlignment.center,
-        itemCount: widget.user.stores.length,
-        itemBuilder: (index) {
-          return ItemTags(
-            index: index,
-            title:  widget.user.stores[index].nameStore,
-            color: Colors.blue,
-            activeColor: Colors.blue,
-            onPressed: (Item item) {
-              print('pressed');
-            },
-            highlightColor: Colors.transparent,
-            splashColor: Colors.transparent,
-            elevation: 0.0,
-            borderRadius: BorderRadius.all(Radius.circular(7.0)),
-//                textColor: ,
-            textColor: Colors.white,
-            textActiveColor: Colors.white,
-            removeButton: ItemTagsRemoveButton(
-                color: Colors.white,
-                backgroundColor: Colors.transparent,
-                size: 18,
-                onRemoved: () {
-                  _onSuggestionRemoved(widget.user.stores[index]);
-                  return true;
-                }),
-            textOverflow: TextOverflow.ellipsis,
-          );
-        },
-      ),
-    );
-  }
+//   _generateStores(Provider_control themeColor) {
+//     return widget.user.stores.isEmpty
+//         ? Container()
+//         : Container(
+//       alignment: Alignment.topLeft,
+//       child: Tags(
+//         alignment: WrapAlignment.center,
+//         itemCount: widget.user.stores.length,
+//         itemBuilder: (index) {
+//           return ItemTags(
+//             index: index,
+//             title:  widget.user.stores[index].nameStore,
+//             color: Colors.blue,
+//             activeColor: Colors.blue,
+//             onPressed: (Item item) {
+//               print('pressed');
+//             },
+//             highlightColor: Colors.transparent,
+//             splashColor: Colors.transparent,
+//             elevation: 0.0,
+//             borderRadius: BorderRadius.all(Radius.circular(7.0)),
+// //                textColor: ,
+//             textColor: Colors.white,
+//             textActiveColor: Colors.white,
+//             removeButton: ItemTagsRemoveButton(
+//                 color: Colors.white,
+//                 backgroundColor: Colors.transparent,
+//                 size: 18,
+//                 onRemoved: () {
+//                   _onSuggestionRemoved(widget.user.stores[index]);
+//                   return true;
+//                 }),
+//             textOverflow: TextOverflow.ellipsis,
+//           );
+//         },
+//       ),
+//     );
+//   }
 
-  _onSuggestionSelected(Store value) {
-    if (value != null) {
-      setState(() {
-        widget.user.stores.add(value);
-        _listStore.remove(value);
-      });
-    }
-  }
-
-  _onSuggestionRemoved(Store value) {
-    // final Store exist =
-    //     _Stores.firstWhere((text) => text.name == value, orElse: () {
-    //   return null;
-    // });
-    if (value != null) {
-      setState(() {
-        widget.user.stores.remove(value);
-        _listStore.add(value);
-        getStore();
-      });
-    }
-  }
+  // _onSuggestionSelected(Store value) {
+  //   if (value != null) {
+  //     setState(() {
+  //       widget.user.stores.add(value);
+  //       _listStore.remove(value);
+  //     });
+  //   }
+  // }
+  //
+  // _onSuggestionRemoved(Store value) {
+  //   // final Store exist =
+  //   //     _Stores.firstWhere((text) => text.name == value, orElse: () {
+  //   //   return null;
+  //   // });
+  //   if (value != null) {
+  //     setState(() {
+  //       widget.user.stores.remove(value);
+  //       _listStore.add(value);
+  //       getStore();
+  //     });
+  //   }
+  // }
 
   _sugestionList({@required List<Store> Stores, @required String suggestion}) {
     List<Store> modifiedList = [];
@@ -385,19 +330,19 @@ class _EditStaffState extends State<EditStaff> {
     }
   }
 
-  void getStore() {
-    API(context).get('storeslist').then((value) {
-      if (value != null) {
-        setState(() {
-          _listStore= Store_model.fromJson(value).data;
-        });
-        widget.user.stores.forEach((e) {
-          setState(() {
-            print(e.id);
-            _listStore.removeWhere((element) => element.id==e.id);
-          });
-        });
-      }
-    });
-  }
+  // void getStore() {
+  //   API(context).get('storeslist').then((value) {
+  //     if (value != null) {
+  //       setState(() {
+  //         _listStore= Store_model.fromJson(value).data;
+  //       });
+  //       widget.user.stores.forEach((e) {
+  //         setState(() {
+  //           print(e.id);
+  //           _listStore.removeWhere((element) => element.id==e.id);
+  //         });
+  //       });
+  //     }
+  //   });
+  // }
 }

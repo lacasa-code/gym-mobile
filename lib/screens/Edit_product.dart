@@ -1436,8 +1436,8 @@ class _Edit_ProductState extends State<Edit_Product> {
                       return ListTile(
                         title: Text(
                           themeColor.getlocal() == 'ar'
-                              ? suggestion.name ?? suggestion.name_en
-                              : suggestion.name_en ?? suggestion.name,
+                              ? suggestion.fname ?? suggestion.name_en
+                              : suggestion.name_en ?? suggestion.fname,
                         ),
                       );
                     },
