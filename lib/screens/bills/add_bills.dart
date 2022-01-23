@@ -1,0 +1,427 @@
+import 'dart:async';
+import 'package:location/location.dart';
+import 'package:dropdown_search/dropdown_search.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:geocoder/geocoder.dart';
+import 'package:geocoder/model.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:map_pin_picker/map_pin_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:trkar_vendor/model/area_model.dart';
+import 'package:trkar_vendor/model/city_model.dart';
+import 'package:trkar_vendor/model/country_model.dart';
+import 'package:trkar_vendor/model/store_model.dart';
+import 'package:trkar_vendor/utils/Provider/provider.dart';
+import 'package:trkar_vendor/utils/Provider/provider_data.dart';
+import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
+import 'package:trkar_vendor/utils/screen_size.dart';
+import 'package:trkar_vendor/utils/service/API.dart';
+import 'package:trkar_vendor/widget/ResultOverlay.dart';
+import 'package:trkar_vendor/widget/commons/custom_textfield.dart';
+
+class Add_bills extends StatefulWidget {
+  @override
+  _Add_billsState createState() => _Add_billsState();
+}
+
+class _Add_billsState extends State<Add_bills> {
+  Store store = Store(lat: 31.2060916.toString(), long: 29.9187.toString());
+  bool loading = false;
+  final _formKey = GlobalKey<FormState>();
+  Completer<GoogleMapController> _controller = Completer();
+  MapPickerController mapPickerController = MapPickerController();
+  List<Country> contries;
+  TextEditingController addressController = TextEditingController();
+  List<City> cities;
+  List<Area> area;
+  String  code=' ';
+
+  CameraPosition cameraPosition = CameraPosition(
+    target: LatLng(31.2060916, 29.9187),
+    zoom: 14.4746,
+  );
+
+  @override
+  void initState() {
+    getCountry();
+    getLocation();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final themeColor = Provider.of<Provider_control>(context);
+    return Scaffold(
+      appBar: AppBar(
+        title: Row(
+          children: [
+            SvgPicture.asset(
+              'assets/icons/store.svg',
+              color: Colors.white,
+              height: 25,
+              width: 25,
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Text(getTransrlate(context, 'bills')),
+          ],
+        ),
+        backgroundColor: themeColor.getColor(),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: Container(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(25),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        MyTextFormField(
+                          intialLabel: store.nameStore ?? ' ',
+                          Keyboard_Type: TextInputType.name,
+                             labelText: getTransrlate(context, 'title'),inputFormatters: [
+                            new LengthLimitingTextInputFormatter(200),
+                          ],
+                          hintText: getTransrlate(context, 'title'),
+                          isPhone: true,
+                          enabled: true,
+                          validator: (String value) {
+                            if (value.isEmpty) {
+                              return getTransrlate(context, 'requiredempty');
+                            } else if (value.length <2 || value.length > 100) {
+                              return "${getTransrlate(context, 'requiredlength')}";
+                            }
+                            return null;
+                          },
+                          onSaved: (String value) {
+                            store.nameStore = value;
+                          },
+                        ),
+                        Text(
+                          "${getTransrlate(context, 'Countroy')}",
+                          style: TextStyle(color: Colors.black, fontSize: 16),
+                        ),
+                        contries == null
+                            ? Container()
+                            : Padding(
+                          padding:
+                          const EdgeInsets.symmetric(vertical: 10),
+                          child: DropdownSearch<Country>(
+                            // label: getTransrlate(context, 'Countroy'),
+                            validator: (Country item) {
+                              if (item == null) {
+                                return "${getTransrlate(context, 'Required')}";
+                              } else
+                                return null;
+                            },
+                            selectedItem: store.countryId == null
+                                ? Country(name: ' ')
+                                : contries
+                                .where((element) =>
+                            element.id == store.countryId)
+                                .first,
+                            showSearchBox: true,
+                            items: contries,
+                            //  onFind: (String filter) => getData(filter),
+                            itemAsString: (Country u) => u.name,
+                            onChanged: (Country data) {
+                              store.countryId = data.id;
+                              setState(() {
+                                code=data.phoneCode;
+                                area=null;
+                                cities=null;
+                              });
+                              getArea(data.id);
+                            },
+                          ),
+                        ),
+                        area == null
+                            ? Container()
+                            : Padding(
+                          padding:
+                          const EdgeInsets.symmetric(vertical: 10),
+                          child: DropdownSearch<Area>(
+                             label: getTransrlate(context, 'City'),
+                            validator: (Area item) {
+                              if (item == null) {
+                                return "${getTransrlate(context, 'Required')}";
+                              } else
+                                return null;
+                            },
+
+                            items: area,
+                            //  onFind: (String filter) => getData(filter),
+                            itemAsString: (Area u) => u.areaName,
+                            onChanged: (Area data) {
+                              store.areaId = data.id;
+                              setState(() {
+                                cities=null;
+
+                              });
+                              getCity(data.id);
+                            },
+                          ),
+                        ),
+                        cities == null
+                            ? Container()
+                            : Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: DropdownSearch<City>(
+                             label: getTransrlate(context, 'City'),
+                            validator: (City item) {
+                              if (item == null) {
+                                return "${getTransrlate(context, 'Required')}";
+                              } else
+                                return null;
+                            },
+
+                            items: cities,
+                            //  onFind: (String filter) => getData(filter),
+                            itemAsString: (City u) => u.cityName,
+                            onChanged: (City data) {
+                              store.cityId = data.id;
+                            },
+                          ),
+                        ),
+                        MyTextFormField(
+                          textEditingController: addressController,
+                          Keyboard_Type: TextInputType.text,
+                          labelText: getTransrlate(context, 'address'),
+                          hintText: getTransrlate(context, 'address'),
+                          enabled: true,
+                          validator: (String value) {
+                            if (value.isEmpty) {
+                              return getTransrlate(context, 'address');
+                            }
+                            _formKey.currentState.save();
+                            return null;
+                          },
+                          onSaved: (String value) {
+                            store.address = value;
+                          },
+                        ),
+                        MyTextFormField(
+                          Keyboard_Type: TextInputType.phone,
+                          inputFormatters: [
+                            new LengthLimitingTextInputFormatter(10),
+                          ],
+                          labelText: "${getTransrlate(context, 'phone')} 1",
+                          hintText: getTransrlate(context, 'phone'),
+                          suffixIcon: Container(width: 50,child: Center(child: Text(' $code', textDirection: TextDirection.ltr))),
+                          isPhone: true,
+                          textDirection: TextDirection.ltr,
+                          enabled: true,
+                          validator: (String value) {
+                            if (value.length < 9) {
+                              return getTransrlate(context, 'Required');
+                            }
+                            _formKey.currentState.save();
+                            return null;
+                          },
+                          onSaved: (String value) {
+                            store.moderatorPhone = "+$code$value";
+                            print("+$code$value");
+                          },
+                        ),
+                        // MyTextFormField(
+                        //   Keyboard_Type: TextInputType.phone,
+                        //   textDirection: TextDirection.ltr,
+                        //   labelText:"${getTransrlate(context, 'phone')} 2",
+                        //   inputFormatters: [
+                        //     new LengthLimitingTextInputFormatter(10),
+                        //   ],
+                        //   hintText: getTransrlate(context, 'phone'),
+                        //   suffixIcon: Container(width: 50,child: Center(child: Text(' $code', textDirection: TextDirection.ltr))),
+                        //   isPhone: true,
+                        //   validator: (String value) {
+                        //     if (value.length > 1&&value.length < 9) {
+                        //       return getTransrlate(context, 'Required');
+                        //     }
+                        //     _formKey.currentState.save();
+                        //     return null;
+                        //   },
+                        //   enabled: true,
+                        //   onSaved: (String value) {
+                        //     store.moderatorAltPhone = value.isEmpty?'':"+$code$value";
+                        //   },
+                        // ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Container(
+            height: 100,
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black12.withOpacity(0.5),
+                    offset: Offset(0, 0),
+                    blurRadius: 1)
+              ],
+            ),
+            child: Container(
+              color: Colors.white,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  loading?FlatButton(
+                    minWidth: ScreenUtil.getWidth(context) / 2.5,
+                    color: Colors.blue,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child:Container(
+                        height: 30,
+                        child: Center(
+                            child: CircularProgressIndicator(
+                              valueColor:
+                              AlwaysStoppedAnimation<Color>( Colors.white),
+                            )),
+                      ),
+                    ),
+                    onPressed: () async {
+                    },
+                  ): FlatButton(
+                      minWidth: ScreenUtil.getWidth(context) / 2.5,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(1),
+                          side: BorderSide(color: Colors.blue, width: 1)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          getTransrlate(context, 'save'),
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      onPressed: () async {
+                        if (_formKey.currentState.validate()) {
+                          _formKey.currentState.save();
+                          setState(() => loading = true);
+
+                          API(context)
+                              .post("add/stores", store.toJson())
+                              .then((value) {
+                            setState(() {
+                              loading = false;
+                            });
+                            if (value.containsKey('errors')) {
+                              showDialog(
+                                context: context,
+                                builder: (_) => ResultOverlay(
+                                  value['errors'].toString(),
+                                ),
+                              );
+                            } else {
+                              Provider.of<Provider_Data>(context,listen: false).getAllStore(context,'stores');
+
+                              Navigator.pop(context);
+                              showDialog(
+                                context: context,
+                                builder: (_) => ResultOverlay(
+                                  '${value['message']}',
+                                ),
+                              );
+                            }
+                          });
+                        }
+                      }),
+                  FlatButton(
+                      minWidth: ScreenUtil.getWidth(context) / 2.5,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(1),
+                          side: BorderSide(color: Colors.grey, width: 1)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          getTransrlate(context, 'close'),
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      onPressed: () async {
+                        Navigator.pop(context);
+                      }),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void getCity(int id) {
+    API(context).get('cities/list/all/$id').then((value) {
+      setState(() {
+        cities = City_model.fromJson(value).data;
+      });
+    });
+  }
+
+  void getArea(int id) {
+    API(context).get('areas/list/all/$id').then((value) {
+      print(value);
+      setState(() {
+        area = Area_model.fromJson(value).data;
+      });
+    });
+  }
+
+  void getCountry() {
+    API(context).get('countries/list/all').then((value) {
+      setState(() {
+        contries = Country_model.fromJson(value).data;
+      });
+    });
+  }
+
+  Future<void> getLocation() async {
+    Location location = new Location();
+
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+    LocationData _locationData;
+
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+
+    _locationData = await location.getLocation();
+    setState(() {
+      cameraPosition = CameraPosition(
+        target: LatLng(31.2060916, 29.9187),
+        zoom: 14.4746,
+      );
+    });
+  }
+}

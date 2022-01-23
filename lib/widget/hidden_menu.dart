@@ -4,12 +4,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trkar_vendor/main.dart';
-import 'package:trkar_vendor/screens/Orders.dart';
+import 'package:trkar_vendor/screens/bills/bills.dart';
+import 'package:trkar_vendor/screens/items/items.dart';
 import 'package:trkar_vendor/screens/Users/coustomer.dart';
 import 'package:trkar_vendor/screens/edit_profile.dart';
 import 'package:trkar_vendor/screens/faq.dart';
 import 'package:trkar_vendor/screens/home.dart';
-import 'package:trkar_vendor/screens/invoices.dart';
+import 'package:trkar_vendor/screens/packages/packages.dart';
 import 'package:trkar_vendor/screens/login.dart';
 import 'package:trkar_vendor/screens/product.dart';
 import 'package:trkar_vendor/screens/Users/staff.dart';
@@ -173,7 +174,7 @@ class _HiddenMenuState extends State<HiddenMenu> {
                     ),
                     roles=='Staff'?Container():      ItemHiddenMenu(
                       onTap: () {
-                        Nav.route(context, Orders());
+                        Nav.route(context, Items());
                       },
                       icon: SvgPicture.asset(
                         "assets/icons/orders.svg",
@@ -190,7 +191,7 @@ class _HiddenMenuState extends State<HiddenMenu> {
                     ),
                     roles=='Staff'?Container():      ItemHiddenMenu(
                       onTap: () {
-                        Nav.route(context, Invoices());
+                        Nav.route(context, Packages());
                       },
                       icon: SvgPicture.asset(
                         "assets/icons/invoices.svg",
@@ -207,7 +208,7 @@ class _HiddenMenuState extends State<HiddenMenu> {
                     ),
                     roles=='Staff'?Container():      ItemHiddenMenu(
                       onTap: () {
-                        Nav.route(context, Invoices());
+                        Nav.route(context, Bills());
                       },
                       icon: Icon(
                         Icons.attach_money,
@@ -223,7 +224,7 @@ class _HiddenMenuState extends State<HiddenMenu> {
                     ),
                     roles=='Staff'?Container():      ItemHiddenMenu(
                       onTap: () {
-                        Nav.route(context, Invoices());
+                        Nav.route(context, Packages());
                       },
                       icon:Icon(
                         Icons.payment,

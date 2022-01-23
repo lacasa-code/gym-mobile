@@ -11,10 +11,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trkar_vendor/main.dart';
 import 'package:trkar_vendor/model/basic_report.dart';
 import 'package:trkar_vendor/model/products_model.dart';
-import 'package:trkar_vendor/screens/Orders.dart';
+import 'package:trkar_vendor/screens/items/items.dart';
 import 'package:trkar_vendor/screens/edit_profile.dart';
 import 'package:trkar_vendor/screens/faq.dart';
-import 'package:trkar_vendor/screens/invoices.dart';
+import 'package:trkar_vendor/screens/packages/packages.dart';
 import 'package:trkar_vendor/screens/login.dart';
 import 'package:trkar_vendor/screens/product.dart';
 import 'package:trkar_vendor/screens/Users/staff.dart';
@@ -208,7 +208,7 @@ class _HomeDesktopState extends State<HomeDesktop> {
                       ),
                       InkWell(
                         onTap: () {
-                          Nav.route(context, Orders());
+                          Nav.route(context, Items());
                         },
                         child: ItemHiddenMenu(
                           icon: Icon(
@@ -226,7 +226,7 @@ class _HomeDesktopState extends State<HomeDesktop> {
                       ),
                       InkWell(
                         onTap: () {
-                          Nav.route(context, Invoices());
+                          Nav.route(context, Packages());
                         },
                         child: ItemHiddenMenu(
                           icon: Icon(

@@ -21,12 +21,12 @@ import 'package:trkar_vendor/widget/hidden_menu.dart';
 import 'package:trkar_vendor/widget/no_found_item.dart';
 import 'package:trkar_vendor/widget/stores/Order_item.dart';
 
-class Orders extends StatefulWidget {
+class Items extends StatefulWidget {
   @override
-  _OrdersState createState() => _OrdersState();
+  _ItemsState createState() => _ItemsState();
 }
 
-class _OrdersState extends State<Orders> {
+class _ItemsState extends State<Items> {
   List<Item> orders;
   final debouncer = Search(milliseconds: 1000);
   ScrollController _scrollController = new ScrollController();

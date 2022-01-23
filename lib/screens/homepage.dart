@@ -10,9 +10,9 @@ import 'package:responsive_grid/responsive_grid.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trkar_vendor/model/basic_report.dart';
 import 'package:trkar_vendor/model/products_model.dart';
-import 'package:trkar_vendor/screens/Orders.dart';
+import 'package:trkar_vendor/screens/items/items.dart';
 import 'package:trkar_vendor/screens/faq.dart';
-import 'package:trkar_vendor/screens/invoices.dart';
+import 'package:trkar_vendor/screens/packages/packages.dart';
 import 'package:trkar_vendor/screens/message_show.dart';
 import 'package:trkar_vendor/screens/product.dart';
 import 'package:trkar_vendor/screens/productPage.dart';
@@ -208,7 +208,7 @@ class _HomeMobileState extends State<HomeMobile> {
                                 minSpacing: 10,
                                 children: [
                                   CustomCard(() {
-                                    Nav.route(context, Orders());
+                                    Nav.route(context, Items());
                                   },
                                       SvgPicture.asset(
                                         'assets/icons/Bell.svg',
@@ -221,7 +221,7 @@ class _HomeMobileState extends State<HomeMobile> {
                                       "${basic_report.totalOrders ?? '0'}",
                                       themeColor),
                                   CustomCard(() {
-                                    Nav.route(context, Orders());
+                                    Nav.route(context, Items());
                                   },
                                       Icon(
                                         Icons.shopping_cart_outlined,
@@ -245,7 +245,7 @@ class _HomeMobileState extends State<HomeMobile> {
                                       "${basic_report.totalProducts ?? '0'}",
                                       themeColor),
                                   CustomCard(() {
-                                    Nav.route(context, Invoices());
+                                    Nav.route(context, Packages());
                                   },
                                       Icon(
                                         Icons.check_box_outline_blank,
@@ -545,7 +545,6 @@ class _HomeMobileState extends State<HomeMobile> {
     API(context)
         .post('vendor/day/month/filter', {"from": "$from", "to": "$to"}).then(
             (value) {
-      print("value =$value");
       if (value != null) {
         setState(() {
           basic_report = Basic_report.fromJson(value);
