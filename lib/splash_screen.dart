@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trkar_vendor/screens/home.dart';
 import 'package:trkar_vendor/screens/login.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
@@ -42,11 +43,7 @@ class _SplashScreenState extends State<SplashScreen>
       body: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(5)),
-          image: DecorationImage(
-            image: new ExactAssetImage('assets/images/splashscreen.png'),
-            fit: BoxFit.cover,
-          ),
-          color: Color(0xff27332F),
+          color: themeColor.getColor(),
         ),
         child: Center(
           child: Padding(
@@ -60,8 +57,8 @@ class _SplashScreenState extends State<SplashScreen>
                 Container(
                //   height: ScreenUtil.getHeight(context) / 2,
                   width: ScreenUtil.getWidth(context) / 1.5,
-                  child: Image.asset(
-                    'assets/images/splashscreen-trkar-logo.gif',
+                  child: SvgPicture.asset(
+                    'assets/images/trkar_logo_white.svg',
                   ),
                 ),
 
@@ -74,7 +71,15 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   void _auth() async {
-
+    // SharedPreferences.getInstance().then((prefs) {
+    //   if(prefs.getString('token')!=null){
+    //     Provider.of<Provider_control>(context,listen: false).setLogin(true);
+    //     Nav.routeReplacement(context, Home());
+    //   }else {
+    //     Provider.of<Provider_control>(context,listen: false).setLogin(false);
+    //     Nav.routeReplacement(context, LoginPage());
+    //   }
+    // });
     API(context).post('check/valid/session', {}).then((value) {
       if (value != null) {
         print(value);

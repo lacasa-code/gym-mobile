@@ -47,25 +47,23 @@ class ResultOverlayState extends State<ResultOverlay>
         child: ScaleTransition(
           scale: scaleAnimation,
           child: Container(
-            width: ScreenUtil.getWidth(context),
+            width: ScreenUtil.getWidth(context)/1.5,
 
             decoration: ShapeDecoration(
                 color: Colors.white,
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.0))),
+                    borderRadius: BorderRadius.circular(25.0))),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Container(height: 25,color: Colors.blue,),
-                SizedBox(height: 15,),
+                SizedBox(height: 10),
                 Icon(
                   Icons.info_outline,
                   size: 80,
-                  color: Colors.lightGreen,
+                  color: themeColor.getColor(),
                 ),
-                SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
@@ -90,7 +88,7 @@ class ResultOverlayState extends State<ResultOverlay>
                   child: Container(
                       margin: const EdgeInsets.all(15.0),
                       padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 50),
-                      color: Colors.blue,
+                      color: Colors.black,
                       child: Text(getTransrlate(context, 'close'),style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),)),
                 )
               ],

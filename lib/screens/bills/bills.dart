@@ -112,7 +112,7 @@ class _BillsState extends State<Bills> {
                     color: Colors.white,
                   ),
                   Text(
-                    getTransrlate(context, 'addcustomer'),
+                    getTransrlate(context, 'addBills'),
                     style: TextStyle(color: Colors.white),
                   ),
                 ],

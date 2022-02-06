@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trkar_vendor/utils/Provider/provider.dart';
@@ -39,11 +40,8 @@ class _LoginPageState extends State<LoginPage> {
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(5)),
-              image: DecorationImage(
-                image: new ExactAssetImage('assets/images/splashscreen.png'),
-                fit: BoxFit.cover,
-              ),
-              color: Color(0xff27332F),
+
+              color: themeColor.getColor(),
             ),
             height: ScreenUtil.getHeight(context),
 
@@ -55,11 +53,8 @@ class _LoginPageState extends State<LoginPage> {
                 Center(
                   child: Column(
                     children: [
-                      Image.asset(
-                        'assets/images/logo.png',
-                        width: ScreenUtil.getWidth(context) / 3,
-                        fit: BoxFit.contain,
-                       // color: themeColor.getColor(),
+                      SvgPicture.asset(
+                        'assets/images/trkar_logo_white.svg',
                       ),
                       Container(
                         width: ScreenUtil.getWidth(context) / 1.5,

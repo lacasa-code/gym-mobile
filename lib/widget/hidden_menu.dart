@@ -127,14 +127,14 @@ class _HiddenMenuState extends State<HiddenMenu> {
                         "assets/icons/homescreen.svg",
                         height: 30,
                         width: 30,
-                        color: Colors.blue,
+                        color:  themeColor.getColor(),
                       ),
                       name: getTransrlate(context, 'HomePage'),
                       baseStyle: TextStyle(
                           color: Colors.black.withOpacity(0.6),
                           fontSize: 19.0,
                           fontWeight: FontWeight.w800),
-                      colorLineSelected: Colors.blue,
+                      colorLineSelected:  themeColor.getColor(),
                     ),
                     roles=='Staff'?Container():  ItemHiddenMenu(
                       onTap: () {
@@ -145,14 +145,14 @@ class _HiddenMenuState extends State<HiddenMenu> {
                         "assets/icons/staff.svg",
                         height: 30,
                         width: 30,
-                        color: Colors.blue,
+                        color:  themeColor.getColor(),
                       ),
                       name: getTransrlate(context, 'customers'),
                       baseStyle: TextStyle(
                           color: Colors.black.withOpacity(0.6),
                           fontSize: 19.0,
                           fontWeight: FontWeight.w800),
-                      colorLineSelected: Colors.blue,
+                      colorLineSelected:  themeColor.getColor(),
                     ),
                     roles=='Staff'?Container():  ItemHiddenMenu(
                       onTap: () {
@@ -163,14 +163,14 @@ class _HiddenMenuState extends State<HiddenMenu> {
                         "assets/icons/staff.svg",
                         height: 30,
                         width: 30,
-                        color: Colors.blue,
+                        color:  themeColor.getColor(),
                       ),
                       name: getTransrlate(context, 'staf'),
                       baseStyle: TextStyle(
                           color: Colors.black.withOpacity(0.6),
                           fontSize: 19.0,
                           fontWeight: FontWeight.w800),
-                      colorLineSelected: Colors.blue,
+                      colorLineSelected:  themeColor.getColor(),
                     ),
                     roles=='Staff'?Container():      ItemHiddenMenu(
                       onTap: () {
@@ -180,14 +180,14 @@ class _HiddenMenuState extends State<HiddenMenu> {
                         "assets/icons/orders.svg",
                         height: 30,
                         width: 30,
-                        color: Colors.blue,
+                        color:  themeColor.getColor(),
                       ),
                       name: getTransrlate(context, 'items'),
                       baseStyle: TextStyle(
                           color: Colors.black.withOpacity(0.6),
                           fontSize: 19.0,
                           fontWeight: FontWeight.w800),
-                      colorLineSelected: Colors.blue,
+                      colorLineSelected:  themeColor.getColor(),
                     ),
                     roles=='Staff'?Container():      ItemHiddenMenu(
                       onTap: () {
@@ -197,14 +197,14 @@ class _HiddenMenuState extends State<HiddenMenu> {
                         "assets/icons/invoices.svg",
                         height: 30,
                         width: 30,
-                        color: Colors.blue,
+                        color:  themeColor.getColor(),
                       ),
                       name: getTransrlate(context, 'packages'),
                       baseStyle: TextStyle(
                           color: Colors.white.withOpacity(0.6),
                           fontSize: 19.0,
                           fontWeight: FontWeight.w800),
-                      colorLineSelected: Colors.blue,
+                      colorLineSelected:  themeColor.getColor(),
                     ),
                     roles=='Staff'?Container():      ItemHiddenMenu(
                       onTap: () {
@@ -213,14 +213,14 @@ class _HiddenMenuState extends State<HiddenMenu> {
                       icon: Icon(
                         Icons.attach_money,
                         size: 30,
-                        color: Colors.blue,
+                        color:  themeColor.getColor(),
                       ),
                       name: getTransrlate(context, 'bills'),
                       baseStyle: TextStyle(
                           color: Colors.white.withOpacity(0.6),
                           fontSize: 19.0,
                           fontWeight: FontWeight.w800),
-                      colorLineSelected: Colors.blue,
+                      colorLineSelected:  themeColor.getColor(),
                     ),
                     roles=='Staff'?Container():      ItemHiddenMenu(
                       onTap: () {
@@ -229,14 +229,14 @@ class _HiddenMenuState extends State<HiddenMenu> {
                       icon:Icon(
                         Icons.payment,
                         size: 30,
-                        color: Colors.blue,
+                        color:  themeColor.getColor(),
                       ),
                       name: getTransrlate(context, 'payments'),
                       baseStyle: TextStyle(
                           color: Colors.white.withOpacity(0.6),
                           fontSize: 19.0,
                           fontWeight: FontWeight.w800),
-                      colorLineSelected: Colors.blue,
+                      colorLineSelected:  themeColor.getColor(),
                     ),
 
                     ItemHiddenMenu(
@@ -247,14 +247,14 @@ class _HiddenMenuState extends State<HiddenMenu> {
                         "assets/icons/account.svg",
                         height: 30,
                         width: 30,
-                        color: Colors.blue,
+                        color:  themeColor.getColor(),
                       ),
                       name: getTransrlate(context, 'ProfileSettings'),
                       baseStyle: TextStyle(
                           color: Colors.white.withOpacity(0.6),
                           fontSize: 19.0,
                           fontWeight: FontWeight.w800),
-                      colorLineSelected: Colors.blue,
+                      colorLineSelected:  themeColor.getColor(),
                     ),
                     ItemHiddenMenu(
                       onTap: () {
@@ -264,14 +264,14 @@ class _HiddenMenuState extends State<HiddenMenu> {
                         "assets/icons/faq.svg",
                         height: 30,
                         width: 30,
-                        color: Colors.blue,
+                        color:  themeColor.getColor(),
                       ),
                       name: getTransrlate(context, 'FAQ'),
                       baseStyle: TextStyle(
-                          color: Colors.blue.withOpacity(0.6),
+                          color:  themeColor.getColor().withOpacity(0.6),
                           fontSize: 19.0,
                           fontWeight: FontWeight.w800),
-                      colorLineSelected: Colors.blue,
+                      colorLineSelected:  themeColor.getColor(),
                     ),
                     ItemHiddenMenu(
                       onTap: () async {
@@ -290,7 +290,7 @@ class _HiddenMenuState extends State<HiddenMenu> {
                         "assets/icons/Log out.svg",
                         height: 30,
                         width: 30,
-                        color: Colors.blue,
+                        color:  themeColor.getColor(),
                       ),
                       name: themeColor.isLogin
                           ? getTransrlate(context, 'Logout')
@@ -299,7 +299,7 @@ class _HiddenMenuState extends State<HiddenMenu> {
                           color: Colors.white.withOpacity(0.6),
                           fontSize: 19.0,
                           fontWeight: FontWeight.w800),
-                      colorLineSelected: Colors.blue,
+                      colorLineSelected:  themeColor.getColor(),
                     ),
                   ],
                 ),

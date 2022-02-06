@@ -1,8 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trkar_vendor/screens/login.dart';
+import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/navigator.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import '../main.dart';
@@ -19,13 +21,15 @@ class _OnboardingPageState extends State<OnboardingPage> {
   int _currentPage = 0;
 
   Widget _buildPageIndicator(bool isCurrentPage) {
+    final themeColor = Provider.of<Provider_control>(context);
+
     return AnimatedContainer(
       duration: Duration(milliseconds: 350),
       margin: EdgeInsets.symmetric(horizontal: 4.0),
       height: isCurrentPage ? 12.0 : 8.0,
       width: isCurrentPage ? 12.0 : 8.0,
       decoration: BoxDecoration(
-        color: isCurrentPage ? Colors.blue : Colors.grey[300],
+        color: isCurrentPage ?  themeColor.getColor() : Colors.grey[300],
         borderRadius: BorderRadius.all(Radius.circular(1)),
       ),
     );
@@ -52,6 +56,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
           statusBarBrightness: Brightness.dark,
           statusBarIconBrightness: Brightness.dark),
     );
+    final themeColor = Provider.of<Provider_control>(context);
+
     return Scaffold(
       body: Container(
         height: double.infinity,
@@ -96,6 +102,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
     String title,
     String body,
   }) {
+    final themeColor = Provider.of<Provider_control>(context);
+
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 25),
       child: Column(
@@ -136,7 +144,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                           height: 50,
                           width: ScreenUtil.getWidth(context) / 1.4,
                           child: FlatButton(
-                            color: Colors.blue,
+                            color:  themeColor.getColor(),
                             onPressed: () {
                               Nav.routeReplacement(context, LoginPage());
                             },
@@ -158,7 +166,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         //     shape: RoundedRectangleBorder(
                         //         borderRadius: BorderRadius.circular(1),
                         //         side:
-                        //             BorderSide(color: Colors.blue, width: 2)),
+                        //             BorderSide(color:  themeColor.getColor(), width: 2)),
                         //     color: Colors.white,
                         //     onPressed: () {
                         //       Nav.routeReplacement(context, LoginPage());
@@ -166,7 +174,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         //     child: Text(
                         //       "سجل كبائع",
                         //       style: TextStyle(
-                        //           color: Colors.blue,
+                        //           color:  themeColor.getColor(),
                         //           fontWeight: FontWeight.w700),
                         //     ),
                         //   ),
@@ -226,10 +234,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
                           setState(() {});
                           Nav.routeReplacement(context, LoginPage());
                         },
-                        splashColor: Colors.blue[50],
+                        splashColor:  themeColor.getColor(),
                         child: Text(
                           'تخطى',
-                          style: TextStyle(color: Colors.blueGrey),
+                          style: TextStyle(color:  themeColor.getColor()),
                         ),
                       ),
                       Container(
@@ -247,10 +255,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
                               curve: Curves.linear);
                           setState(() {});
                         },
-                        splashColor: Colors.blue[50],
+                        splashColor:  themeColor.getColor(),
                         child: Text(
                           'التالى',
-                          style: TextStyle(color: Colors.blue),
+                          style: TextStyle(color:  themeColor.getColor()),
                         ),
                       )
                     ],

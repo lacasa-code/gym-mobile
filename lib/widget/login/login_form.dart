@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -88,10 +89,10 @@ class _LoginFormState extends State<LoginForm> {
             Container(
               height: 50,
               width: ScreenUtil.getWidth(context),
-              margin: EdgeInsets.only(top: 48, bottom: 12),
+              margin: EdgeInsets.only(top: 12, bottom: 12),
               child: _isLoading?FlatButton(
                 minWidth: ScreenUtil.getWidth(context) / 2.5,
-                color: Colors.blue,
+                color:  themeColor.getColor(),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child:Container(
@@ -105,11 +106,12 @@ class _LoginFormState extends State<LoginForm> {
                 ),
                 onPressed: () async {
                 },
-              ):FlatButton(
+              ):
+              FlatButton(
                 shape: RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(1.0),
                 ),
-                color: Colors.blue,
+                color:  Colors.black,
                 onPressed: () async {
                   if (_formKey.currentState.validate()) {
                     _formKey.currentState.save();
@@ -121,10 +123,8 @@ class _LoginFormState extends State<LoginForm> {
                       'password': model.password,
                     }).then((value) {
                       setState(() => _isLoading = false);
-
                       if (value != null) {
-                        print(value);
-                        if (value['status_code'] == 400) {
+                        if (value['status_code'] == 200) {
                           var user = value['data'];
                           prefs.setString("user_email", user['email']);
                           prefs.setString("name", user['name']);
@@ -134,7 +134,6 @@ class _LoginFormState extends State<LoginForm> {
                           prefs.setInt("user_id", user['id']);
                           themeColor.setLogin(true);
                           Nav.routeReplacement(context, Home());
-
                       } else {
                         showDialog(
                             context: context,
@@ -155,27 +154,42 @@ class _LoginFormState extends State<LoginForm> {
               ),
             ),
             Container(
-              height: 50,
               width: ScreenUtil.getWidth(context),
-              margin: EdgeInsets.only(top: 12, bottom: 12),
-              child: FlatButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(1.0),
-                    side: BorderSide(color: Colors.blue)),
-                color: Colors.white,
-                onPressed: () async {
+              child: InkWell(
+                onTap: () async {
                   Nav.route(context, LostPassword());
                 },
-                child: Text(
-                  getTransrlate(context, 'LostPassword'),
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.blue,
-                    fontWeight: FontWeight.bold,
+                child: Center(
+                  child: Text(
+                    getTransrlate(context, 'LostPassword'),
+                    style: TextStyle(
+                      fontSize: 16,
+                      color:Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
             ),
+            Container(
+              width: ScreenUtil.getWidth(context),
+              child: InkWell(
+                onTap: () async {
+                  Nav.route(context, LostPassword());
+                },
+                child: Center(
+                  child: Text(
+                    getTransrlate(context, 'AreadyNoAccount'),
+                    style: TextStyle(
+                      fontSize: 16,
+                      color:Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
           ],
         ),
       ),

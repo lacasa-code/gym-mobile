@@ -1,6 +1,9 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
+import 'package:trkar_vendor/utils/Provider/provider.dart';
 import 'package:trkar_vendor/utils/local/LanguageTranslated.dart';
 import 'package:trkar_vendor/utils/screen_size.dart';
 import 'package:trkar_vendor/utils/service/API.dart';
@@ -21,16 +24,20 @@ String email;
 
   @override
   Widget build(BuildContext context) {
+    final themeColor = Provider.of<Provider_control>(context);
     return Scaffold(
-        appBar: AppBar(
-      title: Image.asset("assets/images/logo.png",width: ScreenUtil.getWidth(context)/4,)),
-     body: Form(
+      backgroundColor: themeColor.getColor(),
+        appBar: AppBar(),
+      body: Form(
        key: _formKey,
        child: SingleChildScrollView(
          child: Padding(
            padding:  EdgeInsets.all(ScreenUtil.getWidth(context)/10),
            child: Column(
              children: [
+               SvgPicture.asset(
+                 'assets/images/trkar_logo_white.svg',
+               ),
                MyTextFormField(
                  intialLabel: '',
                  Keyboard_Type: TextInputType.emailAddress,
@@ -43,6 +50,7 @@ String email;
                    _formKey.currentState.save();
                    return null;
                  },
+                 textStyle: TextStyle(color: Colors.white),
                  onSaved: (String value) {
                    email=value;
                  },
@@ -51,7 +59,7 @@ String email;
                Center(
                  child:_isLoading?FlatButton(
                    minWidth: ScreenUtil.getWidth(context) / 2.5,
-                   color: Colors.blue,
+                   color:  Colors.black,
                    child: Padding(
                      padding: const EdgeInsets.all(8.0),
                      child:Container(
@@ -67,9 +75,9 @@ String email;
                    },
                  ): GestureDetector(
                    child: Container(
-                     width: ScreenUtil.getWidth(context) / 3,
+                     width: ScreenUtil.getWidth(context) / 1.2,
                      padding: const EdgeInsets.all(5.0),
-                     decoration: BoxDecoration(border: Border.all(color: Colors.blue)),
+                     decoration: BoxDecoration( color: Colors.black,border: Border.all(color:  Colors.black)),
                      child: Center(
                        child: AutoSizeText(
                          getTransrlate(context, 'changePassword'),
@@ -78,7 +86,7 @@ String email;
                          maxLines: 1,
                          minFontSize: 10,
                          style:
-                         TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
+                         TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
                        ),
                      ),
                    ),

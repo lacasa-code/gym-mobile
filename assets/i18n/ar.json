@@ -285,9 +285,10 @@
   "staff": "طاقم العمل",
   "customers": "العملاء",
   "addcustomer": "أضف عميل جديداً",
+  "addBills": "أضف عملية جديدة",
   "addstaff": "أضف عضو جديداً",
   "addStore": "أضف مخزناً جديداً",
-
+  "AreadyNoAccount": "ليس لدى حساب ",
   "totalShipping": "إجمالى الشحن",
   "totaldiscount": "قيمة الخصم",
   "total": "الإجمالى",

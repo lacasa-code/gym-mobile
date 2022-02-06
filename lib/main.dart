@@ -13,14 +13,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GlobalConfiguration().loadFromAsset("configurations");
   print("base_url: ${GlobalConfiguration().getString('base_url')}");
-  // runApp(MultiProvider(providers: [
-  //   ChangeNotifierProvider<Provider_control>(
-  //     create: (_) => Provider_control(),
-  //   ),
-  //   ChangeNotifierProvider<Provider_Data>(
-  //     create: (_) => Provider_Data(),
-  //   ),
-  // ], child:MyApp()));
   await SentryFlutter.init(
     (options) {
       options.dsn =
@@ -35,7 +27,6 @@ Future<void> main() async {
       ),
     ], child: MyApp())),
   );
-
   // OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
   // OneSignal.shared.init(
   //     "b2f7f966-d8cc-11e4-bed1-df8f05be55ba",
